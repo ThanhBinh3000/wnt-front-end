@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 
 @Component({
@@ -6,39 +7,25 @@ import {Component, OnInit} from '@angular/core';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  imports: [
+    ReactiveFormsModule
+  ]
 })
 export class LoginComponent implements OnInit {
-  constructor() {
+  public formGroup: FormGroup;
+
+  constructor(private fb: FormBuilder,) {
+    this.formGroup = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [false],
+    });
   }
 
   ngOnInit(): void {
   }
 
   login() {
-
-  }
-
-  getSlogan() {
-
-  }
-
-  onUpdated() {
-
-  }
-
-  onItemChanged() {
-
-  }
-
-  onWardChanged() {
-
-  }
-
-  onCityChanged() {
-
-  }
-
-  onRegionChanged() {
-
+    console.log(this.formGroup.value)
   }
 }
