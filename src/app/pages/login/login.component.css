@@ -1,0 +1,237 @@
+@import url('../../../assets/content/animate.css');
+.kenit-alo-phone {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  visibility: visible;
+  background-color: transparent;
+  width: 110px;
+  height: 110px;
+  cursor: pointer;
+  z-index: 200000 !important;
+}
+
+.kenit-alo-zalo {
+  position: fixed;
+  right: 10px;
+  bottom: 85px;
+  visibility: visible;
+  background-color: transparent;
+  width: 110px;
+  height: 110px;
+  cursor: pointer;
+  z-index: 200000 !important;
+}
+
+.kenit-alo-img-circle {
+  width: 50px;
+  height: 50px;
+  top: 43px;
+  left: 43px;
+  position: absolute;
+  background: rgba(30, 30, 30, 0.1) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNmlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjarY6xSsNQFEDPi6LiUCsEcXB4kygotupgxqQtRRCs1SHJ1qShSmkSXl7VfoSjWwcXd7/AyVFwUPwC/0Bx6uAQIYODCJ7p3MPlcsGo2HWnYZRhEGvVbjrS9Xw5+8QMUwDQCbPUbrUOAOIkjvjB5ysC4HnTrjsN/sZ8mCoNTIDtbpSFICpA/0KnGsQYMIN+qkHcAaY6addAPAClXu4vQCnI/Q0oKdfzQXwAZs/1fDDmADPIfQUwdXSpAWpJOlJnvVMtq5ZlSbubBJE8HmU6GmRyPw4TlSaqo6MukP8HwGK+2G46cq1qWXvr/DOu58vc3o8QgFh6LFpBOFTn3yqMnd/n4sZ4GQ5vYXpStN0ruNmAheuirVahvAX34y/Axk/96FpPYgAAACBjSFJNAAB6JQAAgIMAAPn/AACA6AAAUggAARVYAAA6lwAAF2/XWh+QAAAB/ElEQVR42uya7W3CMBCG31QM4A1aNggTlG6QbpBMkHYC1AloJ4BOABuEDcgGtBOETnD9c1ERCH/lwxeaV8oPFGP86Hy+DxMREW5Bd7gRjSDSNGn4/RiAOvm8C0ZCRD5PSkQVXSr1nK/xE3mcWimA1ZV3JYBZCIO4giQANoYxMwYS6+xKY4lT5dJPreWZY+uspqSCKPYN27GJVBDXheVSQe494ksiEWTuMXcu1dld9SARxDX1OAJ4lgjy4zDnFsC076A4adEiRwAZg4hOUSpNoCsBPDGM+HqkNGynYBCuILuWj+dgWysGsNe8nwL4GsrW0m2fxZBq9rW0rNcX5MOQ9eZD8JFahcG5g/iKT671alGAYQggpYWvpEPYWrU/HDTOfeRIX0q2SL3QN4tGhZJukVobQyXYWw7WtLDKDIuM+ZSzscyCE9PCy5IttCvnZNaeiGLNHKuz8ZVh/MXTVu/1xQKmIqLEAuJ0fNo3iG5B51oSkeKnsBi/4bG9gYB/lCytU5G9DryFW+3Gm+JLwU7ehbJrwTjq4DJU8bHcVbEV9dXXqqP6uqO5e2/QZRYJpqu2IUAA4B3tXvx8hgKp05QZW6dJqrLTNkB6vrRURLRwPHqtYgkC3cLWQAcDQGGKH13FER/NATzi786+BPDNjm1dMkfjn2pGkBHkf4D8DgBJDuDHx9BN+gAAAABJRU5ErkJggg==) no-repeat center center;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  border: 2px solid transparent;
+  opacity: .7;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  background-color: #0089B9;
+  background-size: 70%;
+}
+
+.kenit-alo-circle-fill {
+  width: 80px;
+  height: 80px;
+  top: 28px;
+  left: 28px;
+  position: absolute;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  border: 2px solid transparent;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+  background-color: rgba(0, 175, 242, 0.5);
+  opacity: .75 !important;
+}
+
+.kenit-alo-circle {
+  width: 110px;
+  height: 110px;
+  top: 12px;
+  left: 12px;
+  position: absolute;
+  background-color: transparent;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  border: 2px solid rgba(30, 30, 30, 0.4);
+  border-color: #0089B9;
+  opacity: .5;
+}
+
+.kenit-alo-phone .kenit-alo-desc {
+  display: block;
+  background: #30a4cc;
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  position: absolute;
+  right: 90px;
+  width: 255px;
+  bottom: 18px;
+  border-radius: 4px 4px;
+  font-size: 17px;
+}
+
+.kenit-alo-phone .kenit-alo-desc:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0px 10px 10px;
+  border-color: transparent transparent transparent #30a4cc;
+  position: absolute;
+  top: 13px;
+  right: -10px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.kenit-alo-zalo .kenit-alo-desc {
+  display: block;
+  background: #30a4cc;
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  position: absolute;
+  right: 90px;
+  width: 200px;
+  bottom: 20px;
+  border-radius: 4px 4px;
+  font-size: 17px;
+}
+
+.kenit-alo-zalo .kenit-alo-desc:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0px 10px 10px;
+  border-color: transparent transparent transparent #30a4cc;
+  position: absolute;
+  top: 12px;
+  right: -10px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.zalo-chat-widget {
+  bottom: 100px !important;
+  right: 25px !important;
+}
+
+input[type=text] {
+  padding: 12px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#captcha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: none;
+}
+
+div #captchaTextBox {
+  border-top-left-radius: 0px !important;
+}
+
+.feedback-cus {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-image: url(/assets/images/customer_service.png);
+  height: 91px; /* You must set a specified height */
+  width: 91px;
+  background-size: cover; /* Resize the background image to cover the entire container */
+  box-shadow: 0 10px 20px -5px #ccc;
+  border: 0.5px solid grey;
+  z-index: 999;
+}
+
+.feedback-cus-desc {
+  background: #9f4343;
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  position: fixed;
+  bottom: 105px;
+  left: 75px;
+  border-radius: 30px 30px;
+  font-size: 18px;
+  height: 75px;
+}
+
+/*.feedback-cus:hover {
+    background-image: url(/Uploads/Common/Images/mail_box.gif);
+}*/
+.tri-right.btm-left-in:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 15px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: #9f4343 transparent transparent #9f4343;
+}
+
+.div-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-login {
+  max-width: 800px;
+  height: calc(100vh - 105px);
+  margin: 0 auto;
+}

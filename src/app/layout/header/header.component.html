@@ -1,0 +1,477 @@
+<!--Notification box-->
+<nav class="navbar navbar-default header-main">
+  <div class="container-fluid" *ngIf="authService.isLogin()">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="navbar-header-wnt">
+          <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span
+            class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+          <div class="navbar-header-wnt-brand">
+            <ng-container *ngIf="!!store">
+              <div id="header-wnt-brand" class="mb-0" title="@Html.Raw(titleStore)">
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!store">
+
+            </ng-container>
+          </div>
+          <div class="navbar-header-hotline">
+            <ul class="nav">
+              <li class="dropdown menu">
+                <a id="on-open-form-link-mobile" style="color: black">
+                  <b>Link tải app</b>
+                  <i style="color: #35a6ca" class="fa-solid fa-mobile-iphone"></i>
+                </a>
+              </li>
+              <li class="dropdown menu">
+                <a style="color: black" href="/Community">
+                  <span style="position: absolute; left: 90px; top: -5px; z-index: 10000; background-color: red"
+                        class="label pull-right blink">NEW</span><b>Cộng đồng&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                  <i class="fas fa-video" style="color: #029eff;"></i>
+                </a>
+              </li>
+              <li class="dropdown menu">
+                <a style="color: black" href="/ConvenientShop">
+                  <b>Cửa hàng tiện ích</b>
+                  <i style="color: #35a6ca" class="fa-solid fa-store"></i>
+                </a>
+              </li>
+              <li class="dropdown menu">
+              </li>
+              <li class="dropdown menu">
+                <a title="Số tổng đài chăm sóc khách hàng" href="tel:0346588983" role="button"
+                   class="dropdown-toggle alo_menu">0346 588 983<i class="fa-solid fa-phone"></i></a>
+              </li>
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle alo_menu">Kinh
+                  doanh <i class="fa-solid fa-phone"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="tel:0374452196">Kd1: 0374 452 196</a></li>
+                  <li><a href="tel:0373769465">Kd2: 0373 769 465</a></li>
+                  <li><a href="tel:0343624338">Kd3: 0343 624 338</a></li>
+                </ul>
+              </li>
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle alo_menu">Chat
+                  Zalo <i class="fa-regular fa-messages"></i></a>
+                <ul style="left: -110px" class="dropdown-menu" role="menu">
+                  <li *ngIf="store.ZaloGroupUrl && store.ProvinceName"><a target="_blank" href="store.ZaloGroupUrl">Nhóm
+                    Zalo khu vực {{store.ProvinceName}}</a></li>
+                  <li *ngIf="!!store"><a target="_blank" href="https://zalo.me/@store.PhoneSupport">Zalo cá
+                    nhân:store.PhoneSupport</a></li>
+                  <li *ngIf="!store"><a target="_blank" href="https://zalo.me/0989199535">Zalo cá nhân: 0989199535</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-header-bottom nav-wnt-bg">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div style="padding-left: 0px" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav nav-wnt">
+              <li>
+                <a href="/Home/Index"><strong style="color:#fff">WEB</strong> <strong id="middle-name"
+                                                                                      style="color:orange"></strong>
+                  <strong id="last-name" style="color:#28CC28"></strong> <strong style="color:#fff">HtmlRaw(muNhaThuoc)</strong></a>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Hệ Thống
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>HtmlActionLink("Quản lý người dùng", "AccountManager", "Admin")</li>
+                  <li>HtmlActionLink("Quản lý Nhà thuốc", "DrugStoresListing", "DrugStoreMan")</li>
+                  <li>HtmlActionLink("Báo cáo triển khai", "ReportCriteriaBusiness", "DrugStoreMan")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách thông báo", "List", "Notification")</li>
+                  <li>HtmlActionLink("Danh sách thông báo hệ thống", "Index", "MessageMain")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Công cụ hệ thống", "SystemTools", "System")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Quản lý đăng ký sử dụng tiện ích", "ConvenientOrderListing", "ConvenientShop")
+                  </li>
+                  <li>HtmlActionLink("Quản lý đóng góp ý kiến khách hàng", "FeedbackFromCustomer", "Utilities")</li>
+                  <li class="divider"></li>
+                  <li><a target="_blank"
+                         href="https://drive.google.com/drive/folders/1ntTFGo7zWlxVUWiHWBbnTCYYOSdzm0el?usp=sharing"
+                         title="Tài liệu nội bộ dành cho nhân viên công ty WEB NHÀ THUỐC">Tài liệu nội bộ</a></li>
+
+                  <li><a target="_blank" href="http://crm.webnhathuoc.com:8069/web/login">Hệ thống CRM nội bộ</a></li>
+                  <li class="divider"></li>
+                  <li><a href="https://duocquocgia.com.vn/" target="_blank">Dược quốc gia</a></li>
+                  <li><a href="openElitLog:elitLog">App nhiệt ẩm kế</a></li>
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Tra cứu danh mục thuốc", "SearchDrugCatalog", "Thuocs")</li>
+                  <li>HtmlActionLink("Mapping danh mục thuốc", "MappingCatalog", "Thuocs")</li>
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Danh sách nhân viên", "StaffListing", "Admin")</li>
+
+                  <li>HtmlActionLink("Tùy chọn", "AppSettings", "System")</li>
+
+                  <li>HtmlActionLink("Đổi cơ sở", "ChooseDefaultDs", "Account", new , null)</li>
+
+                  <li>HtmlActionLink("Thông tin cơ sở", "thongtin", "Nhathuoc", new
+                    ,null)
+                  </li>
+                  <li>HtmlActionLink("Đổi mật khẩu", "Manage", "Account")</li>
+
+                  <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
+                </ul>
+              </li>
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Khám bệnh
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li><a href="/WaitNote/ListWaits?type=1">Tiếp đón bệnh nhân</a></li>
+
+                  <li>HtmlActionLink("Lập phiếu khám", "Create", "NoteMedical")</li>
+
+                  <li><a href="/WaitNote/ListWaits?type=2">Danh sách phiếu khám</a></li>
+
+                  <li>HtmlActionLink("Lịch sử khám chữa bệnh", "ListNoteMedical", "NoteMedical")</li>
+                  <li class="divider"></li>
+
+                  <li><a href="/ReceiptMedicalFee/Create">Viết phiếu thu tiền khám bệnh</a></li>
+
+                  <li>HtmlActionLink("Danh sách thu tiền khám bệnh", "ListReceiptMedicalFee", "ReceiptMedicalFee")
+                  </li>
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Phòng khám", "ListClinic", "Clinic")</li>
+                </ul>
+              </li>
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Dịch vụ
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="/NhomThuocs/Index?type=1">Nhóm dịch vụ</a></li>
+                  <li><a href="/DrugManagement/DrugListing?type=1">Danh sách dịch vụ</a></li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Lập mới phiếu dịch vụ", "Create", "NoteService", null, null)</li>
+                  <li>HtmlActionLink("Danh sách phiếu dịch vụ", "ListNoteService", "NoteService")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách dịch vụ chờ thực hiện", "ListNoteWaitService", "NoteService")</li>
+                </ul>
+              </li>
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Nhập Xuất
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Bán hàng", "DeliveryNoteScreen", "DeliveryNote",
+                    , null)
+                  </li>
+
+                  <li>HtmlActionLink("Bán hàng, cắt liều với mã vạch", "DeliveryWithBarcode", "DeliveryNote", null,
+                    null)
+                  </li>
+
+                  <li>HtmlActionLink("Bán hàng với đơn thuốc điện tử", "DeliveryWithES", "DeliveryNote", new , null)
+                  </li>
+
+                  <li>HtmlActionLink("Nhập hàng", "ReceiptNoteScreen", "ReceiptNote", new
+                    , null)
+                  </li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Khách hàng trả lại", "CustomerReceiptNoteScreen", "ReceiptNote", new , null)
+                  </li>
+
+                  <li>HtmlActionLink("Chuyển kho", "WarehouseTransferNoteScreen", "DeliveryNote", new , null)
+                  </li>
+
+                  <li>HtmlActionLink("Trả lại nhà cung cấp", "SupplierDeliveryNoteScreen", "DeliveryNote", new , null)
+                  </li>
+                  <li>HtmlActionLink("Xuất hủy", "CancelDeliveryNoteScreen", "DeliveryNote", new , null)
+                  </li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách phiếu Nhập-Xuất", "NotesListing", "NoteManagement", null, null)</li>
+                  <li>HtmlActionLink("Khôi phục các chứng từ bị xóa", "DeletedNotesListing", "NoteManagement", null,
+                    null)
+                  </li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Quản lý LT", "ConnectivityNotes", "Connectivity")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Quản lý Hóa đơn", "EInvoiceManagementNotes", "EInvoiceManagement")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Quản lý Hóa đơn", "EInvoiceMangementV1", "EInvoiceManagement")</li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Thu - Chi
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Viết phiếu thu nợ khách hàng", "InOutcommingNoteScreen", "InOutCommingNote", new
+                    , null)
+                  </li>
+                  <li>HtmlActionLink("Viết phiếu trả nợ nhà cung cấp", "InOutcommingNoteScreen", "InOutCommingNote",
+                    new
+                    , null)
+                  </li>
+                  <li>HtmlActionLink("Nhập các khoản thu chi khác", "OtherInOutcommingNote", "InOutCommingNote", new
+                    , null)
+                  </li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách phiếu Thu-Chi", "Index", "InOutCommingNote", new ,
+                    null)
+                  </li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Hàng Hóa
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Vị trí tủ/ kho", "Index", "WarehouseLocation")</li>
+                  <li>HtmlActionLink("Đơn vị tính", "UnitListing", "DrugManagement")</li>
+
+                  <li>HtmlActionLink("Nhóm thuốc", "Index", "NhomThuocs")</li>
+                  <li class="divider"></li>
+
+                  <li><a href="#">Danh sách thuốc</a></li>
+
+                  <li><a href="/DrugManagement/DrugListing?type=0">Danh sách thuốc</a></li>
+
+                  <li><a href="#">Thêm thuốc mới</a></li>
+
+                  <li><a href="/DrugManagement/Create">Thêm mới thuốc</a></li>
+
+                  <li>HtmlActionLink("In mã vạch thuốc, liều dùng", "InMaVach", "Thuocs")</li>
+
+                  <li>HtmlActionLink("Lịch sử giao dịch", "DrugTransHistories", "Report")</li>
+
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Lập dự trù thuốc", "CreateReserve", "DrugManagement")</li>
+
+                  <li>HtmlActionLink("Kê đơn/Liều mẫu", "List", "SampleNote")</li>
+
+                  <li>HtmlActionLink("Quản lý đơn thuốc LT", "ConnectivitySampleNotes", "Connectivity")</li>
+
+                  <li>HtmlActionLink("Kiểm kê kho", "Index", "Inventory")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Thiết lập thuốc LT", "MappingDrugForConnect", "Thuocs")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Bảng giá sản phẩm", "ProductPresentation", "DrugManagement")</li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đơn Hàng
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Tạo mới đơn đặt hàng", "CreateOrder", "OrderMan")</li>
+                  <li>HtmlActionLink("Quản lý đơn đặt hàng", "OrdersListing", "OrderMan")</li>
+                  <li>HtmlActionLink("Tra cứu và nhặt hàng", "SearchDrugs", "OrderMan")</li>
+                  <li>HtmlActionLink("Quản lý tài khoản con", "CustomerListing", "OrderMan")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Đơn nhặt hàng", "FormQuick", "PickUpOrder", new
+                    ,
+                    null)
+                  </li>
+                  <li>HtmlActionLink("Quản lý đơn khách đặt", "ListOrderPickUp", "PickUpOrder")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Gán nhân viên đơn nhặt", "ListOrderAssign", "PickUpOrder")</li>
+                  <li>HtmlActionLink("Danh sách hàng cần mua", "ListDrugToBuy", "PickUpOrder")</li>
+                  <li>HtmlActionLink("Xác nhận hàng giao trong ngày", "ConfirmDelivery", "PickUpOrder")</li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đối Tác
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>HtmlActionLink("Nhóm khách hàng", "Index", "CustomerGroup")</li>
+
+                  <li>HtmlActionLink("Khách hàng", "Index", "Customer")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Nhóm nhà cung cấp", "Index", "SupplyerGroup")</li>
+
+                  <li>HtmlActionLink("Nhà cung cấp", "Index", "Supplyer")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Nhóm bác sỹ", "Index", "DoctorGroup")</li>
+                  <li>HtmlActionLink("Danh sách bác sỹ", "Index", "Doctor")</li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Báo Cáo
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Báo cáo chi tiết hàng ngày", "TransRevenueDetailsByDay", "Transaction")</li>
+                  <li>HtmlActionLink("Báo cáo tổng hợp", "TransSynthesisReport", "Transaction")</li>
+                  <li>HtmlActionLink("Báo cáo thu chi", "TransInOutcomingReport", "Transaction")</li>
+                  <li>HtmlActionLink("Báo cáo phân hạng nhóm khách hàng", "CustomerGroupClassification",
+                    "Transaction")
+                  </li>
+                  <li>HtmlActionLink("Báo cáo chi tiết phân hạng nhóm khách hàng",
+                    "CustomerGroupClassificationDetails",
+                    "Transaction")
+                  </li>
+                  <li>HtmlActionLink("Báo cáo theo mặt hàng", "TransGoods", "Transaction")</li>
+                  <li>HtmlActionLink("Báo cáo chi tiết theo mặt hàng", "TransGoodsDetails", "Transaction")</li>
+
+                  <li>HtmlActionLink("Báo cáo thu chi hàng ngày", "DailyIncomeExpenditureReport", "Report")</li>
+
+                  <li>HtmlActionLink("Báo cáo doanh thu chi tiết theo ngày", "RevenueDetailsByDay", "Report")</li>
+
+                  <li>HtmlActionLink("Báo cáo thu-chi hằng ngày", "InOutcommingDetailsByDay", "Report")</li>
+
+                  <li>HtmlActionLink("Báo cáo tổng hợp doanh thu", "ViewCustomizeReport", "Report")</li>
+
+                  <li>
+                   HtmlActionLink("Báo cáo quản trị", "SynthesisReportV2", "Report")
+                  </li>
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Theo nhân viên", "ReportByStaff", "Report")</li>
+                  <li>HtmlActionLink("Theo ngày của nhân viên", "ReportStaffByDay", "Report")</li>
+
+                  <li>HtmlActionLink("Theo khách hàng", "ReportByCustomer", "Report")</li>
+
+                  <li>HtmlActionLink("Theo điểm của khách hàng", "CustomerScoreReport", "Report")</li>
+
+                  <li>HtmlActionLink("Theo mặt hàng bán", "ReportByGoods", "Report")</li>
+
+                  <li>HtmlActionLink("Theo bác sỹ", "ReportByDoctor", "Report")</li>
+
+                  <li>HtmlActionLink("Theo mặt hàng bác sỹ", "ReportByGoodDoctor", "Report")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Theo nhà cung cấp", "ReportBySupplyer", "Report")</li>
+
+                  <li>HtmlActionLink("Theo kho hàng", "DrugWarehouses", "Report")</li>
+
+                  <li>HtmlActionLink("Báo cáo kiểm kê", "InventoryWarehouseReport", "Report")</li>
+
+                  <li class="divider"></li>
+                  <li>
+                   HtmlActionLink("Theo bảng kê thu tiền dịch vụ", "NoteServiceReport", "Report")
+                  </li>
+
+                  <li class="divider"></li>
+                  <li>
+                   HtmlActionLink("Báo cáo tổng hợp Thu-Chi", "OtherInOutcommingNoteReport", "Report")
+                  </li>
+
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Tiện Ích
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+
+                  <li>HtmlActionLink("Các chỉ tiêu vận hành nhà thuốc", "OperatingTarget", "Utilities")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách hàng hết", "DrugInventoryWarning", "Utilities")</li>
+                  <li>HtmlActionLink("Danh sách hàng hết hạn", "NearExpiredDrugWarning", "Utilities")</li>
+                  <li>HtmlActionLink("Danh sách hàng lợi nhuận âm", "NegativeRevenueWarning", "Utilities")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Bộ sổ GPP", "BookListing", "BookMan")</li>
+                  <li>HtmlActionLink("Bộ sổ GDP", "BookListing", "BookMan")</li>
+                  <li class="divider"></li>
+                  <li><a href="https://dichvucong.dav.gov.vn/congbogiathuoc/index" target='_blank'>Tra cứu giá từ cục
+                    dược</a></li>
+                  <li>HtmlActionLink("Tra cứu giá từ thị trường", "SearchDrugCatalog", "Thuocs")</li>
+                  <li>HtmlActionLink("Tra cứu doanh số thị trường", "SearchRevenueMarket", "Utilities")</li>
+                  <li>HtmlActionLink("Tra cứu đơn thuốc quốc gia", "SearchSampleNoteConnectivity", "Connectivity")
+                  </li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Chăm sóc khách hàng với Zalo", "ZaloWeb", "Utilities")</li>
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Tính liều", "DoseCalculation", "Utilities")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Đào tạo nhân viên", "ProgramTrainingStaff", "Utilities")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Báo cáo đánh giá hàng ngày nhân viên", "DailyReport", "Utilities")</li>
+
+                  <li class="divider"></li>
+                  <li>HtmlActionLink("Danh sách phiếu mua hàng tiếp theo", "NextPurchaseNote", "Utilities")</li>
+                </ul>
+              </li>
+
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Website
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>HtmlActionLink("Quản lý Menu", "Menu", "CustomerWebsite")</li>
+                  <li class="divider"></li>
+
+                  <li>HtmlActionLink("Quản lý đơn hàng", "OrdersListing", "CustomerWebsite")</li>
+                  <li class="divider"></li>
+                  <li><a target="_blank" href="https://webnhathuoc.vn/@store.Slug_CustomerWebsite">Đi tới trang chủ</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Tài liệu
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>HtmlActionLink("Mẫu báo cáo", "DownloadReport", "BookMan", new , null)
+                  </li>
+                  <li>HtmlActionLink("Tài liệu", "DownloadReport", "BookMan")</li>
+                </ul>
+              </li>
+
+              <li class="dropdown menu">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Trợ Giúp
+                  <i class="fa-regular fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>HtmlActionLink("Chính sách hỗ trợ online", "TuvanOnline", "TienIch")</li>
+                  <li><a href="https://webnhathuoc.com/home/kinh-nghiem/" target='_blank' width='500px' height='500px'>Kinh
+                    nghiệm chia sẻ</a></li>
+                  <li class="divider"></li>
+                  <li><a href="https://webnhathuoc.com/home/huong-dan-su-dung/" target='_blank' width='500px'
+                         height='500px'>Hướng dẫn sử dụng</a></li>
+                  <li><a href="https://www.youtube.com/channel/UCG4ayMVzbME9Vs-PUNW7Xug/playlists/" target='_blank'
+                         width='500px' height='500px'>Video hướng dẫn sử dụng</a></li>
+                  <li><a href="https://webnhathuoc.com/home/cau-hoi-thuong-gap/" target='_blank' width='500px'
+                         height='500px'>Câu hỏi thường gặp</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div title="Tiếp nhận yêu cầu hỗ trợ" id="on-open-form-feedback-cus"></div>
+            <div id="flag-feedback-cus">
+              <div class="talk-bubble tri-right round btm-left-in">
+                <div class="talktext">
+                  <p class="mb-0 mt-0">Tiếp nhận yêu cầu hỗ trợ</p>
+                  <p class="mb-0 mt-0">(Hỗ trợ từ 8h-22h các ngày trong tuần)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
