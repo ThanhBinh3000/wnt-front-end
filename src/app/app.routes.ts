@@ -3,6 +3,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {AuthGuard} from "./guard/auth.guard";
 import {NotAuthenComponent} from "./pages/not-authen/not-authen.component";
 import {NotFoundComponent} from "./pages/not-found/not-found.component";
+import {HomeComponent} from "./pages/home/home.component";
 
 export const routes: Routes = [
   {
@@ -18,8 +19,7 @@ export const routes: Routes = [
     component: NotFoundComponent
   },
   {
-    path: '',
-    canActivate: [AuthGuard],
+    path: 'management',
     loadChildren: () =>
       import('./layout/layout.module').then((m) => m.LayoutModule),
   },

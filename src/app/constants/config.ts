@@ -7,3 +7,8 @@ export const STORAGE_KEY = {
   DEPARTMENT: 'department'
 };
 
+export const STATUS_CODE = {
+  SUCCESS: 200,
+  ERROR: 201,
+  UNAUTHORIZED: 401,
+};
