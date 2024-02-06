@@ -1,22 +1,563 @@
-<!--Notification box-->
+<div class="modal inmodal ng-scope" tabindex="-1" role="dialog" aria-hidden="false"
+     ng-controller="noticeDialogController" id="noticeDialog" data-backdrop="static">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="onClose(); $event.preventDefault(); $event.stopPropagation();"><i
+          class="fa-regular fa-xmark"></i></button>
+        <h4 class="modal-title ng-binding"></h4>
+      </div>
+      <div class="modal-body">
+        <p style="word-wrap: break-word" class="ng-binding">
+        </p>
+      </div>
+
+      <!-- ngIf: model.type=='confirm' -->
+
+      <!-- ngIf: model.type=='alert' -->
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade inmodal view-dialog ng-scope" id="system-messages-dialog"
+     ng-controller="SystemMessagesController" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title"><b>Cảnh báo hệ thống</b></h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table tr-ng-grid="" items="model.items" display-total-items-count="true" id="system-messages-table"
+                 locale="en"
+                 class="table table-striped table-responsive table-bordered table-hover ng-isolate-scope tr-ng-grid"
+                 selection-mode="None" current-page="setCurrentPage" enable-filtering="false" enable-sorting="false"
+                 page-items="model.pageSize" total-items="model.totalItems">
+            <thead class="ng-scope">
+            <tr>
+              <th display-name="#" tr-ng-grid-header-cell="0"
+                  ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}" class="ng-scope">
+                <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized" tr-ng-grid-header-cell-template="">
+                  <!-- ngSwitchWhen: true -->  <!-- ngSwitchDefault:  -->
+                  <div ng-switch-default="" class="ng-scope">
+                    <div class="tr-ng-title ng-binding"> #
+                      <div ng-attr-title="test"
+                           ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                           ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                           tr-ng-grid-column-sort="" title="Sort">
+                        <div
+                          ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                          class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up"></div>
+                      </div>
+                    </div>
+                    <div
+                      ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                      class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                      <div class=""><input class="form-control input-sm ng-pristine ng-untouched ng-valid" type="text"
+                                           ng-model="columnOptions.filter"
+                                           ng-keypress="speedUpAsyncDataRetrieval($event)"></div>
+                    </div>
+                  </div><!-- end ngSwitchWhen: --></div>
+              </th>
+              <th display-name="Nội dung" tr-ng-grid-header-cell="1"
+                  ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}" class="ng-scope">
+                <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized" tr-ng-grid-header-cell-template="">
+                  <!-- ngSwitchWhen: true -->  <!-- ngSwitchDefault:  -->
+                  <div ng-switch-default="" class="ng-scope">
+                    <div class="tr-ng-title ng-binding"> Nội dung
+                      <div ng-attr-title="test"
+                           ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                           ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                           tr-ng-grid-column-sort="" title="Sort">
+                        <div
+                          ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                          class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up"></div>
+                      </div>
+                    </div>
+                    <div
+                      ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                      class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                      <div class=""><input class="form-control input-sm ng-pristine ng-untouched ng-valid" type="text"
+                                           ng-model="columnOptions.filter"
+                                           ng-keypress="speedUpAsyncDataRetrieval($event)"></div>
+                    </div>
+                  </div><!-- end ngSwitchWhen: --></div>
+              </th>
+              <th display-name="" tr-ng-grid-header-cell="2"
+                  ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}" class="ng-scope">
+                <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized" tr-ng-grid-header-cell-template="">
+                  <!-- ngSwitchWhen: true -->  <!-- ngSwitchDefault:  -->
+                  <div ng-switch-default="" class="ng-scope">
+                    <div class="tr-ng-title ng-binding">
+                      <div ng-attr-title="test"
+                           ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                           ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                           tr-ng-grid-column-sort="" title="Sort">
+                        <div
+                          ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                          class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up"></div>
+                      </div>
+                    </div>
+                    <div
+                      ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                      class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                      <div class=""><input class="form-control input-sm ng-pristine ng-untouched ng-valid" type="text"
+                                           ng-model="columnOptions.filter"
+                                           ng-keypress="speedUpAsyncDataRetrieval($event)"></div>
+                    </div>
+                  </div><!-- end ngSwitchWhen: --></div>
+              </th>
+            </tr>
+            </thead>
+            <tfoot class="ng-scope">
+            <tr>
+              <td tr-ng-grid-footer-cell="0"
+                  ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}" class="ng-scope"
+                  colspan="3">
+                <div class="tr-ng-grid-footer form-inline" ng-switch="isCustomized" tr-ng-grid-footer-cell-template="">
+                  <!-- ngSwitchWhen: true -->  <!-- ngSwitchDefault:  -->
+                  <div ng-switch-default="" class="ng-scope"><span tr-ng-grid-global-filter=""><span
+                    ng-show="gridOptions.enableFiltering" class="pull-left form-group ng-hide">  <input
+                    class="form-control ng-pristine ng-untouched ng-valid" type="text" ng-model="gridOptions.filterBy"
+                    ng-keypress="speedUpAsyncDataRetrieval($event)"
+                    ng-attr-placeholder="test" placeholder="Search"></span></span>
+                    <span class="pull-right form-group" tr-ng-grid-pager=""> <ul class="pagination">   <!-- ngIf: extendedControlsActive -->
+                      <!-- ngIf: extendedControlsActive -->
+                      <!-- ngRepeat: pageIndex in pageIndexes track by $index -->
+                      <!-- ngIf: extendedControlsActive -->   <!-- ngIf: extendedControlsActive -->   <li
+                        class="disabled" style="white-space: nowrap;">     <span
+                        ng-hide="totalItemsCount || !displayTotalItemsCount" class="ng-binding">Không có dữ liệu</span>     <span
+                        ng-show="totalItemsCount &amp;&amp; displayTotalItemsCount" class="ng-hide">       <span
+                        class="ng-binding">Tổng: 0 bản ghi</span>     </span>    </li> </ul></span></div>
+                  <!-- end ngSwitchWhen: --></div>
+              </td>
+            </tr>
+            </tfoot>
+            <tbody tr-ng-grid-body="" class="ng-scope"><!-- ngRepeat: gridDisplayItem in filteredItems --></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade inmodal ng-scope" id="regional-details-dialog" ng-controller="RegionalDetailsDialogController"
+     tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true"><i
+          class="fa-regular fa-xmark"></i></span></button>
+        <h2 class="modal-title">Thông tin về vùng miền địa lý</h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-sm-2">Mã:</label>
+          <div class="control-label col-sm-10 ng-binding">
+
+          </div>
+        </div>
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-sm-2">Tên:</label>
+          <div class="control-label col-sm-10 ng-binding">
+
+          </div>
+        </div>
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-md-2">Địa chỉ:</label>
+          <div class="col-md-10">
+            <input class="form-control mousetrap ng-pristine ng-untouched ng-valid" style="text-align:left" type="text"
+                   ng-model="viewModel.Addresses" ng-disabled="!isEditable" id="cusAddress" disabled="disabled">
+          </div>
+        </div>
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-md-2">Tỉnh/Thành:</label>
+          <div class="col-md-10">
+            <div class="form-c ui-select-container select2 select2-container ng-valid select2-container-disabled"
+                 ng-class="{'select2-container-active select2-dropdown-open open': $select.open, 'select2-container-disabled': $select.disabled, 'select2-container-active': $select.focus, 'select2-allowclear': $select.allowClear &amp;&amp; !$select.isEmpty()}"
+                 ng-model="viewModel.RegionId" theme="select2" on-select="onRegionChanged()"
+                 ng-disabled="!isEditable" style="width:100%;" focus-on="regionUISelect" disabled="disabled"><a
+              class="select2-choice ui-select-match select2-default" ng-class="{'select2-default': $select.isEmpty()}"
+              ng-click="$select.toggle($event)" aria-label="Select box select" placeholder="Chọn hoặc gõ vào để tìm..."><span
+              ng-show="$select.isEmpty()" class="select2-chosen ng-binding">Chọn hoặc gõ vào để tìm...</span> <span
+              ng-hide="$select.isEmpty()" class="select2-chosen ng-hide" ng-transclude=""><span
+              class="ng-binding ng-scope"></span></span> <!-- ngIf: $select.allowClear && !$select.isEmpty() --> <span
+              class="select2-arrow ui-select-toggle"><b></b></span></a>
+              <div
+                class="ui-select-dropdown select2-drop select2-with-searchbox select2-drop-active select2-display-none"
+                ng-class="{'select2-display-none': !$select.open}">
+                <div class="search-container select2-search"
+                     ng-class="{'ui-select-search-hidden':!$select.searchEnabled, 'select2-search':$select.searchEnabled}">
+                  <input type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                         ng-class="{'select2-active': $select.refreshing}" role="combobox" aria-expanded="true"
+                         aria-owns="ui-select-choices-0" aria-label="Select box"
+                         class="ui-select-search select2-input ng-pristine ng-untouched ng-valid"
+                         ng-model="$select.search" style="width: 10px;"></div>
+                <ul tabindex="-1" class="ui-select-choices ui-select-choices-content select2-results"
+                    repeat="item.Id as item in regions | propsFilter: {Name: $select.search}">
+                  <li class="ui-select-choices-group"
+                      ng-class="{'select2-result-with-children': $select.choiceGrouped($group) }">
+                    <div ng-show="$select.choiceGrouped($group)"
+                         class="ui-select-choices-group-label select2-result-label ng-binding ng-hide"
+                         ng-bind="$group.name"></div>
+                    <ul id="ui-select-choices-0"
+                        ng-class="{'select2-result-sub': $select.choiceGrouped($group), 'select2-result-single': !$select.choiceGrouped($group) }"
+                        class="select2-result-single"><!-- ngRepeat: item in $select.items --></ul>
+                  </li>
+                </ul>
+                <div class="ui-select-no-choice"></div>
+              </div>
+              <!--              <ui-select-single></ui-select-single>-->
+              <input ng-disabled="$select.disabled" class="ui-select-focusser ui-select-offscreen ng-scope" type="text"
+                     id="focusser-0" aria-label="Select box focus" aria-haspopup="true" role="button"
+                     disabled="disabled"></div>
+          </div>
+        </div>
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-md-2">Quận/Huyện:</label>
+          <div class="col-md-10">
+            <div class="ui-select-container select2 select2-container ng-valid select2-container-disabled"
+                 ng-class="{'select2-container-active select2-dropdown-open open': $select.open, 'select2-container-disabled': $select.disabled, 'select2-container-active': $select.focus, 'select2-allowclear': $select.allowClear &amp;&amp; !$select.isEmpty()}"
+                 ng-model="viewModel.CityId" theme="select2" on-select="onCityChanged()" ng-disabled="!isEditable"
+                 style="width:100%;" focus-on="cityUISelect" disabled="disabled"><a
+              class="select2-choice ui-select-match select2-default" ng-class="{'select2-default': $select.isEmpty()}"
+              ng-click="$select.toggle($event)" aria-label="Select box select" placeholder="Chọn hoặc gõ vào để tìm..."><span
+              ng-show="$select.isEmpty()" class="select2-chosen ng-binding">Chọn hoặc gõ vào để tìm...</span> <span
+              ng-hide="$select.isEmpty()" class="select2-chosen ng-hide" ng-transclude=""><span
+              class="ng-binding ng-scope"></span></span> <!-- ngIf: $select.allowClear && !$select.isEmpty() --> <span
+              class="select2-arrow ui-select-toggle"><b></b></span></a>
+              <div
+                class="ui-select-dropdown select2-drop select2-with-searchbox select2-drop-active select2-display-none"
+                ng-class="{'select2-display-none': !$select.open}">
+                <div class="search-container select2-search"
+                     ng-class="{'ui-select-search-hidden':!$select.searchEnabled, 'select2-search':$select.searchEnabled}">
+                  <input type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                         ng-class="{'select2-active': $select.refreshing}" role="combobox" aria-expanded="true"
+                         aria-owns="ui-select-choices-1" aria-label="Select box"
+                         class="ui-select-search select2-input ng-pristine ng-untouched ng-valid"
+                         ng-model="$select.search" style="width: 10px;"></div>
+                <ul tabindex="-1" class="ui-select-choices ui-select-choices-content select2-results"
+                    repeat="item.Id as item in cities | propsFilter: {Name: $select.search}">
+                  <li class="ui-select-choices-group"
+                      ng-class="{'select2-result-with-children': $select.choiceGrouped($group) }">
+                    <div ng-show="$select.choiceGrouped($group)"
+                         class="ui-select-choices-group-label select2-result-label ng-binding ng-hide"
+                         ng-bind="$group.name"></div>
+                    <ul id="ui-select-choices-1"
+                        ng-class="{'select2-result-sub': $select.choiceGrouped($group), 'select2-result-single': !$select.choiceGrouped($group) }"
+                        class="select2-result-single"><!-- ngRepeat: item in $select.items --></ul>
+                  </li>
+                </ul>
+                <div class="ui-select-no-choice"></div>
+              </div>
+              <!--              <ui-select-single></ui-select-single>-->
+              <input ng-disabled="$select.disabled" class="ui-select-focusser ui-select-offscreen ng-scope" type="text"
+                     id="focusser-1" aria-label="Select box focus" aria-haspopup="true" role="button"
+                     disabled="disabled"></div>
+          </div>
+        </div>
+        <div class="form-group-flex mb-3">
+          <label class="control-label col-md-2">Phường/Xã:</label>
+          <div class="col-md-10">
+            <div class="ui-select-container select2 select2-container ng-valid select2-container-disabled"
+                 ng-class="{'select2-container-active select2-dropdown-open open': $select.open, 'select2-container-disabled': $select.disabled, 'select2-container-active': $select.focus, 'select2-allowclear': $select.allowClear &amp;&amp; !$select.isEmpty()}"
+                 ng-model="viewModel.WardId" theme="select2" on-select="onWardChanged()" ng-disabled="!isEditable"
+                 style="width:100%;" focus-on="wardUISelect" disabled="disabled"><a
+              class="select2-choice ui-select-match select2-default" ng-class="{'select2-default': $select.isEmpty()}"
+              ng-click="$select.toggle($event)" aria-label="Select box select" placeholder="Chọn hoặc gõ vào để tìm..."><span
+              ng-show="$select.isEmpty()" class="select2-chosen ng-binding">Chọn hoặc gõ vào để tìm...</span> <span
+              ng-hide="$select.isEmpty()" class="select2-chosen ng-hide" ng-transclude=""><span
+              class="ng-binding ng-scope"></span></span> <!-- ngIf: $select.allowClear && !$select.isEmpty() --> <span
+              class="select2-arrow ui-select-toggle"><b></b></span></a>
+              <div
+                class="ui-select-dropdown select2-drop select2-with-searchbox select2-drop-active select2-display-none"
+                ng-class="{'select2-display-none': !$select.open}">
+                <div class="search-container select2-search"
+                     ng-class="{'ui-select-search-hidden':!$select.searchEnabled, 'select2-search':$select.searchEnabled}">
+                  <input type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                         ng-class="{'select2-active': $select.refreshing}" role="combobox" aria-expanded="true"
+                         aria-owns="ui-select-choices-2" aria-label="Select box"
+                         class="ui-select-search select2-input ng-pristine ng-untouched ng-valid"
+                         ng-model="$select.search" style="width: 10px;"></div>
+                <ul tabindex="-1" class="ui-select-choices ui-select-choices-content select2-results"
+                    repeat="item.Id as item in wards | propsFilter: {Name: $select.search}">
+                  <li class="ui-select-choices-group"
+                      ng-class="{'select2-result-with-children': $select.choiceGrouped($group) }">
+                    <div ng-show="$select.choiceGrouped($group)"
+                         class="ui-select-choices-group-label select2-result-label ng-binding ng-hide"
+                         ng-bind="$group.name"></div>
+                    <ul id="ui-select-choices-2"
+                        ng-class="{'select2-result-sub': $select.choiceGrouped($group), 'select2-result-single': !$select.choiceGrouped($group) }"
+                        class="select2-result-single"><!-- ngRepeat: item in $select.items --></ul>
+                  </li>
+                </ul>
+                <div class="ui-select-no-choice"></div>
+              </div>
+              <!--              <ui-select-single></ui-select-single>-->
+              <input ng-disabled="$select.disabled" class="ui-select-focusser ui-select-offscreen ng-scope" type="text"
+                     id="focusser-2" aria-label="Select box focus" aria-haspopup="true" role="button"
+                     disabled="disabled"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer d-flex align-items-center gap-10 justify-content-end">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        <!-- ngIf: isEditable -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade inmodal ng-scope" id="form-feedback-cus-dialog" ng-controller="FeedbackCustomerDialogController"
+     tabindex="-1">
+  <div class="modal-dialog w-dialog" id="set-witdh-modal">
+    <div class="modal-content border-radius-form" id="contents">
+
+      <div class="modal-header txt-align-feedback" ng-show="!feedbackSucces">
+        <h4 class="modal-title"><b>Tiếp nhận yêu cầu khách hàng</b>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </h4>
+        <h5 class="text-center mb-0 mt-0"><i>(Hỗ trợ từ 8h-22h các ngày trong tuần)</i></h5>
+      </div>
+
+      <div class="modal-body back-ground-color-content font-size-form content-scroll">
+        <div ng-show="!feedbackSucces">
+          <p class="txt-align-feedback mb-0">Đánh giá mức độ thuận tiện của phần mềm</p>
+          <div class="rating format-star-size">
+            <!-- ngRepeat: i in stars --><span ng-repeat="i in stars" ng-click="onMarkStar(i)" class="ng-scope">
+                            <span ng-bind-html="i.value" title="Rất dễ" class="txt-align-feedback ">✩</span>
+                        </span><!-- end ngRepeat: i in stars --><span ng-repeat="i in stars" ng-click="onMarkStar(i)"
+                                                                      class="ng-scope">
+                            <span ng-bind-html="i.value" title="Dễ" class="txt-align-feedback ">✩</span>
+                        </span><!-- end ngRepeat: i in stars --><span ng-repeat="i in stars" ng-click="onMarkStar(i)"
+                                                                      class="ng-scope">
+                            <span ng-bind-html="i.value" title="Trung bình" class="txt-align-feedback ">✩</span>
+                        </span><!-- end ngRepeat: i in stars --><span ng-repeat="i in stars" ng-click="onMarkStar(i)"
+                                                                      class="ng-scope">
+                            <span ng-bind-html="i.value" title="khó" class="txt-align-feedback ">✩</span>
+                        </span><!-- end ngRepeat: i in stars --><span ng-repeat="i in stars" ng-click="onMarkStar(i)"
+                                                                      class="ng-scope">
+                            <span ng-bind-html="i.value" title="Rất khó" class="txt-align-feedback ">✩</span>
+                        </span><!-- end ngRepeat: i in stars -->
+          </div>
+          <div>
+            Số điện thoại
+            <input class="form-control ng-pristine ng-untouched ng-valid" ng-model="model.Phone">
+          </div>
+          <div>
+            <div>Chọn yêu cầu cần hỗ trợ</div>
+            <div class="row" style="margin-left: 0;">
+              <!-- ngRepeat: item in lstRequests --><p class="form-check form-check-label col-md-6 ng-binding ng-scope"
+                                                       style="margin: 5px 0 5px; padding: 0px !important "
+                                                       ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ Nhập hàng
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ Bán hàng
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ Liên thông
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ các Báo cáo
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ Kiểm kê
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ về Lợi nhuận
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ về Tồn kho
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio">Hỗ trợ về Tích điểm, trả điểm
+            </p><!-- end ngRepeat: item in lstRequests --><p
+              class="form-check form-check-label col-md-6 ng-binding ng-scope"
+              style="margin: 5px 0 5px; padding: 0px !important " ng-repeat="item in lstRequests">
+              <input type="radio" class="form-check-input" ng-checked="item.id == requestCustomer"
+                     ng-click="onRequestChanged(item)" name="optradio" checked="checked">Yêu cầu khác...
+            </p><!-- end ngRepeat: item in lstRequests -->
+            </div>
+          </div>
+          <div id="infor-customer">
+            <div ng-show="requestCustomer == 100">
+              <div>
+                <!-- ngIf: isViewIcon -->
+                <span style="cursor: pointer" class="pull-right ng-binding" title="Thả cảm xúc" ng-click="onShowIcon()">😶</span>
+              </div>
+              <textarea class="form-control w-100 ng-pristine ng-untouched ng-valid" style="height: 100px;"
+                        ng-model="model.Content" placeholder="Yêu cầu khác..."></textarea>
+            </div>
+            <div id="infor-phone">
+              <div class="mt-2">
+                Tải ảnh lên
+                <div class="d-flex gap-5">
+                  <div onclick="$event.preventDefault();" class="flex-grow-1">
+                    <button class="btn btn-primary btn-sm "
+                            ng-click="onUploadImageDialog(); $event.preventDefault(); $event.stopPropagation();"><i
+                      class="fa-regular fa-folder-arrow-up"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="text-center">
+            <a ng-show="model.ImageThumbUrl" data-fancybox="0" href="" data-caption="Ảnh yêu cầu hỗ trợ"
+               class="ng-hide">
+              <img ng-src="" alt="">
+            </a>
+          </div>
+          <div>
+            <span type="button" class="btn btn-primary w-100 btn-radius-form" id="sent"
+                  ng-click="onSendFeedback()">Gửi</span>
+          </div>
+        </div>
+        <div ng-show="feedbackSucces" class="form-success-border-radius ng-hide">
+          <div class="form form-feedback-success">
+            <i aria-hidden="true">✔</i><br>
+            <label>Cảm ơn bạn đã đánh giá !</label>
+          </div>
+          <div>
+            <span class="btn btn-primary w-100 btn-radius-form" ng-click="onFinish()">Xong</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn-save-last modal-footer txt-align-feedback" ng-show="!feedbackSucces">
+        <span class="btn-save-last" ng-click="onSendLast()">Để sau</span>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+
+</div>
+
+
+<div class="modal fade inmodal" id="form-link-mobile-dialog" tabindex="-1">
+  <div class="modal-dialog w-dialog" id="set-witdh-modal">
+    <div class="modal-content border-radius-form" id="contents">
+
+      <div class="modal-header txt-align-feedback">
+        <h4 class="modal-title"><b>Tải app trên thiết bị di động</b>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </h4>
+      </div>
+
+      <div style="overflow-y: auto" class="modal-body back-ground-color-content font-size-form text-center">
+        <b>SỬ DỤNG ĐIỆN THOẠI QUÉT MÃ VẠCH ĐỂ CÀI ĐẶT</b>
+        <div>
+          <div class="col-md-4 text-center">
+            <img style="height: 200px; width: 200px" src="/assets/images/link_android.jpg"
+                 title="quét mã vạch để tải app Android">
+            <br>
+            <a target="_blank" href="https://play.google.com/store/apps/details?id=com.webnhathuoc.app">
+              <img src="/assets/images/google_play_img.svg" title="google" alt="google" class="img-link"
+                   data-was-processed="true">
+            </a>
+          </div>
+          <div class="col-md-4 text-center">
+            <img style="height: 200px; width: 200px" src="/assets/images/link_ios.jpg"
+                 title="quét mã vạch để tải app IOS"><br>
+            <a target="_blank" href="https://apps.apple.com/us/app/web-nh%C3%A0-thu%E1%BB%91c/id6443584443">
+              <img src="/assets/images/apple_store_img.svg" title="apple" alt="google" class="img-link"
+                   data-was-processed="true">
+            </a>
+          </div>
+          <div class="col-md-4 text-center">
+            <img style="height: 200px; width: 200px" src="/assets/images/link_huawei.jpg"
+                 title="quét mã vạch để tải app Huawei"><br>
+            <a target="_blank" href="https://appgallery.huawei.com/#/app/C107203975">
+              <img src="/assets/images/huawei_app_img.svg" title="huawei" alt="google" class="img-link"
+                   data-was-processed="true">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="btn-save-last modal-footer txt-align-feedback">
+        <span class="btn-save-last" data-dismiss="modal">Để sau</span>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+
+</div>
+
+<div class="modal fade inmodal" id="form-how-to-use-dialog" tabindex="-1">
+  <div class="modal-dialog w-dialog w-70" id="set-witdh-modal">
+    <div class="modal-content border-radius-form" id="contents">
+
+      <div class="modal-header txt-align-feedback">
+        <h4 class="modal-title"><b>Hướng dẫn sử dụng liên thông</b>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </h4>
+      </div>
+
+      <div style="overflow-y: auto;" class="modal-body back-ground-color-content font-size-form text-center">
+        <div style="display: inline-grid; padding: 10px">
+          <b>1.Hướng dẫn qua Web</b>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/aBz2nEe1oz0?si=1GUzVoWZbzoUkMko"
+                  title="YouTube video player" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen=""></iframe>
+        </div>
+        <div style="display: inline-grid; padding: 10px">
+          <b>2.Hướng dẫn qua App</b>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/QfQXLqAPs_U?si=UKK5eficsjuAA_fb"
+                  title="YouTube video player" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen=""></iframe>
+        </div>
+      </div>
+      <div class="btn-save-last modal-footer txt-align-feedback">
+        <span class="btn-save-last" data-dismiss="modal">Để sau</span>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+
+</div>
+
 <nav class="navbar navbar-default header-main">
-  <div class="container-fluid" *ngIf="authService.isLogin()">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="navbar-header-wnt">
           <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span
             class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
           <div class="navbar-header-wnt-brand">
-            <ng-container *ngIf="!!store">
-              <div id="header-wnt-brand" class="mb-0" title="@Html.Raw(titleStore)">
-              </div>
-            </ng-container>
-            <ng-container *ngIf="!store">
-
-            </ng-container>
+            <div id="header-wnt-brand" class="mb-0" title="Quản lý">
+              <a class="" href="/" id="loggedInStoreNameId" style="padding-right: 8px">Chi nhánh công ty TNHH Web Nhà
+                Thuốc</a>
+            </div>
           </div>
           <div class="navbar-header-hotline">
             <ul class="nav">
+              <li class="dropdown menu">
+                <a id="on-open-form-how-to-use" style="color: black">
+                  <b>Hướng dẫn sử dụng</b>
+                  <i style="color: #35a6ca" class="fa-solid fa-hand-holding-medical"></i>
+                </a>
+              </li>
               <li class="dropdown menu">
                 <a id="on-open-form-link-mobile" style="color: black">
                   <b>Link tải app</b>
@@ -37,15 +578,18 @@
                 </a>
               </li>
               <li class="dropdown menu">
+
+
               </li>
               <li class="dropdown menu">
+
                 <a title="Số tổng đài chăm sóc khách hàng" href="tel:0346588983" role="button"
                    class="dropdown-toggle alo_menu">0346 588 983<i class="fa-solid fa-phone"></i></a>
               </li>
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle alo_menu">Kinh
                   doanh <i class="fa-solid fa-phone"></i></a>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu" role="menu" style="display: none;">
                   <li><a href="tel:0374452196">Kd1: 0374 452 196</a></li>
                   <li><a href="tel:0373769465">Kd2: 0373 769 465</a></li>
                   <li><a href="tel:0343624338">Kd3: 0343 624 338</a></li>
@@ -55,12 +599,8 @@
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle alo_menu">Chat
                   Zalo <i class="fa-regular fa-messages"></i></a>
                 <ul style="left: -110px" class="dropdown-menu" role="menu">
-                  <li *ngIf="store.ZaloGroupUrl && store.ProvinceName"><a target="_blank" href="store.ZaloGroupUrl">Nhóm
-                    Zalo khu vực {{store.ProvinceName}}</a></li>
-                  <li *ngIf="!!store"><a target="_blank" href="https://zalo.me/@store.PhoneSupport">Zalo cá
-                    nhân:store.PhoneSupport</a></li>
-                  <li *ngIf="!store"><a target="_blank" href="https://zalo.me/0989199535">Zalo cá nhân: 0989199535</a>
-                  </li>
+                  <li><a target="_blank" href="https://zalo.me/g/zyzhvk429">Nhóm Zalo khu vực Hà Nội</a></li>
+                  <li><a target="_blank" href="https://zalo.me/0342918680">Zalo cá nhân: 0342918680</a></li>
                 </ul>
               </li>
             </ul>
@@ -76,392 +616,292 @@
           <div style="padding-left: 0px" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav nav-wnt">
               <li>
-                <a href="/Home/Index"><strong style="color:#fff">WEB</strong> <strong id="middle-name"
-                                                                                      style="color:orange"></strong>
-                  <strong id="last-name" style="color:#28CC28"></strong> <strong style="color:#fff">HtmlRaw(muNhaThuoc)</strong></a>
-              </li>
 
+                <a href="/Home/Index"><strong style="color:#fff">WEB</strong> <strong id="middle-name"
+                                                                                      style="color:orange">NHÀ</strong>
+                  <strong id="last-name" style="color:#28CC28">THUỐC</strong> <strong style="color:#fff">QL</strong></a>
+              </li>
               <li class="dropdown menu">
-                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Hệ Thống
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="true" class="dropdown-toggle">Hệ Thống
                   <i class="fa-regular fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li>HtmlActionLink("Quản lý người dùng", "AccountManager", "Admin")</li>
-                  <li>HtmlActionLink("Quản lý Nhà thuốc", "DrugStoresListing", "DrugStoreMan")</li>
-                  <li>HtmlActionLink("Báo cáo triển khai", "ReportCriteriaBusiness", "DrugStoreMan")</li>
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách thông báo", "List", "Notification")</li>
-                  <li>HtmlActionLink("Danh sách thông báo hệ thống", "Index", "MessageMain")</li>
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Công cụ hệ thống", "SystemTools", "System")</li>
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Quản lý đăng ký sử dụng tiện ích", "ConvenientOrderListing", "ConvenientShop")
-                  </li>
-                  <li>HtmlActionLink("Quản lý đóng góp ý kiến khách hàng", "FeedbackFromCustomer", "Utilities")</li>
-                  <li class="divider"></li>
-                  <li><a target="_blank"
-                         href="https://drive.google.com/drive/folders/1ntTFGo7zWlxVUWiHWBbnTCYYOSdzm0el?usp=sharing"
-                         title="Tài liệu nội bộ dành cho nhân viên công ty WEB NHÀ THUỐC">Tài liệu nội bộ</a></li>
 
-                  <li><a target="_blank" href="http://crm.webnhathuoc.com:8069/web/login">Hệ thống CRM nội bộ</a></li>
-                  <li class="divider"></li>
-                  <li><a href="https://duocquocgia.com.vn/" target="_blank">Dược quốc gia</a></li>
-                  <li><a href="openElitLog:elitLog">App nhiệt ẩm kế</a></li>
-                  <li class="divider"></li>
 
-                  <li>HtmlActionLink("Tra cứu danh mục thuốc", "SearchDrugCatalog", "Thuocs")</li>
-                  <li>HtmlActionLink("Mapping danh mục thuốc", "MappingCatalog", "Thuocs")</li>
-                  <li class="divider"></li>
-
-                  <li>HtmlActionLink("Danh sách nhân viên", "StaffListing", "Admin")</li>
-
-                  <li>HtmlActionLink("Tùy chọn", "AppSettings", "System")</li>
-
-                  <li>HtmlActionLink("Đổi cơ sở", "ChooseDefaultDs", "Account", new , null)</li>
-
-                  <li>HtmlActionLink("Thông tin cơ sở", "thongtin", "Nhathuoc", new
-                    ,null)
-                  </li>
-                  <li>HtmlActionLink("Đổi mật khẩu", "Manage", "Account")</li>
+                  <li><a href="/Admin/StaffListing">Danh sách nhân viên</a></li>
+                  <li><a href="/System/AppSettings">Tùy chọn</a></li>
+                  <li><a href="/Account/ChooseDefaultDs?switchAble=True">Đổi cơ sở</a></li>
+                  <li><a href="/Nhathuoc/thongtin/0011">Thông tin cơ sở</a></li>
+                  <li><a href="/Account/Manage">Đổi mật khẩu</a></li>
 
                   <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
-                </ul>
-              </li>
-              <li class="dropdown menu">
-                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Khám bệnh
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-                  <li><a href="/WaitNote/ListWaits?type=1">Tiếp đón bệnh nhân</a></li>
-
-                  <li>HtmlActionLink("Lập phiếu khám", "Create", "NoteMedical")</li>
-
-                  <li><a href="/WaitNote/ListWaits?type=2">Danh sách phiếu khám</a></li>
-
-                  <li>HtmlActionLink("Lịch sử khám chữa bệnh", "ListNoteMedical", "NoteMedical")</li>
-                  <li class="divider"></li>
-
-                  <li><a href="/ReceiptMedicalFee/Create">Viết phiếu thu tiền khám bệnh</a></li>
-
-                  <li>HtmlActionLink("Danh sách thu tiền khám bệnh", "ListReceiptMedicalFee", "ReceiptMedicalFee")
-                  </li>
-                  <li class="divider"></li>
-
-                  <li>HtmlActionLink("Phòng khám", "ListClinic", "Clinic")</li>
-                </ul>
-              </li>
-              <li class="dropdown menu">
-                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Dịch vụ
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/NhomThuocs/Index?type=1">Nhóm dịch vụ</a></li>
-                  <li><a href="/DrugManagement/DrugListing?type=1">Danh sách dịch vụ</a></li>
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Lập mới phiếu dịch vụ", "Create", "NoteService", null, null)</li>
-                  <li>HtmlActionLink("Danh sách phiếu dịch vụ", "ListNoteService", "NoteService")</li>
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách dịch vụ chờ thực hiện", "ListNoteWaitService", "NoteService")</li>
                 </ul>
               </li>
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Nhập Xuất
                   <i class="fa-regular fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu">
+                  <li><a href="/DeliveryNote/DeliveryNoteScreen?taskMode=1&amp;noteTypeId=2">Bán hàng</a></li>
+                  <li><a href="/DeliveryNote/DeliveryWithBarcode">Bán hàng, cắt liều với mã vạch</a></li>
 
-                  <li>HtmlActionLink("Bán hàng", "DeliveryNoteScreen", "DeliveryNote",
-                    , null)
-                  </li>
-
-                  <li>HtmlActionLink("Bán hàng, cắt liều với mã vạch", "DeliveryWithBarcode", "DeliveryNote", null,
-                    null)
-                  </li>
-
-                  <li>HtmlActionLink("Bán hàng với đơn thuốc điện tử", "DeliveryWithES", "DeliveryNote", new , null)
-                  </li>
-
-                  <li>HtmlActionLink("Nhập hàng", "ReceiptNoteScreen", "ReceiptNote", new
-                    , null)
-                  </li>
-
+                  <li><a href="/ReceiptNote/ReceiptNoteScreen?taskMode=1&amp;noteTypeId=1">Nhập hàng</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Khách hàng trả lại", "CustomerReceiptNoteScreen", "ReceiptNote", new , null)
+                  <li><a href="/ReceiptNote/CustomerReceiptNoteScreen?taskMode=1&amp;noteTypeId=3">Khách hàng trả
+                    lại</a></li>
+                  <li><a href="/DeliveryNote/WarehouseTransferNoteScreen?taskMode=1&amp;noteTypeId=8">Chuyển kho</a>
                   </li>
-
-                  <li>HtmlActionLink("Chuyển kho", "WarehouseTransferNoteScreen", "DeliveryNote", new , null)
-                  </li>
-
-                  <li>HtmlActionLink("Trả lại nhà cung cấp", "SupplierDeliveryNoteScreen", "DeliveryNote", new , null)
-                  </li>
-                  <li>HtmlActionLink("Xuất hủy", "CancelDeliveryNoteScreen", "DeliveryNote", new , null)
-                  </li>
-
+                  <li><a href="/DeliveryNote/SupplierDeliveryNoteScreen?taskMode=1&amp;noteTypeId=4">Trả lại nhà cung
+                    cấp</a></li>
+                  <li><a href="/DeliveryNote/CancelDeliveryNoteScreen?taskMode=1&amp;noteTypeId=9">Xuất hủy</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách phiếu Nhập-Xuất", "NotesListing", "NoteManagement", null, null)</li>
-                  <li>HtmlActionLink("Khôi phục các chứng từ bị xóa", "DeletedNotesListing", "NoteManagement", null,
-                    null)
-                  </li>
+                  <li><a href="/NoteManagement/NotesListing">Danh sách phiếu Nhập-Xuất</a></li>
+                  <li><a href="/NoteManagement/DeletedNotesListing">Khôi phục các chứng từ bị xóa</a></li>
 
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Quản lý LT", "ConnectivityNotes", "Connectivity")</li>
 
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Quản lý Hóa đơn", "EInvoiceManagementNotes", "EInvoiceManagement")</li>
-
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Quản lý Hóa đơn", "EInvoiceMangementV1", "EInvoiceManagement")</li>
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Thu - Chi
                   <i class="fa-regular fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu">
-
-                  <li>HtmlActionLink("Viết phiếu thu nợ khách hàng", "InOutcommingNoteScreen", "InOutCommingNote", new
-                    , null)
+                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=1">Viết phiếu thu nợ khách hàng</a>
                   </li>
-                  <li>HtmlActionLink("Viết phiếu trả nợ nhà cung cấp", "InOutcommingNoteScreen", "InOutCommingNote",
-                    new
-                    , null)
+                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2">Viết phiếu trả nợ nhà cung cấp</a>
                   </li>
-                  <li>HtmlActionLink("Nhập các khoản thu chi khác", "OtherInOutcommingNote", "InOutCommingNote", new
-                    , null)
+                  <li><a href="/InOutCommingNote/OtherInOutcommingNote?noteTypeId=3">Nhập các khoản thu chi khác</a>
                   </li>
-
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách phiếu Thu-Chi", "Index", "InOutCommingNote", new ,
-                    null)
-                  </li>
+                  <li><a href="/InOutCommingNote?noteTypeId=1">Danh sách phiếu Thu-Chi</a></li>
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Hàng Hóa
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-                  <li>HtmlActionLink("Vị trí tủ/ kho", "Index", "WarehouseLocation")</li>
-                  <li>HtmlActionLink("Đơn vị tính", "UnitListing", "DrugManagement")</li>
-
-                  <li>HtmlActionLink("Nhóm thuốc", "Index", "NhomThuocs")</li>
+                <ul class="dropdown-menu" role="menu" style="display: none;">
+                  <li><a href="/DrugManagement/UnitListing">Đơn vị tính</a></li>
+                  <li><a href="/NhomThuocs">Nhóm thuốc</a></li>
                   <li class="divider"></li>
-
-                  <li><a href="#">Danh sách thuốc</a></li>
-
                   <li><a href="/DrugManagement/DrugListing?type=0">Danh sách thuốc</a></li>
-
-                  <li><a href="#">Thêm thuốc mới</a></li>
-
                   <li><a href="/DrugManagement/Create">Thêm mới thuốc</a></li>
 
-                  <li>HtmlActionLink("In mã vạch thuốc, liều dùng", "InMaVach", "Thuocs")</li>
-
-                  <li>HtmlActionLink("Lịch sử giao dịch", "DrugTransHistories", "Report")</li>
-
-                  <li class="divider"></li>
-
-                  <li>HtmlActionLink("Lập dự trù thuốc", "CreateReserve", "DrugManagement")</li>
-
-                  <li>HtmlActionLink("Kê đơn/Liều mẫu", "List", "SampleNote")</li>
-
-                  <li>HtmlActionLink("Quản lý đơn thuốc LT", "ConnectivitySampleNotes", "Connectivity")</li>
-
-                  <li>HtmlActionLink("Kiểm kê kho", "Index", "Inventory")</li>
+                  <li><a href="/Thuocs/InMaVach">In mã vạch thuốc, liều dùng</a></li>
+                  <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
 
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Thiết lập thuốc LT", "MappingDrugForConnect", "Thuocs")</li>
+                  <li><a href="/DrugManagement/CreateReserve">Lập dự trù thuốc</a></li>
+                  <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
 
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Bảng giá sản phẩm", "ProductPresentation", "DrugManagement")</li>
+                  <li><a href="/Inventory">Kiểm kê kho</a></li>
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đơn Hàng
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-                  <li>HtmlActionLink("Tạo mới đơn đặt hàng", "CreateOrder", "OrderMan")</li>
-                  <li>HtmlActionLink("Quản lý đơn đặt hàng", "OrdersListing", "OrderMan")</li>
-                  <li>HtmlActionLink("Tra cứu và nhặt hàng", "SearchDrugs", "OrderMan")</li>
-                  <li>HtmlActionLink("Quản lý tài khoản con", "CustomerListing", "OrderMan")</li>
-
+                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <li><a href="/OrderMan/OrdersListing">Quản lý đơn đặt hàng</a></li>
+                  <li><a href="/OrderMan/SearchDrugs">Tra cứu và nhặt hàng</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Đơn nhặt hàng", "FormQuick", "PickUpOrder", new
-                    ,
-                    null)
-                  </li>
-                  <li>HtmlActionLink("Quản lý đơn khách đặt", "ListOrderPickUp", "PickUpOrder")</li>
+                  <li><a href="/PickUpOrder/FormQuick?taskMode=1&amp;noteTypeId=2">Đơn nhặt hàng</a></li>
+                  <li><a href="/PickUpOrder/ListOrderPickUp">Quản lý đơn khách đặt</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Gán nhân viên đơn nhặt", "ListOrderAssign", "PickUpOrder")</li>
-                  <li>HtmlActionLink("Danh sách hàng cần mua", "ListDrugToBuy", "PickUpOrder")</li>
-                  <li>HtmlActionLink("Xác nhận hàng giao trong ngày", "ConfirmDelivery", "PickUpOrder")</li>
+                  <li><a href="/PickUpOrder/ListOrderAssign">Gán nhân viên đơn nhặt</a></li>
+                  <li><a href="/PickUpOrder/ListDrugToBuy">Danh sách hàng cần mua</a></li>
+                  <li><a href="/PickUpOrder/ConfirmDelivery">Xác nhận hàng giao trong ngày</a></li>
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đối Tác
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li>HtmlActionLink("Nhóm khách hàng", "Index", "CustomerGroup")</li>
-
-                  <li>HtmlActionLink("Khách hàng", "Index", "Customer")</li>
-
+                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <li><a href="/CustomerGroup">Nhóm khách hàng</a></li>
+                  <li><a href="/Customer">Khách hàng</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Nhóm nhà cung cấp", "Index", "SupplyerGroup")</li>
-
-                  <li>HtmlActionLink("Nhà cung cấp", "Index", "Supplyer")</li>
-
+                  <li><a href="/SupplyerGroup">Nhóm nhà cung cấp</a></li>
+                  <li><a href="/Supplyer">Nhà cung cấp</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Nhóm bác sỹ", "Index", "DoctorGroup")</li>
-                  <li>HtmlActionLink("Danh sách bác sỹ", "Index", "Doctor")</li>
+                  <li><a href="/DoctorGroup">Nhóm bác sỹ</a></li>
+                  <li><a href="/Doctor">Danh sách bác sỹ</a></li>
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Báo Cáo
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-                  <li>HtmlActionLink("Báo cáo chi tiết hàng ngày", "TransRevenueDetailsByDay", "Transaction")</li>
-                  <li>HtmlActionLink("Báo cáo tổng hợp", "TransSynthesisReport", "Transaction")</li>
-                  <li>HtmlActionLink("Báo cáo thu chi", "TransInOutcomingReport", "Transaction")</li>
-                  <li>HtmlActionLink("Báo cáo phân hạng nhóm khách hàng", "CustomerGroupClassification",
-                    "Transaction")
-                  </li>
-                  <li>HtmlActionLink("Báo cáo chi tiết phân hạng nhóm khách hàng",
-                    "CustomerGroupClassificationDetails",
-                    "Transaction")
-                  </li>
-                  <li>HtmlActionLink("Báo cáo theo mặt hàng", "TransGoods", "Transaction")</li>
-                  <li>HtmlActionLink("Báo cáo chi tiết theo mặt hàng", "TransGoodsDetails", "Transaction")</li>
-
-                  <li>HtmlActionLink("Báo cáo thu chi hàng ngày", "DailyIncomeExpenditureReport", "Report")</li>
-
-                  <li>HtmlActionLink("Báo cáo doanh thu chi tiết theo ngày", "RevenueDetailsByDay", "Report")</li>
-
-                  <li>HtmlActionLink("Báo cáo thu-chi hằng ngày", "InOutcommingDetailsByDay", "Report")</li>
-
-                  <li>HtmlActionLink("Báo cáo tổng hợp doanh thu", "ViewCustomizeReport", "Report")</li>
-
+                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <li><a href="/Report/RevenueDetailsByDay">Báo cáo doanh thu chi tiết theo ngày</a></li>
+                  <li><a href="/Report/InOutcommingDetailsByDay">Báo cáo thu-chi hằng ngày</a></li>
                   <li>
-                   HtmlActionLink("Báo cáo quản trị", "SynthesisReportV2", "Report")
+                    <a href="/Report/SynthesisReportV2">Báo cáo quản trị</a>
                   </li>
                   <li class="divider"></li>
-
-                  <li>HtmlActionLink("Theo nhân viên", "ReportByStaff", "Report")</li>
-                  <li>HtmlActionLink("Theo ngày của nhân viên", "ReportStaffByDay", "Report")</li>
-
-                  <li>HtmlActionLink("Theo khách hàng", "ReportByCustomer", "Report")</li>
-
-                  <li>HtmlActionLink("Theo điểm của khách hàng", "CustomerScoreReport", "Report")</li>
-
-                  <li>HtmlActionLink("Theo mặt hàng bán", "ReportByGoods", "Report")</li>
-
-                  <li>HtmlActionLink("Theo bác sỹ", "ReportByDoctor", "Report")</li>
-
-                  <li>HtmlActionLink("Theo mặt hàng bác sỹ", "ReportByGoodDoctor", "Report")</li>
-
+                  <li><a href="/Report/ReportByStaff">Theo nhân viên</a></li>
+                  <li><a href="/Report/ReportByCustomer">Theo khách hàng</a></li>
+                  <li><a href="/Report/CustomerScoreReport">Theo điểm của khách hàng</a></li>
+                  <li><a href="/Report/ReportByGoods">Theo mặt hàng bán</a></li>
+                  <li><a href="/Report/ReportByDoctor">Theo bác sỹ</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Theo nhà cung cấp", "ReportBySupplyer", "Report")</li>
-
-                  <li>HtmlActionLink("Theo kho hàng", "DrugWarehouses", "Report")</li>
-
-                  <li>HtmlActionLink("Báo cáo kiểm kê", "InventoryWarehouseReport", "Report")</li>
-
-                  <li class="divider"></li>
-                  <li>
-                   HtmlActionLink("Theo bảng kê thu tiền dịch vụ", "NoteServiceReport", "Report")
-                  </li>
-
-                  <li class="divider"></li>
-                  <li>
-                   HtmlActionLink("Báo cáo tổng hợp Thu-Chi", "OtherInOutcommingNoteReport", "Report")
-                  </li>
+                  <li><a href="/Report/ReportBySupplyer">Theo nhà cung cấp</a></li>
+                  <li><a href="/Report/DrugWarehouses">Theo kho hàng</a></li>
+                  <li><a href="/Report/InventoryWarehouseReport">Báo cáo kiểm kê</a></li>
 
                 </ul>
               </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Tiện Ích
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-                  <li>HtmlActionLink("Các chỉ tiêu vận hành nhà thuốc", "OperatingTarget", "Utilities")</li>
+                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <li><a href="/Utilities/DrugInventoryWarning">Danh sách hàng hết</a></li>
+                  <li><a href="/Utilities/NearExpiredDrugWarning">Danh sách hàng hết hạn</a></li>
+                  <li><a href="/Utilities/NegativeRevenueWarning">Danh sách hàng lợi nhuận âm</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách hàng hết", "DrugInventoryWarning", "Utilities")</li>
-                  <li>HtmlActionLink("Danh sách hàng hết hạn", "NearExpiredDrugWarning", "Utilities")</li>
-                  <li>HtmlActionLink("Danh sách hàng lợi nhuận âm", "NegativeRevenueWarning", "Utilities")</li>
+                  <li><a href="/BookMan/BookListing">Bộ sổ GPP</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Bộ sổ GPP", "BookListing", "BookMan")</li>
-                  <li>HtmlActionLink("Bộ sổ GDP", "BookListing", "BookMan")</li>
-                  <li class="divider"></li>
-                  <li><a href="https://dichvucong.dav.gov.vn/congbogiathuoc/index" target='_blank'>Tra cứu giá từ cục
+                  <li><a href="https://dichvucong.dav.gov.vn/congbogiathuoc/index" target="_blank">Tra cứu giá từ cục
                     dược</a></li>
-                  <li>HtmlActionLink("Tra cứu giá từ thị trường", "SearchDrugCatalog", "Thuocs")</li>
-                  <li>HtmlActionLink("Tra cứu doanh số thị trường", "SearchRevenueMarket", "Utilities")</li>
-                  <li>HtmlActionLink("Tra cứu đơn thuốc quốc gia", "SearchSampleNoteConnectivity", "Connectivity")
-                  </li>
+                  <li><a href="/Thuocs/SearchDrugCatalog">Tra cứu giá từ thị trường</a></li>
+                  <li><a href="/Connectivity/SearchSampleNoteConnectivity">Tra cứu đơn thuốc quốc gia</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Chăm sóc khách hàng với Zalo", "ZaloWeb", "Utilities")</li>
+                  <li><a href="/Utilities/DoseCalculation">Tính liều</a></li>
                   <li class="divider"></li>
-                  <li>HtmlActionLink("Tính liều", "DoseCalculation", "Utilities")</li>
-
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Đào tạo nhân viên", "ProgramTrainingStaff", "Utilities")</li>
-
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Báo cáo đánh giá hàng ngày nhân viên", "DailyReport", "Utilities")</li>
-
-                  <li class="divider"></li>
-                  <li>HtmlActionLink("Danh sách phiếu mua hàng tiếp theo", "NextPurchaseNote", "Utilities")</li>
+                  <li><a href="/Utilities/ProgramTrainingStaff">Đào tạo nhân viên</a></li>
                 </ul>
               </li>
-
-
-              <li class="dropdown menu">
-                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Website
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li>HtmlActionLink("Quản lý Menu", "Menu", "CustomerWebsite")</li>
-                  <li class="divider"></li>
-
-                  <li>HtmlActionLink("Quản lý đơn hàng", "OrdersListing", "CustomerWebsite")</li>
-                  <li class="divider"></li>
-                  <li><a target="_blank" href="https://webnhathuoc.vn/@store.Slug_CustomerWebsite">Đi tới trang chủ</a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="dropdown menu">
-                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Tài liệu
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li>HtmlActionLink("Mẫu báo cáo", "DownloadReport", "BookMan", new , null)
-                  </li>
-                  <li>HtmlActionLink("Tài liệu", "DownloadReport", "BookMan")</li>
-                </ul>
-              </li>
-
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Trợ Giúp
                   <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li>HtmlActionLink("Chính sách hỗ trợ online", "TuvanOnline", "TienIch")</li>
-                  <li><a href="https://webnhathuoc.com/home/kinh-nghiem/" target='_blank' width='500px' height='500px'>Kinh
+                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <li><a href="/TienIch/TuvanOnline">Chính sách hỗ trợ online</a></li>
+                  <li><a href="https://webnhathuoc.com/home/kinh-nghiem/" target="_blank" width="500px" height="500px">Kinh
                     nghiệm chia sẻ</a></li>
                   <li class="divider"></li>
-                  <li><a href="https://webnhathuoc.com/home/huong-dan-su-dung/" target='_blank' width='500px'
-                         height='500px'>Hướng dẫn sử dụng</a></li>
-                  <li><a href="https://www.youtube.com/channel/UCG4ayMVzbME9Vs-PUNW7Xug/playlists/" target='_blank'
-                         width='500px' height='500px'>Video hướng dẫn sử dụng</a></li>
-                  <li><a href="https://webnhathuoc.com/home/cau-hoi-thuong-gap/" target='_blank' width='500px'
-                         height='500px'>Câu hỏi thường gặp</a></li>
+                  <li><a href="https://webnhathuoc.com/home/huong-dan-su-dung/" target="_blank" width="500px"
+                         height="500px">Hướng dẫn sử dụng</a></li>
+                  <li><a href="https://www.youtube.com/channel/UCG4ayMVzbME9Vs-PUNW7Xug/playlists/" target="_blank"
+                         width="500px" height="500px">Video hướng dẫn sử dụng</a></li>
+                  <li><a href="https://webnhathuoc.com/home/cau-hoi-thuong-gap/" target="_blank" width="500px"
+                         height="500px">Câu hỏi thường gặp</a></li>
                 </ul>
               </li>
             </ul>
+            <form action="/Account/LogOff" class="navbar-right ng-pristine ng-valid" id="logoutForm" method="post">
+              <ul class="nav navbar-nav navbar-right">
+                <li class="divNotification">
+                  <a href="javascript:;" class="dropdown-toggle" data-toggle="collapse" data-hover="collapse">
+                    <i class="fa-regular fa-bell" style="font-size: 120%;"></i>
+                    <span id="lbNumberNotification"
+                          style="background-color: #f36a5a;color: #fff;position: absolute;top: 5px;padding: 0% 9%;border-radius: 4px!important;font-size: 10px;text-align: center;margin-left: 0px;"></span>
+                  </a>
+                  <ul class="divNotificationBox dropdown-menu" style="width: 360px; display: block;">
+                    <div id="notificationBlog">
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 549</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 2 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 548</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 2 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 528</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 17 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 524</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 524</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 476</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
+                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;"><a
+                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
+                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                        class="fa fa-bullhorn"
+                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                        <div style="float: right;margin-left: 7px;"><span
+                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 476</span>
+                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
+                      </a></li>
+                    </div>
+                    <li class="dropdown-submenu">
+                      <a href="/Notification/History" style="text-align: center;font-weight: bold;">Xem tất cả</a>
+                    </li>
+                  </ul>
+                </li>
 
-            <div title="Tiếp nhận yêu cầu hỗ trợ" id="on-open-form-feedback-cus"></div>
-            <div id="flag-feedback-cus">
+                <li class="dropdown menu">
+                  <a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
+                     class="dropdown-toggle">Admin1<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li>
+                      <a href="/Account/Manage" id="loggedInUserNameId" title="Manage">Đổi mật khẩu</a>
+                    </li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </form>
+            <div onclick="" class="feedback-cus" title="Tiếp nhận yêu cầu hỗ trợ"></div>
+            <div onclick="" class="feedback-cus-desc">
               <div class="talk-bubble tri-right round btm-left-in">
                 <div class="talktext">
                   <p class="mb-0 mt-0">Tiếp nhận yêu cầu hỗ trợ</p>
@@ -475,3 +915,14 @@
     </div>
   </div>
 </nav>
+
+<!--Ajax loader-->
+<div class="loader-div" id="loader-div" loader="" style="display: none; position: relative; z-index: 99999;">
+  <div class="ajax-loader">
+    <div class="sk-spinner sk-spinner-double-bounce">
+      <div class="sk-double-bounce1"></div>
+      <div class="sk-double-bounce2"></div>
+    </div>
+
+  </div>
+</div>

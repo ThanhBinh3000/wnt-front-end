@@ -180,50 +180,6 @@ div #captchaTextBox {
   border-top-left-radius: 0px !important;
 }
 
-.feedback-cus {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  background-image: url(/assets/images/customer_service.png);
-  height: 91px; /* You must set a specified height */
-  width: 91px;
-  background-size: cover; /* Resize the background image to cover the entire container */
-  box-shadow: 0 10px 20px -5px #ccc;
-  border: 0.5px solid grey;
-  z-index: 999;
-}
-
-.feedback-cus-desc {
-  background: #9f4343;
-  color: #fff;
-  padding: 14px;
-  text-align: center;
-  position: fixed;
-  bottom: 105px;
-  left: 75px;
-  border-radius: 30px 30px;
-  font-size: 18px;
-  height: 75px;
-}
-
-/*.feedback-cus:hover {
-    background-image: url(/Uploads/Common/Images/mail_box.gif);
-}*/
-.tri-right.btm-left-in:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 15px;
-  right: auto;
-  top: auto;
-  bottom: -20px;
-  border: 12px solid;
-  border-color: #9f4343 transparent transparent #9f4343;
-}
-
 .div-center {
   display: flex;
   justify-content: center;

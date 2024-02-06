@@ -20,4 +20,16 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onRegionChanged() {
+
+  }
+
+  onCityChanged() {
+
+  }
+
+  onWardChanged() {
+
+  }
 }
