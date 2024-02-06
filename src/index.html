@@ -12,18 +12,6 @@
   <meta property="og:description" content="Web Nhà Thuốc - Phần mềm chuyên biệt dành cho nhà thuốc">
   <title>Web Nhà Thuốc</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VTD9B39D2J"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-VTD9B39D2J');
-    // var sessionSetting = @Html.Raw(JsonConvert.SerializeObject(WebSessionManager.DSSession != null ? WebSessionManager.DSSession.DSInfo : null));
-  </script>
 
   <!--  @Styles.Render("~/content/css")-->
   <link href="assets/content/bootstrap.css" rel="stylesheet"/>
@@ -119,29 +107,6 @@
   <!--  <link rel="icon" type="image/png" href="@Url.Content("~/img/web_icon_300.png")" />-->
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
-  <script>
-    //Handle messages when web app is in the foreground
-    const firebaseConfig = {
-      apiKey: "AIzaSyAlD56LLXqLIZBUxwOu1gkfoxyeM8GD9C8",
-      authDomain: "wnt-app-ec15c.firebaseapp.com",
-      projectId: "wnt-app-ec15c",
-      storageBucket: "wnt-app-ec15c.appspot.com",
-      messagingSenderId: "953065427064",
-      appId: "1:953065427064:web:e49c2fd5100cfea8aa1d8d",
-    };
-    const firebaseApp = firebase.initializeApp(firebaseConfig)
-    const firebaseMessaging = firebase.messaging();
-
-    firebaseMessaging.getToken({vapidKey: 'BHBsfdAIvxfAls90dDCjnBWLSCmRoVGva-GKdrfdkHd5NzGi-Fn5d8_p87O9jGHiO2YU-1wQp6Szjk3H19YaZU0'}).then((currentToken) => {
-      localStorage.setItem('TokenDevice', currentToken);
-    }).catch((err) => {
-      console.log('An error occurred while retrieving Firebase token: ', err);
-    });
-
-    firebaseMessaging.onMessage((payload) => {
-      app.notice.info(String.format('{0} {1}', payload.data.title ?? '', payload.data.body ?? ''), payload.data.click_action);
-    });
-  </script>
 
 </head>
 <body>
