@@ -7,13 +7,15 @@ import {AccountRoutingModule} from "./account-routing.module";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
 import {ChangeStaffComponent} from "./change-staff/change-staff.component";
+import {StaffPermissionComponent} from "./staff-permission/staff-permission.component";
 
 @NgModule({
   declarations: [
     AccountComponent,
     ChangePasswordComponent,
     ChooseDepartmentComponent,
-    ChangeStaffComponent
+    ChangeStaffComponent,
+    StaffPermissionComponent
   ],
   imports: [CommonModule, RouterOutlet, AccountRoutingModule],
   exports: [],

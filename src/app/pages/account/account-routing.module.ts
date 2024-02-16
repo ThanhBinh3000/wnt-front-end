@@ -5,6 +5,7 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
 import {AuthGuard} from "../../guard/auth.guard";
 import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
 import {ChangeStaffComponent} from "./change-staff/change-staff.component";
+import {StaffPermissionComponent} from "./staff-permission/staff-permission.component";
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
         component: ChangeStaffComponent,
         // canActivate: [AuthGuard],
       },
+      {
+        path: 'staff-permission',
+        component: StaffPermissionComponent,
+        // canActivate: [AuthGuard],
+      }
     ],
   }
 ];
