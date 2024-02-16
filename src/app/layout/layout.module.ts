@@ -6,12 +6,14 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from "./footer/footer.component";
 import {RouterOutlet} from "@angular/router";
 import {MainRoutingModule} from "./main-routing.module";
+import {BaseComponent} from "../base/base.component";
 
 @NgModule({
   declarations: [
     LayoutComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BaseComponent
   ],
   imports: [CommonModule, RouterOutlet, MainRoutingModule],
   exports: [],

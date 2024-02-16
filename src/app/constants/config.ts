@@ -12,3 +12,5 @@ export const STATUS_CODE = {
   ERROR: 201,
   UNAUTHORIZED: 401,
 };
+
+export const PAGE_SIZE_DEFAULT = 10;
