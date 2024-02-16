@@ -6,12 +6,14 @@ import {RouterOutlet} from "@angular/router";
 import {AccountRoutingModule} from "./account-routing.module";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
+import {ChangeStaffComponent} from "./change-staff/change-staff.component";
 
 @NgModule({
   declarations: [
     AccountComponent,
     ChangePasswordComponent,
-    ChooseDepartmentComponent
+    ChooseDepartmentComponent,
+    ChangeStaffComponent
   ],
   imports: [CommonModule, RouterOutlet, AccountRoutingModule],
   exports: [],

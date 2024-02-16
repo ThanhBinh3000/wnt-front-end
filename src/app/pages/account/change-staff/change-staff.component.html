@@ -1,0 +1,80 @@
+<div class="box-group-white ng-scope">
+  <h2 class="text-center"><b>Cập nhật thông tin nhân viên</b></h2>
+
+  <input data-val="true" data-val-number="The field UserId must be a number."
+         data-val-required="The UserId field is required." id="UserId" name="UserId" type="hidden" value="3">
+  <input data-val="true" data-val-required="The Tên đăng nhập field is required." id="UserName" name="UserName"
+         type="hidden" value="demo@webnhathuoc.com">
+  <div class="form-group-flex mb-3">
+    <label class="control-label col-md-2" for="UserName">Tên đăng nhập</label>
+    <div class="col-md-10">
+
+      <input class="form-control mb-0 text-box single-line" id="UserName" name="UserName" readonly="readonly"
+             type="text" value="demo@webnhathuoc.com">
+    </div>
+  </div>
+  <div class="form-group-flex mb-3">
+    <label class="control-label col-md-2" for="TenDayDu">Họ và Tên</label>
+    <div class="col-md-10">
+      <input class="form-control mb-0 text-box single-line" data-val="true"
+             data-val-required="The Họ và Tên field is required." id="TenDayDu" name="TenDayDu" type="text"
+             value="Admin1">
+      <span class="field-validation-valid text-danger" data-valmsg-for="TenDayDu" data-valmsg-replace="true"></span>
+    </div>
+  </div>
+
+  <div class="form-group-flex mb-3">
+    <label class="control-label col-md-2" for="SoDienThoai">Số điện thoại</label>
+    <div class="col-md-10">
+      <input class="form-control mb-0 text-box single-line" id="SoDienThoai" name="SoDienThoai" type="text"
+             value="0836616920">
+      <span class="field-validation-valid text-danger" data-valmsg-for="SoDienThoai" data-valmsg-replace="false">Chưa nhập số điện thoại</span>
+    </div>
+  </div>
+
+  <div class="form-group-flex mb-3">
+    <label class="control-label col-md-2" for="HoatDong">Hoạt động</label>
+    <div class="col-md-4">
+      <div class="form-check hidden">
+        <input checked="checked" class="form-checkbox mb-0 check-box" data-val="true"
+               data-val-required="The Hoạt động field is required." id="HoatDong" name="HoatDong" type="checkbox"
+               value="true"><input name="HoatDong" type="hidden" value="false">
+      </div>
+      <span class="field-validation-valid text-danger" data-valmsg-for="HoatDong" data-valmsg-replace="true"></span>
+    </div>
+    <label class="control-label col-md-2" for="IsVerificationAccount">Xác thực 2 bước</label>
+    <div class="col-md-4" style="margin-left: -60px">
+      <div class="form-check hidden">
+        <input class="form-checkbox mb-0 check-box" data-val="true"
+               data-val-required="The Xác thực 2 bước field is required." id="IsVerificationAccount"
+               name="IsVerificationAccount" type="checkbox" value="true"><input name="IsVerificationAccount"
+                                                                                type="hidden" value="false">
+      </div>
+      <span class="field-validation-valid text-danger" data-valmsg-for="IsVerificationAccount"
+            data-valmsg-replace="true"></span>
+    </div>
+  </div>
+  <div id="trSlide">
+    <div class="form-group-flex mb-3">
+      <label class="control-label col-md-2" for="Email">Thư điện tử</label>
+      <div class="col-md-10">
+        <input class="form-control mb-0 text-box single-line" data-val="true"
+               data-val-email="The Thư điện tử field is not a valid e-mail address." id="Email" name="Email"
+               type="email" value="test@gmail.com">
+        <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="false">Email không hợp lệ</span>
+      </div>
+    </div>
+    <div class="form-group-flex mb-3">
+      <label class="col-md-2 control-label" for="SoCMT">Số CMT</label>
+      <div class="col-md-10">
+        <input class="form-control mb-0" id="SoCMT" name="SoCMT" type="text" value="012013054">
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="d-flex align-item-center justify-content-center gap-10">
+
+    <input type="button" value="Quay lại" class="btn btn-default" onclick="javascript:window.history.go(-1);">
+    <input type="submit" value="Cập nhật" class="btn btn-primary">
+  </div>
+</div>

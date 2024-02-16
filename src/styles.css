@@ -94,3 +94,9 @@
   font-size: 18px;
   height: 75px;
 }
+
+.btn-default {
+  background-color: #c2c2c2;
+  border-color: #c2c2c2;
+  color: #2c2b2b !important;
+}
