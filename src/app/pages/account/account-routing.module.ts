@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AccountComponent} from "./account.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {AuthGuard} from "../../guard/auth.guard";
+import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
       {
         path: 'change-password',
         component: ChangePasswordComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'choose-department',
+        component: ChooseDepartmentComponent,
         // canActivate: [AuthGuard],
       }
     ],

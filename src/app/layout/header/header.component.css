@@ -96,11 +96,10 @@
 #removeSizeEditor p {
   margin-bottom: 15px !important
 }
+
 #removeSizeEditor p:last-child {
   margin-bottom: 0px !important
 }
-
-
 
 
 .ui-select-placeholder, .ui-select-match-text, .ui-select-match-item {
@@ -203,6 +202,7 @@ canvas.drawing, canvas.drawingBuffer {
 .ui-select-choices {
   width: auto !important;
 }
+
 .image-container {
   margin: 20px auto;
   max-width: 640px;
@@ -469,4 +469,22 @@ img {
 
 #removeSizeEditor p:last-child {
   margin-bottom: 0px !important
+}
+
+.alo_menu {
+  color: #000000 !important;
+}
+
+.alo_menu:hover {
+  color: #47D3E5 !important;
+}
+
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
 }
