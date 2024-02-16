@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" ng-click="onClose(); $event.preventDefault(); $event.stopPropagation();"><i
-          class="fa-regular fa-xmark"></i></button>
+          class="fa-solid fa-xmark"></i></button>
         <h4 class="modal-title ng-binding"></h4>
       </div>
       <div class="modal-body">
@@ -153,7 +153,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true"><i
-          class="fa-regular fa-xmark"></i></span></button>
+          class="fa-solid fa-xmark"></i></span></button>
         <h2 class="modal-title">Thông tin về vùng miền địa lý</h2>
       </div>
       <div class="modal-body">
@@ -418,7 +418,7 @@
                   <div onclick="$event.preventDefault();" class="flex-grow-1">
                     <button class="btn btn-primary btn-sm "
                             ng-click="onUploadImageDialog(); $event.preventDefault(); $event.stopPropagation();"><i
-                      class="fa-regular fa-folder-arrow-up"></i></button>
+                      class="fa-solid fa-folder-arrow-up"></i></button>
                   </div>
                 </div>
               </div>
@@ -597,7 +597,7 @@
               </li>
               <li class="dropdown menu">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle alo_menu">Chat
-                  Zalo <i class="fa-regular fa-messages"></i></a>
+                  Zalo <i class="fa-solid fa-messages"></i></a>
                 <ul style="left: -110px" class="dropdown-menu" role="menu">
                   <li><a target="_blank" href="https://zalo.me/g/zyzhvk429">Nhóm Zalo khu vực Hà Nội</a></li>
                   <li><a target="_blank" href="https://zalo.me/0342918680">Zalo cá nhân: 0342918680</a></li>
@@ -616,31 +616,64 @@
           <div style="padding-left: 0px" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav nav-wnt">
               <li>
-
                 <a href="/Home/Index"><strong style="color:#fff">WEB</strong> <strong id="middle-name"
                                                                                       style="color:orange">NHÀ</strong>
                   <strong id="last-name" style="color:#28CC28">THUỐC</strong> <strong style="color:#fff">QL</strong></a>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('system', 'block') "
+                  (mouseleave)="mouseLeave('system','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="true" class="dropdown-toggle">Hệ Thống
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-
-
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('system')">
+                  <li><a href="https://duocquocgia.com.vn/" target="_blank">Dược quốc gia</a></li>
+                  <li><a href="openElitLog:elitLog">App nhiệt ẩm kế</a></li>
+                  <li class="divider"></li>
                   <li><a href="/Admin/StaffListing">Danh sách nhân viên</a></li>
                   <li><a href="/System/AppSettings">Tùy chọn</a></li>
                   <li><a href="/Account/ChooseDefaultDs?switchAble=True">Đổi cơ sở</a></li>
                   <li><a href="/Nhathuoc/thongtin/0011">Thông tin cơ sở</a></li>
                   <li><a href="/Account/Manage">Đổi mật khẩu</a></li>
-
                   <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('doctor', 'block') "
+                  (mouseleave)="mouseLeave('doctor','none')">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Khám bệnh
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('doctor')">
+                  <li><a href="/WaitNote/ListWaits?type=1">Tiếp đón bệnh nhân</a></li>
+                  <li><a href="/NoteMedical/Create">Lập phiếu khám</a></li>
+                  <li><a href="/WaitNote/ListWaits?type=2">Danh sách phiếu khám</a></li>
+                  <li><a href="/NoteMedical/ListNoteMedical">Lịch sử khám chữa bệnh</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/ReceiptMedicalFee/Create">Viết phiếu thu tiền khám bệnh</a></li>
+                  <li><a href="/ReceiptMedicalFee/ListReceiptMedicalFee">Danh sách thu tiền khám bệnh</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/Clinic/ListClinic">Phòng khám</a></li>
+                </ul>
+              </li>
+              <li class="dropdown menu" (mouseenter)="mouseEnter('service', 'block') "
+                  (mouseleave)="mouseLeave('service','none')">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Dịch vụ
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('service')">
+                  <li><a href="/NhomThuocs/Index?type=1">Nhóm dịch vụ</a></li>
+                  <li><a href="/DrugManagement/DrugListing?type=1">Danh sách dịch vụ</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/NoteService/Create">Lập mới phiếu dịch vụ</a></li>
+                  <li><a href="/NoteService/ListNoteService">Danh sách phiếu dịch vụ</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/NoteService/ListNoteWaitService">Danh sách dịch vụ chờ thực hiện</a></li>
+                </ul>
+              </li>
+              <li class="dropdown menu" (mouseenter)="mouseEnter('in-out', 'block') "
+                  (mouseleave)="mouseLeave('in-out','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Nhập Xuất
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('in-out')">
                   <li><a href="/DeliveryNote/DeliveryNoteScreen?taskMode=1&amp;noteTypeId=2">Bán hàng</a></li>
+                  <li><a href="/DeliveryNote/DeliveryWithES?noteId=0&amp;taskMode=1">Bán hàng với đơn thuốc điện tử</a>
+                  </li>
                   <li><a href="/DeliveryNote/DeliveryWithBarcode">Bán hàng, cắt liều với mã vạch</a></li>
 
                   <li><a href="/ReceiptNote/ReceiptNoteScreen?taskMode=1&amp;noteTypeId=1">Nhập hàng</a></li>
@@ -656,13 +689,15 @@
                   <li><a href="/NoteManagement/NotesListing">Danh sách phiếu Nhập-Xuất</a></li>
                   <li><a href="/NoteManagement/DeletedNotesListing">Khôi phục các chứng từ bị xóa</a></li>
 
-
+                  <li class="divider"></li>
+                  <li><a href="/Connectivity/ConnectivityNotes">Quản lý LT</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('revenue-expenditure', 'block') "
+                  (mouseleave)="mouseLeave('revenue-expenditure','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Thu - Chi
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('revenue-expenditure')">
                   <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=1">Viết phiếu thu nợ khách hàng</a>
                   </li>
                   <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2">Viết phiếu trả nợ nhà cung cấp</a>
@@ -673,30 +708,34 @@
                   <li><a href="/InOutCommingNote?noteTypeId=1">Danh sách phiếu Thu-Chi</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('merchandise', 'block') "
+                  (mouseleave)="mouseLeave('merchandise','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Hàng Hóa
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('merchandise')">
                   <li><a href="/DrugManagement/UnitListing">Đơn vị tính</a></li>
                   <li><a href="/NhomThuocs">Nhóm thuốc</a></li>
                   <li class="divider"></li>
                   <li><a href="/DrugManagement/DrugListing?type=0">Danh sách thuốc</a></li>
                   <li><a href="/DrugManagement/Create">Thêm mới thuốc</a></li>
-
+                  <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
                   <li><a href="/Thuocs/InMaVach">In mã vạch thuốc, liều dùng</a></li>
                   <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
 
                   <li class="divider"></li>
                   <li><a href="/DrugManagement/CreateReserve">Lập dự trù thuốc</a></li>
                   <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
-
+                  <li><a href="/Connectivity/ConnectivitySampleNotes">Quản lý đơn thuốc LT</a></li>
                   <li><a href="/Inventory">Kiểm kê kho</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/Thuocs/MappingDrugForConnect">Thiết lập thuốc LT</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('order', 'block') "
+                  (mouseleave)="mouseLeave('order','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đơn Hàng
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('order')">
                   <li><a href="/OrderMan/OrdersListing">Quản lý đơn đặt hàng</a></li>
                   <li><a href="/OrderMan/SearchDrugs">Tra cứu và nhặt hàng</a></li>
                   <li class="divider"></li>
@@ -708,10 +747,11 @@
                   <li><a href="/PickUpOrder/ConfirmDelivery">Xác nhận hàng giao trong ngày</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('partner', 'block') "
+                  (mouseleave)="mouseLeave('partner','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Đối Tác
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('partner')">
                   <li><a href="/CustomerGroup">Nhóm khách hàng</a></li>
                   <li><a href="/Customer">Khách hàng</a></li>
                   <li class="divider"></li>
@@ -722,10 +762,11 @@
                   <li><a href="/Doctor">Danh sách bác sỹ</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('report', 'block') "
+                  (mouseleave)="mouseLeave('report','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Báo Cáo
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('report')">
                   <li><a href="/Report/RevenueDetailsByDay">Báo cáo doanh thu chi tiết theo ngày</a></li>
                   <li><a href="/Report/InOutcommingDetailsByDay">Báo cáo thu-chi hằng ngày</a></li>
                   <li>
@@ -741,13 +782,17 @@
                   <li><a href="/Report/ReportBySupplyer">Theo nhà cung cấp</a></li>
                   <li><a href="/Report/DrugWarehouses">Theo kho hàng</a></li>
                   <li><a href="/Report/InventoryWarehouseReport">Báo cáo kiểm kê</a></li>
-
+                  <li class="divider"></li>
+                  <li>
+                    <a href="/Report/NoteServiceReport">Theo bảng kê thu tiền dịch vụ</a>
+                  </li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('addons', 'block') "
+                  (mouseleave)="mouseLeave('addons','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Tiện Ích
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('addons')">
                   <li><a href="/Utilities/DrugInventoryWarning">Danh sách hàng hết</a></li>
                   <li><a href="/Utilities/NearExpiredDrugWarning">Danh sách hàng hết hạn</a></li>
                   <li><a href="/Utilities/NegativeRevenueWarning">Danh sách hàng lợi nhuận âm</a></li>
@@ -764,10 +809,11 @@
                   <li><a href="/Utilities/ProgramTrainingStaff">Đào tạo nhân viên</a></li>
                 </ul>
               </li>
-              <li class="dropdown menu">
+              <li class="dropdown menu" (mouseenter)="mouseEnter('helps', 'block') "
+                  (mouseleave)="mouseLeave('helps','none')">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Trợ Giúp
-                  <i class="fa-regular fa-chevron-down"></i></a>
-                <ul class="dropdown-menu" role="menu" style="display: none; opacity: 1;">
+                  <i class="fa-solid fa-chevron-down"></i></a>
+                <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('helps')">
                   <li><a href="/TienIch/TuvanOnline">Chính sách hỗ trợ online</a></li>
                   <li><a href="https://webnhathuoc.com/home/kinh-nghiem/" target="_blank" width="500px" height="500px">Kinh
                     nghiệm chia sẻ</a></li>
@@ -783,104 +829,26 @@
             </ul>
             <form action="/Account/LogOff" class="navbar-right ng-pristine ng-valid" id="logoutForm" method="post">
               <ul class="nav navbar-nav navbar-right">
-                <li class="divNotification">
+                <li class="divNotification" (mouseenter)="mouseEnter('noti', 'block') "
+                    (mouseleave)="mouseLeave('noti','none')">
                   <a href="javascript:;" class="dropdown-toggle" data-toggle="collapse" data-hover="collapse">
-                    <i class="fa-regular fa-bell" style="font-size: 120%;"></i>
+                    <i class="fa-solid fa-bell" style="font-size: 120%;"></i>
                     <span id="lbNumberNotification"
                           style="background-color: #f36a5a;color: #fff;position: absolute;top: 5px;padding: 0% 9%;border-radius: 4px!important;font-size: 10px;text-align: center;margin-left: 0px;"></span>
                   </a>
-                  <ul class="divNotificationBox dropdown-menu" style="width: 360px; display: block;">
+                  <ul class="divNotificationBox dropdown-menu" [style.width]="'360px'"
+                      [style.display]="isDisplay('noti')">
                     <div id="notificationBlog">
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 549</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 2 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 548</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 2 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 528</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 17 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 524</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 524</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng 18 ngày trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 478</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 476</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
-                      </a></li>
-                      <li class="dropdown-submenu" style="padding: 5px;"><a
-                        href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56132"
-                        class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
-                        class="fa fa-bullhorn"
-                        style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
-                        <div style="float: right;margin-left: 7px;"><span
-                          style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 476</span>
-                          <p style="font-size: 80%;margin: 0px;">khoảng một tháng trước</p></div>
-                      </a></li>
+                      <li class="dropdown-submenu" style="padding: 5px;background-color: #ddd;">
+                        <a href="/NoteManagement/NotesListing##noteTypeId=1&amp;noteNumbers=56134"
+                           class="nav-link nav-toggle " target="_blank" style="display: inline-flex;"><i
+                          class="fa fa-bullhorn"
+                          style="float: left; text-align: center; line-height: 8px; font-size: 146%;margin-right: 12px;  padding: 15px 16px;"></i>
+                          <div style="float: right;margin-left: 7px;"><span
+                            style="white-space: normal;font-weight: bold;">Phiếu nhập chuyển từ nhà thuốc: CÔNG TY TNHH WEB NHÀ THUỐC. Có số phiếu: 549</span>
+                            <p style="font-size: 80%;margin: 0px;">khoảng 2 ngày trước</p></div>
+                        </a>
+                      </li>
                     </div>
                     <li class="dropdown-submenu">
                       <a href="/Notification/History" style="text-align: center;font-weight: bold;">Xem tất cả</a>
@@ -888,10 +856,11 @@
                   </ul>
                 </li>
 
-                <li class="dropdown menu">
+                <li class="dropdown menu" (mouseenter)="mouseEnter('login', 'block') "
+                    (mouseleave)="mouseLeave('login','none')">
                   <a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
                      class="dropdown-toggle">Admin1<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
+                  <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('login')">
                     <li>
                       <a href="/Account/Manage" id="loggedInUserNameId" title="Manage">Đổi mật khẩu</a>
                     </li>

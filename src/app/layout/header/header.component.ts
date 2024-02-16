@@ -10,6 +10,8 @@ import {AuthService} from "../../services/auth.service";
 export class HeaderComponent implements OnInit {
   public store: any;
   public storeName: string;
+  public display: any = {};
+
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -31,5 +33,20 @@ export class HeaderComponent implements OnInit {
 
   onWardChanged() {
 
+  }
+
+  mouseEnter(key: string, property: string) {
+    this.display[key] = property;
+  }
+
+  mouseLeave(key: string, property: string) {
+    this.display[key] = property;
+  }
+
+  isDisplay(key: string) {
+    if(!this.display[key]){
+      return 'none';
+    }
+    return this.display[key];
   }
 }
