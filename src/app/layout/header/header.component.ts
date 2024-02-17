@@ -9,7 +9,7 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HeaderComponent implements OnInit {
   public store: any;
-  public storeName: string;
+  public storeName: string = '';
   public display: any = {};
 
   constructor(
@@ -17,7 +17,9 @@ export class HeaderComponent implements OnInit {
     private router: Router,
   ) {
     this.store = authService.getDepartment();
-    this.storeName = this.store.name;
+    if (this.store) {
+      this.storeName = this.store.name;
+    }
   }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isDisplay(key: string) {
-    if(!this.display[key]){
+    if (!this.display[key]) {
       return 'none';
     }
     return this.display[key];
