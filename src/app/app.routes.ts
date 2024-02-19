@@ -6,12 +6,13 @@ import {NotFoundComponent} from "./pages/not-found/not-found.component";
 export const routes: Routes = [
   {
     path: '',
-    pathMatch:"full",
+    pathMatch: "full",
     redirectTo: 'management/home'
   },
   {
     path: 'login',
-    component: LoginComponent,
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule)
   },
   {
     path: '401',

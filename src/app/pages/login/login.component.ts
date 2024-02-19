@@ -1,28 +1,30 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {SocketService} from "./socket.service";
 
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [
-    ReactiveFormsModule
-  ]
 })
 export class LoginComponent implements OnInit {
   public formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder,) {
+  constructor(private fb: FormBuilder, private socket: SocketService) {
     this.formGroup = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
       rememberMe: [false],
     });
+    this.socket.connect(); // Kết nối với máy chủ Socket.IO khi ứng dụng được khởi chạy
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    // Lắng nghe sự kiện từ máy chủ Socket.IO
+    this.socket.fromEvent('login-qr').subscribe((data) => {
+      console.log('Received message from server:', data);
+    });
   }
 
   login() {

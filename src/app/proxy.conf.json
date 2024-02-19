@@ -1,0 +1,17 @@
+{
+  "/api/qlnv-category": {
+    "target": "http://localhost:6789",
+    "secure": false,
+    "pathRewrite": {
+      "^/api/qlnv-category": "/"
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api": {
+    "target": "http://192.168.1.77",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
