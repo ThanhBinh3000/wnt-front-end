@@ -22,8 +22,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // Lắng nghe sự kiện từ máy chủ Socket.IO
-    this.socket.fromEvent('login-qr').subscribe((data) => {
+    this.socket.on('login-qr', (data, ackFn) => {
       console.log('Received message from server:', data);
+      ackFn("Received"); // Gửi ack
     });
   }
 
