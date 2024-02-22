@@ -1,8 +1,11 @@
 {
-  "/wnt-socketio-server/*": {
+  "/api/**": {
     "target": "http://localhost:8888",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/": ""
+    }
   }
 }

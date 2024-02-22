@@ -3,7 +3,7 @@ export const environment = {
   socketConfig: {
     url: '',
     options: {
-      path: "/wnt-socketio-server/socket.io/"
+      path: "/api/wnt-socketio-server/socket.io/"
     }
   }
 };
