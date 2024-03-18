@@ -1,0 +1,132 @@
+<div class="modal fade inmodal in" [class.show]="isOpenDialog" id="customer-group-add-edit-dialog" tabindex='-1' role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true"><i
+                            class="fa-regular fa-xmark"></i></span></button>
+                <h4 class="modal-title">
+                    <strong ng-show="CustomerModel.MaKhachHang <= 0">Thêm khách hàng mới</strong>
+                    <strong ng-show="CustomerModel.MaKhachHang > 0">Cập nhật khách hàng</strong>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table table-bordered table-userpicker">
+                            <tbody>
+                                <tr>
+                                    <td><b>Tên khách hàng:</b><span ng-if="CustomerModel.IsMedical"
+                                            class="text-danger">(*)</span>
+                                    <td>
+                                        <input type="text" class="form-control mb-0" ng-change="onChangeUpperNames()"
+                                            ng-model="CustomerModel.TenKhachHang" enter-key-capture="saveCustomer()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="control-label">Nhóm khách hàng:</label></td>
+                                    <td>
+                                        <select class="form-control mb-0" name="customerGroupCode"
+                                            id="customerGroupCode"
+                                            ng-options="cg.TenNhomKhachHang for cg in customerGroups track by cg.MaNhomKhachHang"
+                                            ng-model="customerGroups.selectedCustomerGroups"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kiểu khách hàng</b></td>
+                                    <td>
+                                        <select class="form-control mb-0" ng-model="CustomerModel.CusType">
+                                            <option selected value="0">Cá nhân</option>
+                                            <option value="1">Tổ chức</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr ng-show="CustomerModel.CusType == 1">
+                                    <td><b>Mã số thuế:</b>
+                                    <td>
+                                        <input type="text" class="form-control mb-0" ng-model="CustomerModel.TaxCode">
+                                    </td>
+                                </tr>
+                                <tr ng-show="CustomerModel.CusType == 0">
+                                    <td><b>Giới tính</b></td>
+                                    <td>
+                                        <select class="form-control mb-0" ng-model="CustomerModel.SexId">
+                                            <option>--Chọn giới tính--</option>
+                                            <option selected value="0">Nam</option>
+                                            <option value="1">Nữ</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr ng-show="CustomerModel.CusType == 0">
+                                    <td><b>Ngày sinh</b><span ng-if="CustomerModel.IsMedical"
+                                            class="text-danger">(*)</span></td>
+                                    <td><input class="input-datetime form-control mb-0 text-box single-line"
+                                            style="text-align:left" type="text" ng-model="CustomerModel.BirthDate"
+                                            ng-change="birthDateChange()" placeholder="Vd: 010101" /></td>
+                                </tr>
+                                <tr ng-show="CustomerModel.CusType == 0">
+                                    <td><b>Tuổi</b></td>
+                                    <td><input class="form-control mb-0" style="text-align:left" type="text"
+                                            ng-change="ageNumberChange()" ng-model="CustomerModel.OldNumber" /></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Số điện thoại:</b><span ng-if="CustomerModel.IsMedical"
+                                            class="text-danger">(*)</span></td>
+                                    <td><input type="text" class="form-control mb-0"
+                                            ng-model="CustomerModel.SoDienThoai"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Địa chỉ:</b><span ng-if="CustomerModel.IsMedical"
+                                            class="text-danger">(*)</span></td>
+                                    <td><input type="text" class="form-control mb-0" ng-model="CustomerModel.DiaChi">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Mã vạch:</b></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input class="form-control mb-0" style="text-align:left" type="text"
+                                                ng-model="CustomerModel.BarCode" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary"
+                                                    ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                        class="fa-regular fa-barcode-read"></i></button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Email:</b></td>
+                                    <td><input type="text" class="form-control mb-0" ng-model="CustomerModel.Email">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nghề nghiệp:</b></td>
+                                    <td><input type="text" class="form-control mb-0" ng-model="CustomerModel.Job"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Khả năng chi trả:</b></td>
+                                    <td><input type="text" class="form-control mb-0"
+                                            ng-model="CustomerModel.AbilityToPay"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex gap-10 align-items-center justify-content-end">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary"
+                        ng-click="saveCustomer(); $event.preventDefault(); $event.stopPropagation();">
+                        <span ng-show="CustomerModel.MaKhachHang <= 0">Thêm mới</span>
+                        <span ng-show="CustomerModel.MaKhachHang > 0">Cập nhật</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
