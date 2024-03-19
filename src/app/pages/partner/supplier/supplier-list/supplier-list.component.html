@@ -1,13 +1,72 @@
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar-bg">
-            <label>Nhà cung cấp</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen"
-                placeholder="Tìm nhà cung cấp theo tên..." />
-            <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                <button class="btn btn-primary w-50">Xem</button>
-                <button class="btn btn-primary w-50" (click)="supplierID = 0" data-toggle="modal"
-                    data-target="#supplier-add-edit-dialog">Thêm</button>
+            <div>
+                <div class="md-3">
+                    <label>Nhà cung cấp</label>
+                    <div item-search-filter="" select-changed-callback="onSupplyerSelectChanged"
+                        clear-after-selected="false" only-single-item="true" show-cam-barcode-scanner="false"
+                        handle-broadcast="true" search-type="4" class="flex-grow-1 ip-position mb-3 ng-isolate-scope">
+                        <div ng-if="!showCamBarcodeScanner" class="">
+                            <div class="w-100">
+                                <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-touched ng-dirty open"
+                                    theme="bootstrap" id="itemSearchId" reset-search-input="clearAfterSelected"
+                                    forward-enter-key="forwardEnterKey">
+                                    <div>
+                                        <span class="text-truncate-line ui-select-match ui-select-match"
+                                            placeholder="Nhập mã, mã vạch hoặc tên..." id="itemSearchUISelectID">
+                                            <span>
+                                                <span class="ui-select-match-item btn btn-default btn-xs" tabindex="-1"
+                                                    type="button" ui-select-sort="$select.selected">
+                                                    <span class="close ui-select-match-close" ng-hide="$select.disabled"
+                                                        ng-click="$selectMultiple.removeChoice($index)">&nbsp;×
+                                                    </span>
+                                                    <span uis-transclude-append="">
+                                                        <span class="ng-binding ng-scope">
+                                                            Công ty cổ phần thiết bị y tế Hà Giang
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <input type="search" autocomplete="off" autocorrect="off" autocapitalize="off"
+                                            spellcheck="false"
+                                            class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
+                                            placeholder="" ng-disabled="$select.disabled" ng-click="$select.activate()"
+                                            ng-model="$select.search" role="combobox" aria-expanded="true"
+                                            aria-label="Select box" ng-class="{'spinner': $select.refreshing}"
+                                            ondrop="return false;" style="width: 107px;">
+                                    </div>
+                                    <div class="ui-select-no-choice"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" ng-model="filterModel.IsDeleted" class="form-control form-check-input mb-0"
+                        ng-change="onDeletedSelectChanged()">
+                    <label class="form-check-label">Nhà cung cấp bị xóa</label>
+                </div>
+                <div class="d-flex justify-content-between gap-10">
+                    <button class="btn btn-primary w-50">Xem</button>
+                    <button class="btn btn-primary w-50" (click)="supplierID = 0" data-toggle="modal"
+                        data-target="#supplier-add-edit-dialog">Thêm</button>
+                </div>
+                <hr style="margin-top:10px" />
+            </div>
+            <div>
+                <label>Nhập/Xuất dữ liệu từ Excel</label>
+                <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
+                    method="post">
+                    <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                        <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+                        <input type="button" value="Tải File" title="Tải file"
+                            ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
+                            class="btn btn-default btn-outline" accept="Excel/*.xlsx">
+                        <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -81,7 +140,7 @@
                             </div>
                         </th>
                         <!-- ViewBag.CheckAuthen -->
-                        <th display-name="Mã số thuế">
+                        <th class="ng-hide" display-name="Mã số thuế">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
                                     <div class="tr-ng-title"> Mã số thuế
@@ -129,7 +188,7 @@
                             <div>03489384339</div>
                         </td>
                         <!-- ViewBag.CheckAuthen -->
-                        <td>
+                        <td class="ng-hide">
                             <div>03489384339</div>
                         </td>
                         <td>
@@ -147,9 +206,11 @@
                                         class="btn btn-danger"><i class="fa-regular fa-trash"></i></a>
                                 </div>
                                 <div class="baocao-actions-item">
-                                    <a href="#" class="btn btn-primary" style="padding-left: 8px; padding-right: 8px;"
-                                        ng-show="enableRewardSupplier" title="Thông tin chương trình khuyến mại"
-                                        ng-click="onShowDetailRewardProgram(gridItem)">Trả thưởng</a>
+                                    <button (click)="supplierID = 1" data-toggle="modal"
+                                        data-target="#supplier-reward-program-dialog" class="btn btn-primary"
+                                        style="padding-left: 8px; padding-right: 8px;" ng-show="enableRewardSupplier"
+                                        title="Thông tin chương trình khuyến mại"
+                                        ng-click="onShowDetailRewardProgram(gridItem)">Trả thưởng</button>
                                 </div>
                             </div>
 
@@ -165,7 +226,7 @@
                 </tbody>
                 <tfoot>
                     <tr id="footerId">
-                        <td align="center" is-customized="true" colspan="9">
+                        <td align="center" is-customized="true" colspan="8">
                             <div class="tr-ng-grid-footer form-inline">
                                 <div>
                                     <div>
@@ -248,3 +309,4 @@
     </div>
 </div>
 <supplier-add-edit-dialog [supplierID]="supplierID"></supplier-add-edit-dialog>
+<supplier-reward-program-dialog [supplierID]="supplierID"></supplier-reward-program-dialog>

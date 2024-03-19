@@ -6,8 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./doctor-group-add-edit-dialog.component.css'],
 })
 export class DoctorGroupAddEditDialogComponent implements OnInit {
-  @Input() doctorGroupID = 0;
-  
+  @Input() doctorGroupID: number = 0;
+
   constructor() {
   }
 

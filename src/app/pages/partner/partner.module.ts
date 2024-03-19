@@ -15,6 +15,7 @@ import { SupplierGroupAddEditDialogComponent } from './supplier-group/supplier-g
 import { SupplierGroupListComponent } from './supplier-group/supplier-group-list/supplier-group-list.component';
 import { SupplierListComponent } from './supplier/supplier-list/supplier-list.component';
 import { SupplierAddEditDialogComponent } from './supplier/supplier-add-edit-dialog/supplier-add-edit-dialog.component';
+import { SupplierRewardProgramComponent } from './supplier/supplier-reward-program-dialog/supplier-reward-program-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { SupplierAddEditDialogComponent } from './supplier/supplier-add-edit-dia
     SupplierGroupListComponent,
     SupplierGroupAddEditDialogComponent,
     SupplierListComponent,
-    SupplierAddEditDialogComponent
+    SupplierAddEditDialogComponent,
+    SupplierRewardProgramComponent
   ],
   imports: [CommonModule, RouterOutlet, PartnerRoutingModule],
   exports: [],

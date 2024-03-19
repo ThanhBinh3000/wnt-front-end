@@ -6,11 +6,18 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./doctor-add-edit-dialog.component.css'],
 })
 export class DoctorAddEditDialogComponent implements OnInit {
-  @Input() customerGroupID = 0;
-  
+  @Input() doctorID: number = 0;
+  showMoreForm: boolean = false;
+  expandLabel: string = '[+]';
+
   constructor() {
   }
 
   ngOnInit() {
   }
+
+  expandForm() {
+    this.showMoreForm = !this.showMoreForm;
+    this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
+  };
 }

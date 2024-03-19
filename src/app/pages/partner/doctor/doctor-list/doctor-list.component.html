@@ -1,14 +1,34 @@
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar-bg">
-            <label>Nhóm khách hàng</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen"
-                placeholder="Tìm nhóm khách hàng theo tên..."
-                />
-            <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                <button class="btn btn-primary w-50"
-                    >Xem</button>
-                <button class="btn btn-primary w-50" (click)="customerGroupID = 0" data-toggle="modal" data-target="#customer-group-add-edit-dialog">Thêm</button>
+            <div>
+                <label>Bác sỹ</label>
+                <input class="form-control" type="text" id="searchTen" name="searchTen"
+                    placeholder="Tìm bác sỹ theo tên..." />
+                <div class="form-check mb-3">
+                    <input type="checkbox" ng-model="filterModel.IsDeleted" class="form-control form-check-input mb-0"
+                        ng-change="onDeletedSelectChanged()">
+                    <label class="form-check-label">Bác sỹ bị xóa</label>
+                </div>
+                <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+                    <button class="btn btn-primary w-50">Xem</button>
+                    <button class="btn btn-primary w-50" (click)="doctorID = 0" data-toggle="modal"
+                        data-target="#doctor-add-edit-dialog">Thêm</button>
+                </div>
+                <hr style="margin-top:10px" />
+            </div>
+            <div>
+                <label>Nhập/Xuất dữ liệu từ Excel</label>
+                <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
+                    method="post">
+                    <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                        <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+                        <input type="button" value="Tải File" title="Tải file"
+                            ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
+                            class="btn btn-default btn-outline" accept="Excel/*.xlsx">
+                        <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -26,10 +46,10 @@
                                 </div>
                             </div>
                         </th>
-                        <th display-name="Nhóm khách hàng" style="width:42%">
+                        <th display-name="Bác sỹ" style="width:22%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div class="tr-ng-title"> Nhóm khách hàng
+                                    <div class="tr-ng-title"> Bác sỹ
                                         <div class="tr-ng-sort" title="Sort">
                                             <div
                                                 class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
@@ -39,15 +59,39 @@
                                 </div>
                             </div>
                         </th>
-                        <th display-name="Ghi chú" style="width:35%">
+                        <th display-name="Nhóm" style="width:20%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div class="tr-ng-title"> Ghi chú
+                                    <div class="tr-ng-title"> Nhóm
                                     </div>
                                 </div>
                             </div>
                         </th>
-                        <th style="width:15%">
+                        <th display-name="Số điện thoại" style="width:15%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Số điện thoại
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Địa chỉ" style="width:15%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Địa chỉ
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Hoạt động" style="width:8%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Hoạt động
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
                                     <div class="tr-ng-title">
@@ -64,14 +108,25 @@
                             <div>1</div>
                         </td>
                         <td>
+                            <div>Nguyễn Đức Hạnh</div>
+                        </td>
+                        <td>
                             <div>Mặc định</div>
                         </td>
                         <td>
-                            <div>Ghi chú</div>
+                            <div>0912987341</div>
+                        </td>
+                        <td>
+                            <div>Phòng khám Đông Đô, Hà Nội</div>
+                        </td>
+                        <td>
+                            <div><input type="checkbox" ng-checked="gridItem.RecordStatusID == 0" disabled="disabled"
+                                    checked="checked"></div>
                         </td>
                         <td>
                             <div class="baocao-actions">
-                                <button class="btn btn-sm btn-primary" (click)="customerGroupID = 1" data-toggle="modal" data-target="#customer-group-add-edit-dialog"><i
+                                <button class="btn btn-sm btn-primary" (click)="doctorID = 1" data-toggle="modal"
+                                    data-target="#doctor-add-edit-dialog"><i
                                         class="fa-regular fa-pen-to-square"></i></button>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
                             </div>
@@ -80,7 +135,7 @@
                 </tbody>
                 <tfoot>
                     <tr id="footerId">
-                        <td align="center" is-customized="true" colspan="4">
+                        <td align="center" is-customized="true" colspan="7">
                             <div class="tr-ng-grid-footer form-inline">
                                 <div>
                                     <div>
@@ -157,9 +212,9 @@
 
             <!-- model.length <= 0 -->
             <div>
-                <p class="text-danger text-center mt-3">Không tìm thấy nhóm khách hàng nào</p>
+                <p class="text-danger text-center mt-3">Không tìm thấy nhóm bác sỹ nào</p>
             </div>
         </div>
     </div>
 </div>
-<customer-group-add-edit-dialog [customerGroupID]="customerGroupID"></customer-group-add-edit-dialog>
+<doctor-add-edit-dialog [doctorID]="doctorID"></doctor-add-edit-dialog>

@@ -7,8 +7,8 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./doctor-list.component.css'],
 })
 export class DoctorListComponent implements OnInit {
-  title: string = "Danh sách nhóm khách hàng";
-  customerGroupID: number = 0;
+  title: string = "Danh sách bác sỹ";
+  doctorID: number = 0;
 
   constructor(
     private titleService: Title
