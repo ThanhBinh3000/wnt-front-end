@@ -199,7 +199,7 @@
     </div>
   </section>
 
-  <div id="myMessageMain" class="myModal" onclick="closeModal()"
+  <div id="myMessageMain" class="myModal" [className]="isShowModal('thongBao') ? 'myModal open' : 'myModal'" (click)="closeModal('thongBao')"
        style="opacity: 1 !important; background-color: rgba(0,0,0,0.5) !important;">
     <div>
       <div class="myModal-card">
@@ -232,7 +232,7 @@
           </div>
           <div class="myModal-footer">
 
-            <a class="btn btn-default" onclick="closeModal()">Đóng</a>
+            <a class="btn btn-default" (click)="closeModal('thongBao')">Đóng</a>
           </div>
           <div>
           </div>
