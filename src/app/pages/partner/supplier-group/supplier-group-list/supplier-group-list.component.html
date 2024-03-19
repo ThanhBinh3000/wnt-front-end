@@ -1,12 +1,14 @@
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar-bg">
-            <label>Nhóm khách hàng</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm nhóm khách hàng theo tên..."/>
+            <label>Nhóm nhà cung cấp</label>
+            <input class="form-control" type="text" id="searchTen" name="searchTen"
+                placeholder="Tìm nhóm nhà cung cấp theo tên..."
+                />
             <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
                 <button class="btn btn-primary w-50"
                     >Xem</button>
-                <button class="btn btn-primary w-50" (click)="customerGroupID = 0" data-toggle="modal" data-target="#customer-group-add-edit-dialog">Thêm</button>
+                <button class="btn btn-primary w-50" (click)="supplierGroupID = 0" data-toggle="modal" data-target="#supplier-group-add-edit-dialog">Thêm</button>
             </div>
         </div>
     </div>
@@ -24,10 +26,10 @@
                                 </div>
                             </div>
                         </th>
-                        <th display-name="Nhóm khách hàng" style="width:42%">
+                        <th display-name="Nhóm nhà cung cấp" style="width:42%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div class="tr-ng-title"> Nhóm khách hàng
+                                    <div class="tr-ng-title"> Nhóm nhà cung cấp
                                         <div class="tr-ng-sort" title="Sort">
                                             <div
                                                 class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
@@ -69,7 +71,7 @@
                         </td>
                         <td>
                             <div class="baocao-actions">
-                                <button class="btn btn-sm btn-primary" (click)="customerGroupID = 1" data-toggle="modal" data-target="#customer-group-add-edit-dialog"><i
+                                <button class="btn btn-sm btn-primary" (click)="supplierGroupID = 1" data-toggle="modal" data-target="#supplier-group-add-edit-dialog"><i
                                         class="fa-regular fa-pen-to-square"></i></button>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
                             </div>
@@ -155,9 +157,9 @@
 
             <!-- model.length <= 0 -->
             <div>
-                <p class="text-danger text-center mt-3">Không tìm thấy nhóm khách hàng nào</p>
+                <p class="text-danger text-center mt-3">Không tìm thấy nhóm nhà cung cấp nào</p>
             </div>
         </div>
     </div>
 </div>
-<customer-group-add-edit-dialog [customerGroupID]="customerGroupID"></customer-group-add-edit-dialog>
+<supplier-group-add-edit-dialog [supplierGroupID]="supplierGroupID"></supplier-group-add-edit-dialog>

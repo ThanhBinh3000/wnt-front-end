@@ -1,12 +1,13 @@
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar-bg">
-            <label>Nhóm khách hàng</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm nhóm khách hàng theo tên..."/>
+            <label>Nhà cung cấp</label>
+            <input class="form-control" type="text" id="searchTen" name="searchTen"
+                placeholder="Tìm nhà cung cấp theo tên..." />
             <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                <button class="btn btn-primary w-50"
-                    >Xem</button>
-                <button class="btn btn-primary w-50" (click)="customerGroupID = 0" data-toggle="modal" data-target="#customer-group-add-edit-dialog">Thêm</button>
+                <button class="btn btn-primary w-50">Xem</button>
+                <button class="btn btn-primary w-50" (click)="supplierID = 0" data-toggle="modal"
+                    data-target="#supplier-add-edit-dialog">Thêm</button>
             </div>
         </div>
     </div>
@@ -17,17 +18,17 @@
             <table class="table table-striped table-bordered table-hover tr-ng-grid">
                 <thead>
                     <tr>
-                        <th display-name="#" style="width:8%">
+                        <th display-name="#" style="width:6%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
                                     <div class="tr-ng-title"> # </div>
                                 </div>
                             </div>
                         </th>
-                        <th display-name="Nhóm khách hàng" style="width:42%">
+                        <th display-name="Mã NCC">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div class="tr-ng-title"> Nhóm khách hàng
+                                    <div class="tr-ng-title"> Mã NCC
                                         <div class="tr-ng-sort" title="Sort">
                                             <div
                                                 class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
@@ -37,15 +38,66 @@
                                 </div>
                             </div>
                         </th>
-                        <th display-name="Ghi chú" style="width:35%">
+                        <th display-name="Nhà cung cấp" style="width:15%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div class="tr-ng-title"> Ghi chú
+                                    <div class="tr-ng-title"> Nhà cung cấp
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </th>
-                        <th style="width:15%">
+                        <th display-name="Nhóm" style="width:10%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Nhóm
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Địa chỉ" style="width:27%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Địa chỉ
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Số ĐT" style="width:10%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Số ĐT
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <!-- ViewBag.CheckAuthen -->
+                        <th display-name="Mã số thuế">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Mã số thuế
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Mã vạch" style="width:10%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Mã vạch
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width:10%">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
                                     <div class="tr-ng-title">
@@ -62,23 +114,58 @@
                             <div>1</div>
                         </td>
                         <td>
-                            <div>Mặc định</div>
+                            <div>Mã NCC test</div>
                         </td>
                         <td>
-                            <div>Ghi chú</div>
+                            <div>BAN BẢO VỆ CHĂM SÓC SỨC KHOẺ CÁN BỘ TỈNH HOÀ BÌNH</div>
                         </td>
                         <td>
-                            <div class="baocao-actions">
-                                <button class="btn btn-sm btn-primary" (click)="customerGroupID = 1" data-toggle="modal" data-target="#customer-group-add-edit-dialog"><i
-                                        class="fa-regular fa-pen-to-square"></i></button>
-                                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                            <div>Nhóm test</div>
+                        </td>
+                        <td>
+                            <div>Địa chỉ test</div>
+                        </td>
+                        <td>
+                            <div>03489384339</div>
+                        </td>
+                        <!-- ViewBag.CheckAuthen -->
+                        <td>
+                            <div>03489384339</div>
+                        </td>
+                        <td>
+                            <div>03489384339</div>
+                        </td>
+                        <td>
+                            <!-- NCC active: RecordStatusID = 0-->
+                            <div ng-if="gridItem.RecordStatusID == 0" class="baocao-actions baocao-actions-row">
+                                <div class="baocao-actions-item">
+                                    <button (click)="supplierID = 1" data-toggle="modal"
+                                        data-target="#supplier-add-edit-dialog" class="btn btn-primary"><i
+                                            class="fa-regular fa-pen-to-square"></i></button>
+                                    <a href="#"
+                                        ng-click="deleteSupplyer(gridItem); $event.preventDefault(); $event.stopPropagation();"
+                                        class="btn btn-danger"><i class="fa-regular fa-trash"></i></a>
+                                </div>
+                                <div class="baocao-actions-item">
+                                    <a href="#" class="btn btn-primary" style="padding-left: 8px; padding-right: 8px;"
+                                        ng-show="enableRewardSupplier" title="Thông tin chương trình khuyến mại"
+                                        ng-click="onShowDetailRewardProgram(gridItem)">Trả thưởng</a>
+                                </div>
+                            </div>
+
+                            <!-- NCC bị đánh dấu xóa: RecordStatusID = 2-->
+                            <div class="baocao-actions ng-hide">
+                                <a href="#" ng-click="$event.preventDefault();recoverDeletedSupplyer(gridItem)"
+                                    class="btn btn-primary"><i class="fa-regular fa-arrows-rotate"></i></a>
+                                <a href="#" ng-click="$event.preventDefault();deleteForever(gridItem)"
+                                    class="btn btn-danger"><i class="fa-regular fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr id="footerId">
-                        <td align="center" is-customized="true" colspan="4">
+                        <td align="center" is-customized="true" colspan="9">
                             <div class="tr-ng-grid-footer form-inline">
                                 <div>
                                     <div>
@@ -155,9 +242,9 @@
 
             <!-- model.length <= 0 -->
             <div>
-                <p class="text-danger text-center mt-3">Không tìm thấy nhóm khách hàng nào</p>
+                <p class="text-danger text-center mt-3">Không tìm thấy nhà cung cấp nào</p>
             </div>
         </div>
     </div>
 </div>
-<customer-group-add-edit-dialog [customerGroupID]="customerGroupID"></customer-group-add-edit-dialog>
+<supplier-add-edit-dialog [supplierID]="supplierID"></supplier-add-edit-dialog>

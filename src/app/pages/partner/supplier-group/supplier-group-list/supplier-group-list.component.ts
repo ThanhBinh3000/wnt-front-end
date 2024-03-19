@@ -3,12 +3,12 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-partner',
-  templateUrl: './customer-group-list.component.html',
-  styleUrls: ['./customer-group-list.component.css'],
+  templateUrl: './supplier-group-list.component.html',
+  styleUrls: ['./supplier-group-list.component.css'],
 })
-export class CustomerGroupListComponent implements OnInit {
-  title: string = "Danh sách nhóm khách hàng";
-  customerGroupID: number = 0;
+export class SupplierGroupListComponent implements OnInit {
+  title: string = "Danh sách nhóm nhà cung cấp";
+  supplierGroupID: number = 0;
 
   constructor(
     private titleService: Title

@@ -1,16 +1,16 @@
-<div class="modal fade" id="customer-group-add-edit-dialog" tabindex="-1" role="dialog">
+<div class="modal fade" id="supplier-add-edit-dialog" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close"><span>&times;</span></button>
-                <h4 class="modal-title">{{customerGroupID > 0 ? 'Cập nhật nhóm khách hàng' : 'Thêm mới nhóm khách hàng'}}
+                <h4 class="modal-title">{{supplierID > 0 ? 'Cập nhật nhà cung cấp' : 'Thêm mới nhà cung cấp'}}
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        <label class="col-sm-4 control-label">Tên nhóm khách hàng<span class="text-danger">*</span></label>
+                        <label class="col-sm-4 control-label">Tên nhà cung cấp<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
                             <input class="form-control mb-0 text-left" type="text"/>
                         </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">{{customerGroupID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+                <button type="button" class="btn btn-primary">{{supplierID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
             </div>
         </div>
     </div>

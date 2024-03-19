@@ -3,10 +3,10 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-partner',
-  templateUrl: './customer-group-list.component.html',
-  styleUrls: ['./customer-group-list.component.css'],
+  templateUrl: './doctor-list.component.html',
+  styleUrls: ['./doctor-list.component.css'],
 })
-export class CustomerGroupListComponent implements OnInit {
+export class DoctorListComponent implements OnInit {
   title: string = "Danh sách nhóm khách hàng";
   customerGroupID: number = 0;
 

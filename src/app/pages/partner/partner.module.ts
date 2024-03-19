@@ -6,13 +6,31 @@ import {PartnerRoutingModule} from "./partner.routing";
 import { CustomerGroupListComponent } from './customer-group/customer-group-list/customer-group-list.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 import { CustomerGroupAddEditDialogComponent } from './customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component';
+import { CustomerAddEditDialogComponent } from './customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
+import { DoctorGroupAddEditDialogComponent } from './doctor-group/doctor-group-add-edit-dialog/doctor-group-add-edit-dialog.component';
+import { DoctorGroupListComponent } from './doctor-group/doctor-group-list/doctor-group-list.component';
+import { DoctorAddEditDialogComponent } from './doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
+import { DoctorListComponent } from './doctor/doctor-list/doctor-list.component';
+import { SupplierGroupAddEditDialogComponent } from './supplier-group/supplier-group-add-edit-dialog/supplier-group-add-edit-dialog.component';
+import { SupplierGroupListComponent } from './supplier-group/supplier-group-list/supplier-group-list.component';
+import { SupplierListComponent } from './supplier/supplier-list/supplier-list.component';
+import { SupplierAddEditDialogComponent } from './supplier/supplier-add-edit-dialog/supplier-add-edit-dialog.component';
 
 @NgModule({
   declarations: [
     PartnerComponent,
     CustomerGroupListComponent,
     CustomerGroupAddEditDialogComponent,
-    CustomerListComponent
+    CustomerListComponent,
+    CustomerAddEditDialogComponent,
+    DoctorGroupListComponent,
+    DoctorGroupAddEditDialogComponent,
+    DoctorListComponent,
+    DoctorAddEditDialogComponent,
+    SupplierGroupListComponent,
+    SupplierGroupAddEditDialogComponent,
+    SupplierListComponent,
+    SupplierAddEditDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, PartnerRoutingModule],
   exports: [],
