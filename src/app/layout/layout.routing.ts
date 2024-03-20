@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/account/account.module').then((m) => m.AccountModule),
       },
       {
+        path: 'partner',
+        loadChildren: () => import('../pages/partner/partner.module').then((m) => m.PartnerModule),
+      },
+      {
         path: 'notification',
         component: NotificationComponent
       }

@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar-bg">
+            <div>
+                <label>Bác sỹ</label>
+                <input class="form-control" type="text" id="searchTen" name="searchTen"
+                    placeholder="Tìm bác sỹ theo tên..." />
+                <div class="form-check mb-3">
+                    <input type="checkbox" ng-model="filterModel.IsDeleted" class="form-control form-check-input mb-0"
+                        ng-change="onDeletedSelectChanged()">
+                    <label class="form-check-label">Bác sỹ bị xóa</label>
+                </div>
+                <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+                    <button class="btn btn-primary w-50">Xem</button>
+                    <button class="btn btn-primary w-50" (click)="doctorID = 0" data-toggle="modal"
+                        data-target="#doctor-add-edit-dialog">Thêm</button>
+                </div>
+                <hr style="margin-top:10px" />
+            </div>
+            <div>
+                <label>Nhập/Xuất dữ liệu từ Excel</label>
+                <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
+                    method="post">
+                    <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                        <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+                        <input type="button" value="Tải File" title="Tải file"
+                            ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
+                            class="btn btn-default btn-outline" accept="Excel/*.xlsx">
+                        <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="baocao-container box-group-white">
+            <h2 class="mb-3 d-block text-center"><b>{{title}}</b></h2>
+            <table class="table table-striped table-bordered table-hover tr-ng-grid">
+                <thead>
+                    <tr>
+                        <th display-name="#" style="width:8%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> # </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Bác sỹ" style="width:22%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Bác sỹ
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Nhóm" style="width:20%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Nhóm
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Số điện thoại" style="width:15%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Số điện thoại
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Địa chỉ" style="width:15%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Địa chỉ
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Hoạt động" style="width:8%">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Hoạt động
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title">
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>1</div>
+                        </td>
+                        <td>
+                            <div>Nguyễn Đức Hạnh</div>
+                        </td>
+                        <td>
+                            <div>Mặc định</div>
+                        </td>
+                        <td>
+                            <div>0912987341</div>
+                        </td>
+                        <td>
+                            <div>Phòng khám Đông Đô, Hà Nội</div>
+                        </td>
+                        <td>
+                            <div><input type="checkbox" ng-checked="gridItem.RecordStatusID == 0" disabled="disabled"
+                                    checked="checked"></div>
+                        </td>
+                        <td>
+                            <div class="baocao-actions">
+                                <button class="btn btn-sm btn-primary" (click)="doctorID = 1" data-toggle="modal"
+                                    data-target="#doctor-add-edit-dialog"><i
+                                        class="fa-regular fa-pen-to-square"></i></button>
+                                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr id="footerId">
+                        <td align="center" is-customized="true" colspan="7">
+                            <div class="tr-ng-grid-footer form-inline">
+                                <div>
+                                    <div>
+                                        <span class="form-group pull-left page-size">
+                                            <select id="ddlPageSize" class="form-control">
+                                                <option label="10" value="number:10" selected="selected">10</option>
+                                                <option label="20" value="number:20">20</option>
+                                                <option label="50" value="number:50">50</option>
+                                                <option label="100" value="number:100">100</option>
+                                                <option label="--All--" value="number:9000">--All--</option>
+                                            </select>
+                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
+                                        </span>
+                                        <span class="pull-right form-group" style="height:40px">
+                                            <ul class="pagination">
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
+                                                </li>
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a href="javascript:void(0);" title="Trang">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">6</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">7</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">8</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">9</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">10</a>
+                                                <li class="disabled"><span>...</span>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
+                                                    </a>
+                                                </li>
+                                                <li class="disabled" style="white-space: nowrap;">
+                                                    <span class="ng-hide">Không có dữ liệu</span>
+                                                    <span> Tổng: 3182 bản ghi </span>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- model.length <= 0 -->
+            <div>
+                <p class="text-danger text-center mt-3">Không tìm thấy nhóm bác sỹ nào</p>
+            </div>
+        </div>
+    </div>
+</div>
+<doctor-add-edit-dialog [doctorID]="doctorID"></doctor-add-edit-dialog>

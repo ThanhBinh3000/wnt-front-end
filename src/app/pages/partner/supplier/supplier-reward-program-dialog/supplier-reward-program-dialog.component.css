@@ -1,0 +1,43 @@
+.modal-title-color {
+    color: forestgreen;
+    text-align: center;
+}
+
+.modal-width {
+    width: 1000px;
+}
+
+.input-note-date {
+    border-top: none;
+    width: 50%;
+    border-left: none;
+    border-right: none;
+}
+
+.table-fix-head {
+    overflow: auto;
+    height: 400px;
+    width: 965px;
+}
+
+.table-fix-head thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Just common table stuff. Really. */
+.table-program-detail {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-program-detail thead th,
+td {
+    padding: 8px 16px;
+}
+
+.table-program-detail thead th {
+    background: #eee;
+    text-align: center;
+}

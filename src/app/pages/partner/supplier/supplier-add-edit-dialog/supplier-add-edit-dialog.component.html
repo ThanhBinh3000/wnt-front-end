@@ -1,0 +1,209 @@
+<div class="modal fade" id="supplier-add-edit-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Đóng"><span>&times;</span></button>
+                <h4 class="modal-title">{{supplierID > 0 ? 'Cập nhật nhà cung cấp' : 'Thêm mới nhà cung cấp'}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="isMinimized">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Tên nhà cung cấp<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Số điện thoại</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Địa chỉ</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Mã số thuế</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Mã vạch</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input class="form-control mb-0" style="text-align:left" type="text"
+                                        ng-model="SupplyerModel.BarCode" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary" title="Sinh mã vạch tự động"
+                                            ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                class="fa-regular fa-barcode-read"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Ghi chú</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isMinimized">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Mã nhà cung cấp</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Tên nhà cung cấp<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Địa chỉ</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Số điện thoại</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Nợ đầu kỳ</label>
+                            <div class="col-sm-8">
+                                <input class="form-control mb-0 text-left" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Mã vạch</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input class="form-control mb-0" style="text-align:left" type="text"
+                                        ng-model="SupplyerModel.BarCode" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary" title="Sinh mã vạch tự động"
+                                            ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                class="fa-regular fa-barcode-read"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Tên nhóm</label>
+                            <div class="col-sm-8">
+                                <select class="form-control mb-0 ng-pristine ng-valid ng-touched"
+                                    name="SupplyerGroupCode" id="SupplyerGroupCode">
+                                    <option label="chợ thuốc hapulico" value="7617">chợ thuốc hapulico</option>
+                                    <option label="Mặc định" value="4">Mặc định</option>
+                                    <option label="nhà cung cấp " value="626">nhà cung cấp </option>
+                                    <option label="Nhà Phân Phối" value="2">Nhà Phân Phối</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Thêm <span style="cursor: pointer" (click)="expandForm()">{{expandLabel}}</span></p>
+                    <div *ngIf="showMoreForm">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Số Fax</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Website</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Mã số thuế</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Người liên hệ</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Người đại diện</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Địa bàn hoạt động</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control mb-0 text-left" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary">{{supplierID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
