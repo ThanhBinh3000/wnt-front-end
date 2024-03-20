@@ -7,10 +7,18 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CustomerAddEditDialogComponent implements OnInit {
   @Input() customerID = 0;
+  @Input() isMinimized: boolean = false;
+  showMoreForm: boolean = false;
+  expandLabel: string = '[+]';
   
   constructor() {
   }
 
   ngOnInit() {
   }
+
+  expandForm() {
+    this.showMoreForm = !this.showMoreForm;
+    this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
+  };
 }

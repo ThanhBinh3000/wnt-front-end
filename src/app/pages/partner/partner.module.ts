@@ -16,6 +16,7 @@ import { SupplierGroupListComponent } from './supplier-group/supplier-group-list
 import { SupplierListComponent } from './supplier/supplier-list/supplier-list.component';
 import { SupplierAddEditDialogComponent } from './supplier/supplier-add-edit-dialog/supplier-add-edit-dialog.component';
 import { SupplierRewardProgramComponent } from './supplier/supplier-reward-program-dialog/supplier-reward-program-dialog.component';
+import { CustomerPrintBarcodeDialogComponent } from './customer/customer-print-barcode-dialog/customer-print-barcode-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SupplierRewardProgramComponent } from './supplier/supplier-reward-progr
     CustomerGroupAddEditDialogComponent,
     CustomerListComponent,
     CustomerAddEditDialogComponent,
+    CustomerPrintBarcodeDialogComponent,
     DoctorGroupListComponent,
     DoctorGroupAddEditDialogComponent,
     DoctorListComponent,
