@@ -28,6 +28,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/partner/partner.module').then((m) => m.PartnerModule),
       },
       {
+        path: 'system',
+        loadChildren: () => import('../pages/system/system.module').then((m) => m.SystemModule),
+      },
+      {
         path: 'notification',
         component: NotificationComponent
       }
