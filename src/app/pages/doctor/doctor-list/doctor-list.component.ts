@@ -1,0 +1,21 @@
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
+@Component({
+  selector: 'doctor-list',
+  templateUrl: './doctor-list.component.html',
+  styleUrls: ['./doctor-list.component.css'],
+})
+export class DoctorListComponent implements OnInit {
+  title: string = "Danh sách bác sỹ";
+  doctorID: number = 0;
+
+  constructor(
+    private titleService: Title
+  ) {
+  }
+
+  ngOnInit() {
+    this.titleService.setTitle(this.title);
+  }
+}
