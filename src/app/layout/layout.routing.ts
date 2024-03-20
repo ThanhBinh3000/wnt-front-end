@@ -24,6 +24,22 @@ const routes: Routes = [
         loadChildren: () => import('../pages/account/account.module').then((m) => m.AccountModule),
       },
       {
+        path: 'service-group',
+        loadChildren: () => import('../pages/service-group/service-group.module').then((m) => m.ServiceGroupModule),
+      },
+      {
+        path: 'warehouse-location',
+        loadChildren: () => import('../pages/warehouse-location/warehouse-location.module').then((m) => m.WarehouseLocationModule),
+      },
+      {
+        path: 'drug-unit',
+        loadChildren: () => import('../pages/drug-unit/drug-unit.module').then((m) => m.DrugUnitModule),
+      },
+      {
+        path: 'drug-group',
+        loadChildren: () => import('../pages/drug-group/drug-group.module').then((m) => m.DrugGroupModule),
+      },
+      {
         path: 'customer-group',
         loadChildren: () => import('../pages/customer-group/customer-group.module').then((m) => m.CustomerGroupModule),
       },
