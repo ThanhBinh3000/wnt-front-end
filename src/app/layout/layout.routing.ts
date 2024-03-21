@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/drug-group/drug-group.module').then((m) => m.DrugGroupModule),
       },
       {
+        path: 'drug',
+        loadChildren: () => import('../pages/drug/drug.module').then((m) => m.DrugModule),
+      },
+      {
         path: 'customer-group',
         loadChildren: () => import('../pages/customer-group/customer-group.module').then((m) => m.CustomerGroupModule),
       },
