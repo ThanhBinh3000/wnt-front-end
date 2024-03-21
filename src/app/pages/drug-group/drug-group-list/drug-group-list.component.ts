@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {BaseComponent} from "../../../base/base.component";
 import {appConfig} from "../../../app.config";
+import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'drug-group-list',
@@ -19,12 +20,21 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     private _service : NhomThuocService
   ) {
     super(injector,_service);
+    this.formData = this.fb.group({
+      // UserName: ['', Validators.required],
+      // Password: ['', Validators.required],
+      // // code: ['', Validators.required],
+      // // captchaText: ['', Validators.required],
+      // code: [],
+      // captchaText: [],
+      // rememberMe: [''],
+    });
   }
 
   ngOnInit() {
-    // this.searchList().then((res)=>{
-    //   console.log(res)
-    // })
+    console.log("sadasdsa")
+    this.searchList()
     this.titleService.setTitle(this.title);
   }
 }
+

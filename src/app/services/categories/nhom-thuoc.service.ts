@@ -8,7 +8,7 @@ import {BaseService} from "../base.service";
 export class NhomThuocService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'nhom-thuoc','/wnt-categories');
+    super(httpClient, 'wnt-categories','nhom-thuoc');
   }
 
 
