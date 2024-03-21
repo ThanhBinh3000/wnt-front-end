@@ -19,7 +19,7 @@ import {ModalService} from "../services/modal.service";
   selector: 'app-base',
   templateUrl: './base.component.html',
 })
-export class BaseComponent implements OnInit {
+export class BaseComponent  {
   // User Info
   userInfo: UserLogin;
   department: Department;
@@ -55,9 +55,6 @@ export class BaseComponent implements OnInit {
     // get user info login
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
-  }
-
-  ngOnInit(): void {
   }
 
   // search page
