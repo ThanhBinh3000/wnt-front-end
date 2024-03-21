@@ -1,0 +1,42 @@
+<div class="modal fade" id="warehouse-location-add-edit-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Đóng"><span>&times;</span></button>
+                <h4 class="modal-title">{{warehouseLocationID > 0 ? 'Cập nhật thông tin vị trí tủ/kho' : 'Thêm mới thông tin vị trí tủ/kho'}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Mã<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input class="form-control mb-0 text-left" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Tên<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input class="form-control mb-0 text-left" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Ghi chú</label>
+                        <div class="col-sm-8">
+                            <input class="form-control mb-0 text-left" type="text"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary">{{warehouseLocationID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+            </div>
+        </div>
+    </div>
+</div>

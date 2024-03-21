@@ -24,8 +24,44 @@ const routes: Routes = [
         loadChildren: () => import('../pages/account/account.module').then((m) => m.AccountModule),
       },
       {
-        path: 'partner',
-        loadChildren: () => import('../pages/partner/partner.module').then((m) => m.PartnerModule),
+        path: 'service-group',
+        loadChildren: () => import('../pages/service-group/service-group.module').then((m) => m.ServiceGroupModule),
+      },
+      {
+        path: 'warehouse-location',
+        loadChildren: () => import('../pages/warehouse-location/warehouse-location.module').then((m) => m.WarehouseLocationModule),
+      },
+      {
+        path: 'drug-unit',
+        loadChildren: () => import('../pages/drug-unit/drug-unit.module').then((m) => m.DrugUnitModule),
+      },
+      {
+        path: 'drug-group',
+        loadChildren: () => import('../pages/drug-group/drug-group.module').then((m) => m.DrugGroupModule),
+      },
+      {
+        path: 'customer-group',
+        loadChildren: () => import('../pages/customer-group/customer-group.module').then((m) => m.CustomerGroupModule),
+      },
+      {
+        path: 'customer',
+        loadChildren: () => import('../pages/customer/customer.module').then((m) => m.CustomerModule),
+      },
+      {
+        path: 'supplier-group',
+        loadChildren: () => import('../pages/supplier-group/supplier-group.module').then((m) => m.SupplierGroupModule),
+      },
+      {
+        path: 'supplier',
+        loadChildren: () => import('../pages/supplier/supplier.module').then((m) => m.SupplierModule),
+      },
+      {
+        path: 'doctor-group',
+        loadChildren: () => import('../pages/doctor-group/doctor-group.module').then((m) => m.DoctorGroupModule),
+      },
+      {
+        path: 'doctor',
+        loadChildren: () => import('../pages/doctor/doctor.module').then((m) => m.DoctorModule),
       },
       {
         path: 'notification',
