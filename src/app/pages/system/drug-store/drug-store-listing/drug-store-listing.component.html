@@ -5,7 +5,7 @@
                 <fieldset class="mb-3">
                     <label>Loại NT</label>
                     <select class="form-control mb-0" >
-                        <option *ngFor="let i in drugStoreTypes">{{i.name}}</option>
+                        <option *ngFor="let i of drugStoreTypes" value="{{i.value}}">{{i.name}}</option>
                     </select>
                 </fieldset>
                 <fieldset>
@@ -99,7 +99,7 @@
                             </label>
                         </div>
                     </div>
-                    <div *ngIf="filterModel.TypeDate == 2" class="mb-3">
+                    <div class="mb-3">
                         <label>Trạng thái phiếu LT</label>
                         <select class="form-control mb-0" ng-model="filterModel.ConnectivityFilterTypeId">
                             <option *ngFor="let i of connectivityTypes" value="{{i.value}}">{{i.name}}</option>
@@ -108,7 +108,7 @@
                     <div class="mb-3">
                         <label>Lựa chọn chính sách bán hàng</label>
                         <select class="form-control mb-0" ng-model="filterModel.TypeBasic">
-                            <option *ngFor="let i of connectivityTypes" value="{{i.value}}">{{i.name}}</option>
+                            <option *ngFor="let i of typeDateItem" value="{{i.value}}">{{i.name}}</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -131,7 +131,7 @@
                     <div class="mb-3 form-check">
                         <label>Trạng thái gửi ZNS</label>
                         <select class="form-control mb-0" ng-model="filterModel.TypeBasic">
-                            <option *ngFor="let i of drugStorePaymentTypes" value="{{i.value}}">{{i.name}}</option>
+                            <option *ngFor="let i of znsTypes" value="{{i.value}}">{{i.name}}</option>
                         </select>
 
                     </div>
@@ -171,7 +171,7 @@
                             <div class="overSelect"></div>
                         </div>
                         <div id="checkboxes">
-                            <label ng-repeat="let i of hideColumns">
+                            <label *ngFor="let i of hideColumns">
                                 <input type="checkbox" ng-change="onSelectedHideColum(i.id)" ng-model="i.disable" />
                             </label>
                         </div>
@@ -200,17 +200,17 @@
                                 <th  display-name="C.S bán hàng">C.S bán hàng</th>
                                 <th display-name="Nhân viên kinh doanh">Nhân viên kinh doanh</th>
                                 <th display-name="Chăm sóc sau bán hàng">Chăm sóc sau bán hàng</th>
-                                <th  display-name="Ghi chú kinh doanh">Ghi chú kinh doanh</th>
-                                <th  display-name="Ghi chú triển khai">Ghi chú triển khai</th>
-                                <th  style="min-width: 200px" display-name="Kết quả triển khai">Kết quả triển khai</th>
-                                <th display-name="Tiền thanh toán">Tiền thanh toán</th>
+                                <th  style="width: 20%;" display-name="Ghi chú kinh doanh">Ghi chú kinh doanh</th>
+                                <th  style="width: 20%;" display-name="Ghi chú triển khai">Ghi chú triển khai</th>
+                                <th  style="width: 20%;" display-name="Kết quả triển khai">Kết quả triển khai</th>
+                                <th  display-name="Tiền thanh toán">Tiền thanh toán</th>
                                 <th  display-name="Tổng tiền">Tổng tiền</th>
-                                <th display-name="TT thu tiền">TT thu tiền</th>
-                                <th display-name="TT gửi tin XNTT">TT gửi tin XNTT</th>
-                                <th display-name="KQ gửi tin XNTT">KQ gửi tin XNTT</th>
+                                <th  display-name="TT thu tiền">TT thu tiền</th>
+                                <th  display-name="TT gửi tin XNTT">TT gửi tin XNTT</th>
+                                <th  display-name="KQ gửi tin XNTT">KQ gửi tin XNTT</th>
                                 <th  display-name="Ngày thu tiền">Ngày thu tiền</th>
-                                <th display-name="Tổng (nhập/ xuất)">Tổng (nhập/ xuất)</th>
-                                <th display-name="#"></th>
+                                <th  display-name="Tổng (nhập/ xuất)">Tổng (nhập/ xuất)</th>
+                                <th  display-name="#"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -218,7 +218,7 @@
                                 <!--STT-->
                                 <td ng-if="deviceType!=1">
                                     <div>
-                                        <a href="" ng-click="onRegionalDetails(gridItem.Id, 1); $event.preventDefault(); $event.stopPropagation();">
+                                        <a href="" data-toggle="modal" data-target="#regional-details-dialog">
                                             <!-- {{gridItem.Order}} -->1
                                         </a>
                                     </div>
@@ -227,7 +227,7 @@
                                 <!--Mã nhà thuốc-->
                                 <td field-name="Code" class="sticky-col content-code">
                                     <div class="text-left">
-                                        <a href="" ng-click="onGeneralStoreMapping(gridItem); $event.preventDefault(); $event.stopPropagation();">
+                                        <a href="" (click)="drugStoreCode = '0010'" data-toggle="modal" data-target="#general-store-mapping-dialog">
                                             <!-- {{gridItem.Code}} --> 0010
                                         </a>
                                     </div>
@@ -337,7 +337,7 @@
                                         <!-- {{gridItem.NoteType}} -->Bán hàng 1
                                         <a class="btn btn-sm btn-primary" title="Cập nhật thông tin" ng-click="onOpenEditNoteType(gridItem)"><i class="fa-regular fa-pen"></i></a>
                                     </div>
-                                    <div ng-if="gridItem.IsEditNoteType">
+                                    <div ng-if="gridItem.IsEditNoteType" style="width: 150px" > 
                                         <textarea type="text" ng-init="gridItem.InputNoteType = gridItem.NoteType" ng-model="gridItem.InputNoteType" class="form-control mb-2"
                                                   data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
                                         </textarea>
@@ -350,7 +350,7 @@
                                         <!-- {{gridItem.BusinessDescription}} -->Kinh doanh 1
                                         <a class="btn btn-sm btn-primary" title="Cập nhật thông tin" ng-click="onOpenEditBusinessDescription(gridItem)"><i class="fa-regular fa-pen"></i></a>
                                     </div>
-                                    <div ng-if="gridItem.IsEditBusinessDescription">
+                                    <div style="width: 150px"  ng-if="gridItem.IsEditBusinessDescription">
                                         <textarea type="text" ng-init="gridItem.InputBusinessDescription = gridItem.BusinessDescription" ng-model="gridItem.InputBusinessDescription" class="form-control mb-2"
                                                   data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
                                         </textarea>
@@ -360,7 +360,7 @@
 
                                 <!--Kết quả triển khai-->
                                 <td>
-                                    <div class="text-left">
+                                    <div style="width: 150px"  class="text-left">
                                         <!-- <select ng-change="onResultBusinessChanged(gridItem)" class="form-control mb-0" ng-model="gridItem.ResultBusinessId">
                                             <option ng-repeat="i in lstResultBusiness" value="{{i.Id}}">
                                                 {{i.Name}}
@@ -384,7 +384,7 @@
 
                                             </span>
                                         </div>
-                                        <input type="button" value="Lưu" class="btn btn-sm btn-primary w-100" (click)="drugStoreCode='0010'" data-toggle="modal" data-target="#confirm-payment-zns-dialog">
+                                        <input type="button" value="Lưu" class="btn btn-sm btn-primary w-100" (click)="drugStoreCode='0010'" data-toggle="modal" data-target="#confirm-payment-send-zns-dialog">
                                     </div>
                                 </td>
                                 <!--Tổng tiền-->
@@ -433,18 +433,19 @@
                                             <a href="/" class="btn btn-sm btn-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-danger" ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();" *ngIf="permittedFields.Delete_Store">
+                                            <a href="#" class="btn btn-sm btn-danger" ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();">
                                                 <i class="fa-regular fa-trash"></i>
                                             </a>
                                         </div>
                                         <div class="baocao-actions-item">
-                                            <a href="" class="btn btn-sm btn-primary" ng-click="onBusiness(gridItem); $event.preventDefault(); $event.stopPropagation();">
+                                            <a href="" class="btn btn-sm btn-primary" (click)="drugStoreCode='0010'" 
+                                                data-toggle="modal" data-target="#criteria-business-dialog">
                                                 Triển khai
                                             </a>
                                         </div>
                                     </div>
                                     <div ng-if="!gridItem.IsActivated">
-                                        <a href="#" *ngIf="permittedFields.Delete_Store" class="btn btn-sm btn-primary" ng-click="onRestore(gridItem); $event.preventDefault(); $event.stopPropagation();">
+                                        <a href="#" class="btn btn-sm btn-primary" ng-click="onRestore(gridItem); $event.preventDefault(); $event.stopPropagation();">
                                             Khôi phục
                                         </a>
                                     </div>
@@ -499,4 +500,6 @@
         </div>
     </div>
 </div>
-<!-- <confirm-payment-zns-dialog [drugStoreCode]="drugStoreCode"></confirm-payment-zns-dialog> -->
+<confirm-payment-send-zns-dialog [drugStoreCode]="drugStoreCode"></confirm-payment-send-zns-dialog>
+<general-store-mapping-dialog [drugStoreCode]="drugStoreCode"></general-store-mapping-dialog>
+<criteria-business-dialog [drugStoreCode]="drugStoreCode"></criteria-business-dialog>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
 @Component({
   selector: 'app-system',
   templateUrl: './drug-store-listing.component.html',
@@ -151,7 +150,6 @@ connectivityTypes = [
       name: "Chưa liên thông", value: 3
   }
 ];
-
   constructor(
     private titleService: Title
   ) {
