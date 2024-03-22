@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 // @ts-ignore
 import {saveAs} from 'file-saver';
 import {HttpClient} from '@angular/common/http';
@@ -19,7 +19,7 @@ import {ModalService} from "../services/modal.service";
   selector: 'app-base',
   templateUrl: './base.component.html',
 })
-export class BaseComponent implements OnInit {
+export class BaseComponent  {
   // User Info
   userInfo: UserLogin;
   department: Department;
@@ -29,6 +29,8 @@ export class BaseComponent implements OnInit {
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
   totalRecord: number = 0;
+  fb: FormBuilder = new FormBuilder();
+
 
   // Service
   notification: NotificationService;
@@ -57,9 +59,6 @@ export class BaseComponent implements OnInit {
     this.department = this.userInfo.department;
   }
 
-  ngOnInit(): void {
-  }
-
   // search page
   async searchPage() {
 
@@ -67,7 +66,36 @@ export class BaseComponent implements OnInit {
 
   // search list
   async searchList() {
-
+    console.log('ádasdas');
+    await this.spinner.show();
+    try {
+      let body = this.formData.value
+      body.paggingReq = {
+        limit: this.pageSize,
+        page: this.page - 1
+      }
+      console.log(body);
+      let res = await this.service.searchList(body);
+      console.log(res);
+      if (res?.msg == MESSAGE.SUCCESS) {
+        let data = res.data;
+        this.dataTable = data.content;
+        this.totalRecord = data.totalElements;
+        if (this.dataTable && this.dataTable.length > 0) {
+          this.dataTable.forEach((item) => {
+            item.checked = false;
+          });
+        }
+      } else {
+        this.dataTable = [];
+        this.totalRecord = 0;
+        this.notification.error(MESSAGE.ERROR, res);
+      }
+    } catch (e) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    } finally {
+      await this.spinner.hide();
+    }
   }
 
   // clear form data

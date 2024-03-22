@@ -1,0 +1,76 @@
+<div class="modal fade" id="confirm-payment-send-zns-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true"><i class="fa-regular fa-xmark"></i></span></button>
+                <h4 class="modal-title">Thông tin gửi khách hàng đã thanh toán</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5>XÁC NHẬN THANH TOÁN TIỀN PHẦN MỀM</h5>
+                            Cảm ơn bạn <b>Nguyễn Văn A</b> đã tin dùng phần mềm Webnhathuoc. Chúng tôi ghi nhận bạn đã thanh toán phần mềm với chi tiết như sau:
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Tên cơ sở<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="infoPayment.storeName" />
+                            <i>Tên cơ sở không vượt quá 30 ký tự</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Tên khách hàng<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="infoPayment.customerName" />
+                            <i>Tên khách hàng không vượt quá 30 ký tự</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Mã cơ sở<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="infoPayment.storeCode" />
+                        <i>Mỗi mã cơ sở cách nhau dấu ','</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Số tiền<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="infoPayment.paidMoney" awnum="app-decimal-number" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 control-label">Ngày<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input class="input-datetime form-control mb-0 text-box single-line" style="text-align:left" type="text" ng-model="infoPayment.date" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span>Mọi thông tin cần hỗ trợ xin quý khách vui lòng gọi số điện thoại tổng đài từ 8h - 22h tất cả các ngày trong tuần hoặc liên hệ nhân viên kinh doanh <b>Nguyễn Văn A</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="onUpdatePaidMoney(infoPayment, 0)">Lưu</button>
+                <button type="button" class="btn btn-primary" ng-click="onUpdatePaidMoney(infoPayment, 1)">Lưu & Gửi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@ import {AuthGuard} from "../../guard/auth.guard";
 import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
 import {ChangeStaffComponent} from "./change-staff/change-staff.component";
 import {StaffPermissionComponent} from "./staff-permission/staff-permission.component";
+import { StaffListComponent } from './staff-list/staff-list.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,11 @@ const routes: Routes = [
       {
         path: 'staff-permission',
         component: StaffPermissionComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'staff-list',
+        component: StaffListComponent,
         // canActivate: [AuthGuard],
       }
     ],

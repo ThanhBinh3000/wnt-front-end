@@ -1,0 +1,128 @@
+<div class="card-bg">
+    <h2 class="mb-0" style="text-align: center;">ĐƠN NHẶT HÀNG</h2>
+    <div style="text-align: center;font-size: 16px">
+        <span id="" style="width: 10%">Ngày 1/1/2024 10:00</span>
+    </div>
+    <table class="table">
+        <tr>
+            <td style="text-align: left">
+                <label class="control-label">Khách hàng:</label>
+                <label class="control-label" style="font-weight: normal"> 
+                    <!-- {{viewModel.Customer.Name}} -->Nguyễn Văn A
+                </label>
+                <br />
+                <label class="control-label">Địa chỉ:</label>
+                <label class="control-label" style="font-weight: normal">
+                    <!-- {{viewModel.Customer.Addresses}} -->Hà Nội
+                </label>
+            </td>
+            <td style="text-align: right">
+                <label class="control-label">Số phiếu: </label>
+                <label class="control-label" style="font-weight: normal">
+                <!-- {{viewModel.NoteNumber}} --> 1
+            </label>
+            </td>
+    </table>
+    <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width:100%">
+        <thead>
+            <tr>
+                <th style="width: 10px">STT</th>
+                <th style="width: 70px">Mã</th>
+                <th>Tên hàng hóa</th>
+                <th>Đơn vị</th>
+                <th style="width: 100px; text-align: right">SL</th>
+                <th style="width: 150px; text-align: right">Giá nhập</th>
+                <th style="width: 150px; text-align: right">Giá bán</th>
+                <th style="width: 150px; text-align: right">Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="i in viewModel.NoteItems" class="">
+                <td>
+                    <span>
+                        <!-- {{i.Order}} -->1
+                    </span>
+
+                </td>
+                <td>
+                    <span>
+                        <!-- {{i.DrugCode}} --> TH01
+                    </span>
+                </td>
+                <td>
+                    <a ng-show="@ViewBag.DisplayImage == 1 && i.ImageThumbUrl" data-fancybox="" href="" data-caption="Ảnh sản phẩm">
+                        <img ng-src="" alt="" style="width: 40px; height:40px;" />
+                    </a>
+                    <span>
+                        <!-- {{i.DrugName}} --> Thuốc 1
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        <!-- {{i.UnitName}} --> Viên
+                    </span>
+
+                </td>
+                <td>
+                    <span class="display-mode pNumber" style="float:right">
+                        <!-- {{i.Quantity | number : 0}} -->1
+                    </span>
+
+                </td>
+                <td>
+                    <span class="display-mode pNumber" style="float:right">
+                        <!-- {{i.InPrice | number : 0}} --> 2.000
+                    </span>
+                </td>
+                <td>
+                    <span class="display-mode pNumber" style="float:right">
+                        <!-- {{i.Price | number : 0}} --> 2.000
+                    </span>
+                </td>
+                <td>
+                    <span class="display-mode pNumber" style="float:right">
+                        <!-- {{i.Price * i.Quantity | number : 0}} --> 4.000
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <b>Tổng Số Tiền : &nbsp;<span id="spanSumAll"></span></b><span>
+                <!-- {{viewModel.TotalAmount | number : 0}} --> 10000
+            </span>
+        </div>
+    </div>
+
+    <table class="table borderless table-condensed">
+        <tr>
+            <td style="text-align:right; font-weight: normal; color:GrayText">
+                <label class="control-label" style="font-weight: normal">[Người lập: </label>
+                <label class="control-label" style="font-weight: normal">[
+                    <!-- {{viewModel.CreatedBy}} --> Nguyễn Văn A
+                    ]</label>
+            </td>
+            <td style="text-align:right; font-weight: normal; color:GrayText">
+                <label class="control-label" style="font-weight: normal">[Ngày lập: </label>
+                <label class="control-label" style="font-weight: normal">[
+                    <!-- {{viewModel.NoteDate | appDate}} --> 01/01/2024
+                    ]</label>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <div class="form-group">
+        <div class="">
+            <div class="d-flex align-items-center justify-content-center gap-10">
+                <a class="btn btn-primary" title="Tiếp tục" ng-if="permittedFields.Add_Pick_Up_Order" href="/PickUpOrder/FormQuick?noteId=null&taskMode=1&noteTypeId=2">Tiếp tục</a>
+                <a class="btn btn-primary" title="Sửa" ng-if="permittedFields.Add_Pick_Up_Order" href="/PickUpOrder/FormQuick?noteId=&taskMode=1">Sửa</a>
+                <a class="btn btn-default" title="In" ng-click="onPrint(viewModel.NoteId)">In</a>
+                <a class="btn btn-primary" title="Xử lý" ng-if="permittedFields.Handl_Pick_Up_Order" ng-click="onNoteProcess()">Xử lý</a>
+                <input type="button" value="Quay lại" title="Quay lại" class="btn btn-default" onclick="" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,6 +8,11 @@ import {RouterOutlet} from "@angular/router";
 import {LayoutRouting} from "./layout.routing";
 import {BaseComponent} from "../base/base.component";
 import { DrugModule } from '../pages/drug/drug.module';
+import {HttpClientModule} from "@angular/common/http";
+import {NhomThuocService} from "../services/categories/nhom-thuoc.service";
+import {SpinnerService} from "../services/spinner.service";
+import {ModalService} from "../services/modal.service";
+import {UserService} from "../services/user.service";
 
 @NgModule({
   declarations: [
@@ -16,7 +21,8 @@ import { DrugModule } from '../pages/drug/drug.module';
     FooterComponent,
     BaseComponent
   ],
-  imports: [CommonModule, RouterOutlet, LayoutRouting, DrugModule],
+  imports: [CommonModule, HttpClientModule, RouterOutlet, LayoutRouting, DrugModule],
+  providers: [NhomThuocService, SpinnerService, ModalService, UserService],
   exports: [],
 })
 export class LayoutModule {

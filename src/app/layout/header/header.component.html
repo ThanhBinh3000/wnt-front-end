@@ -630,10 +630,13 @@
                    class="dropdown-toggle">Hệ Thống
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('system')">
+                  <li><a href="/management/system/account-manager" target="_blank">Quản lý người dùng</a></li>
+                  <li><a href="/management/system/drug-store-listing" target="_blank">Quản lý nhà thuốc</a></li>
+                  <li class="divider"></li>
                   <li><a href="https://duocquocgia.com.vn/" target="_blank">Dược quốc gia</a></li>
                   <li><a href="openElitLog:elitLog">App nhiệt ẩm kế</a></li>
                   <li class="divider"></li>
-                  <li><a href="/Admin/StaffListing">Danh sách nhân viên</a></li>
+                  <li><a href="/management/account/staff-list">Danh sách nhân viên</a></li>
                   <li><a href="/System/AppSettings">Tùy chọn</a></li>
                   <li><a href="/Account/ChooseDefaultDs?switchAble=True">Đổi cơ sở</a></li>
                   <li><a href="/Nhathuoc/thongtin/0011">Thông tin cơ sở</a></li>
@@ -737,7 +740,7 @@
                   <li><a href="/DrugManagement/CreateReserve">Lập dự trù thuốc</a></li>
                   <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
                   <li><a href="/Connectivity/ConnectivitySampleNotes">Quản lý đơn thuốc LT</a></li>
-                  <li><a href="/Inventory">Kiểm kê kho</a></li>
+                  <li><a href="/management/inventory/inventory-list">Kiểm kê kho</a></li>
                   <li class="divider"></li>
                   <li><a href="/Thuocs/MappingDrugForConnect">Thiết lập thuốc LT</a></li>
                 </ul>
@@ -748,11 +751,12 @@
                    class="dropdown-toggle">Đơn Hàng
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('order')">
-                  <li><a href="/OrderMan/OrdersListing">Quản lý đơn đặt hàng</a></li>
-                  <li><a href="/OrderMan/SearchDrugs">Tra cứu và nhặt hàng</a></li>
+                  <li><a href="/management/order/create-order">Tạo mới đơn đặt hàng</a></li>
+                  <li><a href="/management/order/order-list">Quản lý đơn đặt hàng</a></li>
+                  <li><a href="/management/order/search-drug">Tra cứu và nhặt hàng</a></li>
                   <li class="divider"></li>
-                  <li><a href="/PickUpOrder/FormQuick?taskMode=1&amp;noteTypeId=2">Đơn nhặt hàng</a></li>
-                  <li><a href="/PickUpOrder/ListOrderPickUp">Quản lý đơn khách đặt</a></li>
+                  <li><a href="/management/order/form-quick">Đơn nhặt hàng</a></li>
+                  <li><a href="/management/order/list-order-pick-up">Quản lý đơn khách đặt</a></li>
                   <li class="divider"></li>
                   <li><a href="/PickUpOrder/ListOrderAssign">Gán nhân viên đơn nhặt</a></li>
                   <li><a href="/PickUpOrder/ListDrugToBuy">Danh sách hàng cần mua</a></li>
