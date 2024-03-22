@@ -36,6 +36,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/order/order.module').then((m) => m.OrderModule),
       },
       {
+        path: 'inventory',
+        loadChildren: () => import('../pages/inventory/inventory.module').then((m) => m.InventoryModule),
+      },
+      {
         path: 'notification',
         component: NotificationComponent
       }

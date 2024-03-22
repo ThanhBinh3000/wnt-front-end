@@ -7,6 +7,8 @@ import { FormQuickComponent } from './pick-up-order/form-quick/form-quick.compon
 import { HandleOrderComponent } from './pick-up-order/handle-order/handle-order.component';
 import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/list-order-pick-up.component';
 import { PickUpOrderDetailComponent } from './pick-up-order/pick-up-order-detail/pick-up-order-detail.component';
+import { CreateOrderComponent } from './create-order/create-order.component';
+import { OrderListComponent } from './order-list/order-list.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,16 @@ const routes: Routes = [
       {
         path: 'pick-up-order-detail',
         component: PickUpOrderDetailComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'create-order',
+        component: CreateOrderComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'order-list',
+        component: OrderListComponent,
         // canActivate: [AuthGuard],
       }
     ],
