@@ -76,6 +76,14 @@ const routes: Routes = [
         loadChildren: () => import('../pages/inventory/inventory.module').then((m) => m.InventoryModule),
       },
       {
+        path: 'reserve',
+        loadChildren: () => import('../pages/reserve/reserve.module').then((m) => m.ReserveModule),
+      },
+      {
+        path: 'clinic',
+        loadChildren: () => import('../pages/clinic/clinic.module').then((m) => m.ClinicModule),
+      },
+      {
         path: 'notification',
         component: NotificationComponent
       }
