@@ -13,7 +13,9 @@ import { DoctorListComponent } from './doctor-list/doctor-list.component';
     DoctorAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, DoctorRoutingModule],
-  exports: [],
+  exports: [
+    DoctorAddEditDialogComponent
+  ],
 })
 export class DoctorModule {
 }

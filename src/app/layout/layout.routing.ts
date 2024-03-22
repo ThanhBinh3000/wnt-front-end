@@ -28,6 +28,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/service-group/service-group.module').then((m) => m.ServiceGroupModule),
       },
       {
+        path: 'service',
+        loadChildren: () => import('../pages/service/service.module').then((m) => m.ServiceModule),
+      },
+      {
         path: 'warehouse-location',
         loadChildren: () => import('../pages/warehouse-location/warehouse-location.module').then((m) => m.WarehouseLocationModule),
       },
@@ -38,6 +42,10 @@ const routes: Routes = [
       {
         path: 'drug-group',
         loadChildren: () => import('../pages/drug-group/drug-group.module').then((m) => m.DrugGroupModule),
+      },
+      {
+        path: 'drug',
+        loadChildren: () => import('../pages/drug/drug.module').then((m) => m.DrugModule),
       },
       {
         path: 'customer-group',

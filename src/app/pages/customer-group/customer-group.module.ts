@@ -13,7 +13,9 @@ import { CustomerGroupAddEditDialogComponent } from './customer-group-add-edit-d
     CustomerGroupAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, CustomerGroupRoutingModule],
-  exports: [],
+  exports: [
+    CustomerGroupAddEditDialogComponent
+  ],
 })
 export class CustomerGroupModule {
 }

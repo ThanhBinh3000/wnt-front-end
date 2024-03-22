@@ -5,17 +5,20 @@ import {RouterOutlet} from "@angular/router";
 import {SupplierRoutingModule} from "./supplier.routing";
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { SupplierAddEditDialogComponent } from './supplier-add-edit-dialog/supplier-add-edit-dialog.component';
-import { SupplierRewardProgramComponent } from './supplier-reward-program-dialog/supplier-reward-program-dialog.component';
+import { SupplierRewardProgramDialogComponent } from './supplier-reward-program-dialog/supplier-reward-program-dialog.component';
 
 @NgModule({
   declarations: [
     SupplierComponent,
     SupplierListComponent,
     SupplierAddEditDialogComponent,
-    SupplierRewardProgramComponent
+    SupplierRewardProgramDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, SupplierRoutingModule],
-  exports: [],
+  exports: [
+    SupplierAddEditDialogComponent,
+    SupplierRewardProgramDialogComponent
+  ],
 })
 export class SupplierModule {
 }

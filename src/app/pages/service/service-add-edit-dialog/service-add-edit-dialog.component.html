@@ -1,0 +1,214 @@
+<div class="modal fade" id="service-add-edit-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
+                <h4 class="modal-title">{{serviceID > 0 ? 'Cập nhật dịch vụ' : 'Thêm mới dịch vụ'}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Nhóm dịch vụ</label>
+                                    <div class="col-sm-8">
+                                        <form ng-if="viewModel.IsServiceCombo" class="ng-pristine ng-valid ng-scope">
+                                            <div class="multiselect">
+                                                <div class="selectBox" ng-click="showCheckboxes()">
+                                                    <select class="form-control">
+                                                        <option class="ng-binding" value="Lựa chọn nhóm dịch vụ">Lựa
+                                                            chọn nhóm dịch vụ</option>
+                                                    </select>
+                                                    <div class="overSelect"></div>
+                                                </div>
+                                                <div id="show-combo-service" style="display: block;">
+                                                    <p ng-repeat="i in serviceGroups"
+                                                        ng-if="i.TenNhomThuoc != 'Nhóm combo'"
+                                                        class="ng-binding ng-scope">
+                                                        <input ng-model="i.Check" type="checkbox"
+                                                            ng-change="onChangeGroup(i)"
+                                                            class="ng-pristine ng-untouched ng-valid"> Xét nghiệm
+                                                    </p>
+                                                    <p ng-repeat="i in serviceGroups"
+                                                        ng-if="i.TenNhomThuoc != 'Nhóm combo'"
+                                                        class="ng-binding ng-scope">
+                                                        <input ng-model="i.Check" type="checkbox"
+                                                            ng-change="onChangeGroup(i)"
+                                                            class="ng-pristine ng-untouched ng-valid"> Vật Lí trị liệu 1
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <input style="margin-top:0px;" type="checkbox"
+                                            class="form-control ng-valid ng-dirty ng-valid-parse ng-touched"
+                                            ng-model="viewModel.IsServiceCombo">
+                                    </div>
+                                    <div class="col-sm-11">
+                                        Nhóm dịch vụ combo
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Mã dịch vụ<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control mb-0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Tên dịch vụ<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control mb-0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Phòng thực hiện</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control mb-0 ng-pristine ng-valid ng-touched"
+                                            name="SupplyerGroupCode" id="SupplyerGroupCode">
+                                            <option label="--Mặc định--" value="0">--Mặc định--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Liệu trình</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control mb-0 ng-pristine ng-valid ng-touched"
+                                            name="SupplyerGroupCode" id="SupplyerGroupCode">
+                                            <option label="none" value="0">none</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Giá nhập</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="GiaDauKy" id="GiaDauKy"
+                                            class="form-control mb-0 ng-valid ng-isolate-scope ng-dirty ng-valid-parse ng-touched"
+                                            tabindex="19" ng-model="viewModel.InitInPrice" awnum="app-decimal-number"
+                                            data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Giá bán</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="GiaDauKy" id="GiaDauKy"
+                                            class="form-control mb-0 ng-valid ng-isolate-scope ng-dirty ng-valid-parse ng-touched"
+                                            tabindex="19" ng-model="viewModel.InitInPrice" awnum="app-decimal-number"
+                                            data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Chiết khấu (%)</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control mb-0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Mô tả thêm</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control ng-pristine ng-untouched ng-valid"
+                                            tabindex="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Tiêu đề mẫu kết quả</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control mb-0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Loại phiếu</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control ng-pristine ng-valid ng-touched"
+                                            ng-model="viewModel.TypeResultService">
+                                            <option ng-repeat="i in typeResultService" value="0"
+                                                class="ng-binding ng-scope">Mặc định</option>
+                                            <option ng-repeat="i in typeResultService" value="1"
+                                                class="ng-binding ng-scope">Siêu âm</option>
+                                            <option ng-repeat="i in typeResultService" value="2"
+                                                class="ng-binding ng-scope">XQuang</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label">Tích điểm</label>
+                                    <div class="col-sm-8">
+                                        <input type="checkbox"
+                                            class="form-checkbox check-box ng-pristine ng-untouched ng-valid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="col-sm-2 control-label">Mẫu kết quả</label>
+                            <div class="col-sm-10">
+                                ckeditor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary">{{serviceID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+            </div>
+        </div>
+    </div>
+</div>

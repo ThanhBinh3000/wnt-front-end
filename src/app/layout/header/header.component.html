@@ -668,7 +668,7 @@
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('service')">
                   <li><a href="/management/service-group/list">Nhóm dịch vụ</a></li>
-                  <li><a href="/DrugManagement/DrugListing?type=1">Danh sách dịch vụ</a></li>
+                  <li><a href="/management/service/list">Danh sách dịch vụ</a></li>
                   <li class="divider"></li>
                   <li><a href="/NoteService/Create">Lập mới phiếu dịch vụ</a></li>
                   <li><a href="/NoteService/ListNoteService">Danh sách phiếu dịch vụ</a></li>
@@ -730,8 +730,8 @@
                   <li><a href="/management/drug-unit/list">Đơn vị tính</a></li>
                   <li><a href="/management/drug-group/list">Nhóm thuốc</a></li>
                   <li class="divider"></li>
-                  <li><a href="/management/drug/list?type=0">Danh sách thuốc</a></li>
-                  <li><a href="/DrugManagement/Create">Thêm mới thuốc</a></li>
+                  <li><a href="/management/drug/list">Danh sách thuốc</a></li>
+                  <li><a data-toggle="modal" data-target="#drug-add-edit-header-dialog">Thêm mới thuốc</a></li>
                   <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
                   <li><a href="/Thuocs/InMaVach">In mã vạch thuốc, liều dùng</a></li>
                   <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
@@ -915,3 +915,4 @@
 
   </div>
 </div>
+<drug-add-edit-dialog [location]="'header'"></drug-add-edit-dialog>

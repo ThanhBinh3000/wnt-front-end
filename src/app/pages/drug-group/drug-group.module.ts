@@ -10,10 +10,12 @@ import { DrugGroupListComponent } from './drug-group-list/drug-group-list.compon
   declarations: [
     DrugGroupComponent,
     DrugGroupListComponent,
-    DrugGroupAddEditDialogComponent,
+    DrugGroupAddEditDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, DrugGroupRoutingModule],
-  exports: [],
+  exports: [
+    DrugGroupAddEditDialogComponent
+  ],
 })
 export class DrugGroupModule {
 }
