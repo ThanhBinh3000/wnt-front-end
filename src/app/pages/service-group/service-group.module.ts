@@ -13,7 +13,9 @@ import { ServiceGroupListComponent } from './service-group-list/service-group-li
     ServiceGroupAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, ServiceGroupRoutingModule],
-  exports: [],
+  exports: [
+    ServiceGroupAddEditDialogComponent
+  ],
 })
 export class ServiceGroupModule {
 }

@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DrugAddEditDialogComponent implements OnInit {
   @Input() drugID: number = 0;
+  @Input() location: string = 'body';
   checkTab: string = 'main-information';
 
   constructor() {

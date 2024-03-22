@@ -322,7 +322,7 @@
                     <input type="button" value="Xem"
                         ng-click="onDisplayData(); $event.preventDefault(); $event.stopPropagation();"
                         class="btn btn-primary w-50">
-                    <a ng-show="typeItem ==0" href="javascript:void(0)" (click)="drugID = 0" data-toggle="modal" data-target="#drug-add-edit-dialog" class="btn btn-primary w-50"
+                    <a ng-show="typeItem ==0" href="javascript:void(0)" (click)="drugID = 0" data-toggle="modal" data-target="#drug-add-edit-body-dialog" class="btn btn-primary w-50"
                         ng-disabled="!permittedFields.Drug_Create">
                         Thêm
                     </a>
@@ -383,21 +383,21 @@
                         <th display-name="#">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> # </div>
+                                    <div  class="tr-ng-title"> # </div>
                                 </div>
                             </div>
                         </th>
                         <th display-name="Upload">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Upload </div>
+                                    <div  class="tr-ng-title"> Upload </div>
                                 </div>
                             </div>
                         </th>
                         <th display-name="Mặt hàng[Mã-Tên]">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Mặt hàng[Mã-Tên]
+                                    <div  class="tr-ng-title"> Mặt hàng[Mã-Tên]
                                     </div>
                                 </div>
                             </div>
@@ -405,7 +405,7 @@
                         <th display-name="Nhóm hàng">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Nhóm hàng
+                                    <div  class="tr-ng-title"> Nhóm hàng
                                     </div>
                                 </div>
                             </div>
@@ -413,7 +413,7 @@
                         <th display-name="Đơn vị">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Đơn vị
+                                    <div  class="tr-ng-title"> Đơn vị
                                     </div>
                                 </div>
                             </div>
@@ -421,7 +421,7 @@
                         <th display-name="Giá nhập lẻ">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Giá nhập lẻ
+                                    <div  class="tr-ng-title"> Giá nhập lẻ
                                     </div>
                                 </div>
                             </div>
@@ -429,7 +429,7 @@
                         <th display-name="Giá bán lẻ">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Giá bán lẻ
+                                    <div  class="tr-ng-title"> Giá bán lẻ
                                     </div>
                                 </div>
                             </div>
@@ -437,7 +437,7 @@
                         <th display-name="C.K(%)">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> C.K(%)
+                                    <div  class="tr-ng-title"> C.K(%)
                                     </div>
                                 </div>
                             </div>
@@ -445,7 +445,7 @@
                         <th display-name="Giá bán sỉ">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Giá bán sỉ
+                                    <div  class="tr-ng-title"> Giá bán sỉ
                                     </div>
                                 </div>
                             </div>
@@ -453,7 +453,7 @@
                         <th display-name="SL cảnh báo">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> SL cảnh báo
+                                    <div  class="tr-ng-title"> SL cảnh báo
                                     </div>
                                 </div>
                             </div>
@@ -461,7 +461,7 @@
                         <th display-name="Tồn">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Tồn
+                                    <div  class="tr-ng-title"> Tồn
                                     </div>
                                 </div>
                             </div>
@@ -469,7 +469,7 @@
                         <th display-name="Vị trí tủ/kho">
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div> Vị trí tủ/kho
+                                    <div  class="tr-ng-title"> Vị trí tủ/kho
                                     </div>
                                 </div>
                             </div>
@@ -477,7 +477,7 @@
                         <th>
                             <div class="tr-ng-column-header tr-ng-cell">
                                 <div>
-                                    <div>
+                                    <div  class="tr-ng-title">
                                     </div>
                                 </div>
                             </div>
@@ -541,7 +541,7 @@
                                         <div class="input-group ng-scope">
                                             <span>
                                                 <span ng-if="deviceType==0" class="ng-scope">
-                                                    <a href=""
+                                                    <a href="javascript:void(0)" (click)="drugID = 1" data-toggle="modal" data-target="#drug-detail-dialog"
                                                         ng-click="onDrugInfoDetails(gridItem.Id); $event.preventDefault(); $event.stopPropagation();">
                                                         <span style="color:seagreen" class="ng-binding">
                                                             HN498-
@@ -601,7 +601,7 @@
                                 <div ng-if="gridItem.RecordStatusId == 0" class="baocao-actions baocao-actions-row">
                                     <div class="baocao-actions-item">
                                         <span title="sửa" ng-if="permittedFields.Drug_Write">
-                                            <a ng-show="typeItem ==0" (click)="drugID = 1" data-toggle="modal" data-target="#drug-add-edit-dialog"
+                                            <a ng-show="typeItem ==0" (click)="drugID = 1" data-toggle="modal" data-target="#drug-add-edit-body-dialog"
                                                 class="btn btn-primary btn-sm">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
@@ -685,7 +685,7 @@
                         <td align="center" is-customized="true" colspan="14">
                             <div class="tr-ng-grid-footer form-inline">
                                 <div>
-                                    <div>
+                                    <div  class="tr-ng-title">
                                         <span class="form-group pull-left page-size">
                                             <select id="ddlPageSize" class="form-control">
                                                 <option label="10" value="number:10" selected="selected">10</option>

@@ -7,6 +7,7 @@ import {FooterComponent} from "./footer/footer.component";
 import {RouterOutlet} from "@angular/router";
 import {LayoutRouting} from "./layout.routing";
 import {BaseComponent} from "../base/base.component";
+import { DrugModule } from '../pages/drug/drug.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import {BaseComponent} from "../base/base.component";
     FooterComponent,
     BaseComponent
   ],
-  imports: [CommonModule, RouterOutlet, LayoutRouting],
+  imports: [CommonModule, RouterOutlet, LayoutRouting, DrugModule],
   exports: [],
 })
 export class LayoutModule {
