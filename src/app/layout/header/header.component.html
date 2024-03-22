@@ -650,7 +650,7 @@
                    class="dropdown-toggle">Khám bệnh
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('doctor')">
-                  <li><a href="/WaitNote/ListWaits?type=1">Tiếp đón bệnh nhân</a></li>
+                  <li><a href="/management/wait-note/wait-note-list">Tiếp đón bệnh nhân</a></li>
                   <li><a href="/NoteMedical/Create">Lập phiếu khám</a></li>
                   <li><a href="/WaitNote/ListWaits?type=2">Danh sách phiếu khám</a></li>
                   <li><a href="/NoteMedical/ListNoteMedical">Lịch sử khám chữa bệnh</a></li>
@@ -710,14 +710,14 @@
                    class="dropdown-toggle">Thu - Chi
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('revenue-expenditure')">
-                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=1">Viết phiếu thu nợ khách hàng</a>
+                  <li><a href="/management/in-out-note/incoming-note-add-edit">Viết phiếu thu nợ khách hàng</a>
                   </li>
-                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2">Viết phiếu trả nợ nhà cung cấp</a>
+                  <li><a href="/management/in-out-note/outcoming-note-add-edit">Viết phiếu trả nợ nhà cung cấp</a>
                   </li>
-                  <li><a href="/InOutCommingNote/OtherInOutcommingNote?noteTypeId=3">Nhập các khoản thu chi khác</a>
+                  <li><a href="/management/in-out-note/other-in-out-note-add-edit">Nhập các khoản thu chi khác</a>
                   </li>
                   <li class="divider"></li>
-                  <li><a href="/InOutCommingNote?noteTypeId=1">Danh sách phiếu Thu-Chi</a></li>
+                  <li><a href="/management/in-out-note/in-out-note-list">Danh sách phiếu Thu-Chi</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('merchandise', 'block') "
