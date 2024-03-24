@@ -2,7 +2,6 @@ import {Component, Injectable, Injector, OnInit} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {BaseComponent} from "../../../base/base.component";
-import {appConfig} from "../../../app.config";
 import {Validators} from "@angular/forms";
 
 @Component({
