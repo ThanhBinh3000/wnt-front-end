@@ -7,7 +7,7 @@ import {Department} from "../models/department";
 import {UserService} from "../services/user.service";
 import {UserLogin} from "../models/user-login";
 import {PAGE_SIZE_DEFAULT} from "../constants/config";
-import {MESSAGE} from "../constants/message";
+import {MESSAGE, STATUS_API} from "../constants/message";
 import {StorageService} from "../services/storage.service";
 import {BaseService} from "../services/base.service";
 import {NotificationService} from "../services/notification.service";
@@ -61,12 +61,6 @@ export class BaseComponent  {
 
   // search page
   async searchPage() {
-
-  }
-
-  // search list
-  async searchList() {
-    console.log('ádasdas');
     await this.spinner.show();
     try {
       let body = this.formData.value
@@ -81,6 +75,32 @@ export class BaseComponent  {
         let data = res.data;
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
+        if (this.dataTable && this.dataTable.length > 0) {
+          this.dataTable.forEach((item) => {
+            item.checked = false;
+          });
+        }
+      } else {
+        this.dataTable = [];
+        this.totalRecord = 0;
+        this.notification.error(MESSAGE.ERROR, res);
+      }
+    } catch (e) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    } finally {
+      await this.spinner.hide();
+    }
+  }
+
+  // search list
+  async searchList() {
+    await this.spinner.show();
+    try {
+      let body = this.formData.value
+      let res = await this.service.searchList(body);
+      console.log(res);
+      if (res?.statusCode == STATUS_API.SUCCESS) {
+        this.dataTable = res.data;
         if (this.dataTable && this.dataTable.length > 0) {
           this.dataTable.forEach((item) => {
             item.checked = false;

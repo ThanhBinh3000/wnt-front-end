@@ -54,26 +54,23 @@
                         </th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <tr>
-                        <td>
-                            <div>1</div>
-                        </td>
-                        <td>
-                            <div>Bông gạc</div>
-                        </td>
-                        <td>
-                            <div>Ghi chú</div>
-                        </td>
-                        <td>
-                            <div class="baocao-actions">
-                                <button class="btn btn-sm btn-primary" (click)="drugGroupID = 1" data-toggle="modal" data-target="#drug-group-add-edit-dialog"><i
-                                        class="fa-regular fa-pen-to-square"></i></button>
-                                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
+                  <tr *ngFor="let data in dataTable; let i = index">
+                    <td>{{(page - 1) * pageSize + i + 1}}</td>
+                    <td>{{ data.tenNhomThuoc }}</td>
+                    <td>{{ data.kyHieuNhomThuoc }}</td>
+                    <td>
+<!--                      <a (click)="redirectDetail(data.id)">-->
+<!--                        <span class="icon htvbdh_eye"></span>-->
+<!--                      </a>-->
+<!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="redirectDetail(data.id,'LKQLCL_TDBQ_THEM')">-->
+<!--                        <span class="fa fa-pencil"></span>-->
+<!--                      </a>-->
+<!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="delete(data,'LKQLCL_TDBQ_XOA')">-->
+<!--                        <i class="fa fa-trash-o do"></i>-->
+<!--                      </a>-->
+                    </td>
+                  </tr>
                 </tbody>
                 <tfoot>
                     <tr id="footerId">

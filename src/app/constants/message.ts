@@ -14,3 +14,8 @@ export const MESSAGE = {
   COPY_SUCCESS: 'Sao chép thành công',
   DATA_EMPTY: 'Dữ liệu trống!'
 };
+
+export const STATUS_API = {
+  SUCCESS: 0,
+  FAIL : 1
+};

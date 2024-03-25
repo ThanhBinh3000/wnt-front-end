@@ -5,6 +5,7 @@ import { RouterOutlet } from "@angular/router";
 import { DrugGroupRoutingModule } from "./drug-group.routing";
 import { DrugGroupAddEditDialogComponent } from './drug-group-add-edit-dialog/drug-group-add-edit-dialog.component';
 import { DrugGroupListComponent } from './drug-group-list/drug-group-list.component';
+import {ComponentsModule} from "../../base/components.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,11 @@ import { DrugGroupListComponent } from './drug-group-list/drug-group-list.compon
     DrugGroupListComponent,
     DrugGroupAddEditDialogComponent
   ],
-  imports: [CommonModule, RouterOutlet, DrugGroupRoutingModule],
+  imports: [
+    ComponentsModule,
+    CommonModule,
+    RouterOutlet,
+    DrugGroupRoutingModule],
   exports: [
     DrugGroupAddEditDialogComponent
   ],
