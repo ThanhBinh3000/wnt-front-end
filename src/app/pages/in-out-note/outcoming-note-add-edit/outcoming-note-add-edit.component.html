@@ -80,11 +80,12 @@
                         </td>
                         <td>
                             <div *ngIf="showMoreForm" class="form-check" style="display: block;">
-                                <!-- ngRepeat: item in listPayType --><p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
+                                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
                                     <input type="radio" ng-disabled="viewMode" class="form-check-input" ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio" checked="checked">Tiền mặt
-                                </p><!-- end ngRepeat: item in listPayType --><p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
+                                </p>
+                                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
                                     <input type="radio" ng-disabled="viewMode" class="form-check-input" ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio">Chuyển khoản
-                                </p><!-- end ngRepeat: item in listPayType -->
+                                </p>
                             </div>
                         </td>
                     </tr>

@@ -1,0 +1,27 @@
+.color-header {
+    text-align: center;
+    color: coral;
+    padding: 0px;
+    margin-top: -16px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.pd-30 {
+    padding: 10px;
+    width: 150px;
+}
+
+.mt-5 {
+    margin-bottom: 3px;
+}
+
+.p-0 {
+    padding: 0;
+}
+
+.border-input {
+    border-bottom: solid 0.5px;
+    border-radius: 0;
+    border-color: lightgray;
+}
