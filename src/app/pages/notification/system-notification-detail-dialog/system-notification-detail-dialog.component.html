@@ -1,0 +1,25 @@
+<div id="system-notification-detail-dialog" class="myModal" onclick="closeModal()" style="opacity: 1 !important; background-color: rgba(0,0,0,0.5) !important;">
+    <div class="myModal-card">
+        <div class="myModal-body">
+            <div class="myModal-header" onclick="closeModal()"><p style="font-weight : 600; font-size: 1.2vw" ng-bind-html="details.Title"></p></div>
+            <div class="myModal-content">
+                <div id="removeSizeEditor" class="" style="text-align:left; font-size: 1vw;">
+                    <p ng-bind-html="details.Description"></p>
+                    <p ng-if="details.Link" style="margin-bottom: 10px">
+                        Bạn đừng bỏ lỡ! HÃY ĐĂNG KÝ 👇👇
+                    </p>
+                    <a href="/">
+                        <!-- {{details.Link}} -->
+                    </a>
+                </div>
+                <div ng-if="details.ImagePreviewUrl" class="col-md-6">
+                    <img src="" />
+                </div>
+            </div>
+            <div class="myModal-footer">
+                <a ng-if="details.Link" style="margin-right: 10px" class="btn btn-success" href="/TrainingRoom/10">Đăng ký</a>
+                <a class="btn btn-default" data-dismiss="modal">Đóng</a>
+            </div>
+        </div>
+    </div>
+</div>

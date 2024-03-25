@@ -92,7 +92,7 @@ const routes: Routes = [
       },
       {
         path: 'notification',
-        component: NotificationComponent
+        loadChildren: () => import('../pages/notification/notification.module').then((m) => m.NotificationModule),
       },
       {
         path: 'wait-note',
@@ -113,7 +113,7 @@ const routes: Routes = [
       {
         path: 'service-note',
         loadChildren: () => import('../pages/service-note/service-note.module').then((m) => m.ServiceNoteModule),
-      },
+      }
     ],
   }
 ];

@@ -1,0 +1,97 @@
+.myModal {
+    visibility: hidden;
+    transition: all 0.4s;
+    opacity: 0;
+}
+
+    .myModal.open {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.myModal,
+.myModal-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1000;
+}
+
+.myModal,
+.myModal-card,
+.myModal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.myModal-content {
+    overflow: auto;
+    flex-grow: 1;
+    font-size: 20px;
+    text-align: center;
+    line-height: 1.5;
+    padding: 1rem;
+}
+
+    .myModal-content .close {
+        background-color: #e1e1e1;
+        width: 24px;
+        height: 24px;
+        border-radius: 99px;
+        color: #ff0500;
+        opacity: 1;
+        font-size: 16px;
+        margin-top: -50px;
+    }
+
+.myModal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.myModal-body {
+    z-index: 1001;
+    margin: auto;
+    max-height: 100%;
+    max-width: 70%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+}
+
+.myModal-header {
+    font-size: 22px;
+    padding: 1rem 1rem 0.5rem 1rem;
+    position: relative;
+    text-align: center;
+    height: 50px;
+}
+
+.myModal-footer {
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+    .myModal-footer .close-btn {
+        cursor: pointer;
+        padding: 0.6rem 2rem;
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px rgb(0 0 0 / 20%);
+        color: #000000 !important;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .myModal-footer .close-btn:hover {
+            box-shadow: inset 0 0 0 1px #47d3e5;
+            color: #47D3E5 !important;
+        }
+
+#removeSizeEditor p {
+    margin-bottom: 15px !important
+}
