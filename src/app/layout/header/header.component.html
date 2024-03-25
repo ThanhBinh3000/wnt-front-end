@@ -600,7 +600,7 @@
               <li class="dropdown menu" (mouseenter)="mouseEnter('zalo', 'block') "
                   (mouseleave)="mouseLeave('zalo','none')">
                 <a href="javascript:void(0);" data-toggle="dropdown" role="button" aria-expanded="false"
-                   class="dropdown-toggle alo_menu">Chat Zalo <i class="fa-solid fa-message"></i></a>
+                   class="dropdown-toggle alo_menu">Chat Zalo <i class="fa-regular fa-messages"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('zalo')"
                     style="left: -95px; display: none; opacity: 1;">
                   <li><a target="_blank" href="https://zalo.me/g/zyzhvk429">Nhóm Zalo khu vực Hà Nội</a></li>
@@ -685,26 +685,29 @@
                    class="dropdown-toggle">Nhập Xuất
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('in-out')">
-                  <li><a href="/DeliveryNote/DeliveryNoteScreen?taskMode=1&amp;noteTypeId=2">Bán hàng</a></li>
-                  <li><a href="/DeliveryNote/DeliveryWithES?noteId=0&amp;taskMode=1">Bán hàng với đơn thuốc điện tử</a>
+                  <li><a href="/management/note-management/delivery-note-screen">Bán hàng</a></li>
+                  <li><a href="/management/note-management/delivery-note-es-screen">Bán hàng với đơn thuốc điện tử</a>
                   </li>
-                  <li><a href="/DeliveryNote/DeliveryWithBarcode">Bán hàng, cắt liều với mã vạch</a></li>
+                  <li><a href="/management/note-management/delivery-note-barcode-screen">Bán hàng, cắt liều với mã vạch</a></li>
 
-                  <li><a href="/ReceiptNote/ReceiptNoteScreen?taskMode=1&amp;noteTypeId=1">Nhập hàng</a></li>
+                  <li><a href="/management/note-management/receipt-note-screen">Nhập hàng</a></li>
                   <li class="divider"></li>
-                  <li><a href="/ReceiptNote/CustomerReceiptNoteScreen?taskMode=1&amp;noteTypeId=3">Khách hàng trả
+                  <li><a href="/management/note-management/return-from-customer-note-screen">Khách hàng trả
                     lại</a></li>
-                  <li><a href="/DeliveryNote/WarehouseTransferNoteScreen?taskMode=1&amp;noteTypeId=8">Chuyển kho</a>
+                  <li><a href="/management/note-management/warehouse-transfer-note-screen">Chuyển kho</a>
                   </li>
-                  <li><a href="/DeliveryNote/SupplierDeliveryNoteScreen?taskMode=1&amp;noteTypeId=4">Trả lại nhà cung
+                  <li><a href="/management/note-management/return-to-supplier-note-screen">Trả lại nhà cung
                     cấp</a></li>
-                  <li><a href="/DeliveryNote/CancelDeliveryNoteScreen?taskMode=1&amp;noteTypeId=9">Xuất hủy</a></li>
+                  <li><a href="/management/note-management/cancel-delivery-note-screen">Xuất hủy</a></li>
                   <li class="divider"></li>
-                  <li><a href="/NoteManagement/NotesListing">Danh sách phiếu Nhập-Xuất</a></li>
-                  <li><a href="/NoteManagement/DeletedNotesListing">Khôi phục các chứng từ bị xóa</a></li>
+                  <li><a href="/management/note-management/list">Danh sách phiếu Nhập-Xuất</a></li>
+                  <li><a href="/management/note-management/deleted-list">Khôi phục các chứng từ bị xóa</a></li>
 
                   <li class="divider"></li>
-                  <li><a href="/Connectivity/ConnectivityNotes">Quản lý LT</a></li>
+                  <li><a href="/management/connectivity/list">Quản lý LT</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/management/einvoice-management/cmc">Quản lý Hoá đơn</a></li>
+                  <li><a href="/management/einvoice-management/vnpt">Quản lý Hoá đơn</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('revenue-expenditure', 'block') "
@@ -742,7 +745,7 @@
                   <li class="divider"></li>
                   <li><a href="management/reserve/note-reserve-add-edit">Lập dự trù thuốc</a></li>
                   <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
-                  <li><a href="/Connectivity/ConnectivitySampleNotes">Quản lý đơn thuốc LT</a></li>
+                  <li><a href="/management/connectivity/sample-note-list">Quản lý đơn thuốc LT</a></li>
                   <li><a href="/management/inventory/inventory-list">Kiểm kê kho</a></li>
                   <li class="divider"></li>
                   <li><a href="/Thuocs/MappingDrugForConnect">Thiết lập thuốc LT</a></li>

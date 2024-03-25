@@ -23,6 +23,18 @@ const routes: Routes = [
         loadChildren: () => import('../pages/account/account.module').then((m) => m.AccountModule),
       },
       {
+        path: 'note-management',
+        loadChildren: () => import('../pages/note-management/note-management.module').then((m) => m.NoteManagementModule),
+      },
+      {
+        path: 'connectivity',
+        loadChildren: () => import('../pages/connectivity/connectivity.module').then((m) => m.ConnectivityModule),
+      },
+      {
+        path: 'einvoice-management',
+        loadChildren: () => import('../pages/einvoice-management/einvoice-management.module').then((m) => m.EInvoiceModule),
+      },
+      {
         path: 'service-group',
         loadChildren: () => import('../pages/service-group/service-group.module').then((m) => m.ServiceGroupModule),
       },
