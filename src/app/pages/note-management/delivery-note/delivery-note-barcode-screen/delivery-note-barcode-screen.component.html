@@ -1,0 +1,1321 @@
+<div class="row">
+    <div id="divDrugItems" class="col-md-9" style="height:100%;">
+        <div class="box-group-white">
+            <h2 style="border-bottom:none" class="text-center mb-0">
+                <b>PHIẾU BÁN HÀNG</b>
+            </h2>
+            <table class="table borderless" id="barcode-table-id">
+                <tbody>
+                    <tr>
+                        <td class="w-40">
+                            <div class="form-inline-flex">
+                                <label>Mã vạch:</label>
+                                <input type="text" class="form-control mb-0 mousetrap" id="barcode" style="width: 100%">
+                            </div>
+                        </td>
+                        <td class="w-40">
+                            <div class="form-inline-flex">
+                                <label>Mã/Tên:</label>
+                                <div item-search-filter="" select-changed-callback="onDrugSelectChanged"
+                                    clear-after-selected="true" record-status-id="0" search-type="5"
+                                    class="flex-grow-1 ng-isolate-scope"
+                                    cam-barcode-scanned-callback="onCamBarcodeScanned" id="search-drug-box">
+                                    
+                                    
+                                    <div ng-if="!showCamBarcodeScanner" class="">
+                                        <div class="w-100">
+                                            <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
+                                                ng-class="{open: $select.open}" ng-model="data.selected"
+                                                theme="bootstrap" id="itemSearchId"
+                                                reset-search-input="clearAfterSelected"
+                                                forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
+                                                <div><span class=" ui-select-match ui-select-match"
+                                                        placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                        id="itemSearchUISelectID"></span><input
+                                                        type="search" autocomplete="off" autocorrect="off"
+                                                        autocapitalize="off" spellcheck="false"
+                                                        class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
+                                                        placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                        ng-disabled="$select.disabled" ng-click="$select.activate()"
+                                                        ng-model="$select.search" role="combobox" aria-expanded="false"
+                                                        aria-label="Select box"
+                                                        ng-class="{'spinner': $select.refreshing}"
+                                                        ondrop="return false;" style="width: 681px;"></div>
+                                                <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                    ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                    refresh="fetch($select)" refresh-delay="500" repeat="item in items"
+                                                    id="selectChoiceId" style="display: block; opacity: 1;">
+                                                    <li class="ui-select-choices-group" id="ui-select-choices-42">
+                                                        <div class="divider ng-hide"
+                                                            ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
+                                                        <div ng-show="$select.isGrouped"
+                                                            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                            ng-bind="$group.name"></div>
+                                                        
+                                                    </li>
+                                                </ul>
+                                                <div class="ui-select-no-choice"></div>
+
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    <span id="Logo" style="display:none;"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="w-20">
+                            <div class="form-inline-flex">
+                                <label>Số liều:</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                        class="number-input form-control mb-0 ng-pristine ng-untouched ng-valid ng-valid-number ng-valid-min ng-valid-max ng-valid-step ng-valid-external"
+                                        id="doseNumber" style="width:60%" ng-model="doseNumber" min="1" max="1000"
+                                        step="0.5">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary"
+                                            ng-click="onDoseCalculation($event)"><i
+                                                class="fa-regular fa-calculator"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <table tr-ng-grid="" items="model.items" display-total-items-count="true"
+                id="table-id-delivery-note-with-barcode" locale="en"
+                class="table table-striped table-responsive table-bordered table-hover ng-isolate-scope tr-ng-grid"
+                selection-mode="None" current-page="setCurrentPage" enable-filtering="false" enable-sorting="false"
+                page-items="model.pageSize" total-items="model.totalItems">
+                <thead class="ng-scope">
+                    <tr>
+                        <th style="width: 9%" class="header-bg ng-scope" tr-ng-grid-header-cell="0"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding">
+                                        <div ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 6%" class="header-bg ng-scope" display-name="STT" tr-ng-grid-header-cell="1"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> STT <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 7%" class="header-bg ng-scope" display-name="Mã" tr-ng-grid-header-cell="2"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Mã <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 25%" class="header-bg ng-scope" display-name="Tên Hàng"
+                            tr-ng-grid-header-cell="3"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Tên Hàng <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 13%" class="header-bg ng-scope" display-name="Đơn Vị"
+                            tr-ng-grid-header-cell="4"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Đơn Vị <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 8%" class="header-bg ng-scope" display-name="SL" tr-ng-grid-header-cell="5"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> SL <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 14%" class="header-bg ng-scope" display-name="Đơn Giá"
+                            tr-ng-grid-header-cell="6"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Đơn Giá <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 6%" class="header-bg ng-scope" display-name="Tồn"
+                            ng-if="permittedFields.Drug_ViewInventory" tr-ng-grid-header-cell="7"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Tồn <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 14%;text-align: right;" class="header-bg ng-scope" display-name="Thành tiền"
+                            tr-ng-grid-header-cell="8"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized"
+                                tr-ng-grid-header-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope">
+                                    <div class="tr-ng-title ng-binding"> Thành tiền <div
+                                            ng-show="(gridOptions.enableSorting&amp;&amp;columnOptions.enableSorting!==false)||columnOptions.enableSorting"
+                                            ng-click="toggleSorting(columnOptions.fieldName)" class="tr-ng-sort ng-hide"
+                                            tr-ng-grid-column-sort="" title="Sort">
+                                            <div ng-class="{'tr-ng-sort-active text-info':gridOptions.orderBy==columnOptions.fieldName,'tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down':gridOptions.orderBy!=columnOptions.fieldName,'tr-ng-sort-order-normal glyphicon glyphicon-chevron-up':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;!gridOptions.orderByReverse,'tr-ng-sort-order-reverse glyphicon glyphicon-chevron-down':gridOptions.orderBy==columnOptions.fieldName&amp;&amp;gridOptions.orderByReverse}"
+                                                class="tr-ng-sort-active text-info tr-ng-sort-order-normal glyphicon glyphicon-chevron-up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="(gridOptions.enableFiltering&amp;&amp;columnOptions.enableFiltering!==false)||columnOptions.enableFiltering"
+                                        class="tr-ng-column-filter ng-hide" tr-ng-grid-column-filter="">
+                                        <div class=""> <input
+                                                class="form-control input-sm ng-pristine ng-untouched ng-valid"
+                                                type="text" ng-model="columnOptions.filter"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot class="ng-scope">
+                    <tr>
+                        <td tr-ng-grid-footer-cell="0"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope" colspan="9">
+                            <div class="tr-ng-grid-footer form-inline" ng-switch="isCustomized"
+                                tr-ng-grid-footer-cell-template=""> 
+                                
+                                <div ng-switch-default="" class="ng-scope"> <span tr-ng-grid-global-filter=""><span
+                                            ng-show="gridOptions.enableFiltering" class="pull-left form-group ng-hide">
+                                            <input class="form-control ng-pristine ng-untouched ng-valid" type="text"
+                                                ng-model="gridOptions.filterBy"
+                                                ng-keypress="speedUpAsyncDataRetrieval($event)"
+                                                placeholder="Search"></span></span> <span class="pull-right form-group"
+                                        tr-ng-grid-pager="">
+                                        <ul class="pagination"> 
+                                            
+                                            
+                                             
+                                            <li class="disabled" style="white-space: nowrap;"> <span
+                                                    ng-hide="totalItemsCount || !displayTotalItemsCount"
+                                                    class="ng-binding">Không có dữ liệu</span> <span
+                                                    ng-show="totalItemsCount &amp;&amp; displayTotalItemsCount"
+                                                    class="ng-hide"> <span class="ng-binding">Tổng: 0 bản ghi</span>
+                                                </span> </li>
+                                        </ul>
+                                    </span> </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody tr-ng-grid-body="" class="ng-scope">
+                    <tr class="tr-barcode " ng-click="toggleItemSelection(gridItem, $event)"
+                        ng-repeat="gridDisplayItem in filteredItems"
+                        ng-init="gridItem=gridDisplayItem.$$_gridItem;undefined"
+                        ng-class="{'active':gridOptions.selectedItems.indexOf(gridItem) >= 0, }">
+                        <td tr-ng-grid-body-cell="0" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="ng-scope">
+
+                                            <a class="delete-drug btn btn-danger" title="Xóa"
+                                                ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
+                                                    class="fa-regular fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="1" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude=""><a href=""
+                                            ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
+                                            class="ng-scope">
+                                            <div class="ng-binding">1</div>
+                                        </a></div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="2" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="ng-scope">
+                                            <span class="btn-link ng-binding" title="Xem LS giao dịch"
+                                                ng-click="onTransByObjectDetails(4, gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();">TH470-PA</span>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="3" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div ng-mouseover="onShowTitle(gridItem)" class="ng-scope">
+                                            <span class="btn-link tooltip-content-drug">
+                                                <span
+                                                    ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
+                                                    class="ng-binding">
+                                                    TH470-PA
+                                                </span>
+                                                <span class="show-tooltip-content-drug ng-binding"
+                                                    style="width : 150px">
+                                                    <b>Vị trí tủ/ kho:</b> <br>
+                                                    <b>Ưu điểm:</b> <span style="background-color:white;color:black;"
+                                                        ng-bind-html="gridItem.TitleDrug.Advantages"
+                                                        class="ng-binding"></span><br>
+                                                    <b>Đối tượng sử dụng:</b> <br>
+                                                    <b>Hàng bán kèm:</b>
+                                                    <br>
+                                                    <span>
+                                                        
+                                                    </span>
+
+                                                    <br>
+                                                    <b>Hàng thay thế:</b>
+                                                    <br>
+                                                    
+                                                    <span span="" style="background-color:white;color:black;"
+                                                        ng-bind-html="gridItem.TitleDrug.Description"
+                                                        class="ng-binding"></span>
+                                                </span>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="4" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="ng-scope">
+
+                                            <div>
+                                                <select id="ddlUnits"
+                                                    class="form-control ng-pristine ng-untouched ng-valid"
+                                                    ng-model="gridItem.SelectedUnitId"
+                                                    ng-options="item.UnitId as item.UnitName for item in gridItem.Units"
+                                                    ng-change="onUnitChanged(gridItem)" style="width:100%">
+                                                    <option label="Cái" value="number:699961" selected="selected">Cái
+                                                    </option>
+                                                    <option label="Bịch" value="number:699963">Bịch</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td class="td-barcode ng-scope" tr-ng-grid-body-cell="5" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="ng-scope">
+                                            <input ng-keypress="onQuantityChanged($event)" type="text"
+                                                class="form-control mousetrap row-item-quantiy ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                                style="width: 100%" ng-model="gridItem.Quantity"
+                                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="6" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="ng-scope">
+                                            <input type="text"
+                                                class="form-control mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                                ng-keypress="onQuantityChanged($event)" style="width: 100%"
+                                                ng-model="gridItem.Price" awnum="app-decimal-number"
+                                                ng-blur="onLostFocus($event)"
+                                                ng-readonly="!permittedFields.DeliveryNote_EditOutputPrice">
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td ng-if="permittedFields.Drug_ViewInventory" tr-ng-grid-body-cell="7" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="number-value ng-binding ng-scope">
+                                            363
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                        <td tr-ng-grid-body-cell="8" is-customized="true"
+                            ng-style="{'width':columnOptions.cellWidth,'height':columnOptions.cellHeight}"
+                            class="ng-scope">
+                            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+                                
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude="">
+                                        <div class="number-value ng-scope">
+                                            <strong class="ng-binding">2,000</strong>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div id="divSummary" class="col-md-3" style="height:100%;">
+        <div class="card-bg">
+            <span class="mb-3 d-block"><strong>Thông tin phiếu xuất</strong></span>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label>Mã Số:</label></td>
+                        <td style="text-align: left;">
+                            <label class="control-label"><strong class="ng-binding">642</strong></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label>Ngày:</label></td>
+                        <td style="text-align: left" id="dvNgayXuat">
+                            <div class="clickable-text daterange-picker"><input type="text" id="note-date-id"
+                                    ng-change="onReportDateChanged()" ng-model="reportDate"
+                                    class="ng-pristine ng-untouched ng-valid"><span
+                                    class="text-link ng-binding">25/03/2024</span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>K.Hàng:</label>
+                        </td>
+                        <td>
+                            <div class="input-group">
+
+                                <div item-search-filter="" select-changed-callback="onCustomerItemChanged"
+                                    clear-after-selected="false" only-single-item="true"
+                                    default-selected-item="selectedCustomer" show-cam-barcode-scanner="false"
+                                    handle-broadcast="true" cam-barcode-scanned-callback="onCamBarcodeScanned"
+                                    search-type="3" class="flex-grow-1 ip-position ng-isolate-scope">
+                                    
+                                    
+                                    <div ng-if="!showCamBarcodeScanner" class="">
+                                        <div class="w-100">
+                                            <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
+                                                ng-class="{open: $select.open}" ng-model="data.selected"
+                                                theme="bootstrap" id="itemSearchId"
+                                                reset-search-input="clearAfterSelected"
+                                                forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
+                                                <div><span class="text-truncate-line ui-select-match ui-select-match"
+                                                        placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                        id="itemSearchUISelectID"><span
+                                                            ng-repeat="$item in $select.selected track by $index"
+                                                            class="ng-scope"><span
+                                                                class="ui-select-match-item btn btn-default btn-xs"
+                                                                tabindex="-1" type="button"
+                                                                ng-disabled="$select.disabled"
+                                                                ng-click="$selectMultiple.activeMatchIndex = $index;"
+                                                                ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
+                                                                ui-select-sort="$select.selected"><span
+                                                                    class="close ui-select-match-close"
+                                                                    ng-hide="$select.disabled"
+                                                                    ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
+                                                                <span uis-transclude-append=""><span
+                                                                        class="ng-binding ng-scope">
+                                                                        Khách hàng lẻ
+                                                                    </span></span></span></span></span><input
+                                                        type="search" autocomplete="off" autocorrect="off"
+                                                        autocapitalize="off" spellcheck="false"
+                                                        class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
+                                                        placeholder="" ng-disabled="$select.disabled"
+                                                        ng-click="$select.activate()" ng-model="$select.search"
+                                                        role="combobox" aria-expanded="false" aria-label="Select box"
+                                                        ng-class="{'spinner': $select.refreshing}"
+                                                        ondrop="return false;" style="width: 321px;"></div>
+                                                <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                    ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                    refresh="fetch($select)" refresh-delay="500" repeat="item in items"
+                                                    id="selectChoiceId">
+                                                    <li class="ui-select-choices-group" id="ui-select-choices-43">
+                                                        <div class="divider ng-hide"
+                                                            ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
+                                                        <div ng-show="$select.isGrouped"
+                                                            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                            ng-bind="$group.name"></div>
+                                                        
+                                                    </li>
+                                                </ul>
+                                                <div class="ui-select-no-choice"></div>
+
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    <span id="Logo" style="display:none;"></span>
+                                </div>
+                                <span style="gap: 5px" class="input-group-btn">
+
+                                    <button class="btn btn-primary"
+                                        ng-click="addCustomer(); $event.preventDefault(); $event.stopPropagation()"
+                                        title="Thêm mới khách hàng nếu chưa có">
+                                        <i class="fa-regular fa-plus"></i>
+                                    </button>
+                                    <input style="padding-left: 10px; padding-right: 10px;" type="button" value="LS"
+                                        title="Chi tiết lịch sử giao dịch của khách hàng" class="btn btn-primary"
+                                        ng-click="onTransByObjectDetails(4); $event.preventDefault(); $event.stopPropagation();">
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-show="selectedCustomer.TypeId != 1" class="ng-hide">
+                        <td style="text-align: left;width:100px"><label>Tổng nợ:</label></td>
+                        <td style="text-align: left; color: red">
+                            <label class="ng-binding">0</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label>Trả điểm:</label></td>
+                        <td style="text-align: left">
+                            <div class="input-group">
+                                <input type="text"
+                                    class="number-input form-control mb-0 ng-untouched ng-isolate-scope ng-valid-min ng-valid-max ng-valid-step ng-valid-external ng-dirty ng-valid ng-valid-number"
+                                    style="width:90px;" ng-model="viewModel.PaymentScore" awnum="app-decimal-number"
+                                    refresh-delay="500" ng-change="onPaymentScoreChanged()" placeholder="Điểm trả"
+                                    id="paymentScore">
+                                <label class="mb-0 d-flex align-items-center gap-5"><span>&nbsp;/</span><span
+                                        class="text-danger ng-binding">0.00</span> (điểm)</label>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label>Bác Sỹ:</label></td>
+                        <td style="text-align: left">
+
+                            <div class="input-group">
+                                <div id="selectDoctorDiv" report-group-type-filter="" single-mode="true"
+                                    group-filter-type="2" show-group-filter-type="false"
+                                    ignore-auto-select-first-item="true" filter-item-type="9"
+                                    selected-item-id="selectedDoctorId" filter-by-name-for-drug="false"
+                                    class="ip-equal-height w-100 ng-isolate-scope">
+                                    <div ng-show="!singleMode &amp;&amp; !singleModeWithTitle" class="ng-hide">
+                                        <fieldset>
+                                            <label><b ng-show="!titleFontNormal" class="ng-binding"></b><span
+                                                    ng-show="titleFontNormal" class="ng-binding ng-hide"></span></label>
+                                            <div>
+                                                <div>
+                                                    <div id="groupTypeContainerId" ng-show="showGroupFilterType"
+                                                        class="ng-hide">
+                                                        <select id="ddlGroupType"
+                                                            class="form-control mb-2 ng-pristine ng-untouched ng-valid"
+                                                            ng-model="groupFilterType"
+                                                            ng-disabled="disableGroupFilterType"
+                                                            ng-options="item.groupTypeId as item.groupTypeName for item in groupTypes"
+                                                            ng-change="onGroupTypeChanged()">
+                                                            <option label="--Tất cả--" value="number:0">--Tất cả--
+                                                            </option>
+                                                            <option label="Theo nhóm" value="number:1">Theo nhóm
+                                                            </option>
+                                                            <option label="Theo tên" value="number:2"
+                                                                selected="selected">Theo tên</option>
+                                                        </select>
+                                                    </div>
+                                                    <div ng-show="groupFilterType==1" id="filterByGroupId"
+                                                        class="ng-hide">
+                                                        <div class="ui-select-container selectize-control single ng-valid"
+                                                            ng-class="{'open': $select.open}" ng-model="selectedItem"
+                                                            theme="selectize">
+                                                            <div class="selectize-input"
+                                                                ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
+                                                                ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
+                                                                <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
+                                                                    class="ui-select-match ng-hide"
+                                                                    placeholder="Chọn hoặc gõ vào để tìm..."><span
+                                                                        ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
+                                                                        class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
+                                                                        hoặc gõ vào để tìm...</span> <span
+                                                                        ng-hide="$select.isEmpty() || $select.open"
+                                                                        ng-transclude="" class="ng-hide"><span
+                                                                            class="ng-binding ng-scope"></span></span>
+                                                                </div><input type="search" autocomplete="off"
+                                                                    tabindex="-1"
+                                                                    class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid"
+                                                                    ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
+                                                                    ng-click="$select.toggle($event)"
+                                                                    placeholder="Chọn hoặc gõ vào để tìm..."
+                                                                    ng-model="$select.search"
+                                                                    ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
+                                                                    ng-disabled="$select.disabled"
+                                                                    aria-label="Select box">
+                                                            </div>
+                                                            <div ng-show="$select.open"
+                                                                class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
+                                                                ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
+                                                                repeat="item in filterByGroupItems | filter: $select.search"
+                                                                refresh="refreshResults($select)" refresh-delay="0">
+                                                                <div
+                                                                    class="ui-select-choices-content selectize-dropdown-content">
+                                                                    <div class="ui-select-choices-group optgroup">
+                                                                        <div ng-show="$select.isGrouped"
+                                                                            class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
+                                                                            ng-bind="$group.name"></div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ui-select-no-choice"></div>
+                                                            <input ng-disabled="$select.disabled"
+                                                                class="ui-select-focusser ui-select-offscreen ng-scope"
+                                                                type="text" id="focusser-16"
+                                                                aria-label="Select box focus" aria-haspopup="true"
+                                                                role="button">
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="groupFilterType==2 &amp;&amp; !filterByNameForDrug &amp;&amp; !filterByNameForCustomer 
+                          &amp;&amp; !filterByNameForSupplier &amp;&amp; !filterByNameForDrugCommon">
+                                                        <div class="ui-select-container selectize-control single ng-valid"
+                                                            ng-class="{'open': $select.open}" ng-model="selectedItem"
+                                                            theme="selectize">
+                                                            <div class="selectize-input"
+                                                                ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
+                                                                ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
+                                                                <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
+                                                                    class="ui-select-match ng-hide"
+                                                                    placeholder="Chọn hoặc gõ vào để tìm..."><span
+                                                                        ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
+                                                                        class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
+                                                                        hoặc gõ vào để tìm...</span> <span
+                                                                        ng-hide="$select.isEmpty() || $select.open"
+                                                                        ng-transclude="" class="ng-hide"><span
+                                                                            class="ng-binding ng-scope"></span></span>
+                                                                </div><input type="search" autocomplete="off"
+                                                                    tabindex="-1"
+                                                                    class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid"
+                                                                    ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
+                                                                    ng-click="$select.toggle($event)"
+                                                                    placeholder="Chọn hoặc gõ vào để tìm..."
+                                                                    ng-model="$select.search"
+                                                                    ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
+                                                                    ng-disabled="$select.disabled"
+                                                                    aria-label="Select box">
+                                                            </div>
+                                                            <div ng-show="$select.open"
+                                                                class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
+                                                                ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
+                                                                repeat="item in filterByNameItems | filter: $select.search"
+                                                                refresh="refreshResults($select)" refresh-delay="0">
+                                                                <div
+                                                                    class="ui-select-choices-content selectize-dropdown-content">
+                                                                    <div class="ui-select-choices-group optgroup">
+                                                                        <div ng-show="$select.isGrouped"
+                                                                            class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
+                                                                            ng-bind="$group.name"></div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ui-select-no-choice"></div>
+                                                            <input ng-disabled="$select.disabled"
+                                                                class="ui-select-focusser ui-select-offscreen ng-scope"
+                                                                type="text" id="focusser-17"
+                                                                aria-label="Select box focus" aria-haspopup="true"
+                                                                role="button">
+                                                        </div>
+                                                    </div>
+
+                                                    <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForDrug"
+                                                        id="drugSearchControlId" class="ng-hide">
+
+                                                        <div item-search-filter="" only-single-item="onlySingleDrugItem"
+                                                            default-selected-item="defaultSelectedDrugItem"
+                                                            default-selected-ids="defaultSelectedItemIds"
+                                                            handle-broadcast="true"
+                                                            select-changed-callback="onDrugSelectChanged"
+                                                            show-cam-barcode-scanner="deviceType != 0"
+                                                            enable-scan-barcode="true" class="ng-isolate-scope">
+                                                            
+                                                            <div ng-if="!showCamBarcodeScanner" class="">
+                                                                <div class="w-100">
+                                                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
+                                                                        ng-class="{open: $select.open}"
+                                                                        ng-model="data.selected" theme="bootstrap"
+                                                                        id="itemSearchId"
+                                                                        reset-search-input="clearAfterSelected"
+                                                                        forward-enter-key="forwardEnterKey"
+                                                                        ng-disabled="disabledMode">
+                                                                        <div><span
+                                                                                class=" ui-select-match ui-select-match"
+                                                                                placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                                                id="itemSearchUISelectID"><span
+                                                                                    ng-repeat="$item in $select.selected track by $index"
+                                                                                    class="ng-scope"><span
+                                                                                        class="ui-select-match-item btn btn-default btn-xs"
+                                                                                        tabindex="-1" type="button"
+                                                                                        ng-disabled="$select.disabled"
+                                                                                        ng-click="$selectMultiple.activeMatchIndex = $index;"
+                                                                                        ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
+                                                                                        ui-select-sort="$select.selected"><span
+                                                                                            class="close ui-select-match-close"
+                                                                                            ng-hide="$select.disabled"
+                                                                                            ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
+                                                                                        <span
+                                                                                            uis-transclude-append=""><span
+                                                                                                class="ng-binding ng-scope">
+                                                                                                Khách hàng lẻ
+                                                                                            </span></span></span></span></span><input
+                                                                                type="search" autocomplete="off"
+                                                                                autocorrect="off" autocapitalize="off"
+                                                                                spellcheck="false"
+                                                                                class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
+                                                                                placeholder=""
+                                                                                ng-disabled="$select.disabled"
+                                                                                ng-click="$select.activate()"
+                                                                                ng-model="$select.search"
+                                                                                role="combobox" aria-expanded="false"
+                                                                                aria-label="Select box"
+                                                                                ng-class="{'spinner': $select.refreshing}"
+                                                                                ondrop="return false;"
+                                                                                style="width: 10px;"></div>
+                                                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                                            refresh="fetch($select)" refresh-delay="500"
+                                                                            repeat="item in items" id="selectChoiceId">
+                                                                            <li class="ui-select-choices-group"
+                                                                                id="ui-select-choices-44">
+                                                                                <div class="divider ng-hide"
+                                                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0">
+                                                                                </div>
+                                                                                <div ng-show="$select.isGrouped"
+                                                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                                                    ng-bind="$group.name"></div>
+                                                                                
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="ui-select-no-choice"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <span id="Logo" style="display:none;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForDrugCommon"
+                                                        id="drugSearchControlId" class="ng-hide">
+
+                                                        <div item-search-filter="" only-single-item="onlySingleDrugItem"
+                                                            default-selected-item="defaultSelectedDrugItem"
+                                                            default-selected-ids="defaultSelectedItemIds"
+                                                            handle-broadcast="true"
+                                                            select-changed-callback="onDrugSelectChanged"
+                                                            show-cam-barcode-scanner="deviceType != 0"
+                                                            enable-scan-barcode="true" search-type="12"
+                                                            class="ng-isolate-scope">
+                                                            
+                                                            <div ng-if="!showCamBarcodeScanner" class="">
+                                                                <div class="w-100">
+                                                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
+                                                                        ng-class="{open: $select.open}"
+                                                                        ng-model="data.selected" theme="bootstrap"
+                                                                        id="itemSearchId"
+                                                                        reset-search-input="clearAfterSelected"
+                                                                        forward-enter-key="forwardEnterKey"
+                                                                        ng-disabled="disabledMode">
+                                                                        <div><span
+                                                                                class=" ui-select-match ui-select-match"
+                                                                                placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                                                id="itemSearchUISelectID"><span
+                                                                                    ng-repeat="$item in $select.selected track by $index"
+                                                                                    class="ng-scope"><span
+                                                                                        class="ui-select-match-item btn btn-default btn-xs"
+                                                                                        tabindex="-1" type="button"
+                                                                                        ng-disabled="$select.disabled"
+                                                                                        ng-click="$selectMultiple.activeMatchIndex = $index;"
+                                                                                        ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
+                                                                                        ui-select-sort="$select.selected"><span
+                                                                                            class="close ui-select-match-close"
+                                                                                            ng-hide="$select.disabled"
+                                                                                            ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
+                                                                                        <span
+                                                                                            uis-transclude-append=""><span
+                                                                                                class="ng-binding ng-scope">
+                                                                                                Khách hàng lẻ
+                                                                                            </span></span></span></span></span><input
+                                                                                type="search" autocomplete="off"
+                                                                                autocorrect="off" autocapitalize="off"
+                                                                                spellcheck="false"
+                                                                                class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
+                                                                                placeholder=""
+                                                                                ng-disabled="$select.disabled"
+                                                                                ng-click="$select.activate()"
+                                                                                ng-model="$select.search"
+                                                                                role="combobox" aria-expanded="false"
+                                                                                aria-label="Select box"
+                                                                                ng-class="{'spinner': $select.refreshing}"
+                                                                                ondrop="return false;"
+                                                                                style="width: 10px;"></div>
+                                                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                                            refresh="fetch($select)" refresh-delay="500"
+                                                                            repeat="item in items" id="selectChoiceId">
+                                                                            <li class="ui-select-choices-group"
+                                                                                id="ui-select-choices-45">
+                                                                                <div class="divider ng-hide"
+                                                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0">
+                                                                                </div>
+                                                                                <div ng-show="$select.isGrouped"
+                                                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                                                    ng-bind="$group.name"></div>
+                                                                                
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="ui-select-no-choice"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <span id="Logo" style="display:none;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForCustomer"
+                                                        id="customerSearchControlId" class="ng-hide">
+
+                                                        <div item-search-filter="" only-single-item="onlySingleDrugItem"
+                                                            default-selected-item="defaultSelectedDrugItem"
+                                                            default-selected-ids="defaultSelectedItemIds"
+                                                            handle-broadcast="true"
+                                                            select-changed-callback="onCustomerSelectChanged"
+                                                            show-cam-barcode-scanner="deviceType != 0"
+                                                            enable-scan-barcode="true" search-type="3"
+                                                            class="ng-isolate-scope">
+                                                            
+                                                            <div ng-if="!showCamBarcodeScanner" class="">
+                                                                <div class="w-100">
+                                                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
+                                                                        ng-class="{open: $select.open}"
+                                                                        ng-model="data.selected" theme="bootstrap"
+                                                                        id="itemSearchId"
+                                                                        reset-search-input="clearAfterSelected"
+                                                                        forward-enter-key="forwardEnterKey"
+                                                                        ng-disabled="disabledMode">
+                                                                        <div><span
+                                                                                class=" ui-select-match ui-select-match"
+                                                                                placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                                                id="itemSearchUISelectID"><span
+                                                                                    ng-repeat="$item in $select.selected track by $index"
+                                                                                    class="ng-scope"><span
+                                                                                        class="ui-select-match-item btn btn-default btn-xs"
+                                                                                        tabindex="-1" type="button"
+                                                                                        ng-disabled="$select.disabled"
+                                                                                        ng-click="$selectMultiple.activeMatchIndex = $index;"
+                                                                                        ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
+                                                                                        ui-select-sort="$select.selected"><span
+                                                                                            class="close ui-select-match-close"
+                                                                                            ng-hide="$select.disabled"
+                                                                                            ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
+                                                                                        <span
+                                                                                            uis-transclude-append=""><span
+                                                                                                class="ng-binding ng-scope">
+                                                                                                Khách hàng lẻ
+                                                                                            </span></span></span></span></span><input
+                                                                                type="search" autocomplete="off"
+                                                                                autocorrect="off" autocapitalize="off"
+                                                                                spellcheck="false"
+                                                                                class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
+                                                                                placeholder=""
+                                                                                ng-disabled="$select.disabled"
+                                                                                ng-click="$select.activate()"
+                                                                                ng-model="$select.search"
+                                                                                role="combobox" aria-expanded="false"
+                                                                                aria-label="Select box"
+                                                                                ng-class="{'spinner': $select.refreshing}"
+                                                                                ondrop="return false;"
+                                                                                style="width: 10px;"></div>
+                                                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                                            refresh="fetch($select)" refresh-delay="500"
+                                                                            repeat="item in items" id="selectChoiceId">
+                                                                            <li class="ui-select-choices-group"
+                                                                                id="ui-select-choices-46">
+                                                                                <div class="divider ng-hide"
+                                                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0">
+                                                                                </div>
+                                                                                <div ng-show="$select.isGrouped"
+                                                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                                                    ng-bind="$group.name"></div>
+                                                                                
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="ui-select-no-choice"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <span id="Logo" style="display:none;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForSupplier"
+                                                        id="supplierSearchControlId" class="ng-hide">
+
+                                                        <div item-search-filter="" only-single-item="onlySingleDrugItem"
+                                                            default-selected-item="defaultSelectedDrugItem"
+                                                            default-selected-ids="defaultSelectedItemIds"
+                                                            handle-broadcast="true"
+                                                            select-changed-callback="onSupplierSelectChanged"
+                                                            show-cam-barcode-scanner="deviceType != 0"
+                                                            enable-scan-barcode="true" search-type="4"
+                                                            class="ng-isolate-scope">
+                                                            
+                                                            <div ng-if="!showCamBarcodeScanner" class="">
+                                                                <div class="w-100">
+                                                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
+                                                                        ng-class="{open: $select.open}"
+                                                                        ng-model="data.selected" theme="bootstrap"
+                                                                        id="itemSearchId"
+                                                                        reset-search-input="clearAfterSelected"
+                                                                        forward-enter-key="forwardEnterKey"
+                                                                        ng-disabled="disabledMode">
+                                                                        <div><span
+                                                                                class=" ui-select-match ui-select-match"
+                                                                                placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                                                id="itemSearchUISelectID"><span
+                                                                                    ng-repeat="$item in $select.selected track by $index"
+                                                                                    class="ng-scope"><span
+                                                                                        class="ui-select-match-item btn btn-default btn-xs"
+                                                                                        tabindex="-1" type="button"
+                                                                                        ng-disabled="$select.disabled"
+                                                                                        ng-click="$selectMultiple.activeMatchIndex = $index;"
+                                                                                        ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
+                                                                                        ui-select-sort="$select.selected"><span
+                                                                                            class="close ui-select-match-close"
+                                                                                            ng-hide="$select.disabled"
+                                                                                            ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
+                                                                                        <span
+                                                                                            uis-transclude-append=""><span
+                                                                                                class="ng-binding ng-scope">
+                                                                                                Khách hàng lẻ
+                                                                                            </span></span></span></span></span><input
+                                                                                type="search" autocomplete="off"
+                                                                                autocorrect="off" autocapitalize="off"
+                                                                                spellcheck="false"
+                                                                                class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
+                                                                                placeholder=""
+                                                                                ng-disabled="$select.disabled"
+                                                                                ng-click="$select.activate()"
+                                                                                ng-model="$select.search"
+                                                                                role="combobox" aria-expanded="false"
+                                                                                aria-label="Select box"
+                                                                                ng-class="{'spinner': $select.refreshing}"
+                                                                                ondrop="return false;"
+                                                                                style="width: 10px;"></div>
+                                                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                                                            refresh="fetch($select)" refresh-delay="500"
+                                                                            repeat="item in items" id="selectChoiceId">
+                                                                            <li class="ui-select-choices-group"
+                                                                                id="ui-select-choices-47">
+                                                                                <div class="divider ng-hide"
+                                                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0">
+                                                                                </div>
+                                                                                <div ng-show="$select.isGrouped"
+                                                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                                                    ng-bind="$group.name"></div>
+                                                                                
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="ui-select-no-choice"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <span id="Logo" style="display:none;"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div ng-show="singleModeWithTitle" class="ng-hide">
+                                        <fieldset>
+                                            <label><b ng-show="!titleFontNormal" class="ng-binding"></b><span
+                                                    ng-show="titleFontNormal" class="ng-binding ng-hide"></span></label>
+                                            <div>
+                                                <div>
+                                                    <div class="ui-select-container selectize-control single ng-valid"
+                                                        ng-class="{'open': $select.open}" ng-model="selectedItem"
+                                                        theme="selectize" ng-disabled="disabledMode">
+                                                        <div class="selectize-input"
+                                                            ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
+                                                            ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
+                                                            <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
+                                                                class="ui-select-match ng-hide"
+                                                                placeholder="Chọn hoặc gõ vào để tìm..."><span
+                                                                    ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
+                                                                    class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
+                                                                    hoặc gõ vào để tìm...</span> <span
+                                                                    ng-hide="$select.isEmpty() || $select.open"
+                                                                    ng-transclude="" class="ng-hide"><span
+                                                                        class="ng-binding ng-scope"></span></span></div>
+                                                            <input type="search" autocomplete="off" tabindex="-1"
+                                                                class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid"
+                                                                ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
+                                                                ng-click="$select.toggle($event)"
+                                                                placeholder="Chọn hoặc gõ vào để tìm..."
+                                                                ng-model="$select.search"
+                                                                ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
+                                                                ng-disabled="$select.disabled" aria-label="Select box">
+                                                        </div>
+                                                        <div ng-show="$select.open"
+                                                            class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
+                                                            ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
+                                                            repeat="item in filterByNameItems | filter: $select.search"
+                                                            refresh="refreshResults($select)" refresh-delay="0">
+                                                            <div
+                                                                class="ui-select-choices-content selectize-dropdown-content">
+                                                                <div class="ui-select-choices-group optgroup">
+                                                                    <div ng-show="$select.isGrouped"
+                                                                        class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
+                                                                        ng-bind="$group.name"></div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui-select-no-choice"></div>
+                                                        <input ng-disabled="$select.disabled"
+                                                            class="ui-select-focusser ui-select-offscreen ng-scope"
+                                                            type="text" id="focusser-18" aria-label="Select box focus"
+                                                            aria-haspopup="true" role="button">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="ui-select-container selectize-control single ng-valid"
+                                        ng-class="{'open': $select.open}" ng-model="selectedItem" theme="selectize"
+                                        ng-show="singleMode" ng-disabled="disabledMode">
+                                        <div class="selectize-input"
+                                            ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
+                                            ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
+                                            <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
+                                                class="ui-select-match ng-hide"
+                                                placeholder="Chọn hoặc gõ vào để tìm..."><span
+                                                    ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
+                                                    class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
+                                                    hoặc gõ vào để tìm...</span> <span
+                                                    ng-hide="$select.isEmpty() || $select.open" ng-transclude=""
+                                                    class="ng-hide"><span class="ng-binding ng-scope"></span></span>
+                                            </div><input type="search" autocomplete="off" tabindex="-1"
+                                                class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid"
+                                                ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
+                                                ng-click="$select.toggle($event)"
+                                                placeholder="Chọn hoặc gõ vào để tìm..." ng-model="$select.search"
+                                                ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
+                                                ng-disabled="$select.disabled" aria-label="Select box">
+                                        </div>
+                                        <div ng-show="$select.open"
+                                            class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
+                                            ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
+                                            repeat="item in getItems() | filter: $select.search"
+                                            refresh="refreshResults($select)" refresh-delay="0">
+                                            <div class="ui-select-choices-content selectize-dropdown-content">
+                                                <div class="ui-select-choices-group optgroup">
+                                                    <div ng-show="$select.isGrouped"
+                                                        class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
+                                                        ng-bind="$group.name"></div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ui-select-no-choice"></div>
+                                        <input ng-disabled="$select.disabled"
+                                            class="ui-select-focusser ui-select-offscreen ng-scope" type="text"
+                                            id="focusser-19" aria-label="Select box focus" aria-haspopup="true"
+                                            role="button">
+                                    </div>
+                                    <span id="Logo" style="display:none;"></span>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary"
+                                        ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
+                                        title="Thêm bác sỹ mới nếu chưa có">
+                                        <i class="fa-regular fa-plus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label>D.Giải:</label></td>
+                        <td style="text-align: left">
+                            <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid"
+                                ng-model="model.Description" style="width: 100%"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr style="margin-bottom: 10px; margin-top: 10px">
+            <span class="mb-3 d-block"><strong>Thông tin thanh toán</strong></span>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td style="text-align: left;width:117px"><label>C.K (VNĐ):</label></td>
+                        <td style="text-align: left;">
+                            <label class="control-label ng-binding ng-hide"
+                                ng-show="!allowToChangeTotalAmount">0</label>
+                            <input type="text"
+                                class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                refresh-delay="500" style="width: 100%" ng-model="model.Discount"
+                                awnum="app-decimal-number" ng-show="allowToChangeTotalAmount"
+                                ng-change="onDiscountChanged($event)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;"><label>Tổng tiền:</label></td>
+                        <td style="text-align: left;">
+                            <label class="control-label ng-binding ng-hide"
+                                ng-show="!allowToChangeTotalAmount">2,000</label>
+                            <input type="text"
+                                class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                refresh-delay="500" style="width: 100%" ng-model="model.TotalAmount"
+                                awnum="app-int-number" ng-show="allowToChangeTotalAmount"
+                                ng-keypress="onTotalAmountChanged($event)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">
+                            <div class="d-flex align-items-center justify-content-between gap-10">
+                                <label class="mb-0">Trả:</label>
+                            </div>
+                        </td>
+                        <td style="text-align: left;">
+                            <div class="input-group">
+                                <input type="text" id="tbxPaymentAmount"
+                                    class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                    style="width: 100%" ng-model="model.PaymentAmount" awnum="app-int-number">
+                                <input type="button" value="F" class="btn btn-primary"
+                                    title="Ấn vào đây để trả đủ số tiền"
+                                    ng-click="onPayFull(); $event.preventDefault(); $event.stopPropagation();">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b class="msg_payment_header msg_payment_expanded">HT thanh toán <span>[-]</span></b>
+                        </td>
+                        <td>
+                            <div id="paymentSlide" class="form-check" style="margin-top: 5px">
+                                
+                                <p style="margin-bottom: 5px" class="form-check-label ng-binding ng-scope"
+                                    ng-repeat="item in listPayType">
+                                    <input type="radio" class="form-check-input" ng-checked="item.Id == 0"
+                                        ng-click="changePay(item)" name="optradio" checked="checked">Tiền mặt
+                                </p>
+                                <p style="margin-bottom: 5px" class="form-check-label ng-binding ng-scope"
+                                    ng-repeat="item in listPayType">
+                                    <input type="radio" class="form-check-input" ng-checked="item.Id == 0"
+                                        ng-click="changePay(item)" name="optradio">Chuyển khoản
+                                </p>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;width:100px"><label class="mb-0 ng-binding">Còn nợ:</label></td>
+                        <td style="text-align: left; color: red">
+                            <label class="control-label ng-binding">0</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr class="mt-0">
+            <div class="d-flex justify-content-end align-items-center gap-10">
+                <input type="button" value="Quay lại" class="btn btn-default"
+                    onclick="javascript:window.history.go(-1);">
+                <input type="submit" value="Ghi Phiếu - F9"
+                    ng-click="saveDeliveryNote(); $event.preventDefault(); $event.stopPropagation();"
+                    class="btn btn-primary" id="save-note-btn-id" ng-disabled="canSaveDeliveryNote()">
+            </div>
+        </div>
+    </div>
+</div>

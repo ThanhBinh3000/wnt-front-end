@@ -1,0 +1,193 @@
+<div class="card-bg ng-scope" ng-controller="ReceiptNoteController">
+    <h2 class="card-title text-center"><b>KHÁCH TRẢ LẠI HÀNG</b></h2>
+
+    <div class="text-center card-desc">
+        <div class="card-code">
+            Mã số: <strong>2432</strong>
+        </div>
+
+        <span style="width: 10%">Ngày: <strong>16/03/2024 10:32</strong></span>
+    </div>
+
+    <input value="25/03/2024 15:41" data-val="true" data-val-date="The field Ngày Nhập must be a date." id="NgayNhap"
+        name="NgayNhap" type="hidden">
+
+    <div class="validation-summary-errors text-danger">
+        <ul>
+            <li style="display:none"></li>
+        </ul>
+    </div>
+    <input value="0" data-val="true" data-val-number="The field MaPhieuNhap must be a number." id="MaPhieuNhap"
+        name="MaPhieuNhap" type="hidden">
+
+    <input value="3" data-val="true" data-val-number="The field MaLoaiXuatNhap must be a number."
+        data-val-required="The MaLoaiXuatNhap field is required." id="MaLoaiXuatNhap" name="MaLoaiXuatNhap"
+        type="hidden">
+    <table class="table borderless table-condensed">
+        <tbody>
+            <tr>
+                <td style="text-align: left">
+                    <label class="control-label">Khách hàng:</label>
+                    <label class="control-label" style="font-weight: normal">Mai1111</label>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width: 100%">
+        <thead>
+            <tr>
+                <th style="width: 10px">STT</th>
+                <th style="width: 70px">Mã</th>
+                <th style="width: 100px">Hình ảnh</th>
+                <th>Tên hàng</th>
+                <th style="width: 100px;">Đơn vị</th>
+                <th style="width: 100px; text-align: right">SL</th>
+                <th style="width: 150px; text-align: right">Giá nhập</th>
+
+                <th style="width: 80px; text-align: right">C.K</th>
+
+
+                <th style="width: 150px; text-align: right">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href=""
+                        ng-click="onDrugInfoDetails(10617545); $event.preventDefault(); $event.stopPropagation();">
+                        1
+                    </a>
+                    <input data-val="true" data-val-number="The field Thuốc must be a number."
+                        data-val-required="The Thuốc field is required." id="item_ThuocId" name="item.ThuocId"
+                        type="hidden" value="10617545">
+                </td>
+                <td>
+                    <span class="" id="dMaThuoc0"> TH466</span>
+                </td>
+                <td>
+                </td>
+
+                <td>
+                    <span class="" id="PhieuNhapChiTiets_0__TenSp">test111</span>
+                    <p class="btn-link tooltip-content-drug"
+                        style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
+                        ng-click="onSearchPriceInOut({&quot;MaPhieuNhapCt&quot;:34691469,&quot;ThuocId&quot;:10617545,&quot;DrugId&quot;:10617545,&quot;MaThuoc&quot;:&quot;TH466&quot;,&quot;TenThuoc&quot;:&quot;test111&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;HeSo&quot;:10,&quot;MaPhieuNhap&quot;:3621741,&quot;MaNhaThuoc&quot;:null,&quot;MaDonViTinh&quot;:699963,&quot;MaDonViTinhLe&quot;:699963,&quot;MaDonViTinhThuNguyen&quot;:705283,&quot;TenDonViTinh&quot;:&quot;Bịch&quot;,&quot;ChietKhau&quot;:0.00,&quot;GiaNhap&quot;:70000.00,&quot;GiaBan&quot;:70000.00,&quot;SoLuong&quot;:5.00,&quot;SoLo&quot;:&quot;&quot;,&quot;HanDung&quot;:null,&quot;VAT&quot;:0.00,&quot;ItemOrder&quot;:1,&quot;ConnectivityStatusId&quot;:0,&quot;Amount&quot;:350000.00,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;GroupIdMapping&quot;:10617545,&quot;Flag&quot;:false,&quot;RateRevenue&quot;:0.0})"
+                        title="Tra cứu giá thị trường">
+                        <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
+                    </p>
+                </td>
+                <td>
+                    <span class="display-mode" id="PhieuNhapChiTiets_0__MaDonViTinhSp">Bịch</span>
+                </td>
+                <td>
+                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__SoLuongSp">5</span>
+
+                </td>
+                <td>
+                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__GiaNhapSp">70,000</span>
+                </td>
+
+                <td>
+                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__ChietKhauSp">
+                        0
+                    </span>
+
+                </td>
+
+                <td>
+                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__ThanhTien">350,000</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <div class="row">
+        <div class="col-md-3">
+            <b>Tổng số tiền : &nbsp;<span id="spanSumAll"></span></b>350,000
+        </div>
+        <div class="col-md-3 ng-hide" ng-show="model.MaLoaiXuatNhap == 1">
+            <b style="margin-left:20px;">Chiết khấu : &nbsp;<span id="spanSumAll"></span></b> 0
+
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <span style="font-weight: bold" id="spSumfinal">
+            </span>
+
+        </div>
+        <div class="col-md-5">
+            <table style="padding: 5px">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Đã trả:</strong> 350,000
+                            <br>
+                            <span><strong>Hình thức thanh toán:</strong> Tiền mặt</span>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="spDebt" class="text-danger">
+                                <strong>Trả Lại:</strong> 0
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <table class="table borderless table-condensed">
+        <tbody>
+            <tr>
+                <td class="text-left">
+                    <span><strong>Diễn giải: </strong></span><strong>
+                        <span></span>
+                    </strong>
+                </td>
+
+                <td class="text-right">
+                    <span>[<strong>Người lập:</strong> </span>
+                    <span>Đỗ Thanh Mai]</span>
+                </td>
+                <td class="text-right">
+                    <span>[<strong>Ngày lập:</strong> </span>
+                    <span>16/03/2024]</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input value="False" data-val="true" data-val-required="The Đã Xóa field is required." id="Xoa" name="Xoa"
+        type="hidden">
+    <div class="card-footer">
+        <div class="d-flex justify-content-center align-items-center gap-10">
+            <input type="button" value="Quay lại" class="btn btn-default" onclick=" javascript:window.history.go(-1); ">
+
+            <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    In <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" ng-click="onPrint(3621741, 3, 3)">Phiếu khách lẻ - 80mm</a></li>
+                    <li><a href="#" ng-click="onPrint(3621741, 3, 1)">Phiếu khách quen - A4</a></li>
+                    <li><a href="#" ng-click="onPrint(3621741, 3, 2)">Phiếu khách lẻ - A5</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary" href="/ReceiptNote/EditReceiptNoteScreen?taskMode=2&amp;noteId=3621741">Sửa</a>
+            <span ng-show="model.LinkFile !=''">
+                <span class="btn btn-default zalo-share-button" style="width:105px;height:35px"
+                    data-href="https://s.webnhathuoc.com/Uploads/WNT_FOLDER/null" data-oaid="1356962617348157464"
+                    data-layout="2" data-color="blue" data-customize="true">Chia sẻ Zalo</span>
+            </span>
+            <a class="btn btn-danger" href="/PhieuNhaps/delete/3621741">Xóa</a><a class="btn btn-default"
+                href="/ReceiptNote/ConnReceiptNoteScreen?noteId=3621741&amp;isConnectivity=1">LT</a><a
+                class="btn btn-default"
+                href="/ReceiptNote/ManagementReceiptNoteScreen?noteId=3621741&amp;isManagement=1">QL</a>
+        </div>
+    </div>
+</div>

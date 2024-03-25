@@ -9,6 +9,7 @@ import { DrugNotInventoryComponent } from './drug-not-inventory/drug-not-invento
 import { InventoryAddEditComponent } from './inventory-add-edit/inventory-add-edit.component';
 import { InventoryItemUpdateDialogComponent } from './inventory-item-update-dialog/inventory-item-update-dialog.component';
 import { InventoryDetailComponent } from './inventory-detail/inventory-detail.component';
+import { InventoryMultipleWarehouseDialogComponent } from './inventory-multiple-warehouse-dialog/inventory-multiple-warehouse-dialog.component';
 @NgModule({
   declarations: [
     InventoryComponent,
@@ -16,10 +17,13 @@ import { InventoryDetailComponent } from './inventory-detail/inventory-detail.co
     DrugNotInventoryComponent,
     InventoryAddEditComponent,
     InventoryItemUpdateDialogComponent,
-    InventoryDetailComponent
+    InventoryDetailComponent,
+    InventoryMultipleWarehouseDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, InventoryRoutingModule],
-  exports: [],
+  exports: [
+    InventoryMultipleWarehouseDialogComponent
+  ],
 })
 export class InventoryModule {
 }
