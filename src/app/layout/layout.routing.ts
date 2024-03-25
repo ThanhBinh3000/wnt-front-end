@@ -83,10 +83,15 @@ const routes: Routes = [
         path: 'clinic',
         loadChildren: () => import('../pages/clinic/clinic.module').then((m) => m.ClinicModule),
       },
+      // {
+      //   path: 'notification',
+      //   component: NotificationComponent
+      // }
       {
         path: 'notification',
-        component: NotificationComponent
-      }
+        loadChildren: () => import('../pages/notification/notification.module').then((m) => m.NotificationModule),
+      },
+
     ],
   }
 ];
