@@ -55,20 +55,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data in dataTable; let i = index">
+                  <tr *ngFor="let data of dataTable; index as i;">
                     <td>{{(page - 1) * pageSize + i + 1}}</td>
                     <td>{{ data.tenNhomThuoc }}</td>
                     <td>{{ data.kyHieuNhomThuoc }}</td>
                     <td>
-<!--                      <a (click)="redirectDetail(data.id)">-->
-<!--                        <span class="icon htvbdh_eye"></span>-->
-<!--                      </a>-->
-<!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="redirectDetail(data.id,'LKQLCL_TDBQ_THEM')">-->
-<!--                        <span class="fa fa-pencil"></span>-->
-<!--                      </a>-->
-<!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="delete(data,'LKQLCL_TDBQ_XOA')">-->
-<!--                        <i class="fa fa-trash-o do"></i>-->
-<!--                      </a>-->
+                      <!--                      <a (click)="redirectDetail(data.id)">-->
+                      <!--                        <span class="icon htvbdh_eye"></span>-->
+                      <!--                      </a>-->
+                      <!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="redirectDetail(data.id,'LKQLCL_TDBQ_THEM')">-->
+                      <!--                        <span class="fa fa-pencil"></span>-->
+                      <!--                      </a>-->
+                      <!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="delete(data,'LKQLCL_TDBQ_XOA')">-->
+                      <!--                        <i class="fa fa-trash-o do"></i>-->
+                      <!--                      </a>-->
                     </td>
                   </tr>
                 </tbody>
