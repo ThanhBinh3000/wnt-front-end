@@ -1,0 +1,87 @@
+<div class="card-bg">
+    <h2 class="card-title text-center"><b>PHIẾU DỰ TRÙ</b></h2>
+    <div class="text-center card-desc">
+        <div class="card-code">
+            Mã số: <strong>1</strong>
+        </div>
+        <span id="" style="width: 10%">Ngày: <strong>1/1/2024</strong></span>
+    </div>
+    <table class="table borderless table-condensed">
+        <tr>
+            <td class="text-left" style="padding-left: 0px">
+                <label class="control-label">Nhà cung cấp:</label>
+                <span>Hàng nhập lẻ</span>
+            </td>
+        </tr>
+    </table>
+    <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width: 100%">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã</th>
+                <th>Tên Hàng</th>
+                <th>Tên Nhóm</th>
+                <th>Đơn Vị Tồn</th>
+                <th>SL Cảnh Báo</th>
+                <th>Tồn Kho</th>
+                <th>Dự trù</th>
+                <th>Đơn Vị Dự Trù</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>TH1</td>
+                <td>Thuốc 1</td>
+                <td>Nhóm 1</td>
+                <td class="text-right">Hộp</td>
+                <td class="text-right">1</td>
+                <td class="text-right">1</td>
+                <td class="text-right">2</td>
+                <td class="text-right">Hộp</td>
+                <td class="text-right" ng-if="permittedFields.Drug_ViewInputPrice">1.000</td>
+                <td class="text-right" ng-if="!permittedFields.Drug_ViewInputPrice">****</td>
+                <td class="text-right" ng-if="permittedFields.Drug_ViewInputPrice">2.000</td>
+                <td class="text-right" ng-if="!permittedFields.Drug_ViewInputPrice">****</td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <b>Tổng Số Tiền : &nbsp;<span id="spanSumAll"></span></b><span ng-if="permittedFields.Drug_ViewInputPrice">1.000</span>
+            <span ng-if="!permittedFields.Drug_ViewInputPrice">****</span>
+        </div>
+    </div>
+
+    <table class="table borderless table-condensed">
+        <tr>
+            <td class="text-left" style="padding-left: 0px">
+                <label class="control-label">Người lập:</label>
+                <span>Nhân viên A</span>
+            </td>
+        </tr>       
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <div ng-show="canAction" class="form-inline">
+                <input type="button" value="Quay lại" class="btn btn-default" onclick=" javascript:window.history.go(-1); " />
+                <span class="btn-separator"></span>
+                &nbsp;
+                <a href="#" ng-click="onPrint(@Model.MaPhieu)" class="btn btn-default">In</a>
+                <span>&nbsp;</span>
+                <a href="/DrugManagement/CreateReserve?noteId=@Model.MaPhieu" class="btn btn-primary">Sửa</a>
+                <span>&nbsp;</span>
+                <a href="#" ng-click="onCreateReceiptFromNoteReserve(@Model.MaPhieu)" class="btn btn-default">Nhập hàng</a>
+                <span ng-show="model.LinkFile !=''">
+                    <span class="btn btn-default zalo-share-button" style="width:105px;height:35px" data-href="" data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize=true>Chia sẻ Zalo</span>
+                </span>
+                <span>&nbsp;</span>
+                <a href="management/reserve/note-reserve-delete" class="btn btn-danger">Xoá</a>
+            </div>
+        </div>
+    </div>
+</div>

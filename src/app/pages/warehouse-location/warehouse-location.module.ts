@@ -13,7 +13,9 @@ import { WarehouseLocationListComponent } from './warehouse-location-list/wareho
     WarehouseLocationAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, WarehouseLocationRoutingModule],
-  exports: [],
+  exports: [
+    WarehouseLocationAddEditDialogComponent
+  ],
 })
 export class WarehouseLocationModule {
 }

@@ -16,7 +16,8 @@ import { CustomerPrintBarcodeDialogComponent } from './customer-print-barcode-di
   ],
   imports: [CommonModule, RouterOutlet, CustomerRoutingModule],
   exports: [
-    CustomerAddEditDialogComponent
+    CustomerAddEditDialogComponent,
+    CustomerPrintBarcodeDialogComponent,
   ],
 })
 export class CustomerModule {

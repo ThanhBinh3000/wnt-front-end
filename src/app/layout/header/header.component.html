@@ -658,7 +658,7 @@
                   <li><a href="/management/receipt-medical-fee/receipt-medical-fee-add-edit">Viết phiếu thu tiền khám bệnh</a></li>
                   <li><a href="/management/receipt-medical-fee/receipt-medical-fee-list">Danh sách thu tiền khám bệnh</a></li>
                   <li class="divider"></li>
-                  <li><a href="/Clinic/ListClinic">Phòng khám</a></li>
+                  <li><a href="/management/clinic/clinic-list">Phòng khám</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('service', 'block') "
@@ -668,7 +668,7 @@
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('service')">
                   <li><a href="/management/service-group/list">Nhóm dịch vụ</a></li>
-                  <li><a href="/DrugManagement/DrugListing?type=1">Danh sách dịch vụ</a></li>
+                  <li><a href="/management/service/list">Danh sách dịch vụ</a></li>
                   <li class="divider"></li>
                   <li><a href="/management/service-note/service-note-add-edit">Lập mới phiếu dịch vụ</a></li>
                   <li><a href="/management/service-note/service-note-list">Danh sách phiếu dịch vụ</a></li>
@@ -730,17 +730,17 @@
                   <li><a href="/management/drug-unit/list">Đơn vị tính</a></li>
                   <li><a href="/management/drug-group/list">Nhóm thuốc</a></li>
                   <li class="divider"></li>
-                  <li><a href="/management/drug/list?type=0">Danh sách thuốc</a></li>
-                  <li><a href="/DrugManagement/Create">Thêm mới thuốc</a></li>
+                  <li><a href="/management/drug/list">Danh sách thuốc</a></li>
+                  <li><a data-toggle="modal" data-target="#drug-add-edit-header-dialog">Thêm mới thuốc</a></li>
                   <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
                   <li><a href="/Thuocs/InMaVach">In mã vạch thuốc, liều dùng</a></li>
                   <li><a href="/Report/DrugTransHistories">Lịch sử giao dịch</a></li>
 
                   <li class="divider"></li>
-                  <li><a href="/DrugManagement/CreateReserve">Lập dự trù thuốc</a></li>
+                  <li><a href="management/reserve/note-reserve-add-edit">Lập dự trù thuốc</a></li>
                   <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
                   <li><a href="/Connectivity/ConnectivitySampleNotes">Quản lý đơn thuốc LT</a></li>
-                  <li><a href="/Inventory">Kiểm kê kho</a></li>
+                  <li><a href="/management/inventory/inventory-list">Kiểm kê kho</a></li>
                   <li class="divider"></li>
                   <li><a href="/Thuocs/MappingDrugForConnect">Thiết lập thuốc LT</a></li>
                 </ul>
@@ -751,7 +751,8 @@
                    class="dropdown-toggle">Đơn Hàng
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('order')">
-                  <li><a href="/OrderMan/OrdersListing">Quản lý đơn đặt hàng</a></li>
+                  <li><a href="/management/order/create-order">Tạo mới đơn đặt hàng</a></li>
+                  <li><a href="/management/order/order-list">Quản lý đơn đặt hàng</a></li>
                   <li><a href="/management/order/search-drug">Tra cứu và nhặt hàng</a></li>
                   <li class="divider"></li>
                   <li><a href="/management/order/form-quick">Đơn nhặt hàng</a></li>
@@ -914,3 +915,4 @@
 
   </div>
 </div>
+<drug-add-edit-dialog [location]="'header'"></drug-add-edit-dialog>

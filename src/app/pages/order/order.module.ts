@@ -9,6 +9,8 @@ import { FormQuickComponent } from './pick-up-order/form-quick/form-quick.compon
 import { HandleOrderComponent } from './pick-up-order/handle-order/handle-order.component';
 import { PickUpOrderDetailComponent } from './pick-up-order/pick-up-order-detail/pick-up-order-detail.component';
 import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/list-order-pick-up.component';
+import { CreateOrderComponent } from './create-order/create-order.component';
+import { OrderListComponent } from './order-list/order-list.component';
 @NgModule({
   declarations: [
     OrderComponent,
@@ -16,7 +18,9 @@ import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/lis
     FormQuickComponent,
     HandleOrderComponent,
     PickUpOrderDetailComponent,
-    ListOrderPickUpComponent
+    ListOrderPickUpComponent,
+    CreateOrderComponent,
+    OrderListComponent
   ],
   imports: [CommonModule, RouterOutlet, OrderRoutingModule],
   exports: [],

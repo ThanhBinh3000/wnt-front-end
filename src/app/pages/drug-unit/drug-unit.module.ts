@@ -13,7 +13,9 @@ import { DrugUnitListComponent } from './drug-unit-location-list/drug-unit-list.
     DrugUnitAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, DrugUnitRoutingModule],
-  exports: [],
+  exports: [
+    DrugUnitAddEditDialogComponent
+  ],
 })
 export class DrugUnitModule {
 }
