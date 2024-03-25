@@ -43,7 +43,7 @@ export class AuthService {
 
   login(body: any) {
     const url = `/api/wnt-security/login`;
-    return this.httpClient.post<any>(url, body).toPromise();
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
   isLogin() {

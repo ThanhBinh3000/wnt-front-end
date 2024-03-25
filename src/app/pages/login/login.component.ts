@@ -32,9 +32,9 @@ export class LoginComponent implements OnInit {
 
   async login() {
     this.loadingService.show();
-    let data = await this.authService.login(this.formGroup.value);
-    if (data) {
-      this.authService.saveToken(data.token);
+    let res = await this.authService.login(this.formGroup.value);
+    if (res && res.statusCode == 0) {
+      this.authService.saveToken(res.data.token);
       this.router.navigate(['management/home']).then(r => {
       });
       this.loadingService.hide();
