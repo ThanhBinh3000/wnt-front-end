@@ -18,7 +18,7 @@ export class AuthService {
 
   getToken(): string {
     // @ts-ignore
-    return this.storageService.getString(STORAGE_KEY.ACCESS_TOKEN);
+    return JSON.parse(this.storageService.getString(STORAGE_KEY.ACCESS_TOKEN));
   }
 
   saveUser(user: any) {
