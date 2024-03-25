@@ -93,7 +93,27 @@ const routes: Routes = [
       {
         path: 'notification',
         component: NotificationComponent
-      }
+      },
+      {
+        path: 'wait-note',
+        loadChildren: () => import('../pages/wait-note/wait-note.module').then((m) => m.WaitNoteModule),
+      },
+      {
+        path: 'in-out-note',
+        loadChildren: () => import('../pages/in-out-note/in-out-note.module').then((m) => m.InOutNoteModule),
+      },
+      {
+        path: 'medical-note',
+        loadChildren: () => import('../pages/medical-note/medical-note.module').then((m) => m.MedicalNoteModule),
+      },
+      {
+        path: 'receipt-medical-fee',
+        loadChildren: () => import('../pages/receipt-medical-fee/receipt-medical-fee.module').then((m) => m.ReceiptMedicalFeeModule),
+      },
+      {
+        path: 'service-note',
+        loadChildren: () => import('../pages/service-note/service-note.module').then((m) => m.ServiceNoteModule),
+      },
     ],
   }
 ];

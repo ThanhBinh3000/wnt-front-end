@@ -650,13 +650,13 @@
                    class="dropdown-toggle">Khám bệnh
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('doctor')">
-                  <li><a href="/WaitNote/ListWaits?type=1">Tiếp đón bệnh nhân</a></li>
-                  <li><a href="/NoteMedical/Create">Lập phiếu khám</a></li>
-                  <li><a href="/WaitNote/ListWaits?type=2">Danh sách phiếu khám</a></li>
-                  <li><a href="/NoteMedical/ListNoteMedical">Lịch sử khám chữa bệnh</a></li>
+                  <li><a href="/management/wait-note/wait-note-list">Tiếp đón bệnh nhân</a></li>
+                  <li><a href="/management/medical-note/medical-note-add-edit">Lập phiếu khám</a></li>
+                  <li><a href="/management/wait-note/wait-note-list">Danh sách phiếu khám</a></li>
+                  <li><a href="/management/medical-note/medical-note-list">Lịch sử khám chữa bệnh</a></li>
                   <li class="divider"></li>
-                  <li><a href="/ReceiptMedicalFee/Create">Viết phiếu thu tiền khám bệnh</a></li>
-                  <li><a href="/ReceiptMedicalFee/ListReceiptMedicalFee">Danh sách thu tiền khám bệnh</a></li>
+                  <li><a href="/management/receipt-medical-fee/receipt-medical-fee-add-edit">Viết phiếu thu tiền khám bệnh</a></li>
+                  <li><a href="/management/receipt-medical-fee/receipt-medical-fee-list">Danh sách thu tiền khám bệnh</a></li>
                   <li class="divider"></li>
                   <li><a href="/management/clinic/clinic-list">Phòng khám</a></li>
                 </ul>
@@ -670,8 +670,8 @@
                   <li><a href="/management/service-group/list">Nhóm dịch vụ</a></li>
                   <li><a href="/management/service/list">Danh sách dịch vụ</a></li>
                   <li class="divider"></li>
-                  <li><a href="/NoteService/Create">Lập mới phiếu dịch vụ</a></li>
-                  <li><a href="/NoteService/ListNoteService">Danh sách phiếu dịch vụ</a></li>
+                  <li><a href="/management/service-note/service-note-add-edit">Lập mới phiếu dịch vụ</a></li>
+                  <li><a href="/management/service-note/service-note-list">Danh sách phiếu dịch vụ</a></li>
                   <li class="divider"></li>
                   <li><a href="/NoteService/ListNoteWaitService">Danh sách dịch vụ chờ thực hiện</a></li>
                 </ul>
@@ -710,14 +710,14 @@
                    class="dropdown-toggle">Thu - Chi
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('revenue-expenditure')">
-                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=1">Viết phiếu thu nợ khách hàng</a>
+                  <li><a href="/management/in-out-note/incoming-note-add-edit">Viết phiếu thu nợ khách hàng</a>
                   </li>
-                  <li><a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2">Viết phiếu trả nợ nhà cung cấp</a>
+                  <li><a href="/management/in-out-note/outcoming-note-add-edit">Viết phiếu trả nợ nhà cung cấp</a>
                   </li>
-                  <li><a href="/InOutCommingNote/OtherInOutcommingNote?noteTypeId=3">Nhập các khoản thu chi khác</a>
+                  <li><a href="/management/in-out-note/other-in-out-note-add-edit">Nhập các khoản thu chi khác</a>
                   </li>
                   <li class="divider"></li>
-                  <li><a href="/InOutCommingNote?noteTypeId=1">Danh sách phiếu Thu-Chi</a></li>
+                  <li><a href="/management/in-out-note/in-out-note-list">Danh sách phiếu Thu-Chi</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('merchandise', 'block') "
