@@ -1,0 +1,410 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar-bg">
+            <fieldset>
+                <label>Tìm theo</label>
+                <div class="control-group">
+                    <div item-search-filter="" select-changed-callback="onserviceSelectChanged"
+                        default-selected-changed-callback="onDefaultSelectedChanged"
+                        enter-key-callback="onSearchAcceptEnterKey" clear-after-selected="false"
+                        forward-enter-key="true" only-single-item="false" default-selected-item="selectedserviceItem"
+                        search-type="typeItem == 0 ? 1 : 10" id="serviceSearchBoxId" func-calls="searchItemFuncCalls"
+                        update-search-text-by-selected-result="true" show-cam-barcode-scanner="deviceType != 0"
+                        cam-barcode-scanned-callback="onCamBarcodeScanned" resettable="true"
+                        resettable-callback="onResetSearching" enable-scan-barcode="true" class="ng-isolate-scope">
+                        <div ng-if="!showCamBarcodeScanner" class="input-group">
+                            <div class="w-100">
+                                <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
+                                    ng-class="{open: $select.open}" ng-model="data.selected" theme="bootstrap"
+                                    id="itemSearchId" reset-search-input="clearAfterSelected"
+                                    forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
+                                    <div><span class=" ui-select-match ui-select-match"
+                                            placeholder="Nhập mã, mã vạch hoặc tên..."
+                                            id="itemSearchUISelectID"></span><input type="search" autocomplete="off"
+                                            autocorrect="off" autocapitalize="off" spellcheck="false"
+                                            class="ui-select-search input-xs ng-valid ng-touched ng-dirty ng-valid-parse"
+                                            placeholder="Nhập mã, mã vạch hoặc tên..." ng-disabled="$select.disabled"
+                                            ng-click="$select.activate()" ng-model="$select.search" role="combobox"
+                                            aria-expanded="false" aria-label="Select box"
+                                            ng-class="{'spinner': $select.refreshing}" ondrop="return false;"
+                                            style="width: 278px;"></div>
+                                    <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                                        ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                                        refresh="fetch($select)" refresh-delay="500" repeat="item in items"
+                                        id="selectChoiceId" style="display: block; opacity: 0;">
+                                        <li class="ui-select-choices-group" id="ui-select-choices-53">
+                                            <div class="divider ng-hide"
+                                                ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
+                                            <div ng-show="$select.isGrouped"
+                                                class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                                ng-bind="$group.name"></div>
+                                        </li>
+                                    </ul>
+                                    <div class="ui-select-no-choice"></div>
+                                </div>
+                            </div>
+                            <span class="input-group-btn ng-scope" ng-if="resettable">
+                                <a ng-click="onResetSearching();" class="btn btn-primary" title="Xóa tìm kiếm">
+                                    <i class="fa-regular fa-arrows-rotate"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group d-flex gap-5 align-items-center">
+                    <input type="checkbox" ng-model="filterModel.IsDeleted"
+                        class="form-checkbox mb-0 mt-0 ng-pristine ng-untouched ng-valid"
+                        ng-change="onDeletedSelectChanged()">
+                    <label class="mb-0">Dịch vụ bị xóa</label>
+
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label class="ng-binding">Nhóm dịch vụ</label>
+                    <div>
+                        <div class="selectize-control single ng-valid ng-touched ng-dirty ng-valid-parse"
+                            ng-class="{'open': $select.open}" ng-model="selectedItem" theme="selectize"
+                            ng-show="singleMode" ng-disabled="disabledMode">
+                            <div class="selectize-input"
+                                ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
+                                ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
+                                <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
+                                    class="ui-select-match" placeholder="Chọn hoặc gõ vào để tìm..."><span
+                                        ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
+                                        class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn hoặc gõ vào để
+                                        tìm...</span> <span ng-hide="$select.isEmpty() || $select.open" ng-transclude=""
+                                        class=""><span class="ng-binding ng-scope">--Tất cả--</span></span></div>
+                            </div>
+                            <div ng-show="$select.open"
+                                class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
+                                ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
+                                repeat="item in getItems() | filter: $select.search" refresh="refreshResults($select)"
+                                refresh-delay="0" style="opacity: 0;">
+                                <div class="ui-select-choices-content selectize-dropdown-content">
+                                    <div class="ui-select-choices-group optgroup">
+                                        <div ng-show="$select.isGrouped"
+                                            class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
+                                            ng-bind="$group.name"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-select-no-choice"></div><input
+                                ng-disabled="$select.disabled" class="ui-select-focusser ui-select-offscreen ng-scope"
+                                type="text" id="focusser-18" aria-label="Select box focus" aria-haspopup="true"
+                                role="button">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="baocao-filter">
+                <div class="d-flex justify-content-between gap-10">
+                    <input type="button" value="Xem"
+                        ng-click="onDisplayData(); $event.preventDefault(); $event.stopPropagation();"
+                        class="btn btn-primary w-50">
+                    <a ng-show="typeItem ==0" href="javascript:void(0)" (click)="serviceID = 0" data-toggle="modal" data-target="#service-add-edit-dialog" class="btn btn-primary w-50"
+                        ng-disabled="!permittedFields.service_Create">
+                        Thêm
+                    </a>
+                </div>
+                <hr style="margin-top:10px" />
+            </fieldset>
+            <fieldset ng-if="deviceType==0" class="ng-scope">
+                <label>Nhập/Xuất dữ liệu từ Excel</label>
+                <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
+                    method="post">
+                    <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                        <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+                        <input type="button" value="Tải File" title="Tải file"
+                            ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
+                            class="btn btn-default btn-outline" accept="Excel/*.xlsx">
+                        <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="baocao-container box-group-white">
+            <div class="d-flex baocao-header">
+                <h2 style="margin-bottom: 0px;">
+                    <b ng-if="typeItem == 0 || typeItem == null" class="ng-scope">
+                        <span class="text-uppercase">{{title}} </span>
+                    </b>
+                </h2>
+                <div class="baocao-actions">
+                    <button ng-click="deleteAllSelectedItems()" class="btn btn-sm btn-danger pull-right ng-scope"
+                        ng-if="isSuperUser">Xóa</button><!-- end ngIf: isSuperUser -->
+                    <button ng-click="restoreAllSelectedItems()" class="btn btn-sm btn-warning pull-right ng-scope"
+                        ng-if="isSuperUser">Khôi phục</button><!-- end ngIf: isSuperUser -->
+                </div>
+            </div>
+            <table class="table table-striped tabble-responsive table-bordered table-hover tr-ng-grid">
+                <thead>
+                    <tr>
+                        <th ng-if="isSuperUser" tr-ng-grid-header-cell="0" is-customized="true" class="ng-scope">
+                            <div class="tr-ng-column-header tr-ng-cell" ng-switch="isCustomized">
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude=""><label class="ng-scope">
+                                            <span app-module-select-all="" class="ng-scope"><input type="checkbox"
+                                                    class="check-all-directive ng-pristine ng-untouched ng-valid"
+                                                    title="check all" ng-model="isSelectedAll"
+                                                    ng-change="toggleSelectAll()"></span>
+                                        </label></div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="#">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div> # </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Tên dịch vụ[Mã-Tên]">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div> 
+                                    <div class="tr-ng-title">Tên dịch vụ[Mã-Tên]
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Nhóm dịch vụ">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Nhóm dịch vụ
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Giá nhập">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Giá nhập
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Giá bán">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Giá bán
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="C.K(%)">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> C.K(%)
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Tích điểm">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Tích điểm
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title">
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="tr-ng-cell text-left">
+                                <div ng-switch-when="true" class="ng-scope">
+                                    <div ng-transclude=""><label class="ng-scope">
+                                            <span app-module-select-row="" class="ng-scope"><input type="checkbox"
+                                                    title="select row" ng-model="gridItem.isSelected"
+                                                    ng-disabled="gridItem.IsDisabled"
+                                                    ng-click="selectItem(gridItem, $event)"
+                                                    class="ng-pristine ng-untouched ng-valid"> </span>
+                                        </label></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div><a href="javascript:void(0)" (click)="serviceID = 1" data-toggle="modal" data-target="#service-detail-dialog">1</a></div>
+                        </td>
+                        <td>
+                            <div class="input-group ng-scope">
+                                <span>
+                                    <span ng-if="deviceType==0" class="ng-scope">
+                                        
+                                        <a href="javascript:void(0)" (click)="serviceID = 1" data-toggle="modal" data-target="#service-detail-dialog" ng-click="onDrugInfoDetails(gridItem.Id); $event.preventDefault(); $event.stopPropagation();">
+                                            <span style="color:seagreen" class="ng-binding">
+                                                DV034-
+                                            </span><span ng-mouseover="onShowTitle(gridItem)" class="tooltip-content-drug ng-binding">
+                                                Khám mới
+                                                <span class="show-tooltip-content-drug ng-binding" style="" ng-bind-html="gridItem.TitleDrug"></span>
+                                            </span>
+                                        </a>
+                                    </span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>Khám bệnh</div>
+                        </td>
+                        <td>
+                            <div>Hộp</div>
+                        </td>
+                        <td>
+                            <div>100,000</div>
+                        </td>
+                        <td>
+                            <div>0</div>
+                        </td>
+                        <td>
+                            <div>0</div>
+                        </td>
+                        <td>
+                            <div ng-if="!ownerPricesSettingActivated">
+                                <div ng-if="gridItem.RecordStatusId == 0" class="baocao-actions baocao-actions-row">
+                                    <div class="baocao-actions-item">
+                                        <span title="sửa" ng-if="permittedFields.Drug_Write">
+                                            <button ng-show="typeItem ==1" (click)="serviceID = 0" data-toggle="modal" data-target="#service-add-edit-dialog" class="btn btn-primary btn-sm">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                        </span>
+                                        <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
+                                            <a ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();" class="btn btn-danger btn-sm">
+                                                <i class="fa-regular fa-trash"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div ng-if="gridItem.RecordStatusId == 2 && typeItem ==1" class="baocao-actions ng-hide">
+                                    <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs"
+                                          ng-click="onRestore(gridItem); $event.preventDefault(); $event.stopPropagation();"
+                                          class="btn btn-warning btn-sm">
+                                        Khôi phục
+                                    </span>
+                                    <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
+                                        <a title="xóa" ng-click="onDeleteForever(gridItem); $event.preventDefault(); $event.stopPropagation();" class="btn btn-danger btn-sm">
+                                            <i class="fa-regular fa-trash"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div ng-if="ownerPricesSettingActivated" class="ng-hide">
+                                <div ng-if="gridItem.RecordStatusId == 0" class="baocao-actions">
+                                    <a title="sửa" class="btn btn-primary btn-sm" href="#" ng-click="onQuickUpdateDrugInfos(gridItem); $event.preventDefault(); $event.stopPropagation();"><i class="fa-regular fa-pen-to-square"></i></a>
+                                    <a title="lịch sử giao dịch" href="/Report/DrugTransHistories?drugId=" class="btn btn-primary btn-sm">
+                                        LS
+                                    </a>
+                                </div>
+                                <div ng-if="gridItem.RecordStatusId == 2" class="baocao-actions">
+                                    <span ng-if="filterModel.IsSlaveDs">
+                                        <a title="xem" href="/Thuocs/Details/" class="btn btn-primary btn-sm">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                    </span>
+                                    <a title="lịch sử giao dịch" href="/Report/DrugTransHistories?drugId=" class="btn btn-primary btn-sm">
+                                        LS
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr id="footerId">
+                        <td align="center" is-customized="true" colspan="9">
+                            <div class="tr-ng-grid-footer form-inline">
+                                <div>
+                                    <div>
+                                        <span class="form-group pull-left page-size">
+                                            <select id="ddlPageSize" class="form-control">
+                                                <option label="10" value="number:10" selected="selected">10</option>
+                                                <option label="20" value="number:20">20</option>
+                                                <option label="50" value="number:50">50</option>
+                                                <option label="100" value="number:100">100</option>
+                                                <option label="--All--" value="number:9000">--All--</option>
+                                            </select>
+                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
+                                        </span>
+                                        <span class="pull-right form-group" style="height:40px">
+                                            <ul class="pagination">
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
+                                                </li>
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a href="javascript:void(0);" title="Trang">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">6</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">7</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">8</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">9</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">10</a>
+                                                <li class="disabled"><span>...</span>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
+                                                    </a>
+                                                </li>
+                                                <li class="disabled" style="white-space: nowrap;">
+                                                    <span class="ng-hide">Không có dữ liệu</span>
+                                                    <span> Tổng: 3182 bản ghi </span>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- model.length <= 0 -->
+            <div>
+                <p class="text-danger text-center mt-3">Không tìm thấy dịch vụ nào</p>
+            </div>
+        </div>
+    </div>
+</div>
+<service-add-edit-dialog [serviceID]="serviceID"></service-add-edit-dialog>
+<service-detail-dialog [serviceID]="serviceID"></service-detail-dialog>

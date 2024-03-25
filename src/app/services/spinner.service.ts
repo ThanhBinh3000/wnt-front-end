@@ -1,20 +1,21 @@
 import {Injectable} from "@angular/core";
-import {StorageService} from "./storage.service";
-import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpinnerService {
-  constructor(private httpClient: HttpClient,
-              private storageService: StorageService) {
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
+
+  constructor() {
   }
 
   show() {
-
+    this.loadingSubject.next(true);
   }
 
   hide() {
-
+    this.loadingSubject.next(false);
   }
 }

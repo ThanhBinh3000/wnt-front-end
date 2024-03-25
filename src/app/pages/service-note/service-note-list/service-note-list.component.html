@@ -1,0 +1,327 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar-bg">
+            <div class="mb-3">
+                <label>Bệnh nhân</label>
+                <div>
+                    <input class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Tìm theo</label>
+                <select class="form-control mb-0">
+                    <option value="" selected>--Tất cả--</option>
+                    <option value="1">Số phiếu</option>
+                    <option value="5">Bác sỹ chỉ định</option>
+                    <option value="6">Người thực hiện</option>
+                    <option value="7">Dịch vụ</option>
+                </select>
+            </div>
+            <input ng-show="typeFilter==1" type="text" placeholder="Nhập số phiếu vào đây..." class="form-control" style="width: 100%" ng-model="filterModel.noteNumbers" />
+            <div class="input-daterange input-group ng-scope mb-3" id="datepicker">
+                <div class="input-group">
+                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="from"
+                        id="reportFromDate" placeholder="Từ ngày.." ng-model="reportFromDate">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary"
+                            ng-click="onFromDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                class="fa-regular fa-calendar-days"></i></button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="to"
+                        id="reportToDate" placeholder="Đến ngày.." ng-model="reportToDate">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary"
+                            ng-click="onToDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                class="fa-regular fa-calendar-days"></i></button>
+                    </span>
+                </div>
+            </div>
+            <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
+                class="btn btn-primary w-100"
+                ng-click="onDisplayData(true); $event.preventDefault(); $event.stopPropagation();">
+            <span type="button" class="btn btn-primary mt-3 w-100">Xuất Excel</span>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="baocao-container box-group-white">
+            <h2 class="mb-3 d-block text-center"><b>{{title}}</b></h2>
+            <table class="table table-striped table-bordered table-hover tr-ng-grid">
+                <thead>
+                    <tr>
+                        <th display-name="STT">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> STT </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Mã số">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Mã số
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Mã vạch">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Mã vạch
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Ngày">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Ngày
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Người thực hiện">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Người thực hiện
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Bác sỹ chỉ định">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Bác sỹ chỉ định
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Bệnh nhân">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Bệnh nhân
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Kết luận">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Kết luận
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Trạng thái">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Trạng thái
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Tổng tiền">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Tổng tiền
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Thao tác">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Thao tác
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>1</div>
+                        </td>
+                        <td>
+                            <div>180</div>
+                        </td>
+                        <td>
+                            <div>701836996499</div>
+                        </td>
+                        <td>
+                            <div>24/03/2024</div>
+                        </td>
+                        <td>
+                            <div>Đỗ Thanh Mai</div>
+                        </td>
+                        <td>
+                            <div>Tỉnh Vũ</div>
+                        </td>
+                        <td>
+                            <div>Nguyễn Lệ Hằng - 1984</div>
+                        </td>
+                        <td>
+                            <div></div>
+                        </td>
+                        <td>
+                            <div>Chưa thanh toán</div>
+                        </td>
+                        <td>
+                            <div>200,000</div>
+                        </td>                     
+                        <td>
+                            <div>
+                                <div ng-show="!filterModel.IsDeleted">
+                                    <span ng-if="permittedFields.NoteService_Create_And_Write">
+                                        <a href="">Sửa</a><span> |</span>
+                                
+                                    </span>
+                                    <span class="btn-group" ng-if="permittedFields.NoteService_Print">
+                                        <span class=" btn-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            In <span class="caret"></span>
+                                        </span>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" ng-click="onPrint(gridItem.Id,1)">Phiếu In - A4</a></li>
+                                            <li><a href="#" ng-click="onPrint(gridItem.Id,2)">Phiếu In - A5</a></li>
+                                        </ul>
+                                        <span> | </span>
+                                    </span>
+                                    <span class="btn-group" ng-if="permittedFields.NoteService_Print">
+                                        <span class=" btn-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            In theo phòng TH<span class="caret"></span>
+                                        </span>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" ng-click="onPrintByClinic(gridItem.Id,1)">Phiếu In - A4</a></li>
+                                            <li><a href="#" ng-click="onPrintByClinic(gridItem.Id,2)">Phiếu In - A5</a></li>
+                                        </ul>
+                                        <span> | </span>
+                                    </span>
+                                    <span ng-if="permittedFields.NoteService_Delete">
+                                        <a ng-click="deleteNoteService(gridItem.Id,gridItem.IsDebt)" style="cursor: pointer">Xóa</a>
+                                    </span>
+                                </div>
+                                <div ng-show="filterModel.IsDeleted">
+                                    <span ng-if="permittedFields.DeliveryNote_Restore">
+                                        <a href="#" ng-click="onRestore(gridItem)">Khôi phục</a><span> | </span>
+                                    </span>
+                                    <span ng-if="permittedFields.NoteService_Delete">
+                                        <a href="#" ng-click="onDeleteForever(gridItem)">Xóa ngay</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr id="footerId">
+                        <td align="center" is-customized="true" colspan="13">
+                            <div class="tr-ng-grid-footer form-inline">
+                                <div>
+                                    <div>
+                                        <span class="form-group pull-left page-size">
+                                            <select id="ddlPageSize" class="form-control">
+                                                <option label="10" value="number:10" selected="selected">10</option>
+                                                <option label="20" value="number:20">20</option>
+                                                <option label="50" value="number:50">50</option>
+                                                <option label="100" value="number:100">100</option>
+                                                <option label="--All--" value="number:9000">--All--</option>
+                                            </select>
+                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
+                                        </span>
+                                        <span class="pull-right form-group" style="height:40px">
+                                            <ul class="pagination">
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
+                                                </li>
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a href="javascript:void(0);" title="Trang">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">6</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">7</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">8</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">9</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">10</a>
+                                                <li class="disabled"><span>...</span>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
+                                                    </a>
+                                                </li>
+                                                <li class="disabled" style="white-space: nowrap;">
+                                                    <span class="ng-hide">Không có dữ liệu</span>
+                                                    <span> Tổng: 3182 bản ghi </span>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- model.length <= 0 -->
+            <div>
+                <p class="text-danger text-center mt-3">Không tìm thấy phiếu nào</p>
+            </div>
+        </div>
+    </div>
+</div>

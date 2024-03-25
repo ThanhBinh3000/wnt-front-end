@@ -13,7 +13,9 @@ import { SupplierGroupListComponent } from './supplier-group-list/supplier-group
     SupplierGroupAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, SupplierGroupRoutingModule],
-  exports: [],
+  exports: [
+    SupplierGroupAddEditDialogComponent
+  ],
 })
 export class SupplierGroupModule {
 }

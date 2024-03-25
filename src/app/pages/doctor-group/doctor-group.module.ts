@@ -13,7 +13,9 @@ import { DoctorGroupListComponent } from './doctor-group-list/doctor-group-list.
     DoctorGroupAddEditDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, DoctorGroupRoutingModule],
-  exports: [],
+  exports: [
+    DoctorGroupAddEditDialogComponent
+  ],
 })
 export class DoctorGroupModule {
 }

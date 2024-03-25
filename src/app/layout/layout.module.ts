@@ -7,11 +7,12 @@ import {FooterComponent} from "./footer/footer.component";
 import {RouterOutlet} from "@angular/router";
 import {LayoutRouting} from "./layout.routing";
 import {BaseComponent} from "../base/base.component";
-import {HttpClientModule} from "@angular/common/http";
+import {DrugModule} from '../pages/drug/drug.module';
 import {NhomThuocService} from "../services/categories/nhom-thuoc.service";
 import {SpinnerService} from "../services/spinner.service";
 import {ModalService} from "../services/modal.service";
 import {UserService} from "../services/user.service";
+import {AuthService} from "../services/auth.service";
 
 @NgModule({
   declarations: [
@@ -20,8 +21,8 @@ import {UserService} from "../services/user.service";
     FooterComponent,
     BaseComponent
   ],
-  imports: [CommonModule, HttpClientModule, RouterOutlet, LayoutRouting],
-  providers: [NhomThuocService, SpinnerService, ModalService, UserService],
+  imports: [CommonModule, RouterOutlet, LayoutRouting, DrugModule],
+  providers: [NhomThuocService, SpinnerService, ModalService, UserService, AuthService],
   exports: [],
 })
 export class LayoutModule {
