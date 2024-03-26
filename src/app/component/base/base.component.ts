@@ -121,28 +121,24 @@ export class BaseComponent  {
   }
 
   async changePageSize(event: any) {
-    console.log(event.value);
     this.spinner.show();
     try {
-      this.pageSize = event.value;
+      this.pageSize = event;
       this.searchPage();
       this.spinner.hide();
     } catch (e) {
-      console.log('error: ', e);
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
   }
 
   async changePageIndex(event: any) {
-    console.log(event)
     this.spinner.show();
     try {
       this.page = event;
       this.searchPage();
       this.spinner.hide();
     } catch (e) {
-      console.log('error: ', e);
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
