@@ -7,9 +7,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class PaginationComponent implements OnInit  {
 
-  @Input() currentPage: number;
-  @Input() totalPages: number;
-  @Input() totalRecord : number;
+  @Input() currentPage: number = 0;
+  @Input() totalPages: number = 0;
+  @Input() totalRecord : number = 0;
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();

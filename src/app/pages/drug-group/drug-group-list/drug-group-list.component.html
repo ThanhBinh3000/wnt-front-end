@@ -73,11 +73,9 @@
                 <tfoot>
                     <tr id="footerId">
                         <td colspan="100">
-                            <div class="tr-ng-grid-footer form-inline">
-                                <app-pagination [currentPage]="page" [totalPages]="totalPages"
-                                    [totalRecord]="totalRecord" (pageChange)="changePageIndex($event)"
-                                    (pageSizeChange)="changePageSize($event)"></app-pagination>
-                            </div>
+                            <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
                         </td>
                     </tr>
                 </tfoot>

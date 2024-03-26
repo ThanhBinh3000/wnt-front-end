@@ -69,8 +69,9 @@
             </td>
             <td>
               <div class="baocao-actions">
-                <button class="btn btn-sm btn-primary" (click)="customerGroupID = data.maNhomKhachHang" data-toggle="modal"
-                  data-target="#customer-group-add-edit-dialog"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-primary" (click)="customerGroupID = data.maNhomKhachHang"
+                  data-toggle="modal" data-target="#customer-group-add-edit-dialog"><i
+                    class="fa-regular fa-pen-to-square"></i></button>
                 <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
               </div>
             </td>
@@ -79,10 +80,8 @@
         <tfoot>
           <tr id="footerId">
             <td colspan="100">
-              <div class="tr-ng-grid-footer form-inline">
-                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                  (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
-              </div>
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
             </td>
           </tr>
         </tfoot>
