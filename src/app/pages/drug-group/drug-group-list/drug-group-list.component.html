@@ -9,7 +9,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-md-9">
         <div class="baocao-container box-group-white">
             <h2 class="mb-3 d-block text-center"><b>{{title}}</b></h2>
@@ -60,96 +59,65 @@
                     <td>{{ data.tenNhomThuoc }}</td>
                     <td>{{ data.kyHieuNhomThuoc }}</td>
                     <td>
-                      <!--                      <a (click)="redirectDetail(data.id)">-->
-                      <!--                        <span class="icon htvbdh_eye"></span>-->
-                      <!--                      </a>-->
-                      <!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="redirectDetail(data.id,'LKQLCL_TDBQ_THEM')">-->
-                      <!--                        <span class="fa fa-pencil"></span>-->
-                      <!--                      </a>-->
-                      <!--                      <a *ngIf="data.trangThai == STATUS.DU_THAO" (click)="delete(data,'LKQLCL_TDBQ_XOA')">-->
-                      <!--                        <i class="fa fa-trash-o do"></i>-->
-                      <!--                      </a>-->
+                      <div class="baocao-actions">
+                        <button class="btn btn-sm btn-primary" (click)="drugGroupID = 1" data-toggle="modal" data-target="#drug-group-add-edit-dialog"><i
+                          class="fa-regular fa-pen-to-square"></i></button>
+                        <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
-                <tfoot>
-                    <tr id="footerId">
-                        <td align="center" is-customized="true" colspan="4">
-                            <div class="tr-ng-grid-footer form-inline">
-                                <div>
-                                    <div>
-                                        <span class="form-group pull-left page-size">
-                                            <select id="ddlPageSize" class="form-control">
-                                                <option label="10" value="number:10" selected="selected">10</option>
-                                                <option label="20" value="number:20">20</option>
-                                                <option label="50" value="number:50">50</option>
-                                                <option label="100" value="number:100">100</option>
-                                                <option label="--All--" value="number:9000">--All--</option>
-                                            </select>
-                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
-                                        </span>
-                                        <span class="pull-right form-group" style="height:40px">
-                                            <ul class="pagination">
-                                                <li class="disabled">
-                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
-                                                </li>
-                                                <li class="disabled">
-                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
-                                                    </a>
-                                                </li>
-                                                <li class="active">
-                                                    <a href="javascript:void(0);" title="Trang">1</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">2</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">3</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">4</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">5</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">6</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">7</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">8</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">9</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">10</a>
-                                                <li class="disabled"><span>...</span>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
-                                                    </a>
-                                                </li>
-                                                <li class="disabled" style="white-space: nowrap;">
-                                                    <span class="ng-hide">Không có dữ liệu</span>
-                                                    <span> Tổng: 3182 bản ghi </span>
-                                                </li>
-                                            </ul>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
+<!--                <tfoot>-->
+<!--                  <tr id="footerId">-->
+<!--                        <td align="center" is-customized="true" colspan="4">-->
+<!--                            <div class="tr-ng-grid-footer form-inline">-->
+<!--                                <div>-->
+<!--                                    <div>-->
+<!--                                        <span class="form-group pull-left page-size">-->
+<!--                                            <select class="form-control" (change)="changePageSize($event.target)">-->
+<!--                                                <option label="10" value="10" >10</option>-->
+<!--                                                <option label="20" value="20">20</option>-->
+<!--                                                <option label="50" value="50">50</option>-->
+<!--                                                <option label="100" value="100">100</option>-->
+<!--                                                <option label="&#45;&#45;All&#45;&#45;" value="9000">&#45;&#45;All&#45;&#45;</option>-->
+<!--                                            </select>-->
+<!--                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>-->
+<!--                                        </span>-->
+<!--                                        <span class="pull-right form-group" style="height:40px">-->
+<!--                                            <ul class="pagination">-->
+<!--                                                <li [class]="page == 1 ? 'disabled':''">-->
+<!--                                                    <a (click)="changePageIndex(1)"  title="Trang đầu"> <span>«</span> </a>-->
+<!--                                                </li>-->
+<!--                                                <li [class]="page == 1 ? 'disabled':''">-->
+<!--                                                    <a (click)="changePageIndex(this.page-1)" title="Trang trước"> <span>‹</span>-->
+<!--                                                    </a>-->
+<!--                                                </li>-->
+<!--                                                <li *ngFor="let pageNumber of getPages()" [class]="pageNumber == page ? 'active' : ''">-->
+<!--                                                    <a (click)="changePageIndex(pageNumber)" title="Trang">{{pageNumber}}</a>-->
+<!--                                                </li>-->
+<!--                                                <li  [class]="page == totalPages ? 'disabled':''" >-->
+<!--                                                    <a (click)="changePageIndex(this.page+1)" title="Trang tiếp"> <span>›</span>-->
+<!--                                                    </a>-->
+<!--                                                </li>-->
+<!--                                                <li  [class]="page == totalPages ? 'disabled':''" >-->
+<!--                                                    <a (click)="changePageIndex(this.totalPages)" title="Trang cuối"> <span>»</span>-->
+<!--                                                    </a>-->
+<!--                                                </li>-->
+<!--                                                <li class="disabled" style="white-space: nowrap;">-->
+<!--                                                    <span class="ng-hide">Không có dữ liệu</span>-->
+<!--                                                    <span> Tổng: {{this.totalRecord}} bản ghi </span>-->
+<!--                                                </li>-->
+<!--                                            </ul>-->
+<!--                                        </span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </tfoot>-->
             </table>
-
-            <!-- model.length <= 0 -->
             <div>
                 <p class="text-danger text-center mt-3">Không tìm thấy nhóm thuốc nào</p>
             </div>

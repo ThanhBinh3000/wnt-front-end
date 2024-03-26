@@ -1,0 +1,48 @@
+<tfoot>
+<tr id="footerId">
+  <td align="center" is-customized="true" colspan="4">
+    <div class="tr-ng-grid-footer form-inline">
+      <div>
+        <div>
+        <span class="form-group pull-left page-size">
+            <select class="form-control" (change)="onPageSizeChange($event.target)">
+                <option label="10" value="10" >10</option>
+                <option label="20" value="20">20</option>
+                <option label="50" value="50">50</option>
+                <option label="100" value="100">100</option>
+                <option label="--All--" value="9000">--All--</option>
+            </select>
+            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
+        </span>
+          <span class="pull-right form-group" style="height:40px">
+              <ul class="pagination">
+                  <li [class]="currentPage == 1 ? 'disabled':''">
+                      <a (click)="onPageChange(1)"  title="Trang đầu"> <span>«</span> </a>
+                  </li>
+                  <li [class]="currentPage == 1 ? 'disabled':''">
+                      <a (click)="onPageChange(this.currentPage-1)" title="Trang trước"> <span>‹</span>
+                      </a>
+                  </li>
+                  <li *ngFor="let pageNumber of getPages()" [class]="pageNumber == currentPage ? 'active' : ''">
+                      <a (click)="onPageChange(pageNumber)" title="Trang">{{pageNumber}}</a>
+                  </li>
+                  <li  [class]="currentPage == totalPages ? 'disabled':''" >
+                      <a (click)="onPageChange(this.currentPage+1)" title="Trang tiếp"> <span>›</span>
+                      </a>
+                  </li>
+                  <li  [class]="currentPage == totalPages ? 'disabled':''" >
+                      <a (click)="onPageChange(this.totalPages)" title="Trang cuối"> <span>»</span>
+                      </a>
+                  </li>
+                  <li class="disabled" style="white-space: nowrap;">
+                      <span class="ng-hide">Không có dữ liệu</span>
+                      <span> Tổng: {{this.totalRecord}} bản ghi </span>
+                  </li>
+              </ul>
+          </span>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+</tfoot>

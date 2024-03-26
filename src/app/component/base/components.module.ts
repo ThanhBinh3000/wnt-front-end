@@ -1,12 +1,14 @@
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {PaginationComponent} from "../pagination/pagination.component";
 
 
 @NgModule({
   declarations: [
     //components
     //pipes
+    PaginationComponent
   ],
   imports: [
     CommonModule,
@@ -16,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   exports: [
     FormsModule,
     ReactiveFormsModule,
+    PaginationComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

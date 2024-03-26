@@ -3,16 +3,16 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 // @ts-ignore
 import {saveAs} from 'file-saver';
 import {HttpClient} from '@angular/common/http';
-import {Department} from "../models/department";
-import {UserService} from "../services/user.service";
-import {UserLogin} from "../models/user-login";
-import {PAGE_SIZE_DEFAULT} from "../constants/config";
-import {MESSAGE, STATUS_API} from "../constants/message";
-import {StorageService} from "../services/storage.service";
-import {BaseService} from "../services/base.service";
-import {NotificationService} from "../services/notification.service";
-import {SpinnerService} from "../services/spinner.service";
-import {ModalService} from "../services/modal.service";
+import {Department} from "../../models/department";
+import {UserService} from "../../services/user.service";
+import {UserLogin} from "../../models/user-login";
+import {PAGE_SIZE_DEFAULT} from "../../constants/config";
+import {MESSAGE, STATUS_API} from "../../constants/message";
+import {StorageService} from "../../services/storage.service";
+import {BaseService} from "../../services/base.service";
+import {NotificationService} from "../../services/notification.service";
+import {SpinnerService} from "../../services/spinner.service";
+import {ModalService} from "../../services/modal.service";
 
 
 @Component({
@@ -29,6 +29,7 @@ export class BaseComponent  {
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
   totalRecord: number = 0;
+  totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
 
 
@@ -69,17 +70,14 @@ export class BaseComponent  {
         page: this.page - 1
       }
       console.log(body);
-      let res = await this.service.searchList(body);
+      let res = await this.service.searchPage(body);
       console.log(res);
-      if (res?.msg == MESSAGE.SUCCESS) {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
-        if (this.dataTable && this.dataTable.length > 0) {
-          this.dataTable.forEach((item) => {
-            item.checked = false;
-          });
-        }
+        this.totalPages = data.totalPages;
+
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
@@ -98,7 +96,6 @@ export class BaseComponent  {
     try {
       let body = this.formData.value
       let res = await this.service.searchList(body);
-      console.log(res);
       if (res?.statusCode == STATUS_API.SUCCESS) {
         this.dataTable = res.data;
         if (this.dataTable && this.dataTable.length > 0) {
@@ -124,9 +121,11 @@ export class BaseComponent  {
   }
 
   async changePageSize(event: any) {
+    console.log(event.value);
     this.spinner.show();
     try {
-      this.pageSize = event;
+      this.pageSize = event.value;
+      this.searchPage();
       this.spinner.hide();
     } catch (e) {
       console.log('error: ', e);
@@ -136,9 +135,11 @@ export class BaseComponent  {
   }
 
   async changePageIndex(event: any) {
+    console.log(event)
     this.spinner.show();
     try {
       this.page = event;
+      this.searchPage();
       this.spinner.hide();
     } catch (e) {
       console.log('error: ', e);
@@ -146,6 +147,33 @@ export class BaseComponent  {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
   }
+
+  // getPages(): number[] {
+  //   const totalPagesToShow = 9; // Số trang hiển thị tối đa
+  //   const pages : number[] = [];
+  //   const half = Math.floor(totalPagesToShow / 2);
+  //
+  //   let start = this.page - half;
+  //   let end = this.page + half;
+  //
+  //   if (start <= 0) {
+  //     start = 1;
+  //     end = totalPagesToShow;
+  //   }
+  //
+  //   if (end > this.totalPages) {
+  //     end = this.totalPages;
+  //     start = this.totalPages - totalPagesToShow + 1;
+  //     if (start <= 0) {
+  //       start = 1;
+  //     }
+  //   }
+  //
+  //   for (let i = start; i <= end; i++) {
+  //     pages.push(i);
+  //   }
+  //   return pages;
+  // }
 
   // DELETE 1 item table
   delete(message: string, item: any) {
@@ -228,7 +256,7 @@ export class BaseComponent  {
   }
 
   // Save
-  async save(body: any) {
+  async save(body: any,isUpdate:boolean) {
     this.spinner.show();
     this.markFormGroupTouched(this.formData);
     if (this.formData.invalid) {
@@ -236,13 +264,13 @@ export class BaseComponent  {
       return;
     }
     let res;
-    if (body.id && body.id > 0) {
+    if (isUpdate) {
       res = await this.service.update(body);
     } else {
       res = await this.service.create(body);
     }
     if (res && res.msg == MESSAGE.SUCCESS) {
-      if (body.id && body.id > 0) {
+      if (isUpdate) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
         this.spinner.hide();
         return res.data;

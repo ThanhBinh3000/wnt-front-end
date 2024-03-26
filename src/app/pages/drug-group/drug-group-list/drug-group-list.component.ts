@@ -1,7 +1,7 @@
 import {Component, Injectable, Injector, OnInit} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
-import {BaseComponent} from "../../../base/base.component";
+import {BaseComponent} from "../../../component/base/base.component";
 import {Validators} from "@angular/forms";
 
 @Component({
@@ -20,19 +20,13 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
-      // UserName: ['', Validators.required],
-      // Password: ['', Validators.required],
-      // // code: ['', Validators.required],
-      // // captchaText: ['', Validators.required],
-      // code: [],
-      // captchaText: [],
-      // rememberMe: [''],
+      tenNhaThuoc : [],
     });
   }
 
   ngOnInit() {
     console.log("sadasdsa")
-    this.searchList()
+    this.searchPage()
     this.titleService.setTitle(this.title);
   }
 }

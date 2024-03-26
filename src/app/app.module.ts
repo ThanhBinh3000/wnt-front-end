@@ -8,7 +8,7 @@ import {AppRoutingModule} from "./app.routes";
 import {CommonInterceptor} from "./interceptor/common.interceptor";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ComponentsModule} from "./base/components.module";
+import {ComponentsModule} from "./component/base/components.module";
 
 @NgModule({
   declarations: [

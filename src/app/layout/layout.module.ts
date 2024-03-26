@@ -6,7 +6,7 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from "./footer/footer.component";
 import {RouterOutlet} from "@angular/router";
 import {LayoutRouting} from "./layout.routing";
-import {BaseComponent} from "../base/base.component";
+import {BaseComponent} from "../component/base/base.component";
 import {DrugModule} from '../pages/drug/drug.module';
 import {NhomThuocService} from "../services/categories/nhom-thuoc.service";
 import {SpinnerService} from "../services/spinner.service";
