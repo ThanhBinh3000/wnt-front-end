@@ -19,7 +19,7 @@ export class CustomerGroupListComponent extends BaseComponent implements OnInit 
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
-      tenNhaThuoc : [],
+      searchText : '',
     });
   }
 
