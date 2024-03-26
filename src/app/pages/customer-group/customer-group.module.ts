@@ -5,6 +5,7 @@ import {RouterOutlet} from "@angular/router";
 import {CustomerGroupRoutingModule} from "./customer-group.routing";
 import { CustomerGroupListComponent } from './customer-group-list/customer-group-list.component';
 import { CustomerGroupAddEditDialogComponent } from './customer-group-add-edit-dialog/customer-group-add-edit-dialog.component';
+import {ComponentsModule} from "../../component/base/components.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { CustomerGroupAddEditDialogComponent } from './customer-group-add-edit-d
     CustomerGroupListComponent,
     CustomerGroupAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, CustomerGroupRoutingModule],
+    imports: [CommonModule, RouterOutlet, CustomerGroupRoutingModule, ComponentsModule],
   exports: [
     CustomerGroupAddEditDialogComponent
   ],

@@ -2,10 +2,12 @@
     <div class="col-md-3">
         <div class="sidebar-bg">
             <label>Nhóm thuốc</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm nhóm thuốc theo tên..."/>
+            <input class="form-control" type="text" id="searchTen" name="searchTen"
+                placeholder="Tìm nhóm thuốc theo tên..." />
             <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
                 <button class="btn btn-primary w-50">Xem</button>
-                <button class="btn btn-primary w-50" (click)="drugGroupID = 0" data-toggle="modal" data-target="#drug-group-add-edit-dialog">Thêm</button>
+                <button class="btn btn-primary w-50" (click)="drugGroupID = 0" data-toggle="modal"
+                    data-target="#drug-group-add-edit-dialog">Thêm</button>
             </div>
         </div>
     </div>
@@ -54,71 +56,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of dataTable; index as i;">
-                    <td>{{(page - 1) * pageSize + i + 1}}</td>
-                    <td>{{ data.tenNhomThuoc }}</td>
-                    <td>{{ data.kyHieuNhomThuoc }}</td>
-                    <td>
-                      <div class="baocao-actions">
-                        <button class="btn btn-sm btn-primary" (click)="drugGroupID = 1" data-toggle="modal" data-target="#drug-group-add-edit-dialog"><i
-                          class="fa-regular fa-pen-to-square"></i></button>
-                        <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr *ngFor="let data of dataTable; index as i;">
+                        <td>{{(page - 1) * pageSize + i + 1}}</td>
+                        <td>{{ data.tenNhomThuoc }}</td>
+                        <td>{{ data.kyHieuNhomThuoc }}</td>
+                        <td>
+                            <div class="baocao-actions">
+                                <button class="btn btn-sm btn-primary" (click)="drugGroupID = 1" data-toggle="modal"
+                                    data-target="#drug-group-add-edit-dialog"><i
+                                        class="fa-regular fa-pen-to-square"></i></button>
+                                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
-                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                                (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
-<!--                <tfoot>-->
-<!--                  <tr id="footerId">-->
-<!--                        <td align="center" is-customized="true" colspan="4">-->
-<!--                            <div class="tr-ng-grid-footer form-inline">-->
-<!--                                <div>-->
-<!--                                    <div>-->
-<!--                                        <span class="form-group pull-left page-size">-->
-<!--                                            <select class="form-control" (change)="changePageSize($event.target)">-->
-<!--                                                <option label="10" value="10" >10</option>-->
-<!--                                                <option label="20" value="20">20</option>-->
-<!--                                                <option label="50" value="50">50</option>-->
-<!--                                                <option label="100" value="100">100</option>-->
-<!--                                                <option label="&#45;&#45;All&#45;&#45;" value="9000">&#45;&#45;All&#45;&#45;</option>-->
-<!--                                            </select>-->
-<!--                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>-->
-<!--                                        </span>-->
-<!--                                        <span class="pull-right form-group" style="height:40px">-->
-<!--                                            <ul class="pagination">-->
-<!--                                                <li [class]="page == 1 ? 'disabled':''">-->
-<!--                                                    <a (click)="changePageIndex(1)"  title="Trang đầu"> <span>«</span> </a>-->
-<!--                                                </li>-->
-<!--                                                <li [class]="page == 1 ? 'disabled':''">-->
-<!--                                                    <a (click)="changePageIndex(this.page-1)" title="Trang trước"> <span>‹</span>-->
-<!--                                                    </a>-->
-<!--                                                </li>-->
-<!--                                                <li *ngFor="let pageNumber of getPages()" [class]="pageNumber == page ? 'active' : ''">-->
-<!--                                                    <a (click)="changePageIndex(pageNumber)" title="Trang">{{pageNumber}}</a>-->
-<!--                                                </li>-->
-<!--                                                <li  [class]="page == totalPages ? 'disabled':''" >-->
-<!--                                                    <a (click)="changePageIndex(this.page+1)" title="Trang tiếp"> <span>›</span>-->
-<!--                                                    </a>-->
-<!--                                                </li>-->
-<!--                                                <li  [class]="page == totalPages ? 'disabled':''" >-->
-<!--                                                    <a (click)="changePageIndex(this.totalPages)" title="Trang cuối"> <span>»</span>-->
-<!--                                                    </a>-->
-<!--                                                </li>-->
-<!--                                                <li class="disabled" style="white-space: nowrap;">-->
-<!--                                                    <span class="ng-hide">Không có dữ liệu</span>-->
-<!--                                                    <span> Tổng: {{this.totalRecord}} bản ghi </span>-->
-<!--                                                </li>-->
-<!--                                            </ul>-->
-<!--                                        </span>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </tfoot>-->
+                <tfoot>
+                    <tr id="footerId">
+                        <td colspan="100">
+                            <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-            <div>
+            <div *ngIf="totalRecord <= 0">
                 <p class="text-danger text-center mt-3">Không tìm thấy nhóm thuốc nào</p>
             </div>
         </div>
