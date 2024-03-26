@@ -113,6 +113,10 @@ const routes: Routes = [
       {
         path: 'service-note',
         loadChildren: () => import('../pages/service-note/service-note.module').then((m) => m.ServiceNoteModule),
+      },
+      {
+        path: 'report',
+        loadChildren: () => import('../pages/report/report.module').then((m) => m.ReportModule),
       }
     ],
   }

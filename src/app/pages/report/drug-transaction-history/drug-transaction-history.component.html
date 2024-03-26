@@ -1,0 +1,90 @@
+<div>
+    <div>
+        <div class="row">
+            <div class="col-md-3 baocao-filter">
+                <div class="sidebar-bg">
+                    <fieldset class="mb-3">
+                       <label>Mặt hàng</label>
+                       <input class="form-control" type="text"/>
+                    </fieldset>
+                    <div class="form-check mb-3" ng-show="!viewModel.ReportDetailsByGoods">
+                        <input type="checkbox" class="form-check-input form-control" ng-change="onStatusChange()" ng-model="isArchive" />
+                        <label class="form-check-label">Dữ liệu đóng băng</label>
+                    </div>
+                    <fieldset class="mb-3">
+                        <input type="text" placeholder="Nhập số lô vào đây..." class="form-control mb-0" ng-model="batchNumber" style="width: 100%" />
+                    </fieldset>
+                    <fieldset class="mb-3">
+                       <input type="text" placeholder="Nhập hạn dùng vào đây..." class="form-control mb-0" ng-model="expiredDate" style="width: 100%" id="expired-date-id" />
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="box-group-white">
+                    <h2 class="text-center"><b>{{title}}</b></h2>
+                    <div class="baocao-container">
+                        <div class="ibox float-e-margins">
+                            <div class="tabs-container" ng-if="!viewModel.ReportDetailsByGoods">
+                                <div class="pull-right" ng-if="isAnItem && hasViewReceiptNotePrivilage && hasViewDeliveryNotePrivilage">
+                                    <div class="d-flex align-items-center gap-10">
+                                        <span><strong>Tổng nhập:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemReceipt}} -->1
+                                        </span></span>
+                                        <span><strong>Tổng xuất:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemDelivery}} -->1
+                                        </span></span>
+                                        <span><strong>Tồn:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemReceipt - TotalItemDelivery}} -->0
+                                        </span> </span>
+                                    </div>
+                                </div>
+                                <ul class="nav nav-tabs">
+                                    <li ng-if="hasViewReceiptNotePrivilage" [ngClass]="{'active' : checkTab == 'receipt'}">
+                                        <a (click)="checkTab = 'receipt'">Nhập Hàng&nbsp;<span class="label label-info pull-right">
+                                            <!-- {{ReceiptTransHistoryCount}} -->1
+                                        </span></a>
+                                    </li>
+                                    <li ng-if="hasViewDeliveryNotePrivilage" [ngClass]="{'active' : checkTab == 'delivery'}">
+                                        <a (click)="checkTab = 'delivery'">Xuất Hàng&nbsp;<span class="label label-info pull-right">
+                                            <!-- {{DeliveryTransHistoryCount}} -->2
+                                        </span></a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div ng-if="hasViewReceiptNotePrivilage" id="#ActivePage=0" [hidden]="checkTab != 'receipt'">
+                                        <div class="panel-body">
+                                            <transaction-history-receipt-item-table-partial [drugId]="drugId"></transaction-history-receipt-item-table-partial>
+                                        </div>
+                                    </div>
+                                    <div ng-if="hasViewDeliveryNotePrivilage" id="#ActivePage=1" [hidden]="checkTab != 'delivery'">
+                                        <div class="panel-body">
+                                            <transaction-history-delivery-item-table-partial [drugId]="drugId"></transaction-history-delivery-item-table-partial>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right" ng-if="isAnItem && hasViewReceiptNotePrivilage && hasViewDeliveryNotePrivilage">
+                                    <div class="d-flex align-items-center gap-10">
+                                        <span><strong>Tổng nhập:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemReceipt}} -->1
+                                        </span></span>
+                                        <span><strong>Tổng xuất:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemDelivery}} -->1
+                                        </span></span>
+                                        <span><strong>Tồn:</strong> <span class="text-danger"> 
+                                            <!-- {{TotalItemReceipt - TotalItemDelivery}} -->0
+                                        </span> </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tabs-container" ng-if="viewModel.ReportDetailsByGoods">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div elem-ready="isReady()"></div>
+</div>

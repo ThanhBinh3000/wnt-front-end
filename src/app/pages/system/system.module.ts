@@ -11,6 +11,7 @@ import {ConfirmPaymentSendZnsDialogComponent } from './drug-store/confirm-paymen
 import { DrugStoreListingComponent } from './drug-store/drug-store-listing/drug-store-listing.component';
 import { GeneralStoreMappingDialogComponent } from './drug-store/general-store-mapping-dialog/general-store-mapping-dialog.component';
 import { CriteriaBusinessDialogComponent } from './drug-store/criteria-business-dialog/criteria-business-dialog.component';
+import { DrugStoreInformationComponent } from './drug-store/drug-store-information/drug-store-information.component';
 @NgModule({
   declarations: [
     SystemComponent,
@@ -20,7 +21,8 @@ import { CriteriaBusinessDialogComponent } from './drug-store/criteria-business-
     DrugStoreListingComponent,
     ConfirmPaymentSendZnsDialogComponent,
     GeneralStoreMappingDialogComponent,
-    CriteriaBusinessDialogComponent
+    CriteriaBusinessDialogComponent,
+    DrugStoreInformationComponent
   ],
   imports: [CommonModule, RouterOutlet, SystemRoutingModule],
   exports: [],
