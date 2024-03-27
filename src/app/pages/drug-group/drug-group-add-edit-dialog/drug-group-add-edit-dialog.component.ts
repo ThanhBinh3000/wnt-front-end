@@ -28,6 +28,7 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
+      id : [],
       tenNhomThuoc: ['', Validators.required],
       kyHieuNhomThuoc: [''],
       maNhaThuoc: [1],
@@ -44,31 +45,17 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
       const data = await this.detail(this.drugGroupId);
       if (data) {
         console.log(data);
-        this.formData.patchValue({
-          tenNhomThuoc: data.tenNhomThuoc,
-          kyHieuNhomThuoc: data.kyHieuNhomThuoc
-        });
+        this.formData.patchValue(data);
       }
     }
   }
 
-   saveEdit() {
-    console.log(this.drugGroupId);
-    // let body = this.formData.value;
-    // let data = await this.save(body);
-    // if(data){
-    //   this.closeModal();
-    // }
-    // if (this.drugGroupId) {
-    //   const data = await this.detail(this.drugGroupId);
-    //   if (data) {
-    //     console.log(data);
-    //     this.formData.patchValue({
-    //       tenNhomThuoc: data.tenNhomThuoc,
-    //       kyHieuNhomThuoc: data.kyHieuNhomThuoc
-    //     });
-    //   }
-    // }
+   async saveEdit() {
+    let body = this.formData.value;
+    let data = await this.save(body);
+    if(data){
+      this.closeModal();
+    }
   }
 
   closeModal() {
