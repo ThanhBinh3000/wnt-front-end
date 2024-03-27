@@ -4,6 +4,7 @@ import {SystemComponent} from "./system.component";
 import {AuthGuard} from "../../guard/auth.guard";
 import { AccountManagerComponent } from './admin/account-manager/account-manager.component';
 import { DrugStoreListingComponent } from './drug-store/drug-store-listing/drug-store-listing.component';
+import { DrugStoreInformationComponent } from './drug-store/drug-store-information/drug-store-information.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
       {
         path: 'drug-store-listing',
         component: DrugStoreListingComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'drug-store-information',
+        component: DrugStoreInformationComponent,
         // canActivate: [AuthGuard],
       }
     ],
