@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {SpinnerService} from "./services/spinner.service";
-import {NotificationService} from "./services/notification.service";
 
 @Component({
   selector: 'app-root',

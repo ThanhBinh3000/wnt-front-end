@@ -53,6 +53,6 @@ export class HeaderComponent implements OnInit {
   }
 
   getFullName(){
-    return this.authService.getUser().fullName;
+    return this.authService.getUser()?.fullName;
   }
 }

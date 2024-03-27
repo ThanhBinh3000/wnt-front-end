@@ -9,17 +9,18 @@ import {CommonInterceptor} from "./interceptor/common.interceptor";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ComponentsModule} from "./component/base/components.module";
+import {DrugGroupModule} from "./pages/drug-group/drug-group.module";
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
-    CommonModule, RouterOutlet, RouterOutlet, HttpClientModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    ComponentsModule],
+    imports: [
+        CommonModule, RouterOutlet, RouterOutlet, HttpClientModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        ComponentsModule, DrugGroupModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

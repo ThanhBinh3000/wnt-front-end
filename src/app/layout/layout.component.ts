@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NotificationService} from "../services/notification.service";
+import {ModalService} from "../services/modal.service";
 
 @Component({
   selector: 'app-layout',
@@ -8,7 +9,7 @@ import {NotificationService} from "../services/notification.service";
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(public notificationService: NotificationService) {
+  constructor(public notificationService: NotificationService, public modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -19,5 +20,13 @@ export class LayoutComponent implements OnInit {
 
   closeNotification() {
     this.notificationService.close()
+  }
+
+  closeModal() {
+    this.modalService.close();
+  }
+
+  saveEdit() {
+    this.modalService.ok();
   }
 }
