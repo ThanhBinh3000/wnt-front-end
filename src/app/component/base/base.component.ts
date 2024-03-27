@@ -13,6 +13,7 @@ import {BaseService} from "../../services/base.service";
 import {NotificationService} from "../../services/notification.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ModalService} from "../../services/modal.service";
+import {HelperService} from "../../services/helper.service";
 
 
 @Component({
@@ -43,6 +44,8 @@ export class BaseComponent  {
   spinner: SpinnerService;
   modal: ModalService;
 
+  helperService: HelperService
+
   constructor(
     injector: Injector,
     service: BaseService
@@ -55,6 +58,7 @@ export class BaseComponent  {
     this.storageService = this.injector.get(StorageService);
     this.userService = this.injector.get(UserService);
     this.notification = this.injector.get(NotificationService);
+    this.helperService = this.injector.get(HelperService);
     // get user info login
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
@@ -252,7 +256,7 @@ export class BaseComponent  {
   }
 
   // Save
-  async save(body: any,isUpdate:boolean) {
+  async save(body: any) {
     this.spinner.show();
     this.markFormGroupTouched(this.formData);
     if (this.formData.invalid) {
@@ -260,13 +264,14 @@ export class BaseComponent  {
       return;
     }
     let res;
-    if (isUpdate) {
+    if (body.id && body.id > 0) {
       res = await this.service.update(body);
     } else {
       res = await this.service.create(body);
     }
-    if (res && res.msg == MESSAGE.SUCCESS) {
-      if (isUpdate) {
+    console.log(res);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
         this.spinner.hide();
         return res.data;
@@ -286,8 +291,20 @@ export class BaseComponent  {
     }
   }
 
-  async detail() {
-
+  async detail(id:number) {
+    if(id){
+      let res = await this.service.getDetail(id);
+      console.log(res);
+      if(res?.statusCode == STATUS_API.SUCCESS){
+        const data = res.data;
+        console.log(data);
+        return data;
+      } else {
+        console.log('fail')
+        this.notification.error(MESSAGE.ERROR, res?.msg);
+        return null;
+      }
+    }
   }
 
   // Approve

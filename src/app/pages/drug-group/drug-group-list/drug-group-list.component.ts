@@ -1,8 +1,9 @@
-import {Component, Injectable, Injector, OnInit} from '@angular/core';
+import {Component, Injectable, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {Validators} from "@angular/forms";
+import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-group-list',
@@ -11,7 +12,8 @@ import {Validators} from "@angular/forms";
 })
 export class DrugGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm thuốc";
-  drugGroupID: number = 0;
+  drugGroupId: number = -1;
+  @ViewChild('buttonModal') buttonModal;
 
   constructor(
     injector: Injector,
@@ -20,14 +22,23 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
-      tenNhaThuoc : [],
+      tenNhomThuoc : [],
     });
   }
 
   ngOnInit() {
-    console.log("sadasdsa")
     this.searchPage()
     this.titleService.setTitle(this.title);
+  }
+
+  closeModal($event){
+    console.log('close',$event);
+  }
+
+  openModal($event){
+    this.drugGroupId = $event
+    // this.closeButton.nativeElement.click();
+    this.buttonModal.nativeElement.click();
   }
 }
 

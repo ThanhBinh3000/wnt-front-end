@@ -24,6 +24,7 @@ export class PaginationComponent implements OnInit  {
 
   onPageSizeChange($event) {
     this.pageSizeChange.emit($event.value);
+    console.log(this.pageSizeChange);
   }
 
   getPages(): number[] {

@@ -6,7 +6,7 @@
                 placeholder="Tìm nhóm thuốc theo tên..." />
             <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
                 <button class="btn btn-primary w-50">Xem</button>
-                <button class="btn btn-primary w-50" (click)="drugGroupID = 0" data-toggle="modal"
+                <button class="btn btn-primary w-50" (click)="drugGroupId = 0" data-toggle="modal"
                     data-target="#drug-group-add-edit-dialog">Thêm</button>
             </div>
         </div>
@@ -62,8 +62,8 @@
                         <td>{{ data.kyHieuNhomThuoc }}</td>
                         <td>
                             <div class="baocao-actions">
-                                <button class="btn btn-sm btn-primary" (click)="drugGroupID = 1" data-toggle="modal"
-                                    data-target="#drug-group-add-edit-dialog"><i
+                                <button class="btn btn-sm btn-primary" (click)="openModal(data.id)" data-toggle="modal"
+                                        data-target="#drug-group-add-edit-dialog"><i
                                         class="fa-regular fa-pen-to-square"></i></button>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
                             </div>
@@ -80,10 +80,8 @@
                     </tr>
                 </tfoot>
             </table>
-            <div *ngIf="totalRecord <= 0">
-                <p class="text-danger text-center mt-3">Không tìm thấy nhóm thuốc nào</p>
-            </div>
+
         </div>
     </div>
 </div>
-<drug-group-add-edit-dialog [drugGroupID]="drugGroupID"></drug-group-add-edit-dialog>
+<drug-group-add-edit-dialog #buttonModal [drugGroupId]="drugGroupId" ></drug-group-add-edit-dialog>

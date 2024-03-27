@@ -1,4 +1,4 @@
-<div class="tr-ng-grid-footer form-inline">
+<div *ngIf="this.totalRecord > 0" class="tr-ng-grid-footer form-inline">
     <span class="form-group pull-left page-size">
         <select class="form-control" (change)="onPageSizeChange($event.target)">
             <option label="10" value="10">10</option>
@@ -35,4 +35,7 @@
             </li>
         </ul>
     </span>
+</div>
+<div *ngIf="this.totalRecord <= 0">
+  <p class="text-danger text-center mt-3">Không tìm thấy dữ liệu</p>
 </div>
