@@ -32,7 +32,11 @@ export class AuthService extends BaseService {
   }
 
   getNhaThuoc() {
-    return JSON.parse(this.storageService.get(STORAGE_KEY.NHA_THUOC));
+    return this.storageService.get(STORAGE_KEY.NHA_THUOC);
+  }
+
+  saveNhaThuoc(data: any) {
+    return this.storageService.set(STORAGE_KEY.NHA_THUOC, data);
   }
 
   saveRole(role: number) {
@@ -50,7 +54,7 @@ export class AuthService extends BaseService {
 
   chooseNhaThuoc(body: any) {
     const url = `/api/wnt-security/choose-nha-thuoc`;
-    return this.httpClient.post<ResponseData>(url, body).toPromise();
+    return this.httpClient.put<ResponseData>(url, body).toPromise();
   }
 
   isLogin() {

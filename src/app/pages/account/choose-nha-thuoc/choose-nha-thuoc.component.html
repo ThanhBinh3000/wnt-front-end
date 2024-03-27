@@ -1,11 +1,11 @@
 <div class="col-md-6 col-md-offset-3">
   <div class="card-bg">
-    <form class="mb-3  ">
+    <form class="mb-3" [formGroup]="formData">
       <div class="input-group">
-        <input class="form-control   " type="text" id="searchTen" name="searchTen"
+        <input formControlName="searchTen" type="text" id="searchTen" name="searchTen"
                placeholder="Tìm theo mã/tên/địa chỉ...">
         <div class="input-group-btn">
-          <button class="btn btn-primary">
+          <button class="btn btn-primary" (click)="searchPage()">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
@@ -52,6 +52,20 @@
               </div><!-- end ngSwitchWhen: --></div>
           </th>
           <th style="width:30%" class="">
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="">
+                <div class="tr-ng-title ng-binding"> Người phụ trách
+                  <div
+                    title="Sort">
+                    <div class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down"></div>
+                  </div>
+                </div>
+                <div
+                  class="tr-ng-column-filter ng-hide">
+                  <div class=""><input class="form-control input-sm  ng-untouched " type="text">
+                  </div>
+                </div>
+              </div><!-- end ngSwitchWhen: --></div>
           </th>
         </tr>
         </thead>
@@ -85,7 +99,7 @@
               <div ng-switch-when="true" class="">
                 <div>
                   <div class="ng-binding ">
-                    0010
+                    {{data.maNhaThuoc}}
                   </div>
                 </div>
               </div>
@@ -96,7 +110,7 @@
               <div ng-switch-when="true" class="">
                 <div>
                   <div class="ng-binding ">
-                    CÔNG TY TNHH WEB NHÀ THUỐC
+                    {{data.tenNhaThuoc}}
                   </div>
                 </div>
               </div>
@@ -109,7 +123,7 @@
               <div ng-switch-when="true" class="">
                 <div>
                   <div class="ng-binding ">
-                    Admin1
+                    {{data.userFullName}}
                   </div>
                 </div>
               </div><!-- end ngSwitchWhen: -->  <!-- ngSwitchDefault:  --></div>
@@ -122,7 +136,7 @@
       </div>
     </div>
     <div style="margin:0px auto;width: 50px" class="mt-3">
-      <button type="button" value="Chọn" (click)="chooseNhaThuoc()" class="btn btn-primary" ></button>
+      <input type="button" value="Chọn" (click)="chooseNhaThuoc()" class="btn btn-primary"/>
     </div>
   </div>
 </div>
