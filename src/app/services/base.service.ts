@@ -42,9 +42,9 @@ export abstract class BaseService {
     return this.httpClient.get<ResponseData>(url).toPromise();
   }
 
-  delete(id: number) {
+  delete(body: any) {
     const url = `/api/${this.gateway}/${this.controller}/delete`;
-    return this.httpClient.post<ResponseData>(url, id).toPromise();
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
   deleteMultiple(ids: number[]) {

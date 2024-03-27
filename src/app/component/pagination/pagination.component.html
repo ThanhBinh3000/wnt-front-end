@@ -12,21 +12,21 @@
     <span class="pull-right form-group" style="height:40px">
         <ul class="pagination">
             <li [class]="currentPage == 1 ? 'disabled':''">
-                <a (click)="onPageChange(1)" title="Trang đầu"> <span>«</span> </a>
+                <a (click)="currentPage == 1 ? null : onPageChange(1)" title="Trang đầu"> <span>«</span> </a>
             </li>
             <li [class]="currentPage == 1 ? 'disabled':''">
-                <a (click)="onPageChange(this.currentPage-1)" title="Trang trước"> <span>‹</span>
+                <a (click)="currentPage == 1 ? null : onPageChange(this.currentPage-1)" title="Trang trước"> <span>‹</span>
                 </a>
             </li>
             <li *ngFor="let pageNumber of getPages()" [class]="pageNumber == currentPage ? 'active' : ''">
                 <a (click)="onPageChange(pageNumber)" title="Trang">{{ pageNumber }}</a>
             </li>
             <li [class]="currentPage == totalPages ? 'disabled':''">
-                <a (click)="onPageChange(this.currentPage+1)" title="Trang tiếp"> <span>›</span>
+                <a (click)="currentPage == totalPages ? null : onPageChange(this.currentPage+1)" title="Trang tiếp"> <span>›</span>
                 </a>
             </li>
             <li [class]="currentPage == totalPages ? 'disabled':''">
-                <a (click)="onPageChange(this.totalPages)" title="Trang cuối"> <span>»</span>
+                <a (click)="currentPage == totalPages ? null : onPageChange(this.totalPages)" title="Trang cuối"> <span>»</span>
                 </a>
             </li>
             <li class="disabled" style="white-space: nowrap;">

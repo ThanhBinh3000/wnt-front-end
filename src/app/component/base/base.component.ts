@@ -73,9 +73,7 @@ export class BaseComponent  {
         limit: this.pageSize,
         page: this.page - 1
       }
-      console.log(body);
       let res = await this.service.searchPage(body);
-      console.log(res);
       if (res?.statusCode == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data.content;
@@ -177,6 +175,8 @@ export class BaseComponent  {
 
   // DELETE 1 item table
   delete(message: string, item: any) {
+    this.spinner.show();
+    console.log(message,item);
     this.modal.confirm({
       closable: false,
       title: 'Xác nhận',
@@ -186,9 +186,11 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.spinner.show();
         try {
-          this.service.delete(item.id).then(async () => {
+          let body = {
+            id : item.id
+          }
+          this.service.delete(body).then(async () => {
             await this.searchPage();
             this.spinner.hide();
           });
@@ -228,7 +230,6 @@ export class BaseComponent  {
             this.notification.error(MESSAGE.ERROR, res.msg);
           } else {
             this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
-
           }
         },
       });

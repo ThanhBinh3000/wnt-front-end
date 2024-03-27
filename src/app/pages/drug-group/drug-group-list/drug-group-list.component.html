@@ -2,12 +2,14 @@
     <div class="col-md-3">
         <div class="sidebar-bg">
             <label>Nhóm thuốc</label>
-            <input class="form-control" type="text" id="searchTen" name="searchTen"
-                placeholder="Tìm nhóm thuốc theo tên..." />
-            <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                <button class="btn btn-primary w-50">Xem</button>
-                <button class="btn btn-primary w-50">Thêm</button>
-            </div>
+          <form nz-form [formGroup]="formData">
+            <input formControlName="tenNhomThuoc" class="form-control" type="text" id="searchTen" name="searchTen"
+                   placeholder="Tìm nhóm thuốc theo tên..." />
+          </form>
+          <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+              <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
+              <button class="btn btn-primary w-50" (click)="openModal('drug-group-add-edit-dialog',null)">Thêm</button>
+          </div>
         </div>
     </div>
     <div class="col-md-9">
@@ -63,7 +65,7 @@
                             <div class="baocao-actions">
                                 <button class="btn btn-sm btn-primary" (click)="openModal('drug-group-add-edit-dialog', data.id)" ><i
                                         class="fa-regular fa-pen-to-square"></i></button>
-                                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                                <a class="btn btn-sm btn-danger" (click)="delete('Bạn có muốn xóa nhóm thuốc?',data)"><i class="fa-regular fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
