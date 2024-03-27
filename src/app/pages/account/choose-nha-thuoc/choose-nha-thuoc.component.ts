@@ -14,6 +14,7 @@ import {NhaThuocsService} from "../../../services/system/nha-thuocs.service";
 })
 export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
   private nhaThuoc: any = undefined;
+
   constructor(injector: Injector, private router: Router, private loadingService: SpinnerService, private authService: AuthService, private nhaThuocsService: NhaThuocsService, public notificationService: NotificationService) {
     super(injector, nhaThuocsService);
   }
@@ -31,7 +32,8 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
       this.loadingService.show();
       let res = await this.authService.chooseNhaThuoc({id: this.nhaThuoc.id});
       if (res && res.statusCode == 0) {
-        this.authService.saveNhaThuoc( this.nhaThuoc);
+        this.authService.saveNhaThuoc(this.nhaThuoc);
+        this.authService.saveUser(res.data);
         this.router.navigate(['management/home']).then(r => {
           this.notificationService.close();
         });
