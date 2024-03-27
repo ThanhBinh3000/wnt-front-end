@@ -13,7 +13,7 @@ import {NhaThuocsService} from "../../../services/system/nha-thuocs.service";
   styleUrls: ['./choose-nha-thuoc.component.css'],
 })
 export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
-  private nhaThuocId: any = undefined;
+  private nhaThuoc: any = undefined;
   constructor(injector: Injector, private router: Router, private loadingService: SpinnerService, private authService: AuthService, private nhaThuocsService: NhaThuocsService, public notificationService: NotificationService) {
     super(injector, nhaThuocsService);
   }
@@ -27,11 +27,11 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
 
   async chooseNhaThuoc() {
     console.log('chooseNhaThuoc');
-    if (this.nhaThuocId) {
+    if (this.nhaThuoc) {
       this.loadingService.show();
-      let res = await this.authService.chooseNhaThuoc({id: this.nhaThuocId});
+      let res = await this.authService.chooseNhaThuoc({id: this.nhaThuoc.id});
       if (res && res.statusCode == 0) {
-        this.authService.saveNhaThuoc({id: this.nhaThuocId});
+        this.authService.saveNhaThuoc( this.nhaThuoc);
         this.router.navigate(['management/home']).then(r => {
           this.notificationService.close();
         });
@@ -45,6 +45,6 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
 
   chooseRow(data: any) {
     console.log(data);
-    this.nhaThuocId = data.id;
+    this.nhaThuoc = data;
   }
 }

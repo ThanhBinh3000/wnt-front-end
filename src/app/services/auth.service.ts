@@ -51,7 +51,10 @@ export class AuthService extends BaseService {
     const url = `/api/wnt-security/login`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-
+  profile() {
+    const url = `/api/wnt-security/profile`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
   chooseNhaThuoc(body: any) {
     const url = `/api/wnt-security/choose-nha-thuoc`;
     return this.httpClient.put<ResponseData>(url, body).toPromise();

@@ -884,7 +884,7 @@
                   (mouseleave)="mouseLeave('login','none')">
                 <a href="javascript:void(0);" data-toggle="dropdown" role="button" aria-expanded="false"
                    action="javascript:void(0);"
-                   class="dropdown-toggle">Admin1<span class="caret"></span></a>
+                   class="dropdown-toggle">{{getFullName()}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('login')">
                   <li>
                     <a href="/management/account/change-password" id="loggedInUserNameId" title="Manage">Đổi mật
