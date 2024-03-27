@@ -1,8 +1,4 @@
 <div *ngIf="loadingService.loading$ | async" class="full-screen-spinner">
   <div class="spinner"></div>
 </div>
-<div  *ngIf="notificationService.notification$ | async" class="alert alert-danger" style="margin-top: 50px;">
-  <button aria-hidden="true" class="close" type="button" (click)="closeNotification()">×</button>
-  {{(notificationService.notificationInfo$ | async).message}}
-</div>
 <router-outlet></router-outlet>

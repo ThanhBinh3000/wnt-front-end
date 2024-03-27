@@ -4,7 +4,7 @@ export const STORAGE_KEY = {
   ROLE: 'role',
   USER_INFO: 'user_info',
   PERMISSION: 'permission',
-  DEPARTMENT: 'department'
+  NHA_THUOC: 'nha_thuoc'
 };
 
 export const STATUS_CODE = {

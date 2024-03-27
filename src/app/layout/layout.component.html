@@ -1,3 +1,7 @@
+<div  *ngIf="notificationService.notification$ | async" class="alert alert-danger" style="margin-top: 100px;">
+  <button aria-hidden="true" class="close  close-noti" type="button" (click)="closeNotification()">×</button>
+  {{(notificationService.notificationInfo$ | async).message}}
+</div>
 <div>
   <app-header></app-header>
   <div class="container body-content" style="width:95%;">

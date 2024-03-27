@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
   ) {
-    this.store = authService.getDepartment();
+    this.store = authService.getNhaThuoc();
     if (this.store) {
       this.storeName = this.store.name;
     }

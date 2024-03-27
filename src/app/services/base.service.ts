@@ -4,7 +4,7 @@ import {ResponseData} from "../models/response-data";
 
 export abstract class BaseService {
 
-  protected constructor(private httpClient: HttpClient, private gateway: string, private controller: string) {
+  protected constructor(protected httpClient: HttpClient, private gateway: string, private controller: string) {
   }
 
   init(body: any) {

@@ -1,3 +1,7 @@
+<div  *ngIf="notificationService.notification$ | async" class="alert alert-danger" style="margin-top: 50px;">
+  <button aria-hidden="true" class="close  close-noti" type="button" (click)="closeNotification()">×</button>
+  {{(notificationService.notificationInfo$ | async).message}}
+</div>
 <div class="login-bg">
   <nav class="navbar navbar-default header-main">
     <div class="nav-header-bottom nav-wnt-bg">
