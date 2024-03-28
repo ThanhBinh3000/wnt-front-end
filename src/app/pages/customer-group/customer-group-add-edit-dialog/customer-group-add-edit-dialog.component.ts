@@ -1,7 +1,8 @@
-import {Component, Injector, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
 import {NhomKhachHangService} from "../../../services/categories/nhom-khach-hang.service";
 import {Validators} from "@angular/forms";
 import {BaseComponent} from "../../../component/base/base.component";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'customer-group-add-edit-dialog',
@@ -9,11 +10,12 @@ import {BaseComponent} from "../../../component/base/base.component";
   styleUrls: ['./customer-group-add-edit-dialog.component.css'],
 })
 export class CustomerGroupAddEditDialogComponent extends BaseComponent implements OnInit {
-  @Input() customerGroupID: number = 0;
 
   constructor(
     injector: Injector,
-    private _service : NhomKhachHangService
+    private _service : NhomKhachHangService,
+    public dialogRef: MatDialogRef<CustomerGroupAddEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public customerGroupID: any,
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
@@ -22,14 +24,27 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
     });
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    console.log(this.customerGroupID);
+    if (this.customerGroupID) {
+      const data = await this.detail(this.customerGroupID);
+      if (data) {
+        console.log(data);
+        this.formData.patchValue(data);
+      }
+    }
   }
 
   async saveEdit(){
     let body = this.formData.value;
-    console.log(body)
-    let data = await this.save(body,this.customerGroupID > 0);
-    console.log(data)
+    let data = await this.save(body);
+    // if(data){
+    //   this.closeModal();
+    // }
   }
+
+  closeModal(): void {
+    this.dialogRef.close();
+  }
+
 }

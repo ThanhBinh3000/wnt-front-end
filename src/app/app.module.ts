@@ -10,23 +10,46 @@ import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ComponentsModule} from "./component/base/components.module";
 import {DrugGroupModule} from "./pages/drug-group/drug-group.module";
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogModule,
+  MatDialogTitle
+} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-    imports: [
-        CommonModule, RouterOutlet, RouterOutlet, HttpClientModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        ComponentsModule, DrugGroupModule],
+  imports: [
+    CommonModule, RouterOutlet, RouterOutlet, HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    ComponentsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    DrugGroupModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       multi: true,
       useClass: CommonInterceptor,
-    }],
+    },
+    provideAnimationsAsync()],
   exports: [],
   bootstrap: [AppComponent]
 })
