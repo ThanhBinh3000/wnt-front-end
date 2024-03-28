@@ -13,6 +13,7 @@ import {BaseService} from "../../services/base.service";
 import {NotificationService} from "../../services/notification.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ModalService} from "../../services/modal.service";
+import {HelperService} from "../../services/helper.service";
 
 
 @Component({
@@ -43,6 +44,8 @@ export class BaseComponent  {
   spinner: SpinnerService;
   modal: ModalService;
 
+  helperService: HelperService
+
   constructor(
     injector: Injector,
     service: BaseService
@@ -55,6 +58,7 @@ export class BaseComponent  {
     this.storageService = this.injector.get(StorageService);
     this.userService = this.injector.get(UserService);
     this.notification = this.injector.get(NotificationService);
+    this.helperService = this.injector.get(HelperService);
     // get user info login
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
@@ -69,9 +73,7 @@ export class BaseComponent  {
         limit: this.pageSize,
         page: this.page - 1
       }
-      console.log(body);
       let res = await this.service.searchPage(body);
-      console.log(res);
       if (res?.statusCode == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data.content;
@@ -121,28 +123,24 @@ export class BaseComponent  {
   }
 
   async changePageSize(event: any) {
-    console.log(event.value);
     this.spinner.show();
     try {
-      this.pageSize = event.value;
+      this.pageSize = event;
       this.searchPage();
       this.spinner.hide();
     } catch (e) {
-      console.log('error: ', e);
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
   }
 
   async changePageIndex(event: any) {
-    console.log(event)
     this.spinner.show();
     try {
       this.page = event;
       this.searchPage();
       this.spinner.hide();
     } catch (e) {
-      console.log('error: ', e);
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
@@ -177,6 +175,8 @@ export class BaseComponent  {
 
   // DELETE 1 item table
   delete(message: string, item: any) {
+    this.spinner.show();
+    console.log(message,item);
     this.modal.confirm({
       closable: false,
       title: 'Xác nhận',
@@ -186,9 +186,11 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.spinner.show();
         try {
-          this.service.delete(item.id).then(async () => {
+          let body = {
+            id : item.id
+          }
+          this.service.delete(body).then(async () => {
             await this.searchPage();
             this.spinner.hide();
           });
@@ -228,7 +230,6 @@ export class BaseComponent  {
             this.notification.error(MESSAGE.ERROR, res.msg);
           } else {
             this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
-
           }
         },
       });
@@ -256,7 +257,7 @@ export class BaseComponent  {
   }
 
   // Save
-  async save(body: any,isUpdate:boolean) {
+  async save(body: any) {
     this.spinner.show();
     this.markFormGroupTouched(this.formData);
     if (this.formData.invalid) {
@@ -264,13 +265,14 @@ export class BaseComponent  {
       return;
     }
     let res;
-    if (isUpdate) {
+    if (body.id && body.id > 0) {
       res = await this.service.update(body);
     } else {
       res = await this.service.create(body);
     }
-    if (res && res.msg == MESSAGE.SUCCESS) {
-      if (isUpdate) {
+    console.log(res);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
         this.spinner.hide();
         return res.data;
@@ -290,8 +292,20 @@ export class BaseComponent  {
     }
   }
 
-  async detail() {
-
+  async detail(id:number) {
+    if(id){
+      let res = await this.service.getDetail(id);
+      console.log(res);
+      if(res?.statusCode == STATUS_API.SUCCESS){
+        const data = res.data;
+        console.log(data);
+        return data;
+      } else {
+        console.log('fail')
+        this.notification.error(MESSAGE.ERROR, res?.msg);
+        return null;
+      }
+    }
   }
 
   // Approve

@@ -1,8 +1,8 @@
-import {Component, Injectable, Injector, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {Component, Injectable, Injector, OnInit, ViewChild} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {BaseComponent} from "../../../component/base/base.component";
-import {Validators} from "@angular/forms";
+import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-group-list',
@@ -11,23 +11,41 @@ import {Validators} from "@angular/forms";
 })
 export class DrugGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm thuốc";
-  drugGroupID: number = 0;
+  drugGroupId: number = -1;
+  modalShow: string[] = [];
 
   constructor(
     injector: Injector,
     private titleService: Title,
-    private _service : NhomThuocService
+    private _service : NhomThuocService,
   ) {
-    super(injector,_service);
+    super(injector, _service);
     this.formData = this.fb.group({
-      tenNhaThuoc : [],
+      tenNhomThuoc: [],
     });
   }
 
   ngOnInit() {
-    console.log("sadasdsa")
     this.searchPage()
     this.titleService.setTitle(this.title);
+  }
+
+  openModal(modalName: string, id: any) {
+    this.modalShow.push(modalName);
+    this.drugGroupId = id;
+  }
+
+  closeModal(modalName: string) {
+    this.modalShow = this.modalShow.filter(item => item !== modalName);
+    this.searchPage();
+  }
+
+  isShowModal(modalName: string) {
+    return this.modalShow.includes(modalName);
+  }
+
+  saveEdit() {
+
   }
 }
 

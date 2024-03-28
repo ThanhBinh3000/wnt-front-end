@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {Router} from "@angular/router";
+import {NotificationService} from "../../services/notification.service";
 
 
 @Component({
@@ -13,7 +14,7 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   public formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private loadingService: SpinnerService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private loadingService: SpinnerService, private router: Router, public notificationService: NotificationService) {
     this.formGroup = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -35,9 +36,18 @@ export class LoginComponent implements OnInit {
     let res = await this.authService.login(this.formGroup.value);
     if (res && res.statusCode == 0) {
       this.authService.saveToken(res.data.token);
-      this.router.navigate(['management/home']).then(r => {
+      this.router.navigate(['management/home']).then(async r => {
+        let profile = await this.authService.profile();
+        if (profile && profile.statusCode == 0) {
+          this.authService.saveUser(profile.data);
+          this.notificationService.close();
+        }
       });
       this.loadingService.hide();
     }
+  }
+
+  closeNotification() {
+    this.notificationService.close()
   }
 }

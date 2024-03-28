@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,15 @@ import {Router} from "@angular/router";
 export class HomeComponent implements OnInit {
   modalShow: string[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
-    this.modalShow.push('thongBao')
-    this.router.navigate(['management/account/choose-department']).then(r => {
-    });
+    this.modalShow.push('thongBao');
+    if (!this.authService.getNhaThuoc()) {
+      this.router.navigate(['management/account/choose-nha-thuoc']).then(r => {
+      });
+    }
   }
 
   logOut() {

@@ -1,6 +1,15 @@
-import {Component, Injector, Input, OnInit} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {BaseComponent} from "../../../component/base/base.component";
-import {Title} from "@angular/platform-browser";
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {Validators} from "@angular/forms";
 
@@ -9,29 +18,48 @@ import {Validators} from "@angular/forms";
   templateUrl: './drug-group-add-edit-dialog.component.html',
   styleUrls: ['./drug-group-add-edit-dialog.component.css'],
 })
-export class DrugGroupAddEditDialogComponent extends BaseComponent implements OnInit  {
-  @Input() drugGroupID: number = 0;
+export class DrugGroupAddEditDialogComponent extends BaseComponent implements OnInit {
+  @Input() drugGroupId: any;
+  @Output() setClose = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    private _service : NhomThuocService
+    private _service: NhomThuocService
   ) {
-    super(injector,_service);
+    super(injector, _service);
     this.formData = this.fb.group({
+      id : [],
       tenNhomThuoc: ['', Validators.required],
-      kyHieuNhomThuoc : ['']
+      kyHieuNhomThuoc: [''],
+      maNhaThuoc: [1],
+      maNhomThuoc: [1],
+      referenceId: [1],
+      typeGroupProduct: [1],
+      storeId: [1]
     });
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    console.log("ngOnInit", this.drugGroupId);
+    if (this.drugGroupId) {
+      const data = await this.detail(this.drugGroupId);
+      if (data) {
+        console.log(data);
+        this.formData.patchValue(data);
+      }
+    }
   }
 
-  async saveEdit(){
+   async saveEdit() {
     let body = this.formData.value;
-    console.log(body)
-    let data = await this.save(body,false);
-    console.log(data)
+    let data = await this.save(body);
+    if(data){
+      this.closeModal();
+    }
+  }
+
+  closeModal() {
+    this.setClose.emit();
   }
 
 

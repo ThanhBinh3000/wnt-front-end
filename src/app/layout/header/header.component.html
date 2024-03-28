@@ -641,7 +641,7 @@
                   <li class="divider"></li>
                   <li><a href="/management/account/staff-list">Danh sách nhân viên</a></li>
                   <li><a href="/System/AppSettings">Tùy chọn</a></li>
-                  <li><a href="/Account/ChooseDefaultDs?switchAble=True">Đổi cơ sở</a></li>
+                  <li><a href="management/account/choose-nha-thuoc">Đổi cơ sở</a></li>
                   <li><a href="/management/system/drug-store-information">Thông tin cơ sở</a></li>
                   <li><a href="/management/account/change-password">Đổi mật khẩu</a></li>
                   <li><a href="/login">Đăng xuất</a></li>
@@ -743,7 +743,7 @@
 
                   <li class="divider"></li>
                   <li><a href="management/reserve/note-reserve-add-edit">Lập dự trù thuốc</a></li>
-                  <li><a href="/SampleNote/List">Kê đơn/Liều mẫu</a></li>
+                  <li><a href="/management/sample-note/sample-note-list">Kê đơn/Liều mẫu</a></li>
                   <li><a href="/management/connectivity/sample-note-list">Quản lý đơn thuốc LT</a></li>
                   <li><a href="/management/inventory/inventory-list">Kiểm kê kho</a></li>
                   <li class="divider"></li>
@@ -884,7 +884,7 @@
                   (mouseleave)="mouseLeave('login','none')">
                 <a href="javascript:void(0);" data-toggle="dropdown" role="button" aria-expanded="false"
                    action="javascript:void(0);"
-                   class="dropdown-toggle">Admin1<span class="caret"></span></a>
+                   class="dropdown-toggle">{{getFullName()}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('login')">
                   <li>
                     <a href="/management/account/change-password" id="loggedInUserNameId" title="Manage">Đổi mật

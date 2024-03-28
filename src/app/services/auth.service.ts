@@ -4,12 +4,14 @@ import {StorageService} from './storage.service';
 import {STORAGE_KEY} from '../constants/config';
 import {ResponseData} from "../models/response-data";
 import {HttpClient} from "@angular/common/http";
+import {BaseService} from "./base.service";
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  constructor(private router: Router, private storageService: StorageService, private httpClient: HttpClient) {
+export class AuthService extends BaseService {
+  constructor(private router: Router, private storageService: StorageService, httpClient: HttpClient) {
+    super(httpClient, 'wnt-security', '');
   }
 
   saveToken(token: string) {
@@ -29,8 +31,12 @@ export class AuthService {
     return this.storageService.get(STORAGE_KEY.USER_INFO);
   }
 
-  getDepartment() {
-    return this.storageService.get(STORAGE_KEY.DEPARTMENT);
+  getNhaThuoc() {
+    return this.storageService.get(STORAGE_KEY.NHA_THUOC);
+  }
+
+  saveNhaThuoc(data: any) {
+    return this.storageService.set(STORAGE_KEY.NHA_THUOC, data);
   }
 
   saveRole(role: number) {
@@ -44,6 +50,14 @@ export class AuthService {
   login(body: any) {
     const url = `/api/wnt-security/login`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+  profile() {
+    const url = `/api/wnt-security/profile`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
+  chooseNhaThuoc(body: any) {
+    const url = `/api/wnt-security/choose-nha-thuoc`;
+    return this.httpClient.put<ResponseData>(url, body).toPromise();
   }
 
   isLogin() {

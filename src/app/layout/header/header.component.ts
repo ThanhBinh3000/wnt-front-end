@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
   ) {
-    this.store = authService.getDepartment();
+    this.store = authService.getNhaThuoc();
     if (this.store) {
       this.storeName = this.store.name;
     }
@@ -50,5 +50,9 @@ export class HeaderComponent implements OnInit {
       return 'none';
     }
     return this.display[key];
+  }
+
+  getFullName(){
+    return this.authService.getUser()?.fullName;
   }
 }

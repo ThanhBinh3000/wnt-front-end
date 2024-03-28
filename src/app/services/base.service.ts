@@ -4,7 +4,7 @@ import {ResponseData} from "../models/response-data";
 
 export abstract class BaseService {
 
-  protected constructor(private httpClient: HttpClient, private gateway: string, private controller: string) {
+  protected constructor(protected httpClient: HttpClient, private gateway: string, private controller: string) {
   }
 
   init(body: any) {
@@ -42,9 +42,9 @@ export abstract class BaseService {
     return this.httpClient.get<ResponseData>(url).toPromise();
   }
 
-  delete(id: number) {
+  delete(body: any) {
     const url = `/api/${this.gateway}/${this.controller}/delete`;
-    return this.httpClient.post<ResponseData>(url, id).toPromise();
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
   deleteMultiple(ids: number[]) {

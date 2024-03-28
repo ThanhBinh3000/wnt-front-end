@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AccountComponent} from "./account.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {AuthGuard} from "../../guard/auth.guard";
-import {ChooseDepartmentComponent} from "./choose-department/choose-department.component";
+import {ChooseNhaThuocComponent} from "./choose-nha-thuoc/choose-nha-thuoc.component";
 import {ChangeStaffComponent} from "./change-staff/change-staff.component";
 import {StaffPermissionComponent} from "./staff-permission/staff-permission.component";
 import { StaffListComponent } from './staff-list/staff-list.component';
@@ -24,8 +24,8 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'choose-department',
-        component: ChooseDepartmentComponent,
+        path: 'choose-nha-thuoc',
+        component: ChooseNhaThuocComponent,
         // canActivate: [AuthGuard],
       },
       {

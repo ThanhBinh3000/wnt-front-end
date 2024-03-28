@@ -18,7 +18,7 @@ import {PaginationComponent} from "../pagination/pagination.component";
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    PaginationComponent
+    PaginationComponent,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

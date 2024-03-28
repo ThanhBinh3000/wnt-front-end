@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {SpinnerService} from "./services/spinner.service";
-import {NotificationService} from "./services/notification.service";
 
 @Component({
   selector: 'app-root',
@@ -9,10 +8,7 @@ import {NotificationService} from "./services/notification.service";
 })
 export class AppComponent {
   title = 'webnhathuoc';
-  constructor(public loadingService: SpinnerService, public notificationService: NotificationService) {
+  constructor(public loadingService: SpinnerService) {
   }
 
-  closeNotification() {
-    this.notificationService.close()
-  }
 }

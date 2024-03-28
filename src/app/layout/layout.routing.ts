@@ -129,7 +129,11 @@ const routes: Routes = [
       {
         path: 'report',
         loadChildren: () => import('../pages/report/report.module').then((m) => m.ReportModule),
-      }
+      },
+      {
+        path: 'sample-note',
+        loadChildren: () => import('../pages/sample-note/sample-note.module').then((m) => m.SampleNoteModule),
+      },
     ],
   }
 ];

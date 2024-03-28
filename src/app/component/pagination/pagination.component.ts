@@ -5,11 +5,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent implements OnInit  {
+export class PaginationComponent implements OnInit {
 
   @Input() currentPage: number = 0;
   @Input() totalPages: number = 0;
-  @Input() totalRecord : number = 0;
+  @Input() totalRecord: number = 0;
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();
@@ -22,13 +22,14 @@ export class PaginationComponent implements OnInit  {
     this.pageChange.emit(pageNumber);
   }
 
-  onPageSizeChange($event) {
+  onPageSizeChange($event: any) {
     this.pageSizeChange.emit($event.value);
+    console.log(this.pageSizeChange);
   }
 
   getPages(): number[] {
     const totalPagesToShow = 9; // Số trang hiển thị tối đa
-    const pages : number[] = [];
+    const pages: number[] = [];
     const half = Math.floor(totalPagesToShow / 2);
 
     let start = this.currentPage - half;
