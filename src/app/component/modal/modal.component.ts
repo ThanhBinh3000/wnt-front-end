@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ModalService} from "../../services/modal.service";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-pagination',
@@ -14,45 +16,24 @@ export class ModalComponent implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();
 
+  constructor(
+    public modalService: ModalService,
+    public dialogRef: MatDialogRef<ModalComponent>,
+  ) {
+
+  }
+
+
   ngOnInit() {
 
   }
 
-  onPageChange(pageNumber: number) {
-    this.pageChange.emit(pageNumber);
+  confirm() {
+    this.modalService.ok();
   }
 
-  onPageSizeChange($event: any) {
-    this.pageSizeChange.emit($event.value);
-    console.log(this.pageSizeChange);
+  closeModal() {
+    this.dialogRef.close();
   }
-
-  getPages(): number[] {
-    const totalPagesToShow = 9; // Số trang hiển thị tối đa
-    const pages: number[] = [];
-    const half = Math.floor(totalPagesToShow / 2);
-
-    let start = this.currentPage - half;
-    let end = this.currentPage + half;
-
-    if (start <= 0) {
-      start = 1;
-      end = totalPagesToShow;
-    }
-
-    if (end > this.totalPages) {
-      end = this.totalPages;
-      start = this.totalPages - totalPagesToShow + 1;
-      if (start <= 0) {
-        start = 1;
-      }
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }
-
 
 }
