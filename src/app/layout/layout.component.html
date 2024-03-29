@@ -3,7 +3,7 @@
   {{(notificationService.notificationInfo$ | async).message}}
 </div>
 <div *ngIf="(modalService.confirm$ | async)" [className]="(modalService.confirm$ | async) ? 'modal fade in open' : 'modal fade'" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="card">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" (click)="closeModal()"

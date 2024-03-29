@@ -5,8 +5,8 @@
       <input class="form-control" type="text" id="searchTen" name="searchTen"
         placeholder="Tìm nhóm khách hàng theo tên..." />
       <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-        <button class="btn btn-primary w-50" (click)="fetchData()">Xem</button>
-        <button class="btn btn-primary w-50" (click)="openDialog(null)">Thêm</button>
+        <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
+        <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
       </div>
     </div>
   </div>
@@ -52,8 +52,8 @@
             </td>
             <td>
               <div class="baocao-actions">
-                <button class="btn btn-sm btn-primary" (click)="openDialog(data.id)"><i class="fa-regular fa-pen-to-square"></i></button>
-                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
+                <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger" (click)="delete('Bạn có muốn xóa nhóm khách hàng?',data)"><i class="fa-regular fa-trash"></i></button>
               </div>
             </td>
           </tr>

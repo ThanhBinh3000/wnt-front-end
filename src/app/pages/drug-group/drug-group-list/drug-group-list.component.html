@@ -65,7 +65,7 @@
                             <div class="baocao-actions">
                                 <button class="btn btn-sm btn-primary" (click)="openModal('drug-group-add-edit-dialog', data.id)" ><i
                                         class="fa-regular fa-pen-to-square"></i></button>
-                                <a class="btn btn-sm btn-danger" (click)="delete('Bạn có muốn xóa nhóm thuốc?',data)"><i class="fa-regular fa-trash"></i></a>
+                                <a class="btn btn-sm btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa nhóm thuốc \'' + data.tenNhomThuoc + '\' ?',data)"><i class="fa-regular fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>

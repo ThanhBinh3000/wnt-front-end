@@ -9,7 +9,10 @@ import {ModalService} from "../services/modal.service";
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(public notificationService: NotificationService, public modalService: ModalService) {
+  constructor(
+    public notificationService: NotificationService,
+    public modalService: ModalService
+  ) {
   }
 
   ngOnInit() {

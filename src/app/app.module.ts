@@ -28,21 +28,15 @@ import {MatButtonModule} from "@angular/material/button";
     AppComponent
   ],
   imports: [
-    CommonModule, RouterOutlet, RouterOutlet, HttpClientModule,
+    CommonModule,
+    RouterOutlet,
+    HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ComponentsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    DrugGroupModule],
+    MatDialogModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

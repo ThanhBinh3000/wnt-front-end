@@ -18,7 +18,7 @@ import {MatButton} from "@angular/material/button";
     CustomerGroupListComponent,
     CustomerGroupAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, CustomerGroupRoutingModule, ComponentsModule, DrugGroupModule, MatDialogContent, MatFormField, MatDialogActions, MatDialogTitle, MatInput, MatButton, MatDialogClose],
+  imports: [CommonModule, RouterOutlet, CustomerGroupRoutingModule, ComponentsModule],
   exports: [
     CustomerGroupAddEditDialogComponent
   ],

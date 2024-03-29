@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 import {NhomKhachHangService} from "../../../services/categories/nhom-khach-hang.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -21,30 +21,25 @@ export class CustomerGroupListComponent extends BaseComponent implements OnInit 
     private _service: NhomKhachHangService,
     private dialog: MatDialog
   ) {
-    super(injector,_service);
+    super(injector, _service);
     this.formData = this.fb.group({
-      searchText : '',
+      searchText: '',
     });
   }
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    await this.fetchData();
-  }
-
-  async fetchData() {
     await this.searchPage();
   }
 
-  openDialog(customerGroupID: any): void {
+  async openAddEditDialog(customerGroupID: any) {
     const dialogRef = this.dialog.open(CustomerGroupAddEditDialogComponent, {
       data: customerGroupID,
+      width: '600px',
     });
-
     dialogRef.afterClosed().subscribe(async result => {
-      console.log('result', result);
       if (result) {
-        await this.fetchData();
+        await this.searchPage();
       }
     });
   }
