@@ -19,13 +19,24 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
+      id : [0],
       tenNhomKhachHang: ['', Validators.required],
-      ghiChu : ['']
+      ghiChu : [''],
+      nhaThuocMaNhaThuoc: [1],
+      active: [true],
+      recordStatusID: [0],
+      groupTypeId: [0],
+      fullName: [''],
+      idCard: [''],
+      birthDate: [''],
+      classId: [''],
+      mobile: [''],
+      archivedId: [0],
+      storeId: [1]
     });
   }
 
   async ngOnInit() {
-    console.log(this.customerGroupID);
     if (this.customerGroupID) {
       const data = await this.detail(this.customerGroupID);
       if (data) {
@@ -38,13 +49,12 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
   async saveEdit(){
     let body = this.formData.value;
     let data = await this.save(body);
-    // if(data){
-    //   this.closeModal();
-    // }
+    if(data){
+      this.dialogRef.close(data);
+    }
   }
 
   closeModal(): void {
     this.dialogRef.close();
   }
-
 }

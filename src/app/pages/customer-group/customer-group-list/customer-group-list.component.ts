@@ -14,8 +14,6 @@ import {
 })
 export class CustomerGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm khách hàng";
-  customerGroupID: number = -1;
-  modalShow: string[] = [];
 
   constructor(
     injector: Injector,
@@ -29,34 +27,25 @@ export class CustomerGroupListComponent extends BaseComponent implements OnInit 
     });
   }
 
-  ngOnInit() {
-    this.searchPage();
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
+    await this.fetchData();
   }
 
-  openModal(modalName: string, id: any) {
-    this.modalShow.push(modalName);
-    this.customerGroupID = id;
-  }
-
-  closeModal(modalName: string) {
-    this.modalShow = this.modalShow.filter(item => item !== modalName);
-    this.searchPage();
-  }
-
-  isShowModal(modalName: string) {
-    return this.modalShow.includes(modalName);
+  async fetchData() {
+    await this.searchPage();
   }
 
   openDialog(customerGroupID: any): void {
     const dialogRef = this.dialog.open(CustomerGroupAddEditDialogComponent, {
       data: customerGroupID,
-      width: '30%'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
+    dialogRef.afterClosed().subscribe(async result => {
+      console.log('result', result);
+      if (result) {
+        await this.fetchData();
+      }
     });
   }
 }
