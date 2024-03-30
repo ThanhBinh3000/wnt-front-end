@@ -7,7 +7,6 @@ import {BehaviorSubject, take} from "rxjs";
 export class ModalService {
   private confirmSubject = new BehaviorSubject<boolean>(false);
   private confirmDataSubject = new BehaviorSubject<any>({});
-  confirm$ = this.confirmSubject.asObservable();
   confirmData$ = this.confirmDataSubject.asObservable();
 
   constructor() {
