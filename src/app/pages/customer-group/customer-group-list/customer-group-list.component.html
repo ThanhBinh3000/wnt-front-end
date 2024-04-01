@@ -53,7 +53,7 @@
             <td>
               <div class="baocao-actions">
                 <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i class="fa-regular fa-pen-to-square"></i></button>
-                <button class="btn btn-sm btn-danger" (click)="delete('Bạn có muốn xóa nhóm khách hàng?',data)"><i class="fa-regular fa-trash"></i></button>
+                <button class="btn btn-sm btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa nhóm khách hàng \'' +data.tenNhomKhachHang + '\' ?', data)"><i class="fa-regular fa-trash"></i></button>
               </div>
             </td>
           </tr>

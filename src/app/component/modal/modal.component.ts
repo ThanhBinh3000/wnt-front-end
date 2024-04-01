@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ModalService} from "../../services/modal.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-modal',
@@ -10,8 +9,8 @@ import {MatDialogRef} from "@angular/material/dialog";
 export class ModalComponent implements OnInit {
 
   constructor(
-    public modalService: ModalService,
     public dialogRef: MatDialogRef<ModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public param: any,
   ) {
 
   }
@@ -22,11 +21,16 @@ export class ModalComponent implements OnInit {
   }
 
   confirm() {
-    this.modalService.ok();
+    if (this.param && this.param.onOk) {
+      this.param.onOk().then(() => {
+        this.dialogRef.close();
+      }).catch((error:any) => {
+        console.error('Error in onOk function:', error);
+      });
+    }
   }
 
   closeModal() {
     this.dialogRef.close();
   }
-
 }

@@ -22,7 +22,7 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
       id: [],
       tenNhomKhachHang: ['', Validators.required],
       ghiChu: [''],
-      nhaThuocMaNhaThuoc: [1],
+      nhaThuocMaNhaThuoc: ['0010'],
       active: [true],
       recordStatusID: [0],
       groupTypeId: [0],
