@@ -3,6 +3,10 @@ import {Title} from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  CustomerGroupAddEditDialogComponent
+} from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-group-list',
@@ -11,13 +15,12 @@ import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/dru
 })
 export class DrugGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm thuốc";
-  drugGroupId: number = -1;
-  modalShow: string[] = [];
 
   constructor(
     injector: Injector,
     private titleService: Title,
     private _service : NhomThuocService,
+    private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -25,27 +28,21 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.searchPage()
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
+    await this.searchPage();
   }
 
-  openModal(modalName: string, id: any) {
-    this.modalShow.push(modalName);
-    this.drugGroupId = id;
-  }
-
-  closeModal(modalName: string) {
-    this.modalShow = this.modalShow.filter(item => item !== modalName);
-    this.searchPage();
-  }
-
-  isShowModal(modalName: string) {
-    return this.modalShow.includes(modalName);
-  }
-
-  saveEdit() {
-
+  async openAddEditDialog(drugGroupID: any) {
+    const dialogRef = this.dialog.open(DrugGroupAddEditDialogComponent, {
+      data: drugGroupID,
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
+    });
   }
 }
 

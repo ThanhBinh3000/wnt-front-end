@@ -1,13 +1,12 @@
-<div class="modal-dialog">
+<div class="card">
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"
-              aria-label="Đóng"><span>&times;</span></button>
-      <h4 class="modal-title">{{this.drugGroupId > 0 ? 'Cập nhật nhóm thuốc' : 'Thêm mới nhóm thuốc'}}
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">{{this.drugGroupID > 0 ? 'Cập nhật nhóm thuốc' : 'Thêm mới nhóm thuốc'}}
       </h4>
     </div>
     <div class="modal-body">
-      <form nz-form [formGroup]="formData">
+      <form [formGroup]="formData">
         <div class="form-group">
           <div class="row">
             <label class="col-sm-4 control-label">Tên nhóm thuốc<span class="text-danger">*</span></label>
@@ -28,7 +27,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-      <button type="button" class="btn btn-primary" (click)="saveEdit()">{{this.drugGroupId > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+      <button type="button" class="btn btn-primary" (click)="saveEdit()">{{this.drugGroupID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
     </div>
   </div>
 </div>

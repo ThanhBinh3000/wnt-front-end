@@ -2,14 +2,13 @@
   <div class="col-md-3">
     <div class="sidebar-bg">
       <label>Nhóm khách hàng</label>
-      <input class="form-control" type="text" id="searchTen" name="searchTen"
-        placeholder="Tìm nhóm khách hàng theo tên..." />
+      <form [formGroup]="formData">
+        <input formControlName="tenNhomKhachHang" class="form-control" type="text" id="searchTen" name="searchTen"
+               placeholder="Tìm nhóm khách hàng theo tên..."/>
+      </form>
       <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-        <button class="btn btn-primary w-50">Xem
-        </button>
-        <button class="btn btn-primary w-50" (click)="customerGroupID = 0" data-toggle="modal"
-          data-target="#customer-group-add-edit-dialog">Thêm
-        </button>
+        <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
+        <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
       </div>
     </div>
   </div>
@@ -19,79 +18,57 @@
       <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
       <table class="table table-striped table-bordered table-hover tr-ng-grid">
         <thead>
-          <tr>
-            <th display-name="#" style="width:8%">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div>
-                  <div class="tr-ng-title"> #</div>
-                </div>
-              </div>
-            </th>
-            <th display-name="Nhóm khách hàng" style="width:42%">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div>
-                  <div class="tr-ng-title"> Nhóm khách hàng
-                    <div class="tr-ng-sort" title="Sort">
-                      <div class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                      </div>
-                    </div>
+        <tr>
+          <th style="width:8%">
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-title"> #</div>
+            </div>
+          </th>
+          <th style="width:42%">
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-title">
+                Nhóm khách hàng
+                <div class="tr-ng-sort" title="Sort">
+                  <div class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
                   </div>
                 </div>
               </div>
-            </th>
-            <th display-name="Ghi chú" style="width:35%">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div>
-                  <div class="tr-ng-title"> Ghi chú
-                  </div>
-                </div>
-              </div>
-            </th>
-            <th style="width:15%">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div>
-                  <div class="tr-ng-title">
-                  </div>
-                </div>
-              </div>
-            </th>
-          </tr>
+            </div>
+          </th>
+          <th style="width:35%">
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-title"> Ghi chú</div>
+            </div>
+          </th>
+          <th style="width:15%"></th>
+        </tr>
         </thead>
-
         <tbody>
-          <tr *ngFor="let data of dataTable; index as i;">
-            <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-            <td>
-              <div>{{ data.tenNhomKhachHang }}</div>
-            </td>
-            <td>
-              <div>{{ data.ghiChu }}</div>
-            </td>
-            <td>
-              <div class="baocao-actions">
-                <button class="btn btn-sm btn-primary" (click)="customerGroupID = data.maNhomKhachHang"
-                  data-toggle="modal" data-target="#customer-group-add-edit-dialog"><i
-                    class="fa-regular fa-pen-to-square"></i></button>
-                <a class="btn btn-sm btn-danger" href="#"><i class="fa-regular fa-trash"></i></a>
-              </div>
-            </td>
-          </tr>
+        <tr *ngFor="let data of dataTable; index as i;">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ data.tenNhomKhachHang }}</td>
+          <td>{{ data.ghiChu }}</td>
+          <td>
+            <div class="baocao-actions">
+              <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                class="fa-regular fa-pen-to-square"></i></button>
+              <button class="btn btn-sm btn-danger"
+                      (click)="delete('Bạn có chắc chắn muốn xóa nhóm khách hàng \'' +data.tenNhomKhachHang + '\' ?', data)">
+                <i class="fa-regular fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
         </tbody>
         <tfoot>
-          <tr id="footerId">
-            <td colspan="100">
-              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
-            </td>
-          </tr>
+        <tr id="footerId">
+          <td colspan="100">
+            <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                            (pageChange)="changePageIndex($event)"
+                            (pageSizeChange)="changePageSize($event)"></app-pagination>
+          </td>
+        </tr>
         </tfoot>
       </table>
-
-      <!-- model.length <= 0 -->
-      <div *ngIf="totalRecord <= 0">
-        <p class="text-danger text-center mt-3">Không tìm thấy nhóm khách hàng nào</p>
-      </div>
     </div>
   </div>
 </div>
-<customer-group-add-edit-dialog [customerGroupID]="customerGroupID"></customer-group-add-edit-dialog>

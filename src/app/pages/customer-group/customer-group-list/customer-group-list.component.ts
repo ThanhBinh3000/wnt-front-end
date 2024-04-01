@@ -1,7 +1,11 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 import {NhomKhachHangService} from "../../../services/categories/nhom-khach-hang.service";
 import {BaseComponent} from "../../../component/base/base.component";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  CustomerGroupAddEditDialogComponent
+} from "../customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 
 @Component({
   selector: 'customer-group-list',
@@ -10,21 +14,33 @@ import {BaseComponent} from "../../../component/base/base.component";
 })
 export class CustomerGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm khách hàng";
-  customerGroupID: number = 0;
 
   constructor(
     injector: Injector,
     private titleService: Title,
-    private _service: NhomKhachHangService
+    private _service: NhomKhachHangService,
+    private dialog: MatDialog
   ) {
-    super(injector,_service);
+    super(injector, _service);
     this.formData = this.fb.group({
-      tenNhaThuoc : [],
+      tenNhomKhachHang: '',
     });
   }
 
-  ngOnInit() {
-    this.searchPage();
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
+    await this.searchPage();
+  }
+
+  async openAddEditDialog(customerGroupID: any) {
+    const dialogRef = this.dialog.open(CustomerGroupAddEditDialogComponent, {
+      data: customerGroupID,
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
+    });
   }
 }

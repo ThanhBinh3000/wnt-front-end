@@ -9,7 +9,9 @@ import {ModalService} from "../services/modal.service";
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(public notificationService: NotificationService, public modalService: ModalService) {
+  constructor(
+    public notificationService: NotificationService
+  ) {
   }
 
   ngOnInit() {
@@ -20,13 +22,5 @@ export class LayoutComponent implements OnInit {
 
   closeNotification() {
     this.notificationService.close()
-  }
-
-  closeModal() {
-    this.modalService.close();
-  }
-
-  saveEdit() {
-    this.modalService.ok();
   }
 }

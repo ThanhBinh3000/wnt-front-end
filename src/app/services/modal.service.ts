@@ -1,16 +1,15 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, take} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {ModalComponent} from "../component/modal/modal.component";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-  private confirmSubject = new BehaviorSubject<boolean>(false);
-  private confirmDataSubject = new BehaviorSubject<any>({});
-  confirm$ = this.confirmSubject.asObservable();
-  confirmData$ = this.confirmDataSubject.asObservable();
 
-  constructor() {
+  constructor(
+    private dialog: MatDialog
+  ) {
   }
 
   confirm(param: {
@@ -23,28 +22,9 @@ export class ModalService {
     okDanger: boolean;
     onOk: () => Promise<void>
   }) {
-    this.confirmSubject.next(true);
-    this.confirmDataSubject.next(param);
-  }
-
-  close(){
-    this.confirmSubject.next(false);
-    this.confirmDataSubject.next({});
-  }
-
-  ok() {
-    // Lấy dữ liệu hiện tại từ confirmData$
-    this.confirmData$.pipe(take(1)).subscribe(param => {
-      // Gọi phương thức onOk nếu được định nghĩa
-      if (param && param.onOk) {
-        param.onOk().then(() => {
-          // Đóng modal sau khi hàm onOk() hoàn thành (nếu cần)
-          this.close();
-        }).catch((error:any) => {
-          console.error('Error in onOk function:', error);
-          // Xử lý lỗi nếu cần
-        });
-      }
+    this.dialog.open(ModalComponent, {
+      data: param,
+      width: '600px',
     });
   }
 }
