@@ -24,7 +24,7 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
       ghiChu: [''],
       nhaThuocMaNhaThuoc: ['0010'],
       active: [true],
-      recordStatusID: [0],
+      recordStatusId: [0],
       groupTypeId: [0],
       fullName: [''],
       idCard: [''],
