@@ -1,17 +1,13 @@
 import {
   Component,
-  EventEmitter,
+  Inject,
   Injector,
-  Input,
-  OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
 } from '@angular/core';
 import {BaseComponent} from "../../../component/base/base.component";
 import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
 import {Validators} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'drug-group-add-edit-dialog',
@@ -19,12 +15,12 @@ import {Validators} from "@angular/forms";
   styleUrls: ['./drug-group-add-edit-dialog.component.css'],
 })
 export class DrugGroupAddEditDialogComponent extends BaseComponent implements OnInit {
-  @Input() drugGroupId: any;
-  @Output() setClose = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    private _service: NhomThuocService
+    private _service: NhomThuocService,
+    public dialogRef: MatDialogRef<DrugGroupAddEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public drugGroupID: any,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -40,9 +36,8 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
   }
 
   async ngOnInit() {
-    console.log("ngOnInit", this.drugGroupId);
-    if (this.drugGroupId) {
-      const data = await this.detail(this.drugGroupId);
+    if (this.drugGroupID) {
+      const data = await this.detail(this.drugGroupID);
       if (data) {
         console.log(data);
         this.formData.patchValue(data);
@@ -59,8 +54,6 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
   }
 
   closeModal() {
-    this.setClose.emit();
+    this.dialogRef.close();
   }
-
-
 }
