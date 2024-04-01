@@ -2,7 +2,7 @@
   <div class="card-bg">
     <form class="mb-3" [formGroup]="formData">
       <div class="input-group">
-        <input formControlName="searchTen" type="text" id="searchTen" name="searchTen"
+        <input formControlName="textSearch" type="text" id="searchTen" name="searchTen"
                placeholder="Tìm theo mã/tên/địa chỉ...">
         <div class="input-group-btn">
           <button class="btn btn-primary" (click)="searchPage()">
@@ -123,7 +123,7 @@
               <div ng-switch-when="true" class="">
                 <div>
                   <div class="ng-binding ">
-                    {{data.userFullName}}
+                    {{data.nguoiPhuTrach}}
                   </div>
                 </div>
               </div><!-- end ngSwitchWhen: -->  <!-- ngSwitchDefault:  --></div>

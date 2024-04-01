@@ -57,12 +57,18 @@ export class CommonInterceptor implements HttpInterceptor {
         (event: HttpEvent<any>) => {
           if (event instanceof HttpResponse) {
             const result = event.body as ResponseData;
-            console.log(result,"result")
             if (result.statusCode != 0) {
-              console.log(result,"00000")
-              // thông báo lỗi
-              this.notificationService.error(MESSAGE.ERROR, result.message);
-              this.loadingService.hide();
+              if (result.statusCode === STATUS_CODE.UNAUTHORIZED) {
+                // thông báo lỗi
+                this.notificationService.error(MESSAGE.ERROR, result.message);
+                this.authService.logout();
+                this.loadingService.hide();
+              } else {
+                // thông báo lỗi
+                this.notificationService.error(MESSAGE.ERROR, result.message);
+                this.loadingService.hide();
+              }
+
             }
           }
         },

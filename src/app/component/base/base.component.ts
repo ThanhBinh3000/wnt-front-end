@@ -83,7 +83,6 @@ export class BaseComponent  {
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
-        this.notification.error(MESSAGE.ERROR, res);
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -108,7 +107,6 @@ export class BaseComponent  {
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
-        this.notification.error(MESSAGE.ERROR, res);
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -226,10 +224,6 @@ export class BaseComponent  {
           if (res && res.msg == MESSAGE.SUCCESS) {
             this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
             await this.searchPage();
-          } else if (res) {
-            this.notification.error(MESSAGE.ERROR, res.msg);
-          } else {
-            this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
           }
         },
       });
@@ -281,14 +275,6 @@ export class BaseComponent  {
         this.spinner.hide();
         return res.data;
       }
-    } else if (res) {
-      this.notification.error(MESSAGE.ERROR, res.msg);
-      this.spinner.hide();
-      return null;
-    } else {
-      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
-      this.spinner.hide();
-      return null;
     }
   }
 
@@ -301,8 +287,6 @@ export class BaseComponent  {
         console.log(data);
         return data;
       } else {
-        console.log('fail')
-        this.notification.error(MESSAGE.ERROR, res?.msg);
         return null;
       }
     }
