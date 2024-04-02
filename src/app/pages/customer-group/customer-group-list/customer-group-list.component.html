@@ -4,7 +4,7 @@
       <label>Nhóm khách hàng</label>
       <form [formGroup]="formData">
         <input formControlName="tenNhomKhachHang" class="form-control" type="text" id="searchTen" name="searchTen"
-               placeholder="Tìm nhóm khách hàng theo tên..."/>
+               placeholder="Tìm nhóm khách hàng theo tên..." (keyup.enter)="searchPage()"/>
       </form>
       <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
         <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>

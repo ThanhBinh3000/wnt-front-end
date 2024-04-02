@@ -51,7 +51,6 @@ export class CommonInterceptor implements HttpInterceptor {
         headers,
       });
     }
-
     return next.handle(request).pipe(
       tap(
         (event: HttpEvent<any>) => {
