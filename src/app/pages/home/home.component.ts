@@ -16,10 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.modalShow.push('thongBao');
-    if (!this.authService.getNhaThuoc()) {
-      this.router.navigate(['management/account/choose-nha-thuoc']).then(r => {
-      });
-    }
+
   }
 
   logOut() {

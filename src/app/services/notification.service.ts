@@ -1,30 +1,35 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private notificationSubject = new BehaviorSubject<boolean>(false);
-  private notificationContentSubject = new BehaviorSubject<any>({});
-  notification$ = this.notificationSubject.asObservable();
-  notificationInfo$ = this.notificationContentSubject.asObservable();
 
-  constructor() {
+  constructor(
+    private _toastr: ToastrService
+  ) {
   }
 
   error(title: string, message: any) {
-    this.notificationSubject.next(true);
-    this.notificationContentSubject.next({type: 1, title, message});
+    this._toastr.error(message, title, {
+      timeOut: 6000,
+      closeButton: true
+    });
   }
 
   success(title: string, message: any) {
-    this.notificationSubject.next(true);
-    this.notificationContentSubject.next({type: 0, title, message});
+    this._toastr.success(message, title, {
+      timeOut: 3000,
+      closeButton: true
+    });
   }
 
-  close() {
-    this.notificationSubject.next(false);
-    this.notificationContentSubject.next({});
+  info(title: string, message: any) {
+    this._toastr.info(message, title, {
+      timeOut: 60000,
+      closeButton: true
+    });
   }
 }

@@ -2,7 +2,8 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
-      <h4 class="modal-title"><b>{{ customerGroupID > 0 ? 'Cập nhật nhóm khách hàng' : 'Thêm mới nhóm khách hàng' }}</b></h4>
+      <h4 class="modal-title"><b>{{ customerGroupID > 0 ? 'Cập nhật nhóm khách hàng' : 'Thêm mới nhóm khách hàng' }}</b>
+      </h4>
     </div>
     <div class="modal-body">
       <form [formGroup]="formData">
@@ -11,6 +12,10 @@
             <label class="col-sm-4 control-label">Tên nhóm khách hàng<span class="text-danger">*</span></label>
             <div class="col-sm-8">
               <input formControlName="tenNhomKhachHang" class="form-control mb-0 text-left" type="text"/>
+              <span class="text-danger field-validation-error"
+                    *ngIf="formData.get('tenNhomKhachHang')?.invalid && formData.get('tenNhomKhachHang')?.touched">
+              Chưa nhập tên nhóm khách hàng!
+            </span>
             </div>
           </div>
         </div>
@@ -26,7 +31,9 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-default" (click)="closeModal()">Đóng</button>
-      <button class="btn btn-primary" (click)="saveEdit()">{{ customerGroupID > 0 ? 'Cập nhật' : 'Thêm mới' }}</button>
+      <button class="btn btn-primary" (click)="saveEdit()"
+              [disabled]="formData.invalid">{{ customerGroupID > 0 ? 'Cập nhật' : 'Thêm mới' }}
+      </button>
     </div>
   </div>
 </div>

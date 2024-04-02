@@ -34,7 +34,6 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
         this.authService.saveNhaThuoc(this.nhaThuoc);
         this.authService.saveUser(res.data);
         this.router.navigate(['management/home']).then(r => {
-          this.notificationService.close();
         });
         this.loadingService.hide();
       }
