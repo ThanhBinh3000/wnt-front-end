@@ -44,13 +44,8 @@ export class LoginComponent implements OnInit {
         }
       }
       this.router.navigate(['management/home']).then(async r => {
-          this.notificationService.close();
       });
       this.loadingService.hide();
     }
-  }
-
-  closeNotification() {
-    this.notificationService.close()
   }
 }

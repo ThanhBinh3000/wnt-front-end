@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from "../../services/auth.service";
+import {
+  ChangePasswordDialogComponent
+} from "../../pages/account/change-password-dialog/change-password-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-header',
@@ -15,6 +19,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private dialog: MatDialog
   ) {
     this.store = authService.getNhaThuoc();
     if (this.store) {
@@ -54,5 +59,11 @@ export class HeaderComponent implements OnInit {
 
   getFullName(){
     return this.authService.getUser()?.fullName;
+  }
+
+  async openChangePasswordDialog() {
+    this.dialog.open(ChangePasswordDialogComponent, {
+      width: '600px',
+    });
   }
 }

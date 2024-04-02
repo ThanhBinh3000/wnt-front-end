@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AccountComponent} from "./account.component";
-import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {AuthGuard} from "../../guard/auth.guard";
 import {ChooseNhaThuocComponent} from "./choose-nha-thuoc/choose-nha-thuoc.component";
 import {ChangeStaffComponent} from "./change-staff/change-staff.component";
@@ -15,13 +14,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'change-password',
+        redirectTo: '/management/home',
         pathMatch: 'full',
-      },
-      {
-        path: 'change-password',
-        component: ChangePasswordComponent,
-        // canActivate: [AuthGuard],
       },
       {
         path: 'choose-nha-thuoc',

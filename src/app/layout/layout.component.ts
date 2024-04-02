@@ -27,8 +27,4 @@ export class LayoutComponent implements OnInit {
 
   logOut() {
   }
-
-  closeNotification() {
-    this.notificationService.close()
-  }
 }

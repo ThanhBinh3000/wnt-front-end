@@ -655,7 +655,7 @@
                   <li><a href="/System/AppSettings">Tùy chọn</a></li>
                   <li><a href="management/account/choose-nha-thuoc">Đổi cơ sở</a></li>
                   <li><a href="/management/system/drug-store-information">Thông tin cơ sở</a></li>
-                  <li><a href="/management/account/change-password">Đổi mật khẩu</a></li>
+                  <li><a (click)="openChangePasswordDialog()">Đổi mật khẩu</a></li>
                   <li><a href="/login">Đăng xuất</a></li>
                 </ul>
               </li>
@@ -899,7 +899,7 @@
                    class="dropdown-toggle">{{getFullName()}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('login')">
                   <li>
-                    <a href="/management/account/change-password" id="loggedInUserNameId" title="Manage">Đổi mật
+                    <a (click)="openChangePasswordDialog()" id="loggedInUserNameId" title="Manage">Đổi mật
                       khẩu</a>
                   </li>
                   <li><a href="/login">Đăng xuất</a></li>
