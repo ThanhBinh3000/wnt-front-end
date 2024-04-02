@@ -36,12 +36,15 @@ export class LoginComponent implements OnInit {
     let res = await this.authService.login(this.formGroup.value);
     if (res && res.statusCode == 0) {
       this.authService.saveToken(res.data.token);
-      this.router.navigate(['management/home']).then(async r => {
-        let profile = await this.authService.profile();
-        if (profile && profile.statusCode == 0) {
-          this.authService.saveUser(profile.data);
-          this.notificationService.close();
+      let profile = await this.authService.profile();
+      if (profile && profile.statusCode == 0) {
+        this.authService.saveUser(profile.data);
+        if(profile.data.nhaThuoc){
+          this.authService.saveNhaThuoc(profile.data.nhaThuoc);
         }
+      }
+      this.router.navigate(['management/home']).then(async r => {
+          this.notificationService.close();
       });
       this.loadingService.hide();
     }
