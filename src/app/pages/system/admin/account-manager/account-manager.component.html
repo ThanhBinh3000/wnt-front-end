@@ -1,166 +1,222 @@
 <div>
-    <div class="row">
-        <div class="col-md-3 baocao-filter">
-            <div class="sidebar-bg">
-                <fieldset>
-                    <label>Tên tài khoản</label>
-                    <div class="control-group">
-                        <input type="search" placeholder="Tên tài khoản" class="form-control" ng-model="filterModel.SearchText" id="userSearchBox" ng-enter="onDisplayData()"/>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <label>Nhà thuốc</label>
-                    <div class="control-group">
-                        <div item-search-filter
-                            select-changed-callback="onDrugStoreItemChanged"
-                            clear-after-selected="false"
-                            only-single-item="true"
-                            search-placeholder="'Tra cứu theo tên, địa chỉ,...'"
-                            search-type="6">
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <label>Nhóm quyền</label>
-                    <div class="control-group">
-                        <select class="form-control" ng-model="filterModel.Role">
-                            <option value="" selected>--Tất cả--</option>
-                            <option value="Admin">Quản lý</option>
-                            <option value="SuperUser">Quyền hệ thống</option>
-                            <option value="User">Nhân viên</option>
-                        </select>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="control-group d-flex justify-content-between gap-10">
-                        <input type="button" value="Xem" title="Xem" class="btn btn-primary w-50" (click)="onDisplayData()" />
-                        <a (click)="userId = 0" data-toggle="modal" data-target="#account-add-edit-dialog" class="btn btn-primary w-50">Thêm</a>
-                    </div>
+  <div class="row">
+    <div class="col-md-3 baocao-filter">
+      <div class="sidebar-bg">
+        <form [formGroup]="formData">
+        <fieldset>
+          <label>Tên tài khoản</label>
+          <div class="control-group">
+              <input formControlName="userName" type="text" class="form-control" placeholder="Tên tài khoản"
+                     (keyup.enter)="searchPageUserManagement()"/>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label>Nhà thuốc</label>
+          <div class="control-group">
+            <ng-select
+              formControlName="maNhaThuoc"
+              appearance="outline"
+              [items]="drugStores"
+              bindLabel="fullInfo"
+              bindValue="code"
+              placeholder="Tra cứu theo tên, địa chỉ..."
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{item.fullInfo}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label>Nhóm quyền</label>
+          <div class="control-group">
+            <select class="form-control" formControlName="roleName">
+              <option [ngValue]="null">--Tất cả--</option>
+              <option value="Admin">Quản lý</option>
+              <option value="SuperUser">Quyền hệ thống</option>
+              <option value="User">Nhân viên</option>
+            </select>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="control-group d-flex justify-content-between gap-10">
+            <input type="button" value="Xem" title="Xem" class="btn btn-primary w-50"
+                   (click)="searchPageUserManagement()"/>
+            <a (click)="openAddEditDialog(null)" class="btn btn-primary w-50">Thêm</a>
+          </div>
 
-                    <div class="control-group d-flex justify-content-between gap-10">
-                        <div style="display: none"><input name="uploadFile" type="file" /></div>
-                        <input type="button" value="Tải File" title="Tải file" class="btn btn-default w-50" />
-                        <input type="button" value="Xuất File" title="Tải file" class="btn btn-default w-50" />
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-
-        <div class="col-md-9">
-            <div class="box-group-white">
-                <h2 class="text-center"><b>QUẢN LÝ TÀI KHOẢN NGƯỜI DÙNG</b></h2>
-                <div class="baocao-container">
-                    <table class="table table-striped table-bordered table-hover tr-ng-grid">
-                        <thead>
-                            <tr>
-                                <th class="text-right"><span>#</span></th>
-                                <th width="20%" display-name="Tên đăng nhập">Tên đăng nhập</th>
-                                <th width="20%" display-name="Họ và tên">Họ và tên</th>
-                                <th display-name="Thư điện tử">Thư điện tử</th>
-                                <th width="10%" display-name="Nhóm Quyền">Nhóm Quyền</th>
-                                <th width="20%"  display-name="Nhà thuốc">Nhà thuốc</th>
-                                <th display-name="Hoạt động">Hoạt động</th>
-                                <th width="5%" display-name="Quyền" ng-show="isTechSupport">Quyền</th>
-                                <th widt="10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!--STT-->
-                                <td>
-                                    <div class="text-right">
-                                        <a href="" ng-click="onRegionalDetails(gridItem.UserId, 3); $event.preventDefault(); $event.stopPropagation();">
-                                            1
-                                        </a>
-                                    </div>
-                                </td>
-                                <td><div class="text-left">UserTest</div></td>
-                                <td><div class="text-left">Full test</div></td>
-                                <td>
-                                    <div class="text-left">test&#64;gmail.com<a href="mailto"></a></div>
-                                </td>
-                                <td><div class="text-left">user</div></td>
-                                <td><div class="text-left" ng-bind-html="gridItem.NhaThuocs">CT WebNT</div></td>
-                                <td>
-                                    <div class="text-center">
-                                        <input ng-checked="gridItem.HoatDong" class="check-box" disabled="disabled" type="checkbox">
-                                    </div>
-                                </td>
-                                <td ng-if="isTechSupport">
-                                    <form>
-                                        <div class="multiselect">
-                                            <div class="selectBox" ng-click="showCheckboxes(gridItem)">
-                                                <select class="form-control" style="border: none">
-                                                    <option>Lựa chọn nhóm quyền</option>
-                                                </select>
-                                                <div class="overSelect"></div>
-                                            </div>
-                                            <div style="display: none">
-                                                <p ng-repeat="i in gridItem.Permissions">
-                                                    <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active" />
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <div class="baocao-actions" style="justify-content: start;">
-                                        <a class="btn btn-sm btn-primary" (click)="userId = 1" data-toggle="modal" data-target="#account-add-edit-dialog"><i class="fas fa-pen-to-square"></i></a>
-                                        <a class="btn btn-sm btn-danger" (click)="onDeleteAccount()"><i class="fas fa-trash"></i></a>
-                                        <span NgIf="!gridItem.NhomQuyens.includes('Hệ Thống')">
-                                            <a class="btn btn-sm btn-default" (click)="userId = 1" data-toggle="modal" data-target="#account-reset-password-dialog"><i class="fas fa-refresh"></i></a>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr id="footerId">
-                                <td align="center"
-                                    class="ng-scope" colspan="9">
-                                    <div class="tr-ng-grid-footer form-inline">
-                                        <div ng-switch-when="true" class="ng-scope">
-                                            <div ng-transclude=""><span class="form-group pull-left page-size ng-scope">
-                                                    <select id="ddlPageSize"
-                                                        class="form-control ng-pristine ng-untouched ng-valid"
-                                                        ng-model="model.pageSize"
-                                                        ng-options="item.pageSizeKey as item.pageSizeValue for item in pageSizeList"
-                                                        ng-change="changePageSize()">
-                                                        <option label="10" value="number:10" selected="selected">10</option>
-                                                        <option label="20" value="number:20">20</option>
-                                                        <option label="50" value="number:50">50</option>
-                                                        <option label="100" value="number:100">100</option>
-                                                        <option label="--All--" value="number:9000">--All--</option>
-                                                    </select>
-                                                    <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
-                                                </span><span class="pull-right form-group" tr-ng-grid-pager=""
-                                                    style="height:40px;">
-                                                    <ul class="pagination">
-                                                        <li class="ng-scope active">
-                                                            <a href="" ng-click="navigateToPage(pageIndex)"
-                                                                ng-if="pageIndex!==null"
-                                                                class="ng-binding ng-scope" title="Trang">1</a>
-                                                            </li>
-                                                            <li ng-if="pageSelectionActive" class="ng-scope"><a href=""
-                                                                    class="ng-binding ng-scope" title="Trang">2</a> </li>
-                                                            <li class="disabled" style="white-space: nowrap;"> <span
-                                                                    ng-hide="totalItemsCount || !displayTotalItemsCount"
-                                                                    class="ng-binding ng-hide">Không có dữ liệu</span> <span
-                                                                    ng-show="totalItemsCount &amp;&amp; displayTotalItemsCount"
-                                                                    class=""> <span class="ng-binding">Tổng: 2 bản ghi</span>
-                                                                </span> </li>
-                                                        </ul>
-                                                    </span></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
+          <div class="control-group d-flex justify-content-between gap-10">
+            <div style="display: none"><input name="uploadFile" type="file"/></div>
+            <input type="button" value="Tải File" title="Tải file" class="btn btn-default w-50"/>
+            <input type="button" value="Xuất File" title="Tải file" class="btn btn-default w-50"/>
+          </div>
+        </fieldset>
+        </form>
+      </div>
     </div>
+
+    <div class="col-md-9">
+      <div class="box-group-white">
+        <h2 class="text-center"><b>QUẢN LÝ TÀI KHOẢN NGƯỜI DÙNG</b></h2>
+        <div class="baocao-container">
+          <table class="table table-striped table-bordered table-hover tr-ng-grid">
+            <thead>
+            <tr>
+              <th class="text-right">
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> #</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Tên đăng nhập</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Họ và tên</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Thư điện tử</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Nhóm quyền</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Nhà thuốc</div>
+                </div>
+              </th>
+              <th>
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Hoạt động</div>
+                </div>
+              </th>
+              <!--Quyền do TechnicalSupport cấp-->
+              <th *ngIf="true" style="width: 15%">
+                <div class="tr-ng-column-header tr-ng-cell">
+                  <div class="tr-ng-title"> Quyền</div>
+                </div>
+              </th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of dataTable; index as i;">
+              <td>
+                <div class="text-right">
+                  <a href=""
+                     ng-click="onRegionalDetails(gridItem.UserId, 3); $event.preventDefault(); $event.stopPropagation();">
+                    {{ (page - 1) * pageSize + i + 1 }}
+                  </a>
+                </div>
+              </td>
+              <td>
+                <div class="text-left">{{ data.userName }}</div>
+              </td>
+              <td>
+                <div class="text-left">{{ data.tenDayDu }}</div>
+              </td>
+              <td>
+                <div class="text-left"><a href="mailto:{{ data.email }}">{{ data.email }}</a></div>
+              </td>
+              <td>
+                <div class="text-left">{{ data.nhomQuyens }}</div>
+              </td>
+              <td>
+                <div class="text-left">{{ data.nhaThuocs }}</div>
+              </td>
+              <td>
+                <div class="text-center">
+                  <input type="checkbox" [(ngModel)]="data.hoatDong" disabled>
+                </div>
+              </td>
+              <!--Quyền do TechnicalSupport cấp-->
+              <td>
+                <form class="ng-pristine ng-valid ng-scope">
+                  <div class="multiselect">
+                    <div class="selectBox" ng-click="showCheckboxes(gridItem)">
+                      <select class="form-control" style="border: none">
+                        <option value="Lựa chọn nhóm quyền">Lựa chọn nhóm quyền</option>
+                      </select>
+                      <div class="overSelect"></div>
+                    </div>
+                    <div id="webnt2" style="display: block;">
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Cập nhật thanh toán nhà thuốc
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Xóa dữ liệu nhà thuốc
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Xuất excel danh sách nhà thuốc
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Xóa nhà thuốc
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Cập nhật tiêu chí triển khai
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Đánh giá triển khai
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions"
+                         class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Xác thực điện thoại
+                      </p>
+                      <p ng-repeat="i in gridItem.Permissions" class="ng-binding ng-scope">
+                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
+                               class="ng-pristine ng-untouched ng-valid"> Xoá yêu cầu tiếp nhận
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </td>
+              <td>
+                <div class="baocao-actions" style="justify-content: start;">
+                  <button class="btn btn-sm btn-primary" title="Cập nhật thông tin người dùng"
+                          (click)="openAddEditDialog(data)"><i class="fas fa-pen-to-square"></i></button>
+                  <button class="btn btn-sm btn-danger" title="Xoá tài khoản"
+                          (click)="delete('Bạn có chắc chắn muốn xóa tài khoản \'' + data.userName + '\' ?', data)"><i
+                    class="fas fa-trash"></i></button>
+                  <!--Nếu user ở dòng này không phải SuperUser-->
+                  <button *ngIf="true" class="btn btn-sm btn-primary" title="Reset mật khẩu"
+                          (click)="openResetPasswordDialog(data)"><i class="fa-regular fa-key"></i></button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr id="footerId">
+              <td colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<account-add-edit-dialog [userId]="userId"></account-add-edit-dialog>
-<account-reset-password-dialog [userId]="userId"></account-reset-password-dialog>
