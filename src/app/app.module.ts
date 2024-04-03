@@ -23,9 +23,7 @@ import {provideToastr, ToastrModule} from "ngx-toastr";
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ComponentsModule,
-    MatDialogModule,
-    ToastrModule.forRoot()
+    ComponentsModule
   ],
   providers: [
     {
@@ -33,9 +31,6 @@ import {provideToastr, ToastrModule} from "ngx-toastr";
       multi: true,
       useClass: CommonInterceptor,
     },
-    provideAnimationsAsync(),
-    provideAnimations(),
-    provideToastr(),
   ],
   exports: [],
   bootstrap: [AppComponent]

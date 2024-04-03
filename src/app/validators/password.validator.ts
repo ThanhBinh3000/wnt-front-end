@@ -1,5 +1,5 @@
 import { AbstractControl } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export function passwordValidator(control: AbstractControl): Promise<any> | Observable<any> {
   return new Promise(resolve => {

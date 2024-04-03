@@ -40,7 +40,6 @@ export class CustomerGroupAddEditDialogComponent extends BaseComponent implement
     if (this.customerGroupID) {
       const data = await this.detail(this.customerGroupID);
       if (data) {
-        console.log(data);
         this.formData.patchValue(data);
       }
     }
