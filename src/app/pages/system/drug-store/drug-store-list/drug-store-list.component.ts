@@ -1,12 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import {UserProfileService} from "../../../../services/system/user-profile.service";
+import {MatDialog} from "@angular/material/dialog";
+import {NhaThuocsService} from "../../../../services/system/nha-thuocs.service";
+import {BaseComponent} from "../../../../component/base/base.component";
 @Component({
-  selector: 'app-system',
-  templateUrl: './drug-store-listing.component.html',
-  styleUrl: './drug-store-listing.component.css'
+  selector: 'drug-store-list',
+  templateUrl: './drug-store-list.component.html',
+  styleUrl: './drug-store-list.component.css'
 })
-export class DrugStoreListingComponent implements OnInit {
+export class DrugStoreListComponent extends BaseComponent implements OnInit {
   title: string = "Tra cứu thông tin nhà thuốc";
+  @ViewChild('titleCode') titleCodeRef?: ElementRef;
+  @ViewChild('titleName') titleNameRef?: ElementRef;
+  @ViewChild('titleAddress') titleAddressRef?: ElementRef;
+  @ViewChild('titlePhone') titlePhoneRef?: ElementRef;
+  contentCodeLeft: number = 0;
+  contentNameLeft: number = 0;
+  contentAddressLeft: number = 0;
+  contentPhoneLeft: number = 0;
   drugStoreCode: string = '';
   drugStoreTypes = [
     {
@@ -151,11 +163,58 @@ connectivityTypes = [
   }
 ];
   constructor(
-    private titleService: Title
+    injector: Injector,
+    private titleService: Title,
+    private _service: NhaThuocsService,
+    private dialog: MatDialog
   ) {
+    super(injector, _service);
+    this.formData = this.fb.group({
+
+    });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
+    await this.searchPage();
+    console.log(this.dataTable)
+  }
+
+  onTableScroll() {
+    const titleCode = this.titleCodeRef?.nativeElement;
+    const titleName = this.titleNameRef?.nativeElement;
+    const titleAddress = this.titleAddressRef?.nativeElement;
+    const titlePhone = this.titlePhoneRef?.nativeElement;
+    const titleCodeWidth = titleCode.offsetWidth - 2; // - border
+    const titleNameWidth = titleName.offsetWidth - 2; // - border
+    const titleAddressWidth = titleAddress.offsetWidth - 2; // - border
+    titleCode.style.left = '-1px'; // - border
+    this.contentCodeLeft = -1; // - border
+    titleName.style.left = titleCodeWidth + 'px';
+    this.contentNameLeft = titleCodeWidth;
+    titleAddress.style.left = titleCodeWidth + titleNameWidth + 'px';
+    this.contentAddressLeft = titleCodeWidth + titleNameWidth;
+    titlePhone.style.left= titleCodeWidth + titleNameWidth + titleAddressWidth + 'px';
+    this.contentPhoneLeft = titleCodeWidth + titleNameWidth + titleAddressWidth;
+  }
+
+  getPhoneNumbers(item: any) {
+    let result = '';
+    if (item.mobile != null && item.mobile.length > 0) {
+      result = item.mobile;
+    }
+    if (item.dienThoai != null && item.dienThoai.length > 0) {
+      if (result.length > 0) {
+        result += ("<br>" + item.dienThoai);
+      }
+      else {
+        result = item.dienThoai;
+      }
+    }
+    return result;
+  }
+
+  onCheckConnectivity(item: any) {
+
   }
 }

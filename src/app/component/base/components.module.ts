@@ -7,13 +7,21 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {ToastrModule} from "ngx-toastr";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
+import {AppDatePipe} from "../pipe/app-date.pipe";
+import {AppDateTimePipe} from "../pipe/app-date-time.pipe";
+import {MatButtonModule} from "@angular/material/button";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
     //components
     PaginationComponent,
-    ModalComponent
+    ModalComponent,
     //pipes
+    AppDatePipe,
+    AppDateTimePipe
   ],
   imports: [
     CommonModule,
@@ -22,13 +30,28 @@ import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatSortModule,
     ToastrModule.forRoot(),
   ],
   exports: [
+    CommonModule,
+    NgSelectModule,
+    NgOptionHighlightModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatSortModule,
+    ToastrModule,
     PaginationComponent,
-    ModalComponent
+    ModalComponent,
+    AppDatePipe,
+    AppDateTimePipe
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

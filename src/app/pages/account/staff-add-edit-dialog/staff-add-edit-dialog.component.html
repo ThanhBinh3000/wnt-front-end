@@ -1,0 +1,125 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">{{ userProfile ? 'Cập nhật thông tin nhân viên' : 'Thêm mới nhân viên' }}
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formData">
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Tên đăng nhập<span *ngIf="!userProfile" class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="userName" class="form-control mb-0 text-left" type="text"/>
+              <span class="text-danger field-validation-error"
+                    *ngIf="formData.get('userName')?.invalid && formData.get('userName')?.touched">
+              Chưa nhập tên đăng nhập!
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="!userProfile">
+          <div class="row">
+            <label class="col-sm-4 control-label">Mật khẩu<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="password" class="form-control mb-0 text-left" type="password"/>
+              <span *ngIf="formData.get('password')?.invalid && formData.get('password')?.touched">
+              <span class="text-danger field-validation-error" *ngIf="formData.get('password')?.errors?.['required']">
+                Chưa nhập mật khẩu!
+              </span>
+              <span class="text-danger field-validation-error" *ngIf="formData.get('password')?.errors?.['invalidPassword']">
+                Mật khẩu phải từ 8 đến 15 ký tự và bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt! VD: 123456aA&#64;
+              </span>
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="!userProfile">
+          <div class="row">
+            <label class="col-sm-4 control-label">Xác nhận mật khẩu<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="confirmPassword" class="form-control mb-0 text-left" type="password" autocomplete="off"/>
+              <span *ngIf="formData.get('confirmPassword')?.touched">
+              <span class="text-danger field-validation-error" *ngIf="formData.get('confirmPassword')?.invalid && formData.get('confirmPassword')?.errors?.['required']">
+                Chưa nhập xác nhận mật khẩu!
+              </span>
+              <span class="text-danger field-validation-error" *ngIf="formData.errors?.['mismatchPassword']">
+                Mật khẩu và xác nhận mật khẩu không trùng khớp!
+              </span>
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Họ và tên<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="tenDayDu" class="form-control mb-0 text-left" type="text"/>
+              <span class="text-danger field-validation-error"
+                    *ngIf="formData.get('tenDayDu')?.invalid && formData.get('tenDayDu')?.touched">
+              Chưa nhập họ và tên!
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Email</label>
+            <div class="col-sm-8">
+              <input formControlName="email" class="form-control mb-0 text-left" type="text"/>
+              <span class="text-danger field-validation-error"
+                    *ngIf="formData.get('email')?.errors?.['email'] && formData.get('email')?.touched">
+              Email không đúng định dạng!
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Số điện thoại<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="soDienThoai" class="form-control mb-0 text-left" type="text"/>
+              <span *ngIf="formData.get('soDienThoai')?.touched">
+              <span class="text-danger field-validation-error" *ngIf="formData.get('soDienThoai')?.invalid && formData.get('soDienThoai')?.errors?.['required']">
+                Chưa nhập số điện thoại!
+              </span>
+              <span class="text-danger field-validation-error" *ngIf="formData.get('soDienThoai')?.errors?.['invalidPhoneNumber']">
+                Số điện thoại không đúng định dạng!
+              </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Số CMT</label>
+            <div class="col-sm-8">
+              <input formControlName="soCMT" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Xác thực 2 bước</label>
+            <div class="col-sm-8">
+              <input formControlName="isVerificationAccount" class="form-control mb-0 text-left" type="checkbox"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="userProfile">
+          <div class="row">
+            <label class="col-sm-4 control-label">Hoạt động</label>
+            <div class="col-sm-8">
+              <input formControlName="hoatDong" class="form-control mb-0 text-left" type="checkbox"/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+      <button type="button" class="btn btn-primary" (click)="saveEdit()" [disabled]="formData.invalid">{{ userProfile ? 'Cập nhật' : 'Thêm mới' }}</button>
+    </div>
+  </div>
+</div>

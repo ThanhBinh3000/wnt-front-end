@@ -143,3 +143,8 @@
 .ng-dropdown-panel{
   width: auto!important;
 }
+
+.mat-mdc-header-cell{
+  background-color: #a9a9a9!important;
+}
+

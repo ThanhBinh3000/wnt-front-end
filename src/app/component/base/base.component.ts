@@ -14,6 +14,7 @@ import {NotificationService} from "../../services/notification.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ModalService} from "../../services/modal.service";
 import {HelperService} from "../../services/helper.service";
+import {MatTableDataSource} from "@angular/material/table";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class BaseComponent  {
   department: Department;
   // @ts-ignore
   formData: FormGroup;
+  dataSource = new MatTableDataSource();
   dataTable: any[] = [];
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
@@ -64,6 +66,11 @@ export class BaseComponent  {
     this.department = this.userInfo.department;
   }
 
+  getDataSource(){
+    this.dataSource.data = this.dataTable;
+    return this.dataSource;
+  }
+
   // search page
   async searchPage() {
     await this.spinner.show();
@@ -79,7 +86,6 @@ export class BaseComponent  {
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
         this.totalPages = data.totalPages;
-
       } else {
         this.dataTable = [];
         this.totalRecord = 0;

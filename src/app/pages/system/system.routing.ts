@@ -3,7 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {SystemComponent} from "./system.component";
 import {AuthGuard} from "../../guard/auth.guard";
 import { AccountManagerComponent } from './admin/account-manager/account-manager.component';
-import { DrugStoreListingComponent } from './drug-store/drug-store-listing/drug-store-listing.component';
+import {
+  DrugStoreListComponent
+} from './drug-store/drug-store-list/drug-store-list.component';
 import { DrugStoreInformationComponent } from './drug-store/drug-store-information/drug-store-information.component';
 
 const routes: Routes = [
@@ -17,8 +19,8 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'drug-store-listing',
-        component: DrugStoreListingComponent,
+        path: 'drug-store-list',
+        component: DrugStoreListComponent,
         // canActivate: [AuthGuard],
       },
       {
