@@ -5,6 +5,7 @@ import { RouterOutlet } from "@angular/router";
 import { WarehouseLocationRoutingModule } from "./warehouse-location.routing";
 import { WarehouseLocationAddEditDialogComponent } from './warehouse-location-add-edit-dialog/warehouse-location-add-edit-dialog.component';
 import { WarehouseLocationListComponent } from './warehouse-location-list/warehouse-location-list.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { WarehouseLocationListComponent } from './warehouse-location-list/wareho
     WarehouseLocationListComponent,
     WarehouseLocationAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, WarehouseLocationRoutingModule],
+  imports: [ComponentsModule, CommonModule, RouterOutlet, WarehouseLocationRoutingModule],
   exports: [
     WarehouseLocationAddEditDialogComponent
   ],

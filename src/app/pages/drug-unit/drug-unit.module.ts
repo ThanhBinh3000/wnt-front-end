@@ -5,6 +5,7 @@ import { RouterOutlet } from "@angular/router";
 import { DrugUnitRoutingModule } from "./drug-unit.routing";
 import { DrugUnitAddEditDialogComponent } from './drug-unit-add-edit-dialog/drug-unit-add-edit-dialog.component';
 import { DrugUnitListComponent } from './drug-unit-location-list/drug-unit-list.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { DrugUnitListComponent } from './drug-unit-location-list/drug-unit-list.
     DrugUnitListComponent,
     DrugUnitAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, DrugUnitRoutingModule],
+  imports: [ComponentsModule, CommonModule, RouterOutlet, DrugUnitRoutingModule],
   exports: [
     DrugUnitAddEditDialogComponent
   ],
