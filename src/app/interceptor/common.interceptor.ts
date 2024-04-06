@@ -74,12 +74,12 @@ export class CommonInterceptor implements HttpInterceptor {
         (err: any) => {
           if (err.status === STATUS_CODE.UNAUTHORIZED) {
             // thông báo lỗi
-            this.notificationService.error(MESSAGE.ERROR, err.error.message)
+            this.notificationService.error(MESSAGE.ERROR, err.message)
             this.authService.logout();
             this.loadingService.hide();
           } else {
             // thông báo lỗi
-            this.notificationService.error(MESSAGE.ERROR, err.error.message);
+            this.notificationService.error(MESSAGE.ERROR, err.message);
             this.loadingService.hide();
           }
         },

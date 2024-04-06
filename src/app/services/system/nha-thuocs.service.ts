@@ -16,5 +16,9 @@ export class NhaThuocsService extends BaseService {
     const url = `/api/wnt-system/nha-thuocs/search-page-nha-thuoc`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-  
+
+  getDetailByCode(code: string) {
+    const url = `/api/wnt-system/nha-thuocs/detail-by-code/${code}`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
 }
