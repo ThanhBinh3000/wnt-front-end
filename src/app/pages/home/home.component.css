@@ -1,1 +1,14 @@
 @import url("../../../assets/content/main.css");
+
+.content {
+  width: 106rem !important;
+  max-width: 100% !important;
+}
+
+.image-logo {
+  width: 48rem !important;
+  height: 48rem !important;
+}
+.article{
+  width: 40rem  !important;
+}
