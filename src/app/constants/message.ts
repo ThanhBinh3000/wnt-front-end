@@ -10,6 +10,7 @@ export const MESSAGE = {
   ADD_SUCCESS: 'Bạn đã lưu thành công!',
   UPDATE_SUCCESS: 'Cập nhật thành công',
   DELETE_SUCCESS: 'Xóa thành công',
+  RESTORE_SUCCESS: 'Khôi phục thành công',
   DELETE_CONFIRM: 'Bạn có chắc chắn muốn xóa',
   COPY_SUCCESS: 'Sao chép thành công',
   DATA_EMPTY: 'Dữ liệu trống!'

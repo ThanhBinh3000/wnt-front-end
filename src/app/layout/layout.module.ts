@@ -8,7 +8,7 @@ import {RouterOutlet} from "@angular/router";
 import {LayoutRouting} from "./layout.routing";
 import {BaseComponent} from "../component/base/base.component";
 import {DrugModule} from '../pages/drug/drug.module';
-import {NhomThuocService} from "../services/categories/nhom-thuoc.service";
+import {NhomThuocService} from "../services/products/nhom-thuoc.service";
 import {SpinnerService} from "../services/spinner.service";
 import {ModalService} from "../services/modal.service";
 import {UserService} from "../services/user.service";

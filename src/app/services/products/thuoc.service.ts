@@ -5,10 +5,10 @@ import {BaseService} from "../base.service";
 @Injectable({
   providedIn: 'root'
 })
-export class NhomThuocService extends BaseService {
+export class ThuocService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-categories','nhom-thuoc');
+    super(httpClient, 'wnt-products','thuoc');
   }
 
 

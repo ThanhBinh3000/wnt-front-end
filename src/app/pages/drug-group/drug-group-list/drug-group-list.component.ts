@@ -1,6 +1,6 @@
 import {Component, Injectable, Injector, OnInit, ViewChild} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
+import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
 import {MatDialog} from "@angular/material/dialog";

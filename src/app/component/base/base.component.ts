@@ -48,6 +48,9 @@ export class BaseComponent  {
 
   helperService: HelperService
 
+  allChecked = false;
+  indeterminate = false;
+
   constructor(
     injector: Injector,
     service: BaseService
@@ -194,9 +197,83 @@ export class BaseComponent  {
           let body = {
             id : item.id
           }
-          this.service.delete(body).then(async () => {
-            await this.searchPage();
-            this.spinner.hide();
+          this.service.delete(body).then(async (res) => {
+            if(res && res.data){
+              this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+              await this.searchPage();
+              this.spinner.hide();
+            }else{
+              this.spinner.hide();
+            }
+          });
+        } catch (e) {
+          console.log('error: ', e);
+          this.spinner.hide();
+          this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+        }
+      },
+    });
+  }
+
+  deleteDatabase(message: string, item: any) {
+    this.spinner.show();
+    console.log(message,item);
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: !message ? 'Bạn có chắc chắn muốn xóa?' : message,
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        try {
+          let body = {
+            id : item.id
+          }
+          this.service.deleteDatabase(body).then(async (res) => {
+            if(res && res.data) {
+              this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+              await this.searchPage();
+              this.spinner.hide();
+            }
+            else{
+              this.spinner.hide();
+            }
+          });
+        } catch (e) {
+          console.log('error: ', e);
+          this.spinner.hide();
+          this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+        }
+      },
+    });
+  }
+
+  restore(message: string, item: any) {
+    this.spinner.show();
+    console.log(message,item);
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: !message ? 'Bạn có chắc chắn muốn khôi phục ?' : message,
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        try {
+          let body = {
+            id : item.id
+          }
+          this.service.restore(body).then(async (res) => {
+            if(res && res.data){
+              this.notification.success(MESSAGE.SUCCESS, MESSAGE.RESTORE_SUCCESS);
+              await this.searchPage();
+              this.spinner.hide();
+            }else{
+              this.spinner.hide();
+            }
           });
         } catch (e) {
           console.log('error: ', e);
@@ -208,29 +285,104 @@ export class BaseComponent  {
   }
 
   // DELETE 1 multi
-  deleteMulti(message: string, item: any[]) {
-    let dataDelete: number[] = [];
-    if (item && item.length > 0) {
-      item.forEach((item) => {
-        dataDelete.push(item.id);
+  deleteMulti(message?: string) {
+    console.log('deletee');
+    let dataDelete : any[] = [];
+    if (this.dataTable && this.dataTable.length > 0) {
+      this.dataTable.forEach((item) => {
+        if (item.checked) {
+          dataDelete.push(item.id);
+        }
       });
     }
     if (dataDelete && dataDelete.length > 0) {
       this.modal.confirm({
         closable: false,
         title: 'Xác nhận',
-        content: !message ? 'Bạn có chắc chắn muốn xóa?' : message,
+        content: !message ? 'Bạn có chắc chắn muốn xóa ?' : message,
         okText: 'Đồng ý',
         cancelText: 'Không',
         okDanger: true,
         width: 310,
         onOk: async () => {
           this.spinner.show();
-          let res = await this.service.deleteMultiple(dataDelete);
-          if (res && res.msg == MESSAGE.SUCCESS) {
+          let res = await this.service.deleteMultiple({listIds: dataDelete});
+          if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
             await this.searchPage();
+            this.spinner.hide();
           }
+          this.spinner.hide();
+        },
+      });
+    } else {
+      this.notification.error(MESSAGE.ERROR, "Không có dữ liệu phù hợp để xóa.");
+    }
+  }
+
+  restoreMulti(message?: string) {
+    console.log('deletee');
+    let dataDelete : any[] = [];
+    if (this.dataTable && this.dataTable.length > 0) {
+      this.dataTable.forEach((item) => {
+        if (item.checked) {
+          dataDelete.push(item.id);
+        }
+      });
+    }
+    if (dataDelete && dataDelete.length > 0) {
+      this.modal.confirm({
+        closable: false,
+        title: 'Xác nhận',
+        content: !message ? 'Bạn có chắc chắn muốn khôi phục ?' : message,
+        okText: 'Đồng ý',
+        cancelText: 'Không',
+        okDanger: true,
+        width: 310,
+        onOk: async () => {
+          this.spinner.show();
+          let res = await this.service.restoreMultiple({listIds: dataDelete});
+          if (res && res.data) {
+            this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+            await this.searchPage();
+            this.spinner.hide();
+          }
+          this.spinner.hide()
+        },
+      });
+    } else {
+      this.notification.error(MESSAGE.ERROR, "Không có dữ liệu phù hợp để khôi phục.");
+    }
+  }
+
+  deleteMultiDatabase(message?: string) {
+    console.log('deletee');
+    let dataDelete : any[] = [];
+    if (this.dataTable && this.dataTable.length > 0) {
+      this.dataTable.forEach((item) => {
+        if (item.checked) {
+          dataDelete.push(item.id);
+        }
+      });
+    }
+    if (dataDelete && dataDelete.length > 0) {
+      this.modal.confirm({
+        closable: false,
+        title: 'Xác nhận',
+        content: !message ? 'Bạn có chắc chắn muốn xóa ?' : message,
+        okText: 'Đồng ý',
+        cancelText: 'Không',
+        okDanger: true,
+        width: 310,
+        onOk: async () => {
+          this.spinner.show();
+          let res = await this.service.deleteMultipleDatabase({listIds: dataDelete});
+          if (res && res.data) {
+            this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+            await this.searchPage();
+            this.spinner.hide();
+          }
+          this.spinner.hide();
         },
       });
     } else {
@@ -324,6 +476,35 @@ export class BaseComponent  {
     if (invalid.length > 0) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.FORM_REQUIRED_ERROR);
       console.log(invalid, ' invalid');
+    }
+  }
+
+  updateAllChecked(): void {
+    this.indeterminate = false;
+    if (this.allChecked) {
+      if (this.dataTable && this.dataTable.length > 0) {
+        this.dataTable.forEach((item) => {
+            item.checked = true;
+        });
+      }
+    } else {
+      if (this.dataTable && this.dataTable.length > 0) {
+        this.dataTable.forEach((item) => {
+          item.checked = false;
+        });
+      }
+    }
+  }
+
+  updateSingleChecked(): void {
+    if (this.dataTable.every((item) => !item.checked)) {
+      this.allChecked = false;
+      this.indeterminate = false;
+    } else if (this.dataTable.every((item) => item.checked)) {
+      this.allChecked = true;
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
     }
   }
 }

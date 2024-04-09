@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ResponseData} from "../models/response-data";
+import {RECORD_STATUS} from "../constants/config";
 
 export abstract class BaseService {
 
@@ -47,9 +48,32 @@ export abstract class BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  deleteMultiple(ids: number[]) {
-    const url = `/api/${this.gateway}/${this.controller}/delete/multiple`;
-    return this.httpClient.post<ResponseData>(url, ids).toPromise();
+  restore(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/restore`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  deleteDatabase(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/delete-database`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  deleteMultiple(body) {
+    body.recordStatusId = RECORD_STATUS.DELETED
+    const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  restoreMultiple(body) {
+    body.recordStatusId = RECORD_STATUS.ACTIVE
+    const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  deleteMultipleDatabase(body) {
+    body.recordStatusId = RECORD_STATUS.DELETED_DATABASE
+    const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
   export(id: number): Observable<Blob> {

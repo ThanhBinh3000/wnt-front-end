@@ -13,4 +13,11 @@ export const STATUS_CODE = {
   UNAUTHORIZED: 401,
 };
 
+export const RECORD_STATUS = {
+  ACTIVE: 0,
+  ARCHIVED: 1,
+  DELETED: 2,
+  DELETED_DATABASE: 3,
+};
+
 export const PAGE_SIZE_DEFAULT = 10;

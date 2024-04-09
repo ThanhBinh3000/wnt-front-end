@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-md-3">
     <div class="sidebar-bg">
-      <label>Nhóm thuốc</label>
       <form [formGroup]="formData">
+        <label>Nhóm thuốc</label>
         <input formControlName="tenNhomThuoc" class="form-control" type="text" id="searchTen" name="searchTen"
                placeholder="Tìm nhóm thuốc theo tên..."/>
       </form>
@@ -47,29 +47,29 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let data of dataTable; index as i;">
-          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-          <td>{{ data.tenNhomThuoc }}</td>
-          <td>{{ data.kyHieuNhomThuoc }}</td>
-          <td>
-            <div class="baocao-actions">
-              <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
-                class="fa-regular fa-pen-to-square"></i></button>
-              <button class="btn btn-sm btn-danger"
-                      (click)="delete('Bạn có chắc chắn muốn xóa nhóm thuốc \'' + data.tenNhomThuoc + '\' ?',data)"><i
-                class="fa-regular fa-trash"></i></button>
-            </div>
-          </td>
-        </tr>
+          <tr *ngFor="let data of dataTable; index as i;">
+            <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+            <td>{{ data.tenNhomThuoc }}</td>
+            <td>{{ data.kyHieuNhomThuoc }}</td>
+            <td>
+              <div class="baocao-actions">
+                <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                  class="fa-regular fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger"
+                        (click)="delete('Bạn có chắc chắn muốn xóa nhóm thuốc \'' + data.tenNhomThuoc + '\' ?',data)"><i
+                  class="fa-regular fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
         </tbody>
         <tfoot>
-        <tr id="footerId">
-          <td colspan="100">
-            <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                            (pageChange)="changePageIndex($event)"
-                            (pageSizeChange)="changePageSize($event)"></app-pagination>
-          </td>
-        </tr>
+          <tr id="footerId">
+            <td colspan="100">
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                              (pageChange)="changePageIndex($event)"
+                              (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+          </tr>
         </tfoot>
       </table>
     </div>

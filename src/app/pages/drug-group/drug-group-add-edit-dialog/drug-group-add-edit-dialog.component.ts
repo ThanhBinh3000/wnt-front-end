@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {BaseComponent} from "../../../component/base/base.component";
-import {NhomThuocService} from "../../../services/categories/nhom-thuoc.service";
+import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
