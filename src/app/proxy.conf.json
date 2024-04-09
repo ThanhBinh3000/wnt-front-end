@@ -1,13 +1,4 @@
 {
-  "/api/wnt-system/**": {
-    "target": "http://localhost:30016",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug",
-    "pathRewrite": {
-      "^/api/wnt-system/": ""
-    }
-  },
   "/api/**": {
     "target": "http://10.0.13.41:8888",
     "secure": false,
