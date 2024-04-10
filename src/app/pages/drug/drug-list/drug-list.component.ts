@@ -12,6 +12,7 @@ import {ProductTypesService} from "../../../services/products/product-types-serv
 import {
   CustomerGroupAddEditDialogComponent
 } from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
+import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-list',
@@ -89,12 +90,9 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   openAddEditDialog($event:any){
-    console.log($event)
-    console.log(this.dialog);
-    // console.log(this.dialog2);
-    const dialogRef = this.dialog.open(CustomerGroupAddEditDialogComponent, {
+    const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
       data: $event,
-      width: '600px',
+      width: '1200px',
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {

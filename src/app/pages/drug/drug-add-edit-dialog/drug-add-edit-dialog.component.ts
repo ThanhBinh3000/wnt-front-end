@@ -7,7 +7,7 @@ import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";
 import {WarehouseLocationService} from "../../../services/products/warehouse-location-service";
 import {ProductTypesService} from "../../../services/products/product-types-service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'drug-add-edit-dialog',
@@ -31,6 +31,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     private donViTinhService : DonViTinhService,
     private warehouseLocationService : WarehouseLocationService,
     private productTypesService : ProductTypesService,
+    public dialogRef: MatDialogRef<DrugAddEditDialogComponent>,
     // private dialog: MatDialog
   ) {
     super(injector, _service);
@@ -82,6 +83,10 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     let body = this.formData.value;
     console.log(body);
     this.save(body);
+  }
+
+  closeModal() {
+    this.dialogRef.close();
   }
 
 }
