@@ -69,6 +69,8 @@ export class CommonInterceptor implements HttpInterceptor {
                 this.loadingService.hide();
               }
 
+            } else {
+              this.loadingService.hide();
             }
           }
         },
