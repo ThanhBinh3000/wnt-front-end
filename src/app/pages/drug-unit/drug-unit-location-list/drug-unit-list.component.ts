@@ -19,14 +19,14 @@ export class DrugUnitListComponent extends BaseComponent implements OnInit, Afte
     injector: Injector,
     private titleService: Title,
     private _service: DonViTinhService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
         tenDonViTinh : [],
     });
   }
-  
+
   @ViewChild(MatSort) sort?: MatSort;
 
   ngOnInit() {

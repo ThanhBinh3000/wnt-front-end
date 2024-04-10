@@ -9,6 +9,9 @@ import {STATUS_API} from "../../../constants/message";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";
 import {WarehouseLocationService} from "../../../services/products/warehouse-location-service";
 import {ProductTypesService} from "../../../services/products/product-types-service";
+import {
+  CustomerGroupAddEditDialogComponent
+} from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-list',
@@ -32,7 +35,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     private donViTinhService : DonViTinhService,
     private warehouseLocationService : WarehouseLocationService,
     private productTypesService : ProductTypesService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -52,13 +55,11 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   goToPage($event:any){
-    console.log($event.target.value,this.totalPages);
     let pageIndex = $event.target.value;
     if(pageIndex > 0 && pageIndex <= this.totalPages){
       this.changePageIndex(pageIndex)
     }
   }
-
 
   getDataFilter(){
     // Nhosm thuốc
@@ -83,6 +84,21 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     this.productTypesService.searchList({}).then((res)=>{
       if(res?.statusCode == STATUS_API.SUCCESS){
         this.listProductTypes = res.data
+      }
+    });
+  }
+
+  openAddEditDialog($event:any){
+    console.log($event)
+    console.log(this.dialog);
+    // console.log(this.dialog2);
+    const dialogRef = this.dialog.open(CustomerGroupAddEditDialogComponent, {
+      data: $event,
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
       }
     });
   }

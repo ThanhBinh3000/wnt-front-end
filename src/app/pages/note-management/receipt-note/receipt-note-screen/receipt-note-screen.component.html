@@ -438,7 +438,7 @@
                                     </button>
                                 </span>
                             </div>
-                            
+
                         </td><!-- end ngIf: viewModel.NoteTypeId==1 || viewModel.NoteTypeId==10 -->
                         <!--Tồn-->
                         <!-- ngIf: deviceType!=1 && viewModel.NoteTypeId==1 && permittedFields.Drug_ViewInventory && !enableDeliveryPickUp; -->
@@ -475,7 +475,7 @@
                         ng-show="deviceType==0 || !gridItem.IsEditingItem">
                         <!--Actions-->
                         <td>
-                            
+
                             <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
                                 <a class="btn btn-danger delete-drug" title="Xóa"
                                     ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();"
@@ -495,17 +495,17 @@
                             </a>
                         </td>
                         <!--Hình ảnh-->
-                        
+
                         <td ng-if="1 == 1 &amp;&amp; deviceType != 1" class="ng-scope">
-                            
+
                             <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                                
+
                             </div>
                         </td>
 
                         <!--Mặt Hàng-->
                         <td>
-                            
+
                             <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
                                 <!-- ngIf: deviceType!=1 && enableTraining && viewModel.NoteTypeId == 1 --><span
                                     ng-if="deviceType!=1 &amp;&amp; enableTraining &amp;&amp; viewModel.NoteTypeId == 1"
@@ -527,7 +527,7 @@
                                     <!-- ngIf: viewModel.IsConnectivity && gridItem.HasConnectivityErrors -->
                                 </span><!-- end ngIf: deviceType!=1 && enableTraining && viewModel.NoteTypeId == 1 -->
                                 <!-- ngIf: (deviceType!=1 && !enableTraining) || viewModel.NoteTypeId != 1 -->
-                                
+
                                 <p class="btn-link tooltip-content-drug"
                                     style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
                                     ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
@@ -646,7 +646,7 @@
                                     </button>
                                 </span>
                             </div>
-                            
+
                         </td><!-- end ngIf: viewModel.NoteTypeId==1 || viewModel.NoteTypeId==10 -->
                         <!--Tồn-->
                         <!-- ngIf: deviceType!=1 && viewModel.NoteTypeId==1 && permittedFields.Drug_ViewInventory && !enableDeliveryPickUp; -->
@@ -864,9 +864,9 @@
 </div>
 <inventory-multiple-warehouse-dialog></inventory-multiple-warehouse-dialog>
 <transaction-detail-by-object-dialog></transaction-detail-by-object-dialog>
-<drug-add-edit-dialog></drug-add-edit-dialog>
+<!--<drug-add-edit-dialog></drug-add-edit-dialog>-->
 <drug-update-inprice-dialog></drug-update-inprice-dialog>
-<drug-update-batch-dialog></drug-update-batch-dialog> 
+<drug-update-batch-dialog></drug-update-batch-dialog>
 <supplier-add-edit-dialog [isMinimized]="true"></supplier-add-edit-dialog>
 <customer-add-edit-dialog [isMinimized]="true"></customer-add-edit-dialog>
 <drug-update-additional-info-dialog></drug-update-additional-info-dialog>

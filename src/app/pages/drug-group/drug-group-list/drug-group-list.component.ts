@@ -20,7 +20,7 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     injector: Injector,
     private titleService: Title,
     private _service : NhomThuocService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({

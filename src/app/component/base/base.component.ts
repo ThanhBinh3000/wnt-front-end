@@ -46,7 +46,7 @@ export class BaseComponent  {
   service: BaseService;
   spinner: SpinnerService;
   modal: ModalService;
-  dialog2 : MatDialog;
+  dialog : MatDialog;
   helperService: HelperService
 
   allChecked = false;
@@ -68,7 +68,7 @@ export class BaseComponent  {
     // get user info login
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
-    this.dialog2 = new MatDialog();
+    this.dialog = this.injector.get(MatDialog);
   }
 
   getDataSource(){

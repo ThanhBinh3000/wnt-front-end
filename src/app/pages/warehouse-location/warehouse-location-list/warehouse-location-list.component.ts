@@ -19,7 +19,7 @@ export class WarehouseLocationListComponent extends BaseComponent implements OnI
     injector: Injector,
     private titleService: Title,
     private _service: WarehouseLocationService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector,_service);
     this.formData = this.fb.group({

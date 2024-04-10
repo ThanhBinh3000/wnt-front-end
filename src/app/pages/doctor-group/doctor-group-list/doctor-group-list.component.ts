@@ -19,7 +19,7 @@ export class DoctorGroupListComponent extends BaseComponent implements OnInit, A
     injector: Injector,
     private titleService: Title,
     private _service: NhomBacSiService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({

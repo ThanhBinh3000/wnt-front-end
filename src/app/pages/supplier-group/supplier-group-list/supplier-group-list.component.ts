@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { NhomNhaCungCapService } from '../../../services/categories/nhom-nha-cung-cap.service';
 import { BaseComponent } from '../../../component/base/base.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SupplierGroupAddEditDialogComponent } 
+import { SupplierGroupAddEditDialogComponent }
 from '../supplier-group-add-edit-dialog/supplier-group-add-edit-dialog.component';
 
 @Component({
@@ -17,7 +17,7 @@ export class SupplierGroupListComponent extends BaseComponent implements OnInit 
     injector: Injector,
     private titleService: Title,
     private _service: NhomNhaCungCapService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({

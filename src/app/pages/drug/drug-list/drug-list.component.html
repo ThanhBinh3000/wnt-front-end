@@ -381,11 +381,7 @@
       <fieldset class="baocao-filter">
         <div class="d-flex justify-content-between gap-10">
           <input type="button" value="Xem" (click)="searchPage()" class="btn btn-primary w-50">
-          <a ng-show="typeItem ==0" href="javascript:void(0)" (click)="drugID = 0" data-toggle="modal"
-             data-target="#drug-add-edit-body-dialog" class="btn btn-primary w-50"
-             ng-disabled="!permittedFields.Drug_Create">
-            Thêm
-          </a>
+          <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
         </div>
         <hr style="margin-top:10px"/>
       </fieldset>
@@ -419,7 +415,7 @@
           </b>
         </h2>
         <div class="baocao-actions">
-          <button *ngIf="this.formData.value.dataDelete == false" (click)="deleteMulti()"
+          <button *ngIf="!this.formData.value.dataDelete" (click)="deleteMulti()"
                   class="btn btn-sm btn-danger pull-right ng-scope"
                   ng-if="isSuperUser">Xóa
           </button>
@@ -726,5 +722,3 @@
     </div>
   </div>
 </div>
-<drug-add-edit-dialog [drugID]="drugID"></drug-add-edit-dialog>
-<drug-detail-dialog [drugID]="drugID"></drug-detail-dialog>

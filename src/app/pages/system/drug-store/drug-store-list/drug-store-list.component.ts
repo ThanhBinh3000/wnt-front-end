@@ -166,7 +166,7 @@ connectivityTypes = [
     injector: Injector,
     private titleService: Title,
     private _service: NhaThuocsService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
