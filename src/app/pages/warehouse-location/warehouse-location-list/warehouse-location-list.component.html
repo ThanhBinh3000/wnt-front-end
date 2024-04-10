@@ -26,18 +26,18 @@
                 </ng-container>
 
                 <ng-container matColumnDef="code">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:42%"> Nhóm khách hàng</th>
-                    <td mat-cell *matCellDef="let data" style="width:42%"> {{ data.code }}</td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã</th>
+                    <td mat-cell *matCellDef="let data"> {{ data.code }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="nameWarehouse">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:42%"> Nhóm khách hàng</th>
-                    <td mat-cell *matCellDef="let data" style="width:42%"> {{ data.nameWarehouse }}</td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên vị trí tủ/kho</th>
+                    <td mat-cell *matCellDef="let data"> {{ data.nameWarehouse }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="descriptions">
-                    <th mat-header-cell *matHeaderCellDef style="width:35%"> Ghi chú</th>
-                    <td mat-cell *matCellDef="let data" style="width:35%"> {{ data.descriptions }}</td>
+                    <th mat-header-cell *matHeaderCellDef> Ghi chú</th>
+                    <td mat-cell *matCellDef="let data"> {{ data.descriptions }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="action">
