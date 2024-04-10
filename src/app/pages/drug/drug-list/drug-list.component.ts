@@ -51,7 +51,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     this.searchPage();
   }
 
-  goToPage($event){
+  goToPage($event:any){
     console.log($event.target.value,this.totalPages);
     let pageIndex = $event.target.value;
     if(pageIndex > 0 && pageIndex <= this.totalPages){
