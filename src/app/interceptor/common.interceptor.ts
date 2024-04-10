@@ -33,6 +33,7 @@ export class CommonInterceptor implements HttpInterceptor {
       HttpHandler,
   ):
     Observable<HttpEvent<unknown>> {
+    this.loadingService.show();
     const accessToken = this.authService.getToken();
     if (accessToken) {
       let headers = new HttpHeaders().set(
