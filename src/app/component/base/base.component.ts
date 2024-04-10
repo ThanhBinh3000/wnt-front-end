@@ -89,9 +89,11 @@ export class BaseComponent  {
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
         this.totalPages = data.totalPages;
+        this.spinner.hide()
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
+        this.spinner.hide()
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -113,9 +115,11 @@ export class BaseComponent  {
             item.checked = false;
           });
         }
+        this.spinner.hide()
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
+        this.spinner.hide()
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -182,7 +186,6 @@ export class BaseComponent  {
 
   // DELETE 1 item table
   delete(message: string, item: any) {
-    this.spinner.show();
     console.log(message,item);
     this.modal.confirm({
       closable: false,
@@ -193,6 +196,7 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
+        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -216,7 +220,6 @@ export class BaseComponent  {
   }
 
   deleteDatabase(message: string, item: any) {
-    this.spinner.show();
     console.log(message,item);
     this.modal.confirm({
       closable: false,
@@ -227,6 +230,7 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
+        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -251,7 +255,6 @@ export class BaseComponent  {
   }
 
   restore(message: string, item: any) {
-    this.spinner.show();
     console.log(message,item);
     this.modal.confirm({
       closable: false,
@@ -262,6 +265,7 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
+        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -433,18 +437,22 @@ export class BaseComponent  {
         this.spinner.hide();
         return res.data;
       }
+    }else{
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+      this.spinner.hide();
     }
   }
 
   async detail(id:number) {
     if(id){
+      this.spinner.show()
       let res = await this.service.getDetail(id);
-      console.log(res);
       if(res?.statusCode == STATUS_API.SUCCESS){
         const data = res.data;
-        console.log(data);
+        this.spinner.hide();
         return data;
       } else {
+        this.spinner.hide();
         return null;
       }
     }
