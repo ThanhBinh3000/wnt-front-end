@@ -15,6 +15,7 @@ import {SpinnerService} from "../../services/spinner.service";
 import {ModalService} from "../../services/modal.service";
 import {HelperService} from "../../services/helper.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -34,7 +35,7 @@ export class BaseComponent  {
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
-
+  // dialog2: MatDialog = new MatDialog();
 
   // Service
   notification: NotificationService;
@@ -45,7 +46,7 @@ export class BaseComponent  {
   service: BaseService;
   spinner: SpinnerService;
   modal: ModalService;
-
+  dialog2 : MatDialog;
   helperService: HelperService
 
   allChecked = false;
@@ -67,6 +68,7 @@ export class BaseComponent  {
     // get user info login
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
+    this.dialog2 = new MatDialog();
   }
 
   getDataSource(){
