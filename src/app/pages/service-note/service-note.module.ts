@@ -15,7 +15,7 @@ import { ServiceNoteAddEditComponent } from './service-note-add-edit/service-not
     ServiceNoteListComponent,
     ServiceNoteAddEditComponent
   ],
-  imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule, CustomerModule],
+  imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule],
   exports: [],
 })
 export class ServiceNoteModule {

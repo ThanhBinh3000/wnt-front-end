@@ -51,7 +51,6 @@ import { TransactionModule } from '../transaction/transaction.module';
     NoteManagementRoutingModule, 
     DrugModule,
     SupplierModule,
-    CustomerModule,
     InventoryModule,
     TransactionModule
   ],

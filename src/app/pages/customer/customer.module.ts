@@ -6,6 +6,7 @@ import {CustomerRoutingModule} from "./customer.routing";
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerAddEditDialogComponent } from './customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { CustomerPrintBarcodeDialogComponent } from './customer-print-barcode-dialog/customer-print-barcode-dialog.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { CustomerPrintBarcodeDialogComponent } from './customer-print-barcode-di
     CustomerAddEditDialogComponent,
     CustomerPrintBarcodeDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, CustomerRoutingModule],
+  imports: [CommonModule, RouterOutlet, CustomerRoutingModule, ComponentsModule],
   exports: [
     CustomerAddEditDialogComponent,
     CustomerPrintBarcodeDialogComponent,

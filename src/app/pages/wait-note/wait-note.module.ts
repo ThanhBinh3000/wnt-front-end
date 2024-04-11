@@ -5,7 +5,6 @@ import {RouterOutlet} from "@angular/router";
 import {WaitNoteRoutingModule} from "./wait-note.routing";
 import { WaitNoteListComponent } from './wait-note-list/wait-note-list.component';
 import { WaitNoteAddEditDialogComponent } from './wait-note-add-edit-dialog/wait-note-add-edit-dialog.component';
-import { CustomerModule } from '../customer/customer.module';
 
 
 @NgModule({
@@ -14,7 +13,7 @@ import { CustomerModule } from '../customer/customer.module';
     WaitNoteListComponent,
     WaitNoteAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, WaitNoteRoutingModule, CustomerModule],
+  imports: [CommonModule, RouterOutlet, WaitNoteRoutingModule],
   exports: [],
 })
 export class WaitNoteModule {

@@ -15,7 +15,7 @@ import { DoctorModule } from '../doctor/doctor.module';
     SampleNoteListComponent,
     SampleNoteAddEditComponent,
   ],
-  imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, CustomerModule, DoctorModule],
+  imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule],
   exports: [],
 })
 export class SampleNoteModule {

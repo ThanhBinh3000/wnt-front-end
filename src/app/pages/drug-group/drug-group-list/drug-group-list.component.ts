@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   CustomerGroupAddEditDialogComponent
 } from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'drug-group-list',
@@ -32,7 +33,7 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     this.titleService.setTitle(this.title);
     await this.searchPage();
   }
-
+  @ViewChild(MatSort) sort?: MatSort;
   async openAddEditDialog(drugGroupID: any) {
     const dialogRef = this.dialog.open(DrugGroupAddEditDialogComponent, {
       data: drugGroupID,
