@@ -30,14 +30,15 @@
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <label class="col-sm-4 control-label">Tên nhóm</label>
+                        <label class="col-sm-4 control-label">Nhóm bác sỹ</label>
                         <div class="col-sm-8">
-                            <select class="form-control mb-0 ng-pristine ng-valid ng-touched"
-                                name="SupplyerGroupCode" id="SupplyerGroupCode">
-                                <option label="Mặc định" value="4">Mặc định</option>
-                                <option label="bác sỹ " value="626">bác sỹ </option>
-                            </select>
-                        </div>
+                            <div class="flex-grow-1">
+                                <ng-select formControlName="maNhomBacSy">
+                                  <ng-option *ngFor="let item of listNhomBacSy"
+                                             [value]="item.id">{{item.tenNhomBacSy}}</ng-option>
+                                </ng-select>
+                              </div>
+                          </div>
                     </div>
                 </div>
                 <p>Thêm <span style="cursor: pointer" (click)="expandForm()">{{expandLabel}}</span></p>
