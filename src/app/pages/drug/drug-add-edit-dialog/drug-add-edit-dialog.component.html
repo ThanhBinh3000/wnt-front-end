@@ -1,8 +1,8 @@
 <div class="card">
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-      <h4 class="modal-title">{{drugID > 0 ? 'Cập nhật thuốc' : 'Thêm mới thuốc'}}
+      <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+      <h4 class="modal-title">{{drugId > 0 ? 'Cập nhật thuốc' : 'Thêm mới thuốc'}}
       </h4>
     </div>
     <div class="modal-body">
@@ -56,8 +56,8 @@
                         </ng-select>
                       </div>
                       <div class="input-group-btn">
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#drug-group-add-edit-dialog"
+                        <button type="button" class="btn btn-primary"
+                                (click)="openAddEditNhomThuocDialog()"
                                 title="Thêm mới nếu chưa có">
                           <i class="fa-regular fa-plus"></i>
                         </button>
@@ -79,685 +79,689 @@
               </div>
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Mã thuốc<span
+                    class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input formControlName="maThuoc" class="form-control mb-0 text-left" type="text"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Giá nhập lẻ</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="GiaNhap" id="GiaNhap"
+                             class="form-control mb-0 ng-pristine ng-valid ng-isolate-scope ng-touched"
+                             tabindex="13" formControlName="giaNhap" awnum="app-decimal-number"
+                             placeholder="Giá nhập theo đơn vị xuất lẻ"
+                             data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                      <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
+                      <div class="input-group-btn">
+                          <span ng-show="false" class="btn btn-primary ng-hide"
+                                ng-click="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();"
+                                title="Cập nhật giá nhập cho cơ sở khác">
+                              <i class="fa-regular fa-arrows-rotate"></i>
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Tên thuốc<span
+                    class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" name="TenThuoc" id="TenThuoc" class="form-control mb-0"
+                           tabindex="3" formControlName="tenThuoc"
+                           placeholder="Tên biệt dược + Hàm lượng/Hãng"/>
+                    <p class="btn-link tooltip-content-drug"
+                       style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
+                       ng-click="onSearchPriceInOut()" title="Tra cứu giá thị trường">
+                      <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Giá bán lẻ</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="GiaBanLe" id="GiaBanLe"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             tabindex="14" formControlName="giaBanLe" awnum="app-decimal-number"
+                             placeholder="Giá bán lẻ theo đơn vị xuất lẻ"
+                             data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                      <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
+                      <div class="input-group-btn">
+                          <span ng-show="false" class="btn btn-primary ng-hide"
+                                ng-click="onUpdatePriceChildStore(1); $event.preventDefault(); $event.stopPropagation();"
+                                title="Cập nhật giá bán cho cơ sở khác">
+                              <i class="fa-regular fa-arrows-rotate"></i>
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Mô tả thêm</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="ThongTin" id="ThongTin" class="form-control mb-0"
+                           tabindex="4" formControlName="thongTin"
+                           placeholder="Vị trí tủ, hoạt chất"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Đơn vị nhập</label>
+                  <div class="col-sm-8">
+                    <ng-select formControlName="donViThuNguyenMaDonViTinh">
+                      <ng-option *ngFor="let item of listDonViTinh" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Mã vạch</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input class="form-control mb-0" style="text-align:left" type="text"
+                             formControlName="barCode"/>
+                      <div class="input-group-btn">
+                        <button class="btn btn-primary" title="Sinh mã vạch tự động"
+                                ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
+                          class="fa-regular fa-barcode-read"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Quy cách</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="HeSo" id="HeSo"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             value="1" tabindex="16" formControlName="heSo"
+                             awnum="app-decimal-number">
+                      <span ng-if="selectedUnitId == ''"
+                            class="input-group-addon flex-grow-width-25 ng-scope"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-2 form-group">
+                <div class="row">
+                  <label class="col-sm-8 control-label">Hàng tư vấn</label>
+                  <div class="col-sm-4">
+                    <input type="checkbox" name="HangTuVan" id="HangTuVan"
+                           class="form-checkbox check-box ng-pristine ng-untouched ng-valid"
+                           tabindex="6" formControlName="hangTuVan">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Loại hàng</label>
+                  <div class="col-sm-8">
+                    <ng-select formControlName="productTypeId">
+                      <ng-option *ngFor="let item of listProductTypes"
+                                 [value]="item.id">{{item.displayName}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Giá bán sỉ</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="GiaBanBuon" id="GiaBanBuon"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             tabindex="17" formControlName="giaBanBuon"
+                             awnum="app-decimal-number"
+                             data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                      <span ng-if="selectedUnitId == ''"
+                            class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Hạn dùng</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="HanDung" id="HanDung"
+                           class="input-datetime form-control mb-0 text-box single-line ng-pristine ng-untouched ng-valid"
+                           tabindex="7" formControlName="hanDung"
+                           placeholder="Nhập 010122 => 01/01/2022" ng-change="onExpiredDateChange()">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Số tồn ban đầu</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="SoDuDauKy" id="SoDuDauKy"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             tabindex="18" formControlName="soDuDauKy"
+                             formControlName="soDuDauKy" awnum="app-decimal-number"
+                             placeholder="Số tồn ban đầu theo đơn vị xuất lẻ">
+                      <span class="input-group-addon flex-grow-width-25 ng-binding"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Số lượng cảnh báo</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="GioiHan" id="GioiHan"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             value="0" tabindex="8" formControlName="gioiHan"
+                      >
+                      <span class="input-group-addon flex-grow-width-25 ng-binding"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Giá nhập ban đầu</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="GiaDauKy" id="GiaDauKy"
+                             class="form-control mb-0 ng-valid ng-isolate-scope ng-dirty ng-valid-parse ng-touched"
+                             tabindex="19" formControlName="giaDauKy"
+                             awnum="app-decimal-number"
+                             placeholder="Giá nhập ban đầu cho số tồn b.đầu"
+                             data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                      <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Chiết khấu</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="Discount" id="Discount"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid" value="0"
+                             tabindex="9" formControlName="discount">
+                      <span class="input-group-addon flex-grow-width-25">%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Chiết khấu theo lợi nhuận</label>
+                  <div class="col-sm-8">
+                    <input type="checkbox" name="DiscountByRevenue" id="DiscountByRevenue"
+                           class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
+                           tabindex="20" formControlName="discountByRevenue">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-2 form-group">
+                <div class="row">
+                  <label class="col-sm-8 control-label">Công khai giá bán</label>
+                  <div class="col-sm-4">
+                    <input type="checkbox" name="Presentation" id="Presentation"
+                           class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
+                           tabindex="10" formControlName="presentation">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Tích điểm</label>
+                  <div class="col-sm-8">
+                    <input type="checkbox" name="Scorable" id="Scorable"
+                           class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
+                           tabindex="11" formControlName="scorable">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Quy đổi số tiền ra 1 điểm</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="MoneyToOneScoreRate" id="MoneyToOneScoreRate"
+                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                             value="0" tabindex="21" formControlName="moneyToOneScoreRate"
+                             awnum="app-decimal-number">
+                      <span class="input-group-addon flex-grow-width-25">/điểm</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Mã thuốc<span
-                  class="text-danger">*</span></label>
-                <div class="col-sm-8">
-                  <input class="form-control mb-0 text-left" type="text"/>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Giá nhập lẻ</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="GiaNhap" id="GiaNhap"
-                           class="form-control mb-0 ng-pristine ng-valid ng-isolate-scope ng-touched"
-                           tabindex="13" ng-model="viewModel.InPrice" awnum="app-decimal-number"
-                           placeholder="Giá nhập theo đơn vị xuất lẻ"
-                           data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
-                    <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
-                    <div class="input-group-btn">
-                                                <span ng-show="false" class="btn btn-primary ng-hide"
-                                                      ng-click="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();"
-                                                      title="Cập nhật giá nhập cho cơ sở khác">
-                                                    <i class="fa-regular fa-arrows-rotate"></i>
-                                                </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Tên thuốc<span
-                  class="text-danger">*</span></label>
-                <div class="col-sm-8">
-                  <input type="text" name="TenThuoc" id="TenThuoc" class="form-control mb-0"
-                         tabindex="3" ng-model="viewModel.DrugName"
-                         placeholder="Tên biệt dược + Hàm lượng/Hãng"/>
-                  <p class="btn-link tooltip-content-drug"
-                     style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
-                     ng-click="onSearchPriceInOut()" title="Tra cứu giá thị trường">
-                    <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Giá bán lẻ</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="GiaBanLe" id="GiaBanLe"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           tabindex="14" ng-model="viewModel.OutPrice" awnum="app-decimal-number"
-                           placeholder="Giá bán lẻ theo đơn vị xuất lẻ"
-                           data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
-                    <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
-                    <div class="input-group-btn">
-                                                <span ng-show="false" class="btn btn-primary ng-hide"
-                                                      ng-click="onUpdatePriceChildStore(1); $event.preventDefault(); $event.stopPropagation();"
-                                                      title="Cập nhật giá bán cho cơ sở khác">
-                                                    <i class="fa-regular fa-arrows-rotate"></i>
-                                                </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Mô tả thêm</label>
-                <div class="col-sm-8">
-                  <input type="text" name="ThongTin" id="ThongTin" class="form-control mb-0"
-                         tabindex="4" ng-model="viewModel.Information"
-                         placeholder="Vị trí tủ, hoạt chất"/>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Đơn vị nhập</label>
-                <div class="col-sm-8">
-                  <ng-select formControlName="donViXuatLeMaDonViTinh">
-                    <ng-option *ngFor="let item of listDonViTinh" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Mã vạch</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input class="form-control mb-0" style="text-align:left" type="text"
-                           ng-model="SupplyerModel.BarCode"/>
-                    <div class="input-group-btn">
-                      <button class="btn btn-primary" title="Sinh mã vạch tự động"
-                              ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
-                        class="fa-regular fa-barcode-read"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Quy cách</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="HeSo" id="HeSo"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           value="1" tabindex="16" ng-model="viewModel.Factors"
-                           awnum="app-decimal-number">
-                    <span ng-if="selectedUnitId == ''"
-                          class="input-group-addon flex-grow-width-25 ng-scope"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-2 form-group">
-              <div class="row">
-                <label class="col-sm-8 control-label">Hàng tư vấn</label>
-                <div class="col-sm-4">
-                  <input type="checkbox" name="HangTuVan" id="HangTuVan"
-                         class="form-checkbox check-box ng-pristine ng-untouched ng-valid"
-                         tabindex="6" ng-model="viewModel.AdvisoryDrug">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Loại hàng</label>
-                <div class="col-sm-8">
-                  <ng-select formControlName="typeId">
-                    <ng-option *ngFor="let item of listProductTypes" [value]="item.id">{{item.displayName}}</ng-option>
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Giá bán sỉ</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="GiaBanBuon" id="GiaBanBuon"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           tabindex="17" ng-model="viewModel.OutBatchPrice"
-                           awnum="app-decimal-number"
-                           data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
-                    <span ng-if="selectedUnitId == ''"
-                          class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Hạn dùng</label>
-                <div class="col-sm-8">
-                  <input type="text" name="HanDung" id="HanDung"
-                         class="input-datetime form-control mb-0 text-box single-line ng-pristine ng-untouched ng-valid"
-                         tabindex="7" ng-model="viewModel.DueDate"
-                         placeholder="Nhập 010122 => 01/01/2022" ng-change="onExpiredDateChange()">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Số tồn ban đầu</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="SoDuDauKy" id="SoDuDauKy"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           tabindex="18" ng-init="viewModel.InitValue = 0"
-                           ng-model="viewModel.InitValue" awnum="app-decimal-number"
-                           placeholder="Số tồn ban đầu theo đơn vị xuất lẻ">
-                    <span class="input-group-addon flex-grow-width-25 ng-binding"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Số lượng cảnh báo</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="GioiHan" id="GioiHan"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           value="0" tabindex="8" ng-model="viewModel.WarningQuantity"
-                           awnum="app-decimal-number">
-                    <span class="input-group-addon flex-grow-width-25 ng-binding"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Giá nhập ban đầu</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="GiaDauKy" id="GiaDauKy"
-                           class="form-control mb-0 ng-valid ng-isolate-scope ng-dirty ng-valid-parse ng-touched"
-                           tabindex="19" ng-model="viewModel.InitInPrice"
-                           awnum="app-decimal-number"
-                           placeholder="Giá nhập ban đầu cho số tồn b.đầu"
-                           data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
-                    <span class="input-group-addon flex-grow-width-25 ng-binding">/</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Chiết khấu</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="Discount" id="Discount"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid" value="0"
-                           tabindex="9" ng-model="viewModel.Discount">
-                    <span class="input-group-addon flex-grow-width-25">%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Chiết khấu theo lợi nhuận</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" name="DiscountByRevenue" id="DiscountByRevenue"
-                         class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
-                         tabindex="20" ng-model="viewModel.DiscountByRevenue">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-2 form-group">
-              <div class="row">
-                <label class="col-sm-8 control-label">Công khai giá bán</label>
-                <div class="col-sm-4">
-                  <input type="checkbox" name="Presentation" id="Presentation"
-                         class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
-                         tabindex="10" ng-model="viewModel.Presentation">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Tích điểm</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" name="Scorable" id="Scorable"
-                         class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
-                         tabindex="11" ng-model="viewModel.Scorable">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Quy đổi số tiền ra 1 điểm</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="MoneyToOneScoreRate" id="MoneyToOneScoreRate"
-                           class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                           value="0" tabindex="21" ng-model="viewModel.MoneyToOneScoreRate"
-                           awnum="app-decimal-number">
-                    <span class="input-group-addon flex-grow-width-25">/điểm</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="row" [hidden]="checkTab != 'additional-information'">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Hàm lượng</label>
-                <div class="col-sm-8">
-                  <input type="text" name="HamLuong" id="HamLuong"
-                         class="form-control mb-0 ng-pristine ng-valid ng-touched" tabindex="1"
-                         ng-model="viewModel.HamLuong" placeholder="Hàm lượng">
+        <form [formGroup]="formData">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Hàm lượng</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="HamLuong" id="HamLuong"
+                           class="form-control mb-0 ng-pristine ng-valid ng-touched" tabindex="1"
+                           formControlName="hamLuong" placeholder="Hàm lượng">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Quy cách đóng gói</label>
-                <div class="col-sm-8">
-                  <input type="text" name="QuyCachDongGoi" id="QuyCachDongGoi"
-                         class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="2"
-                         ng-model="viewModel.QuyCachDongGoi" placeholder="Quy cách đóng gói">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Nhà sản xuất</label>
-                <div class="col-sm-8">
-                  <input type="text" name="NhaSanXuat" id="NhaSanXuat"
-                         class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="3"
-                         ng-model="viewModel.NhaSanXuat" placeholder="Nhà sản xuất">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Xuất xứ thương hiệu</label>
-                <div class="col-sm-8">
-                  <input type="text" name="XuatXu" id="XuatXu"
-                         class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="4"
-                         ng-model="viewModel.Origin" placeholder="Xuất xứ thương hiệu">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Quy cách đóng gói</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="QuyCachDongGoi" id="QuyCachDongGoi"
+                           class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="2"
+                           formControlName="quyCachDongGoi" placeholder="Quy cách đóng gói">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Công dụng</label>
-                <div class="col-sm-8">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Nhà sản xuất</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="NhaSanXuat" id="NhaSanXuat"
+                           class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="3"
+                           formControlName="nhaSanXuat" placeholder="Nhà sản xuất">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Xuất xứ thương hiệu</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="XuatXu" id="XuatXu"
+                           class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="4"
+                           formControlName="xuatXu" placeholder="Xuất xứ thương hiệu">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Công dụng</label>
+                  <div class="col-sm-8">
                                         <textarea name="CongDung" id="CongDung"
                                                   class="form-control ng-pristine ng-untouched ng-valid" tabindex="5"
-                                                  ng-model="viewModel.Advantages" placeholder="Công dụng"></textarea>
+                                                  formControlName="advantages" placeholder="Công dụng"></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Tác dụng phụ</label>
-                <div class="col-sm-8">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Tác dụng phụ</label>
+                  <div class="col-sm-8">
                                         <textarea type="text" name="TacDungPhu" id="TacDungPhu"
                                                   class="form-control ng-pristine ng-untouched ng-valid" tabindex="6"
-                                                  ng-model="viewModel.UserObject" placeholder="Tác dụng phụ"></textarea>
+                                                  formControlName="userObject" placeholder="Tác dụng phụ"></textarea>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Dược động học - Dược lực học</label>
-                <div class="col-sm-8">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Dược động học - Dược lực học</label>
+                  <div class="col-sm-8">
                                         <textarea name="DuocDongHoc" id="DuocDongHoc"
                                                   class="form-control ng-pristine ng-untouched ng-valid" tabindex="7"
-                                                  ng-model="viewModel.Pharmacokinetics"
+                                                  formControlName="pharmacokinetics"
                                                   placeholder="Dược động học - Dược lực học"></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Hướng dẫn sử dụng</label>
-                <div class="col-sm-8">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Hướng dẫn sử dụng</label>
+                  <div class="col-sm-8">
                                         <textarea type="text" name="HDSD" id="HDSD"
                                                   class="form-control ng-pristine ng-untouched ng-valid" tabindex="8"
-                                                  ng-model="viewModel.UserManual"
+                                                  formControlName="userManual"
                                                   placeholder="Hướng dẫn sử dụng"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Điều kiện bảo quản</label>
-                <div class="col-sm-8">
-                                        <textarea name="DieuKienBaoQuan" id="DieuKienBaoQuan"
-                                                  class="form-control ng-pristine ng-untouched ng-valid" tabindex="9"
-                                                  ng-model="viewModel.StorageConditions"
-                                                  placeholder="Điều kiện bảo quản"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Vị trí bảo quản</label>
-                <div class="col-sm-8">
-                                        <textarea type="text" name="ViTriBaoQuan" id="ViTriBaoQuan"
-                                                  class="form-control ng-pristine ng-untouched ng-valid" tabindex="10"
-                                                  ng-model="viewModel.StorageLocation"
-                                                  placeholder="Vị trí bảo quản"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Chỉ định</label>
-                <div class="col-sm-8">
-                                        <textarea name="ChiDinh" id="ChiDinh"
-                                                  class="form-control ng-pristine ng-valid ng-touched" tabindex="11"
-                                                  ng-model="viewModel.Pointed" placeholder="Chỉ định"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Chống chỉ định</label>
-                <div class="col-sm-8">
-                                        <textarea type="text" name="ChongChiDinh" id="ChongChiDinh"
-                                                  class="form-control ng-pristine ng-untouched ng-valid" tabindex="12"
-                                                  ng-model="viewModel.Contraindicated"
-                                                  placeholder="Chống chỉ định"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Số đăng ký</label>
-                <div class="col-sm-8">
-                                        <textarea name="SoDangKy" id="SoDangKy"
-                                                  class="form-control ng-pristine ng-untouched ng-valid" tabindex="13"
-                                                  ng-model="viewModel.RegisteredNo" placeholder="Số đăng ký"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Lưu ý</label>
-                <div class="col-sm-8">
-                                        <textarea type="text" name="LuuY" id="LuuY"
-                                                  class="form-control ng-pristine ng-untouched ng-valid" tabindex="14"
-                                                  ng-model="viewModel.Noted" placeholder="Lưu ý"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Chiết khấu khuyến mại</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" name="PromotionalDiscounts" id="PromotionalDiscounts"
-                           class="form-control mb-0 ng-pristine ng-valid ng-touched" value="0"
-                           tabindex="9" ng-model="viewModel.PromotionalDiscounts">
-                    <span class="input-group-addon flex-grow-width-25">%</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Áp dụng chiết khấu khuyến mại</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" name="EnablePromotionalDiscounts"
-                         id="EnablePromotionalDiscounts"
-                         class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
-                         tabindex="20" ng-model="viewModel.EnablePromotionalDiscounts">
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Điều kiện bảo quản</label>
+                  <div class="col-sm-8">
+                    <textarea name="DieuKienBaoQuan" id="DieuKienBaoQuan"
+                              class="form-control ng-pristine ng-untouched ng-valid" tabindex="9"
+                              formControlName="storageConditions"
+                              placeholder="Điều kiện bảo quản"></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <div class="row">
-                <label class="col-sm-4 control-label">Mô tả</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                                            <textarea name="DescriptionOnWebsite" id="DescriptionOnWebsite"
-                                                      placeholder="Mô tả thông tin thuốc..."
-                                                      class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                                                      ng-model="viewModel.DescriptionOnWebsite"></textarea>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Vị trí bảo quản</label>
+                  <div class="col-sm-8">
+                    <textarea type="text" name="ViTriBaoQuan" id="ViTriBaoQuan"
+                              class="form-control ng-pristine ng-untouched ng-valid" tabindex="10"
+                              formControlName="storageLocation"
+                              placeholder="Vị trí bảo quản"></textarea>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 form-group">
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Chỉ định</label>
+                  <div class="col-sm-8">
+                      <textarea name="ChiDinh" id="ChiDinh"
+                                class="form-control ng-pristine ng-valid ng-touched" tabindex="11"
+                                formControlName="chiDinh" placeholder="Chỉ định"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Chống chỉ định</label>
+                  <div class="col-sm-8">
+                    <textarea type="text" name="ChongChiDinh" id="ChongChiDinh"
+                              class="form-control ng-pristine ng-untouched ng-valid" tabindex="12"
+                              formControlName="chongChiDinh"
+                              placeholder="Chống chỉ định"></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Số đăng ký</label>
+                  <div class="col-sm-8">
+                      <textarea name="SoDangKy" id="SoDangKy"
+                                class="form-control ng-pristine ng-untouched ng-valid" tabindex="13"
+                                formControlName="registeredNo" placeholder="Số đăng ký"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Lưu ý</label>
+                  <div class="col-sm-8">
+                    <textarea type="text" name="LuuY" id="LuuY"
+                              class="form-control ng-pristine ng-untouched ng-valid" tabindex="14"
+                              formControlName="noted" placeholder="Lưu ý"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Chiết khấu khuyến mại</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" name="PromotionalDiscounts" id="PromotionalDiscounts"
+                             class="form-control mb-0 ng-pristine ng-valid ng-touched" value="0"
+                             tabindex="9" formControlName="promotionalDiscounts">
+                      <span class="input-group-addon flex-grow-width-25">%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Áp dụng chiết khấu khuyến mại</label>
+                  <div class="col-sm-8">
+                    <input type="checkbox" name="EnablePromotionalDiscounts"
+                           id="EnablePromotionalDiscounts"
+                           class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid"
+                           tabindex="20" formControlName="enablePromotionalDiscounts">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <label class="col-sm-4 control-label">Mô tả</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                        <textarea name="DescriptionOnWebsite" id="DescriptionOnWebsite"
+                                  placeholder="Mô tả thông tin thuốc..."
+                                  class="form-control mb-0 ng-pristine ng-untouched ng-valid"
+                                  formControlName="descriptionOnWebsite"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="row" [hidden]="checkTab != 'replace-together'">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6">
-              <label>Danh sách hàng thay thế</label>
-              <div item-search-filter="" mousetrap=""
-                   select-changed-callback="onReplaceDrugSelectChanged" clear-after-selected="true"
-                   only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
-                   cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                   inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5"
-                   id="drugSearchBoxId" class="ng-isolate-scope">
-                <div ng-if="!showCamBarcodeScanner" class="">
-                  <div class="w-100">
-                    <div
-                      class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
-                      ng-model="data.selected"
-                      theme="bootstrap" id="itemSearchId"
-                      reset-search-input="clearAfterSelected"
-                      forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                      <div><span class="text-truncate-line ui-select-match ui-select-match"
-                                 placeholder="Nhập mã, mã vạch hoặc tên..."
-                                 id="itemSearchUISelectID"></span><input
-                        type="search" autocomplete="off" autocorrect="off"
-                        autocapitalize="off" spellcheck="false"
-                        class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
-                        placeholder="Nhập mã, mã vạch hoặc tên..."
-                        ng-disabled="$select.disabled" ng-click="$select.activate()"
-                        ng-model="$select.search" role="combobox" aria-expanded="false"
-                        aria-label="Select box"
-                        ng-class="{'spinner': $select.refreshing}"
-                        ondrop="return false;" style="width: 686px;"></div>
-                      <ul
-                        class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                        ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                        refresh="fetch($select)" refresh-delay="500" repeat="item in items"
-                        id="selectChoiceId" style="display: block; opacity: 0.013815;">
-                        <li class="ui-select-choices-group" id="ui-select-choices-30">
-                          <div class="divider ng-hide"
-                               ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                          <div ng-show="$select.isGrouped"
-                               class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                               ng-bind="$group.name"></div>
-                        </li>
-                      </ul>
-                      <div class="ui-select-no-choice"></div>
+<!--        <form [formGroup]="formData">-->
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6">
+                <label>Danh sách hàng thay thế</label>
+                <div item-search-filter="" mousetrap=""
+                     select-changed-callback="onReplaceDrugSelectChanged" clear-after-selected="true"
+                     only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
+                     cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
+                     inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5"
+                     id="drugSearchBoxId" class="ng-isolate-scope">
+                  <div ng-if="!showCamBarcodeScanner" class="">
+                    <div class="w-100">
+                      <div
+                        class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
+                        formControlName="data.selected"
+                        theme="bootstrap" id="itemSearchId"
+                        reset-search-input="clearAfterSelected"
+                        forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
+                        <div><span class="text-truncate-line ui-select-match ui-select-match"
+                                   placeholder="Nhập mã, mã vạch hoặc tên..."
+                                   id="itemSearchUISelectID"></span><input
+                          type="search" autocomplete="off" autocorrect="off"
+                          autocapitalize="off" spellcheck="false"
+                          class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
+                          placeholder="Nhập mã, mã vạch hoặc tên..."
+                          ng-disabled="$select.disabled" ng-click="$select.activate()"
+                          formControlName="$select.search" role="combobox" aria-expanded="false"
+                          aria-label="Select box"
+                          ng-class="{'spinner': $select.refreshing}"
+                          ondrop="return false;" style="width: 686px;"></div>
+                        <ul
+                          class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                          ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                          refresh="fetch($select)" refresh-delay="500" repeat="item in items"
+                          id="selectChoiceId" style="display: block; opacity: 0.013815;">
+                          <li class="ui-select-choices-group" id="ui-select-choices-30">
+                            <div class="divider ng-hide"
+                                 ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
+                            <div ng-show="$select.isGrouped"
+                                 class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                 ng-bind="$group.name"></div>
+                          </li>
+                        </ul>
+                        <div class="ui-select-no-choice"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <table class="table table-bordered w-100">
+                  <tbody>
+                  <tr>
+                    <th>STT</th>
+                    <th>Mã - Tên thuốc</th>
+                    <th>#</th>
+                  </tr>
+                  <tr ng-repeat="i in viewModel.ReplaceGoods" class="ng-scope">
+                    <td class="ng-binding">1</td>
+                    <td class="ng-binding">TH503- levoth</td>
+                    <td>
+                      <a title="Xóa khỏi danh sách"
+                         ng-click="onDelete(1,i); $event.preventDefault(); $event.stopPropagation();"
+                         class="btn btn-danger btn-sm">
+                        <i class="fa-regular fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
-              <table class="table table-bordered w-100">
-                <tbody>
-                <tr>
-                  <th>STT</th>
-                  <th>Mã - Tên thuốc</th>
-                  <th>#</th>
-                </tr>
-                <tr ng-repeat="i in viewModel.ReplaceGoods" class="ng-scope">
-                  <td class="ng-binding">1</td>
-                  <td class="ng-binding">TH503- levoth</td>
-                  <td>
-                    <a title="Xóa khỏi danh sách"
-                       ng-click="onDelete(1,i); $event.preventDefault(); $event.stopPropagation();"
-                       class="btn btn-danger btn-sm">
-                      <i class="fa-regular fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-md-6">
-              <label>Danh sách hàng bán kèm</label>
-              <div item-search-filter="" mousetrap=""
-                   select-changed-callback="onBundledDrugSelectChanged" clear-after-selected="true"
-                   only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
-                   cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                   inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5"
-                   id="drugSearchBoxId" class="ng-isolate-scope">
-                <div ng-if="!showCamBarcodeScanner" class="">
-                  <div class="w-100">
-                    <div
-                      class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
-                      ng-class="{open: $select.open}" ng-model="data.selected"
-                      theme="bootstrap"
-                      id="itemSearchId"
-                      reset-search-input="clearAfterSelected"
-                      forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                      <div><span class="text-truncate-line ui-select-match ui-select-match"
-                                 placeholder="Nhập mã, mã vạch hoặc tên..."
-                                 id="itemSearchUISelectID"></span><input
-                        type="search" autocomplete="off" autocorrect="off"
-                        autocapitalize="off" spellcheck="false"
-                        class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
-                        placeholder="Nhập mã, mã vạch hoặc tên..."
-                        ng-disabled="$select.disabled" ng-click="$select.activate()"
-                        ng-model="$select.search" role="combobox" aria-expanded="false"
-                        aria-label="Select box"
-                        ng-class="{'spinner': $select.refreshing}"
-                        ondrop="return false;" style="width: 686px;"></div>
-                      <ul
-                        class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                        ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                        refresh="fetch($select)" refresh-delay="500" repeat="item in items"
-                        id="selectChoiceId" style="display: block; opacity: 0;">
-                        <li class="ui-select-choices-group" id="ui-select-choices-31">
-                          <div class="divider ng-hide"
-                               ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                          <div ng-show="$select.isGrouped"
-                               class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                               ng-bind="$group.name"></div>
-                        </li>
-                      </ul>
-                      <div class="ui-select-no-choice"></div>
+              <div class="col-md-6">
+                <label>Danh sách hàng bán kèm</label>
+                <div item-search-filter="" mousetrap=""
+                     select-changed-callback="onBundledDrugSelectChanged" clear-after-selected="true"
+                     only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
+                     cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
+                     inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5"
+                     id="drugSearchBoxId" class="ng-isolate-scope">
+                  <div ng-if="!showCamBarcodeScanner" class="">
+                    <div class="w-100">
+                      <div
+                        class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
+                        ng-class="{open: $select.open}" formControlName="data.selected"
+                        theme="bootstrap"
+                        id="itemSearchId"
+                        reset-search-input="clearAfterSelected"
+                        forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
+                        <div><span class="text-truncate-line ui-select-match ui-select-match"
+                                   placeholder="Nhập mã, mã vạch hoặc tên..."
+                                   id="itemSearchUISelectID"></span><input
+                          type="search" autocomplete="off" autocorrect="off"
+                          autocapitalize="off" spellcheck="false"
+                          class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
+                          placeholder="Nhập mã, mã vạch hoặc tên..."
+                          ng-disabled="$select.disabled" ng-click="$select.activate()"
+                          ng-model="$select.search" role="combobox" aria-expanded="false"
+                          aria-label="Select box"
+                          ng-class="{'spinner': $select.refreshing}"
+                          ondrop="return false;" style="width: 686px;"></div>
+                        <ul
+                          class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
+                          ng-show="$select.open &amp;&amp; $select.items.length > 0"
+                          refresh="fetch($select)" refresh-delay="500" repeat="item in items"
+                          id="selectChoiceId" style="display: block; opacity: 0;">
+                          <li class="ui-select-choices-group" id="ui-select-choices-31">
+                            <div class="divider ng-hide"
+                                 ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
+                            <div ng-show="$select.isGrouped"
+                                 class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+                                 ng-bind="$group.name"></div>
+                          </li>
+                        </ul>
+                        <div class="ui-select-no-choice"></div>
+                      </div>
                     </div>
                   </div>
+                  <span id="Logo" style="display:none;"></span>
                 </div>
-                <span id="Logo" style="display:none;"></span>
+                <table class="table table-bordered w-100">
+                  <tbody>
+                  <tr>
+                    <th>STT</th>
+                    <th>Mã - Tên thuốc</th>
+                    <th>#</th>
+                  </tr>
+                  <tr ng-repeat="i in viewModel.BundleGoods" class="ng-scope">
+                    <td class="ng-binding">1</td>
+                    <td class="ng-binding">TH0484- BĂNG KEO CÁ NHÂN KIDS BAND (PORORO - HỘP
+                      THIẾC) 2 SIZE 25 MIẾNG
+                    </td>
+                    <td>
+                      <a title="Xóa khỏi danh sách"
+                         ng-click="onDelete(2,i); $event.preventDefault(); $event.stopPropagation();"
+                         class="btn btn-danger btn-sm">
+                        <i class="fa-regular fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
-              <table class="table table-bordered w-100">
-                <tbody>
-                <tr>
-                  <th>STT</th>
-                  <th>Mã - Tên thuốc</th>
-                  <th>#</th>
-                </tr>
-                <tr ng-repeat="i in viewModel.BundleGoods" class="ng-scope">
-                  <td class="ng-binding">1</td>
-                  <td class="ng-binding">TH0484- BĂNG KEO CÁ NHÂN KIDS BAND (PORORO - HỘP
-                    THIẾC) 2 SIZE 25 MIẾNG
-                  </td>
-                  <td>
-                    <a title="Xóa khỏi danh sách"
-                       ng-click="onDelete(2,i); $event.preventDefault(); $event.stopPropagation();"
-                       class="btn btn-danger btn-sm">
-                      <i class="fa-regular fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
             </div>
           </div>
-        </div>
+<!--        </form>-->
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
       <button type="button" class="btn btn-primary"
-              (click)="createUpdate()">{{drugID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+              (click)="createUpdate()">{{drugId > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
     </div>
   </div>
 </div>

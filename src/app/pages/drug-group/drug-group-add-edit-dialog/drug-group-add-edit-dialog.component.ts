@@ -49,7 +49,7 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
     let body = this.formData.value;
     let data = await this.save(body);
     if(data){
-      this.closeModal();
+      this.dialogRef.close(data);
     }
   }
 
