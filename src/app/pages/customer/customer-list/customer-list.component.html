@@ -138,7 +138,24 @@
               </ng-container>
               <ng-container matColumnDef="zaloId">
                 <th mat-header-cell *matHeaderCellDef> Zalo khách hàng</th>
-                <td mat-cell *matCellDef="let data"> {{ data.zaloId }}</td>
+                <td mat-cell *matCellDef="let data"> 
+                  <div class="control-group">
+                    <ng-select
+                      appendTo="body"
+                      formControlName="zaloId"
+                      appearance="outline"
+                      [items]="listNguoiQuanTamOA"
+                      bindLabel="userName"
+                      bindValue="data.zaloId"
+                      placeholder="Tra cứu theo tên..."
+                      notFoundText="Không tìm thấy mục nào"
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                        <span [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar"/> {{item.userName}}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </td>
               </ng-container>
     
             <ng-container matColumnDef="action">

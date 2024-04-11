@@ -32,8 +32,8 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
       soDienThoai: [''],
       diaChi : [''],
       sexId: [''],
-      noDauky: [0],
-      barcode: [''],
+      noDauKy: [0],
+      barCode: [''],
       maNhomKhachHang : ['', Validators.required],
       birthDate :[''],
       email : ['', Validators.email],
@@ -49,7 +49,26 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
       healthInsuranceNumber : [''],
       job : [''],
       abilityToPay : [''],
-      taxCode : ['']
+      taxCode : [''],
+      maNhaThuoc :[''],
+      storeId : [0],
+      created : [],
+      createdByUserId : [],
+      totalScore : [0],
+      zaloId : [''],
+      cityId : [0],
+      regionId : [0],
+      referenceId : [0],
+      archivedId : [0],
+      initScore : [0],
+      score : [0],
+      active : [false],
+      recordStatusId : [0],
+      mappingStoreId : [0],
+      preMetadataHash : [0],
+      metadataHash : [0],
+      masterId : [0],
+      wardId : [0]
     });
   }
 
@@ -74,7 +93,6 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   }
   async saveEdit() {
     let body = this.formData.value;
-    console.log(body);
     let data = await this.save(body);
     if (data) {
       this.dialogRef.close(data);
@@ -88,4 +106,8 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+}
+
+function Big(arg0: number): any {
+  throw new Error('Function not implemented.');
 }

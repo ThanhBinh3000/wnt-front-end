@@ -28,7 +28,8 @@ export class CustomerListComponent  extends BaseComponent implements OnInit, Aft
     'zaloId',
     'action'
 ];
-  listNhomKhachHang : any[] = []
+  listNhomKhachHang : any[] = [];
+  listNguoiQuanTamOA : any[] = [];
 
 constructor(
   injector: Injector,
@@ -60,6 +61,12 @@ getDataFilter(){
     if(res?.statusCode == STATUS_API.SUCCESS){
       this.listNhomKhachHang = res.data;
       this.listNhomKhachHang.unshift({id: '', tenNhomKhachHang : 'Tất cả'});
+    }
+  });
+  this._service.searchListNguoiQuanTamOA().then((res)=>{
+    if(res?.statusCode == STATUS_API.SUCCESS){
+      this.listNguoiQuanTamOA = res.data;
+      this.listNguoiQuanTamOA.unshift({id: '', userName : 'Chọn người quan tâm'});
     }
   });
 }
