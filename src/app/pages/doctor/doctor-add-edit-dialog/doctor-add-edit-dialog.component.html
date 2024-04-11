@@ -1,19 +1,22 @@
-<div class="modal fade" id="doctor-add-edit-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title">{{doctorID > 0 ? 'Cập nhật bác sỹ' : 'Thêm mới bác sỹ'}}
-                </h4>
-            </div>
-            <div class="modal-body">
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+            <h4 class="modal-title">{{doctorID > 0 ? 'Cập nhật bác sỹ' : 'Thêm mới bác sỹ'}}
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formData">
                 <div class="form-group">
                     <div class="row">
                         <label class="col-sm-4 control-label">Tên bác sỹ<span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input class="form-control mb-0 text-left" type="text" />
+                            <input formControlName="tenBacSy" class="form-control mb-0 text-left" type="text" />
+                            <span class="text-danger field-validation-error"
+                            *ngIf="formData.get('tenBacSy')?.invalid && formData.get('tenBacSy')?.touched">
+                            Chưa nhập tên bác sỹ!
+                        </span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +24,7 @@
                     <div class="row">
                         <label class="col-sm-4 control-label">Số điện thoại</label>
                         <div class="col-sm-8">
-                            <input class="form-control mb-0 text-left" type="text" />
+                            <input formControlName="dienThoai" class="form-control mb-0 text-left" type="text" />
                         </div>
                     </div>
                 </div>
@@ -43,7 +46,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Địa chỉ</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="diaChi" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -51,7 +54,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Email</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="email" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -60,7 +63,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Mã LT</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="connectCode" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -68,16 +71,17 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Mật khẩu LT</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="connectPassword" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">{{doctorID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
-            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="saveEdit()"
+            [disabled]="formData.invalid">{{doctorID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
         </div>
     </div>
 </div>
