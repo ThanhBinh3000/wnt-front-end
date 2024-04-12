@@ -11,9 +11,16 @@ export class KhachHangService extends BaseService {
   constructor(httpClient: HttpClient) {
     super(httpClient, 'wnt-customer','khach-hangs');
   }
-  searchListNguoiQuanTamOA() {
-    const url = `/api/wnt-customer/khach-hangs/nguoi-quan-tam-oa`;
-    return this.httpClient.get<ResponseData>(url).toPromise();
+  searchPageNguoiQuanTamOA(body: any) {
+    const url = `/api/wnt-customer/khach-hangs/search-page-nguoi-quan-tam-oa`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-
+  updateMappingZaloOA(body: any){
+    const url = `/api/wnt-customer/khach-hangs/update-mapping-zalo-oa`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+  updateMappingMappingStore(body: any){
+    const url = `/api/wnt-customer/khach-hangs/update-mapping-store`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

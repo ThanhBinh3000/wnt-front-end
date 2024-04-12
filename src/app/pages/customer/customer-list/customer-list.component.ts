@@ -6,7 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { BaseComponent } from '../../../component/base/base.component';
 import { CustomerAddEditDialogComponent } from '../customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { NhomKhachHangService } from '../../../services/categories/nhom-khach-hang.service';
-import { STATUS_API } from '../../../constants/message';
+import { MESSAGE, STATUS_API } from '../../../constants/message';
+import { NhaThuocsService } from '../../../services/system/nha-thuocs.service';
 
 @Component({
   selector: 'customer-list',
@@ -30,12 +31,15 @@ export class CustomerListComponent  extends BaseComponent implements OnInit, Aft
 ];
   listNhomKhachHang : any[] = [];
   listNguoiQuanTamOA : any[] = [];
+  listNhaThuocDongBo : any[] = [];
+  count : any = 1;
 
 constructor(
   injector: Injector,
   private titleService: Title,
   private _service: KhachHangService,
   private nhomKhachHangService : NhomKhachHangService,
+  private nhaThuocService : NhaThuocsService
 ) {
 
   super(injector, _service);
@@ -53,6 +57,8 @@ async ngOnInit() {
   this.titleService.setTitle(this.title);
   await this.searchPage();
   this.getDataFilter();
+  this.danhSachNguoiQuanTamOA();
+  this.danhSachNhaThuocDonghBoPhieu();
 }
 //get data
 getDataFilter(){
@@ -63,10 +69,68 @@ getDataFilter(){
       this.listNhomKhachHang.unshift({id: '', tenNhomKhachHang : 'Tất cả'});
     }
   });
-  this._service.searchListNguoiQuanTamOA().then((res)=>{
+}
+async danhSachNguoiQuanTamOA(){
+  let body : any = {
+      paggingReq : {
+      limit: this.count * 10,
+      page: 0
+    }
+  };
+      
+  this._service.searchPageNguoiQuanTamOA(body).then((res)=>{
     if(res?.statusCode == STATUS_API.SUCCESS){
-      this.listNguoiQuanTamOA = res.data;
-      this.listNguoiQuanTamOA.unshift({id: '', userName : 'Chọn người quan tâm'});
+      this.listNguoiQuanTamOA = res.data.content;
+      if(res.data.totalElements > res.data.size){
+        this.listNguoiQuanTamOA.push({id: '', userName : 'Tải thêm'});
+        this.count = this.count + 1;
+      }
+    }
+  });
+}
+async updateMappingZaloOA($event: any,customerId: any){
+  if(!$event.id) return;
+  let body : any = {
+    maKhachHang : customerId,
+    zaloId : $event.userId
+  };
+  this._service.updateMappingZaloOA(body).then((res)=>{
+    if(res?.statusCode == STATUS_API.SUCCESS && res.data > 0){
+      this.notification.success(MESSAGE.SUCCESS, MESSAGE.SUCCESS);
+    }else{
+      this.notification.error(MESSAGE.ERROR, MESSAGE.ERROR);
+    }
+  });
+}
+async danhSachNhaThuocDonghBoPhieu(){
+  let body : any = {
+      paggingReq : {
+      limit: this.count * 10,
+      page: 0
+    }
+  };
+      
+  this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res)=>{
+    if(res?.statusCode == STATUS_API.SUCCESS){
+      this.listNhaThuocDongBo = res.data.content;
+      if(res.data.totalElements > res.data.size){
+        this.listNhaThuocDongBo.push({id: '', tenNhathuoc: 'Tải thêm'});
+        this.count = this.count + 1;
+      }
+    }
+  });
+}
+async updateMappingStore($event: any,customerId: any){
+  if(!$event.id) return;
+  let body : any = {
+    maKhachHang : customerId,
+    mappingStoreId : $event.id
+  };
+  this._service.updateMappingMappingStore(body).then((res)=>{
+    if(res?.statusCode == STATUS_API.SUCCESS && res.data > 0){
+      this.notification.success(MESSAGE.SUCCESS, MESSAGE.SUCCESS);
+    }else{
+      this.notification.error(MESSAGE.ERROR, MESSAGE.ERROR);
     }
   });
 }
