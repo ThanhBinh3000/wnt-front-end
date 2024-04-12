@@ -1,4 +1,4 @@
-import {Component, Injector, Input, OnInit} from '@angular/core';
+import {Component, Inject, Injector, Input, OnInit} from '@angular/core';
 import {STATUS_API} from "../../../constants/message";
 import {BaseComponent} from "../../../component/base/base.component";
 import {Title} from "@angular/platform-browser";
@@ -7,7 +7,10 @@ import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";
 import {WarehouseLocationService} from "../../../services/products/warehouse-location-service";
 import {ProductTypesService} from "../../../services/products/product-types-service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {
+  DrugGroupAddEditDialogComponent
+} from "../../drug-group/drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
 
 @Component({
   selector: 'drug-add-edit-dialog',
@@ -15,13 +18,13 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./drug-add-edit-dialog.component.css'],
 })
 export class DrugAddEditDialogComponent extends BaseComponent implements OnInit {
-  @Input() drugID: number = 0;
-  @Input() location: string = 'body';
+
   checkTab: string = 'main-information';
   listNhomThuoc : any[] = []
   listDonViTinh : any[] = []
   listWarehouse : any[] = []
   listProductTypes : any[] = []
+
 
   constructor(
     injector: Injector,
@@ -32,23 +35,61 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     private warehouseLocationService : WarehouseLocationService,
     private productTypesService : ProductTypesService,
     public dialogRef: MatDialogRef<DrugAddEditDialogComponent>,
-    // private dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) public drugId : any
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
       idWarehouseLocation : [],
-      maThuoc : [],
-      tenThuoc : [],
-      nhaThuocMaNhaThuoc: [],
       nhomThuocMaNhomThuoc: [],
-      typeId : [],
       donViXuatLeMaDonViTinh: [],
-      dataDelete : [false]
+      maThuoc : [],
+      giaNhap : [0],
+      tenThuoc : [],
+      giaBanLe : [0],
+      thongTin : [],
+      donViThuNguyenMaDonViTinh : [],
+      barCode : [],
+      heSo : [0],
+      hangTuVan : [],
+      giaBanBuon : [0],
+      hanDung : [],
+      soDuDauKy : [0],
+      giaDauKy : [0],
+      discount : [0],
+      discountByRevenue : [],
+      presentation : [false],
+      scorable : [false],
+      moneyToOneScoreRate : [0],
+      hamLuong : [0],
+      quyCachDongGoi : [],
+      nhaSanXuat : [],
+      xuatXu : [],
+      advantages : [],
+      userObject : [],
+      pharmacokinetics : [],
+      userManual : [],
+      storageConditions : [],
+      storageLocation : [],
+      chiDinh : [],
+      chongChiDinh : [],
+      registeredNo : [],
+      noted : [],
+      promotionalDiscounts : [],
+      enablePromotionalDiscounts : [],
+      descriptionOnWebsite : [],
+      gioiHan : [0],
+      nhaThuocMaNhaThuoc: [],
+      productTypeId : [],
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getDataFilter();
+    console.log(this.drugId)
+    if(this.drugId){
+      const data = await this.detail(this.drugId);
+      this.formData.patchValue(data);
+    }
   }
 
 
@@ -79,14 +120,32 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     });
   }
 
-  createUpdate(){
+  async createUpdate(){
     let body = this.formData.value;
     console.log(body);
-    this.save(body);
+    let res = await this.save(body);
+    if(res){
+        this.dialogRef.close(res);
+    }
   }
 
   closeModal() {
     this.dialogRef.close();
+  }
+
+  openAddEditNhomThuocDialog(){
+    const dialogRef = this.dialog.open(DrugGroupAddEditDialogComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        this.nhomThuocService.searchList({}).then((res)=>{
+          if(res?.statusCode == STATUS_API.SUCCESS){
+            this.listNhomThuoc = res.data
+          }
+        });
+      }
+    });
   }
 
 }

@@ -635,7 +635,7 @@
               <div *ngIf="data.recordStatusId == 0" class="baocao-actions baocao-actions-row">
                 <div class="baocao-actions-item">
                             <span title="sửa" ng-if="permittedFields.Drug_Write">
-                                <a (click)="drugID = 1" data-toggle="modal" data-target="#drug-add-edit-body-dialog"
+                                <a (click)="openAddEditDialog(data.id)"
                                    class="btn btn-primary btn-sm">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>

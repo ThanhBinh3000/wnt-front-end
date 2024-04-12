@@ -90,6 +90,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   openAddEditDialog($event:any){
+    console.log($event);
     const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
       data: $event,
       width: '1200px',
