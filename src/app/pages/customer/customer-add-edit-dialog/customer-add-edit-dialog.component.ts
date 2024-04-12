@@ -107,7 +107,3 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
 }
-
-function Big(arg0: number): any {
-  throw new Error('Function not implemented.');
-}

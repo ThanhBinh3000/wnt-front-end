@@ -8,6 +8,7 @@ import { CustomerAddEditDialogComponent } from '../customer-add-edit-dialog/cust
 import { NhomKhachHangService } from '../../../services/categories/nhom-khach-hang.service';
 import { MESSAGE, STATUS_API } from '../../../constants/message';
 import { NhaThuocsService } from '../../../services/system/nha-thuocs.service';
+import { RegionInformationEditDialogComponent } from '../../region-information/region-information-edit-dialog/region-information-edit-dialog.component';
 
 @Component({
   selector: 'customer-list',
@@ -146,6 +147,15 @@ async openAddEditDialog(customerID: any) {
   dialogRef.afterClosed().subscribe(async result => {
     if (result) {
       await this.searchPage();
+    }
+  });
+}
+async openUpdateRegionInformationDialog() {
+  const dialogRef = this.dialog.open(RegionInformationEditDialogComponent, {
+    width: '700px',
+  });
+  dialogRef.afterClosed().subscribe(async result => {
+    if (result) {
     }
   });
 }
