@@ -6,13 +6,19 @@ import {RouterOutlet} from "@angular/router";
 import {ClinicRoutingModule} from './clinic.routing';
 import { ClinicListComponent } from './clinic-list/clinic-list.component';
 import { ClinicAddEditDialogComponent } from './clinic-add-edit-dialog/clinic-add-edit-dialog.component';
+import { ComponentsModule } from '../../component/base/components.module';
 @NgModule({
   declarations: [
     ClinicComponent,
     ClinicListComponent,
     ClinicAddEditDialogComponent
   ],
-  imports: [CommonModule, RouterOutlet, ClinicRoutingModule],
+  imports: [    
+    ComponentsModule,
+    CommonModule, 
+    RouterOutlet, 
+    ClinicRoutingModule
+  ],
   exports: [],
 })
 export class ClinicModule {
