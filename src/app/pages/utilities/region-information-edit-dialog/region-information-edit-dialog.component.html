@@ -10,20 +10,20 @@
         <div class="form-group-flex mb-3">
           <label class="control-label col-sm-2">Mã:</label>
           <div class="control-label col-sm-10">
-
+              {{object.code}}
           </div>
         </div>
         <div class="form-group-flex mb-3">
           <label class="control-label col-sm-2">Tên:</label>
           <div class="control-label col-sm-10">
-
+                {{object.name}}
           </div>
         </div>
         <div class="form-group-flex mb-3">
           <label class="control-label col-md-2">Địa chỉ:</label>
           <div class="col-md-10">
-            <input class="form-control mousetrap" style="text-align:left" type="text" ng-model="viewModel.Addresses"
-              ng-disabled="!isEditable" id="cusAddress" />
+            <input class="form-control mousetrap" style="text-align:left" type="text" [(ngModel)] ="object.address"
+              readonly="readonly" />
           </div>
         </div>
         <div class="form-group-flex mb-3">
@@ -31,14 +31,16 @@
           <div class="col-md-10">
             <div class="control-group">
               <ng-select
+                      [(ngModel)] ="object.regionId"
                       appendTo="body"
                       appearance="outline"
+                      formControlName="regionId"
                       [items]="listTinhThanh"
                       bindLabel="name"
                       bindValue="id"
                       placeholder="Tra cứu theo tên..."
                       notFoundText="Không tìm thấy mục nào"
-                    >
+                      (change)="changeTinhThanh($event)">
                       <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                         <span [ngOptionHighlight]="search">{{item.name}}</span>
                       </ng-template>
@@ -50,13 +52,21 @@
           <label class="control-label col-md-2">Quận/Huyện:</label>
           <div class="col-md-10">
             <div class="control-group">
-              <!-- <ng-select appendTo="body" appearance="outline"
-                 bindLabel="tenNhaThuoc" bindValue="id" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào">
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  
-                </ng-template>
-              </ng-select> -->
+              <ng-select
+              [(ngModel)] ="object.cityId"
+              appendTo="body"
+              appearance="outline"
+              formControlName="cityId"
+              [items]="listQuanHuyen"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Tra cứu theo tên..."
+              notFoundText="Không tìm thấy mục nào"
+              (change)="changeQuanHuyen($event)">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{item.name}}</span>
+              </ng-template>
+            </ng-select>
             </div>
           </div>
         </div>
@@ -64,13 +74,20 @@
           <label class="control-label col-md-2">Phường/Xã:</label>
           <div class="col-md-10">
             <div class="control-group">
-              <!-- <ng-select appendTo="body" appearance="outline"
-                bindLabel="tenNhaThuoc" bindValue="id" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào">
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  
-                </ng-template>
-              </ng-select> -->
+              <ng-select
+                      [(ngModel)] ="object.wardId"
+                      appendTo="body"
+                      appearance="outline"
+                      formControlName="wardId"
+                      [items]="listPhuongXa"
+                      bindLabel="name"
+                      bindValue="id"
+                      placeholder="Tra cứu theo tên..."
+                      notFoundText="Không tìm thấy mục nào">
+                      <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                        <span [ngOptionHighlight]="search">{{item.name}}</span>
+                      </ng-template>
+                    </ng-select>
             </div>
           </div>
         </div>
@@ -78,7 +95,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-      <button type="button" class="btn btn-primary">Cập nhật</button>
+      <button type="button" class="btn btn-primary" (click)="updateThongTinKhuVuc()">Cập nhật</button>
     </div>
   </div>
 </div>

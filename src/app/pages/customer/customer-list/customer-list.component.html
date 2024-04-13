@@ -100,7 +100,8 @@
     
             <ng-container matColumnDef="#">
               <th mat-header-cell *matHeaderCellDef style="width:8%"> #</th>
-              <td mat-cell *matCellDef="let data; index as i;" style="width:8%"> {{ (page - 1) * pageSize + i + 1 }}</td>
+              <td mat-cell *matCellDef="let data; index as i;" style="width:8%"> 
+                <span class="btn-link" (click)="openUpdateRegionInformationDialog(data)">{{ (page - 1) * pageSize + i + 1 }}</span></td>
             </ng-container>
     
             <ng-container matColumnDef="code">

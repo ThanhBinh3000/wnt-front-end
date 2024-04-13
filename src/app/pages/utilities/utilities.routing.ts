@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from "../../guard/auth.guard";
-import { RegionInformationComponent } from './region-information.component';
+import { UtilitiesComponent } from './utilities.component';
 const routes: Routes = [
   {
     path: '',
-    component: RegionInformationComponent,
+    component: UtilitiesComponent,
     children: [
       
     ],
@@ -16,5 +16,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class RegionInformationRoutingModule {
+export class UtilitiesRoutingModule {
 }

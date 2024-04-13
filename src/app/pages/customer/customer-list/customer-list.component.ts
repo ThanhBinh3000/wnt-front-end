@@ -8,7 +8,7 @@ import { CustomerAddEditDialogComponent } from '../customer-add-edit-dialog/cust
 import { NhomKhachHangService } from '../../../services/categories/nhom-khach-hang.service';
 import { MESSAGE, STATUS_API } from '../../../constants/message';
 import { NhaThuocsService } from '../../../services/system/nha-thuocs.service';
-import { RegionInformationEditDialogComponent } from '../../region-information/region-information-edit-dialog/region-information-edit-dialog.component';
+import { RegionInformationEditDialogComponent } from '../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
 
 @Component({
   selector: 'customer-list',
@@ -150,12 +150,24 @@ async openAddEditDialog(customerID: any) {
     }
   });
 }
-async openUpdateRegionInformationDialog() {
+async openUpdateRegionInformationDialog(data: any) {
+  let object = {
+    id : data.id, 
+    code : data.code, 
+    name : data.tenKhachHang, 
+    address : data.diaChi,
+    cityId : data.cityId,
+    regionId: data.regionId,
+    wardId : data.wardId
+  }
   const dialogRef = this.dialog.open(RegionInformationEditDialogComponent, {
+    data : object,
     width: '700px',
   });
   dialogRef.afterClosed().subscribe(async result => {
     if (result) {
+      console.log('closed');
+      await this.searchPage();
     }
   });
 }
