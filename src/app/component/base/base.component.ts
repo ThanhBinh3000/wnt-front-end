@@ -356,7 +356,7 @@ export class BaseComponent  {
   async save(body: any) {
     this.markFormGroupTouched(this.formData);
     if (this.formData.invalid) {
-      this.notification.error(MESSAGE.ERROR, MESSAGE.FORM_REQUIRED_ERROR);
+      //this.notification.error(MESSAGE.ERROR, MESSAGE.FORM_REQUIRED_ERROR);
       return;
     }
     let res;

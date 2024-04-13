@@ -15,7 +15,7 @@ import { MedicalNoteAddEditComponent } from './medical-note-add-edit/medical-not
     MedicalNoteListComponent,
     MedicalNoteAddEditComponent
   ],
-  imports: [CommonModule, RouterOutlet, MedicalNoteRoutingModule, CustomerModule],
+  imports: [CommonModule, RouterOutlet, MedicalNoteRoutingModule],
   exports: [],
 })
 export class MedicalNoteModule {

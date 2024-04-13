@@ -4,10 +4,10 @@
     opacity: 0;
 }
 
-    .myModal.open {
-        visibility: visible;
-        opacity: 1;
-    }
+.myModal.open {
+    visibility: visible;
+    opacity: 1;
+}
 
 .myModal,
 .myModal-overlay {
@@ -36,16 +36,16 @@
     padding: 1rem;
 }
 
-    .myModal-content .close {
-        background-color: #e1e1e1;
-        width: 24px;
-        height: 24px;
-        border-radius: 99px;
-        color: #ff0500;
-        opacity: 1;
-        font-size: 16px;
-        margin-top: -50px;
-    }
+.myModal-content .close {
+    background-color: #e1e1e1;
+    width: 24px;
+    height: 24px;
+    border-radius: 99px;
+    color: #ff0500;
+    opacity: 1;
+    font-size: 16px;
+    margin-top: -50px;
+}
 
 .myModal-overlay {
     background: rgba(0, 0, 0, 0.5);
@@ -76,21 +76,21 @@
     padding: 1rem;
 }
 
-    .myModal-footer .close-btn {
-        cursor: pointer;
-        padding: 0.6rem 2rem;
-        background-color: transparent;
-        box-shadow: inset 0 0 0 1px rgb(0 0 0 / 20%);
-        color: #000000 !important;
-        border-radius: 4px;
-        font-size: 16px;
-        transition: all 0.2s ease-in-out;
-    }
+.myModal-footer .close-btn {
+    cursor: pointer;
+    padding: 0.6rem 2rem;
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 20%);
+    color: #000000 !important;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.2s ease-in-out;
+}
 
-        .myModal-footer .close-btn:hover {
-            box-shadow: inset 0 0 0 1px #47d3e5;
-            color: #47D3E5 !important;
-        }
+.myModal-footer .close-btn:hover {
+    box-shadow: inset 0 0 0 1px #47d3e5;
+    color: #47D3E5 !important;
+}
 
 #removeSizeEditor p {
     margin-bottom: 15px !important
