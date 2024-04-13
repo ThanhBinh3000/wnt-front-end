@@ -78,7 +78,6 @@ export class BaseComponent  {
 
   // search page
   async searchPage() {
-    await this.spinner.show();
     try {
       let body = this.formData.value
       body.paggingReq = {
@@ -91,22 +90,18 @@ export class BaseComponent  {
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
         this.totalPages = data.totalPages;
-        this.spinner.hide()
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
-        this.spinner.hide()
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     } finally {
-      await this.spinner.hide();
     }
   }
 
   // search list
   async searchList() {
-    await this.spinner.show();
     try {
       let body = this.formData.value
       let res = await this.service.searchList(body);
@@ -117,11 +112,9 @@ export class BaseComponent  {
             item.checked = false;
           });
         }
-        this.spinner.hide()
       } else {
         this.dataTable = [];
         this.totalRecord = 0;
-        this.spinner.hide()
       }
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -136,11 +129,9 @@ export class BaseComponent  {
   }
 
   async changePageSize(event: any) {
-    this.spinner.show();
     try {
       this.pageSize = event;
       this.searchPage();
-      this.spinner.hide();
     } catch (e) {
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
@@ -148,47 +139,17 @@ export class BaseComponent  {
   }
 
   async changePageIndex(event: any) {
-    this.spinner.show();
     try {
       this.page = event;
       this.searchPage();
-      this.spinner.hide();
     } catch (e) {
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
   }
 
-  // getPages(): number[] {
-  //   const totalPagesToShow = 9; // Số trang hiển thị tối đa
-  //   const pages : number[] = [];
-  //   const half = Math.floor(totalPagesToShow / 2);
-  //
-  //   let start = this.page - half;
-  //   let end = this.page + half;
-  //
-  //   if (start <= 0) {
-  //     start = 1;
-  //     end = totalPagesToShow;
-  //   }
-  //
-  //   if (end > this.totalPages) {
-  //     end = this.totalPages;
-  //     start = this.totalPages - totalPagesToShow + 1;
-  //     if (start <= 0) {
-  //       start = 1;
-  //     }
-  //   }
-  //
-  //   for (let i = start; i <= end; i++) {
-  //     pages.push(i);
-  //   }
-  //   return pages;
-  // }
-
   // DELETE 1 item table
   delete(message: string, item: any) {
-    console.log(message,item);
     this.modal.confirm({
       closable: false,
       title: 'Xác nhận',
@@ -198,7 +159,6 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -207,9 +167,6 @@ export class BaseComponent  {
             if(res && res.data){
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
               await this.searchPage();
-              this.spinner.hide();
-            }else{
-              this.spinner.hide();
             }
           });
         } catch (e) {
@@ -232,7 +189,6 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -241,10 +197,6 @@ export class BaseComponent  {
             if(res && res.data) {
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
               await this.searchPage();
-              this.spinner.hide();
-            }
-            else{
-              this.spinner.hide();
             }
           });
         } catch (e) {
@@ -267,7 +219,6 @@ export class BaseComponent  {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.spinner.show();
         try {
           let body = {
             id : item.id
@@ -276,8 +227,6 @@ export class BaseComponent  {
             if(res && res.data){
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.RESTORE_SUCCESS);
               await this.searchPage();
-              this.spinner.hide();
-            }else{
               this.spinner.hide();
             }
           });
@@ -292,7 +241,6 @@ export class BaseComponent  {
 
   // DELETE 1 multi
   deleteMulti(message?: string) {
-    console.log('deletee');
     let dataDelete : any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
@@ -311,14 +259,11 @@ export class BaseComponent  {
         okDanger: true,
         width: 310,
         onOk: async () => {
-          this.spinner.show();
           let res = await this.service.deleteMultiple({listIds: dataDelete});
           if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
             await this.searchPage();
-            this.spinner.hide();
           }
-          this.spinner.hide();
         },
       });
     } else {
@@ -346,14 +291,11 @@ export class BaseComponent  {
         okDanger: true,
         width: 310,
         onOk: async () => {
-          this.spinner.show();
           let res = await this.service.restoreMultiple({listIds: dataDelete});
           if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
             await this.searchPage();
-            this.spinner.hide();
           }
-          this.spinner.hide()
         },
       });
     } else {
@@ -362,7 +304,6 @@ export class BaseComponent  {
   }
 
   deleteMultiDatabase(message?: string) {
-    console.log('deletee');
     let dataDelete : any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
@@ -381,14 +322,11 @@ export class BaseComponent  {
         okDanger: true,
         width: 310,
         onOk: async () => {
-          this.spinner.show();
           let res = await this.service.deleteMultipleDatabase({listIds: dataDelete});
           if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
             await this.searchPage();
-            this.spinner.hide();
           }
-          this.spinner.hide();
         },
       });
     } else {
@@ -416,7 +354,6 @@ export class BaseComponent  {
 
   // Save
   async save(body: any) {
-    this.spinner.show();
     this.markFormGroupTouched(this.formData);
     if (this.formData.invalid) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.FORM_REQUIRED_ERROR);
@@ -432,29 +369,21 @@ export class BaseComponent  {
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
-        this.spinner.hide();
         return res.data;
       } else {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.ADD_SUCCESS);
-        this.spinner.hide();
         return res.data;
       }
-    }else{
-      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
-      this.spinner.hide();
     }
   }
 
   async detail(id:number) {
     if(id){
-      this.spinner.show()
       let res = await this.service.getDetail(id);
       if(res?.statusCode == STATUS_API.SUCCESS){
         const data = res.data;
-        this.spinner.hide();
         return data;
       } else {
-        this.spinner.hide();
         return null;
       }
     }
@@ -518,3 +447,4 @@ export class BaseComponent  {
     }
   }
 }
+t
