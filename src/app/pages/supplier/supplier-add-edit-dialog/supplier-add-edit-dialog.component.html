@@ -1,20 +1,23 @@
-<div class="modal fade" id="supplier-add-edit-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title">{{supplierID > 0 ? 'Cập nhật nhà cung cấp' : 'Thêm mới nhà cung cấp'}}
-                </h4>
-            </div>
-            <div class="modal-body">
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+            <h4 class="modal-title">{{supplierID > 0 ? 'Cập nhật nhà cung cấp' : 'Thêm mới nhà cung cấp'}}
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formData">
                 <div *ngIf="isMinimized">
                     <div class="form-group">
                         <div class="row">
                             <label class="col-sm-4 control-label">Tên nhà cung cấp<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="tenNhaCungCap" class="form-control mb-0 text-left" type="text" />
+                                <span class="text-danger field-validation-error"
+                                    *ngIf="formData.get('tenNhaCungCap')?.invalid && formData.get('tenNhaCungCap')?.touched">
+                                    Chưa nhập tên nhà cung cấp!
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -22,7 +25,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Số điện thoại</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="soDienThoai" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -30,7 +33,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Địa chỉ</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="diaChi" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -38,7 +41,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Mã số thuế</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="maSoThue" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -48,21 +51,13 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <input class="form-control mb-0" style="text-align:left" type="text"
-                                        ng-model="SupplyerModel.BarCode" />
+                                        formControlName="barcode" />
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary" title="Sinh mã vạch tự động"
                                             ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
                                                 class="fa-regular fa-barcode-read"></i></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label class="col-sm-4 control-label">Ghi chú</label>
-                            <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -72,7 +67,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Mã nhà cung cấp</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="code" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -81,7 +76,11 @@
                             <label class="col-sm-4 control-label">Tên nhà cung cấp<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="tenNhaCungCap" class="form-control mb-0 text-left" type="text" />
+                                <span class="text-danger field-validation-error"
+                                    *ngIf="formData.get('tenNhaCungCap')?.invalid && formData.get('tenNhaCungCap')?.touched">
+                                    Chưa nhập tên nhà cung cấp!
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -89,7 +88,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Địa chỉ</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="diaChi" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -97,7 +96,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Số điện thoại</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="soDienThoai" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -105,7 +104,7 @@
                         <div class="row">
                             <label class="col-sm-4 control-label">Nợ đầu kỳ</label>
                             <div class="col-sm-8">
-                                <input class="form-control mb-0 text-left" type="text" />
+                                <input formControlName="noDauKy" class="form-control mb-0 text-left" type="text" />
                             </div>
                         </div>
                     </div>
@@ -115,7 +114,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <input class="form-control mb-0" style="text-align:left" type="text"
-                                        ng-model="SupplyerModel.BarCode" />
+                                        formControlName="barcode" />
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary" title="Sinh mã vạch tự động"
                                             ng-click="genBarCode(); $event.preventDefault(); $event.stopPropagation();"><i
@@ -127,15 +126,21 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <label class="col-sm-4 control-label">Tên nhóm</label>
+                            <label class="col-sm-4 control-label">Nhóm nhà cung cấp <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8">
-                                <select class="form-control mb-0 ng-pristine ng-valid ng-touched"
-                                    name="SupplyerGroupCode" id="SupplyerGroupCode">
-                                    <option label="chợ thuốc hapulico" value="7617">chợ thuốc hapulico</option>
-                                    <option label="Mặc định" value="4">Mặc định</option>
-                                    <option label="nhà cung cấp " value="626">nhà cung cấp </option>
-                                    <option label="Nhà Phân Phối" value="2">Nhà Phân Phối</option>
-                                </select>
+                                <ng-select appendTo="body" formControlName="maNhomNhaCungCap" appearance="outline"
+                                    [items]="listNhomNhaCungCap" bindLabel="tenNhomNhaCungCap" bindValue="id"
+                                    placeholder="Tra cứu theo tên..." notFoundText="Không tìm thấy mục nào">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index"
+                                        let-search="searchTerm">
+                                        <span [ngOptionHighlight]="search">{{item.tenNhomNhaCungCap}}</span>
+                                    </ng-template>
+                                </ng-select>
+                                <span class="text-danger field-validation-error"
+                                    *ngIf="formData.get('maNhomNhaCungCap')?.invalid && formData.get('maNhomNhaCungCap')?.touched">
+                                    Chưa chọn nhóm nhà cung cấp!
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -144,16 +149,21 @@
                         <div class="form-group">
                             <div class="row">
                                 <label class="col-sm-4 control-label">Email</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
-                                </div>
+                                    <div class="col-sm-8">
+                                        <input formControlName="email" class="form-control mb-0 text-left"
+                                            type="text" />
+                                        <span class="text-danger field-validation-error"
+                                            *ngIf="formData.get('email')?.errors?.['email'] && formData.get('email')?.touched">
+                                            Email không đúng định dạng!
+                                        </span>
+                                    </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <label class="col-sm-4 control-label">Số Fax</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="soFax" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -161,7 +171,7 @@
                             <div class="row">
                                 <label class="col-sm-4 control-label">Website</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="website" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -169,7 +179,7 @@
                             <div class="row">
                                 <label class="col-sm-4 control-label">Mã số thuế</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="maSoThue" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -177,7 +187,7 @@
                             <div class="row">
                                 <label class="col-sm-4 control-label">Người liên hệ</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="nguoiLienHe" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -185,7 +195,7 @@
                             <div class="row">
                                 <label class="col-sm-4 control-label">Người đại diện</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="nguoiDaiDien" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -193,17 +203,18 @@
                             <div class="row">
                                 <label class="col-sm-4 control-label">Địa bàn hoạt động</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control mb-0 text-left" type="text" />
+                                    <input formControlName="diaBanHoatDong" class="form-control mb-0 text-left" type="text" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">{{supplierID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
-            </div>
+            </form>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="saveEdit()">{{supplierID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
         </div>
     </div>
 </div>
