@@ -16,51 +16,61 @@
   <div class="col-md-9">
     <div class="baocao-container box-group-white">
       <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
-      <table mat-table
-             class="table table-striped table-bordered table-hover tr-ng-grid"
-             [dataSource]="getDataSource()" matSort>
+      <div class="mat-table-container">
+        <table mat-table
+               class="table table-striped table-bordered table-hover tr-ng-grid"
+               [dataSource]="getDataSource()" matSort>
 
-        <ng-container matColumnDef="#">
-          <th mat-header-cell *matHeaderCellDef style="width:8%"> #</th>
-          <td mat-cell *matCellDef="let data; index as i;" style="width:8%"> {{ (page - 1) * pageSize + i + 1 }}</td>
-        </ng-container>
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef style="width:8%"> #</th>
+            <td mat-cell *matCellDef="let data; index as i;" style="width:8%">
+              <div class="text-right">
+                {{ (page - 1) * pageSize + i + 1 }}
+              </div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="tenNhomKhachHang">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:42%"> Nhóm khách hàng</th>
-          <td mat-cell *matCellDef="let data" style="width:42%"> {{ data.tenNhomKhachHang }}</td>
-        </ng-container>
+          <ng-container matColumnDef="tenNhomKhachHang">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:42%"> Nhóm khách hàng</th>
+            <td mat-cell *matCellDef="let data" style="width:42%">
+              <div class="text-left">{{ data.tenNhomKhachHang }}</div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="ghiChu">
-          <th mat-header-cell *matHeaderCellDef style="width:35%"> Ghi chú</th>
-          <td mat-cell *matCellDef="let data" style="width:35%"> {{ data.ghiChu }}</td>
-        </ng-container>
+          <ng-container matColumnDef="ghiChu">
+            <th mat-header-cell *matHeaderCellDef style="width:35%"> Ghi chú</th>
+            <td mat-cell *matCellDef="let data" style="width:35%">
+              <div class="text-left">{{ data.ghiChu }}</div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef style="width:15%"></th>
-          <td mat-cell *matCellDef="let data" style="width:15%">
-            <div class="baocao-actions">
-              <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
-                class="fa-regular fa-pen-to-square"></i></button>
-              <button class="btn btn-sm btn-danger"
-                      (click)="delete('Bạn có chắc chắn muốn xóa nhóm khách hàng \'' +data.tenNhomKhachHang + '\' ?', data)">
-                <i class="fa-regular fa-trash"></i></button>
-            </div>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef style="width:15%"></th>
+            <td mat-cell *matCellDef="let data" style="width:15%">
+              <div class="baocao-actions">
+                <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                  class="fa-regular fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger"
+                        (click)="delete('Bạn có chắc chắn muốn xóa nhóm khách hàng \'' +data.tenNhomKhachHang + '\' ?', data)">
+                  <i class="fa-regular fa-trash"></i></button>
+              </div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="footer">
-          <td mat-footer-cell *matFooterCellDef colspan="100">
-            <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                            (pageChange)="changePageIndex($event)"
-                            (pageSizeChange)="changePageSize($event)"></app-pagination>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100">
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                              (pageChange)="changePageIndex($event)"
+                              (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
 
-      </table>
+        </table>
+      </div>
     </div>
   </div>
 </div>

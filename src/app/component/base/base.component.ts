@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 // @ts-ignore
 import {saveAs} from 'file-saver';
@@ -22,7 +22,7 @@ import {MatDialog} from "@angular/material/dialog";
   selector: 'app-base',
   templateUrl: './base.component.html',
 })
-export class BaseComponent  {
+export class BaseComponent {
   // User Info
   userInfo: UserLogin;
   department: Department;
@@ -32,6 +32,9 @@ export class BaseComponent  {
   dataTable: any[] = [];
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
+  filterType: number = 0;
+  fromDate: string = '';
+  toDate: string = '';
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
@@ -80,6 +83,7 @@ export class BaseComponent  {
   async searchPage() {
     try {
       let body = this.formData.value
+      console.log(body)
       body.paggingReq = {
         limit: this.pageSize,
         page: this.page - 1
@@ -146,6 +150,30 @@ export class BaseComponent  {
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
+  }
+
+  async changeFilterType(event: any) {
+    try {
+      if(event == 0){
+        this.fromDate = '';
+        this.toDate = '';
+      }
+      else {
+
+      }
+      this.searchPage();
+    } catch (e) {
+      this.spinner.hide();
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    }
+  }
+
+  async changeFromDate(event: any) {
+    this.fromDate = event;
+  }
+
+  async changeToDate(event: any) {
+    this.toDate = event;
   }
 
   // DELETE 1 item table

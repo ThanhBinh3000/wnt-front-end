@@ -22,6 +22,11 @@ export class NhaThuocsService extends BaseService {
     return this.httpClient.get<ResponseData>(url).toPromise();
   }
 
+  getNewStoreCode() {
+    const url = `/api/wnt-system/nha-thuocs/new-store-code`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
+  
   searchPageNhaThuocDongBoPhieu(body: any) {
     const url = `/api/wnt-system/nha-thuocs/search-page-nha-thuoc-dong-bo-phieu`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();

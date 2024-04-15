@@ -144,7 +144,19 @@
   width: auto!important;
 }
 
+.mat-table-container{
+  max-height: 1000px;
+  overflow: auto;
+}
+
+.mat-mdc-table-sticky {
+  opacity: 1;
+}
+
 .mat-mdc-header-cell{
   background-color: #a9a9a9!important;
 }
 
+.bg-white{
+  background:#ffffff !important;
+}

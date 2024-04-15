@@ -22,6 +22,16 @@ export class UserProfileService extends BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
+  searchListUserManagement(body: any) {
+    const url = `/api/wnt-system/nguoi-dung/search-list-user-management`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  searchListStaffManagement(body: any) {
+    const url = `/api/wnt-system/nguoi-dung/search-list-staff-management`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
   createUser(body: any) {
     const url = `/api/wnt-system/nguoi-dung/create-user`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();

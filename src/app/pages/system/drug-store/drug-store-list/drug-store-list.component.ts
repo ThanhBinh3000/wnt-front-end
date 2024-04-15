@@ -1,220 +1,280 @@
-import {Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Injector,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 import {UserProfileService} from "../../../../services/system/user-profile.service";
-import {MatDialog} from "@angular/material/dialog";
 import {NhaThuocsService} from "../../../../services/system/nha-thuocs.service";
 import {BaseComponent} from "../../../../component/base/base.component";
+import {MatSort} from "@angular/material/sort";
+import {FormControl} from "@angular/forms";
+import {STATUS_API} from "../../../../constants/message";
+import {TieuChiTrienKhaiService} from "../../../../services/categories/tieu-chi-trien-khai.service";
+import {MatDatepicker} from "@angular/material/datepicker";
+import {AccountAddEditDialogComponent} from "../../admin/account-add-edit-dialog/account-add-edit-dialog.component";
+import {DrugStoreAddEditDialogComponent} from "../drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
+import {TinhThanhsService} from "../../../../services/categories/tinh-thanhs.service";
+import {TypeBasisService} from "../../../../services/categories/type-basis.service";
+
 @Component({
   selector: 'drug-store-list',
   templateUrl: './drug-store-list.component.html',
   styleUrl: './drug-store-list.component.css'
 })
-export class DrugStoreListComponent extends BaseComponent implements OnInit {
+export class DrugStoreListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Tra cứu thông tin nhà thuốc";
-  @ViewChild('titleCode') titleCodeRef?: ElementRef;
-  @ViewChild('titleName') titleNameRef?: ElementRef;
-  @ViewChild('titleAddress') titleAddressRef?: ElementRef;
-  @ViewChild('titlePhone') titlePhoneRef?: ElementRef;
-  contentCodeLeft: number = 0;
-  contentNameLeft: number = 0;
-  contentAddressLeft: number = 0;
-  contentPhoneLeft: number = 0;
-  drugStoreCode: string = '';
-  drugStoreTypes = [
-    {
-        name: "--Tất cả--", value: -1
-    },
-    {
-        name: "NT LT", value: 101
-    },
-    {
-        name: "NT QL", value: 102
-    },
-    {
-        name: "Công ty", value: 103
-    },
-    {
-        name: "Phòng khám", value: 104
-    },
-    {
-        name: "Đặt hàng", value: 105
-    },
-    {
-        name: "Nhà tổng đặt hàng", value: 106
-    },
-];
-drugStorePaymentTypes = [
-  {
-      name: "--Tất cả--", value: -1
-  },
-  {
-      name: "Chưa thanh toán", value: 0
-  },
-  {
-      name: "Thanh toán chưa đủ", value: 1
-  },
-  {
-      name: "Đã thanh toán", value: 2
-  }
-];
-expiredTypes = [
-  {
-      name: "--Tất cả--", value: -1
-  },
-  {
-      name: "Không có hạn", value: 0
-  },
-  {
-      name: "Có hạn", value: 1
-  },
-  {
-      name: "Dưới 30 ngày", value: 2
-  },
-  {
-      name: "Dưới 7 ngày", value: 3
-  },
-  {
-      name: "Đã hết hạn", value: 4
-  },
-];
-drugStoreDeployTypes = [
-  {
-      name: "--Tất cả--", value: -1
-  },
-  {
-      name: "Chưa triển khai", value: 0
-  },
-  {
-      name: "Đã triển khai", value: 1
-  }
-];
-hideColumns = [
-  {
-      id: 0, name: "--Tất cả--", value: -1
-  },
-  {
-      id: 1, name: "Địa chỉ", disable: false
-  },
-  {
-      id: 2, name: "Người đại diện", disable: false
-  },
-  {
-      id: 3, name: "Người tạo", disable: false
-  },
-  {
-      id: 4, name: "Ngày tạo - Ngày hh", disable: false
-  },
-  {
-      id: 5, name: "TK LT", disable: false
-  },
-  {
-      id: 6, name: "CS Bán hàng", disable: false
-  },
-  {
-      id: 7, name: "Ghi chú kinh doanh", disable: false
-  },
-  {
-      id: 8, name: "Ghi chú triển khai", disable: false
-  },
-  {
-      id: 9, name: "Kết quả triển khai", disable: false
-  },
-  {
-      id: 10, name: "Tổng tiền", disable: false
-  },
-  {
-      id: 11, name: "Ngày thu tiền", disable: false
-  }
-];
-typeDateItem = [
-  {
-      id: 0, name: "--Tất cả--", value: -1
-  },
-  {
-      id: 1, name: "Ngày tạo nhà thuốc", disable: false
-  },
-  {
-      id: 2, name: "Ngày giao dịch", disable: false
-  },
-  {
-      id: 3, name: "Ngày thu tiền", disable: false
-  }
-];
-znsTypes = [
-  {
-      name: "--Tất cả--", value: 0
-  },
-  {
-      name: "Xác nhận thanh toán", value: 1
-  },
-  {
-      name: "Tạo tài khoản", value: 3
-  }
-];
-connectivityTypes = [
-  {
-      name: "--Tất cả--", value: 0
-  },
-  {
-      name: "Đã liên thông", value: 1
-  },
-  {
-      name: "Chưa liên thông", value: 3
-  }
-];
+  columns = [
+    '#', 'maNhaThuoc', 'tenNhaThuoc',
+    'diaChi', 'tenTinhThanh', 'dienThoai', 'nguoiDaiDien',
+    'createdByUserName', 'created', 'ttGuiTinXNtaoTK', 'connectivityCode',
+    'connectivityUserName', 'nameTypeBasis', 'nhanVienKinhDoanh', 'chamSocSauBanHang',
+    'ghiChu', 'businessDescription', 'ketQuaTrienKhai', 'tienThanhToan',
+    'paidAmount', 'ttThuTien', 'ttGuiTinXNTT', 'kqGuiTinXNTT',
+    'paidDate', 'tongNX', 'action'
+  ];
+  displayedColumns: string[] = this.columns;
+  hideColumns = new FormControl();
+  hideColumnList = [
+    { name: "--Tất cả--", value: 'all' },
+    { name: "Địa chỉ", value: 'diaChi' },
+    { name: "Người đại diện", value: 'nguoiDaiDien' },
+    { name: "Người tạo", value: 'createdByUserName' },
+    { name: "Ngày tạo - Ngày hết hạn", value: 'created' },
+    { name: "TK LT", value: 'connectivityUserName' },
+    { name: "C.S Bán hàng", value: 'csBanHang' },
+    { name: "Ghi chú kinh doanh", value: 'ghiChuKinhDoanh' },
+    { name: "Ghi chú triển khai", value: 'ghiChuTrienKhai' },
+    { name: "Kết quả triển khai", value: 'ketQuaTrienKhai' },
+    { name: "Tổng tiền", value: 'paidAmount' },
+    { name: "Ngày thu tiền", value: 'paidDate' }
+  ];
+  storeTypes = [
+    { name: "NT LT", value: 101 },
+    { name: "NT QL", value: 102 },
+    { name: "Công ty", value: 103 },
+    { name: "Phòng khám", value: 104 },
+    { name: "Đặt hàng", value: 105 },
+    { name: "Nhà tổng đặt hàng", value: 106 },
+  ];
+  drugStorePaymentTypes = [
+    { name: "Chưa thanh toán", value: 0 },
+    { name: "Thanh toán chưa đủ", value: 1 },
+    { name: "Đã thanh toán", value: 2 }
+  ];
+  expiredTypes = [
+    { name: "Không có hạn", value: 0 },
+    { name: "Có hạn", value: 1 },
+    { name: "Dưới 30 ngày", value: 2 },
+    { name: "Dưới 7 ngày", value: 3 },
+    { name: "Đã hết hạn", value: 4 },
+  ];
+  drugStoreDeployTypes = [
+    { name: "Chưa triển khai", value: 0 },
+    { name: "Đã triển khai", value: 1 }
+  ];
+  typeDateItem = [
+    { id: 1, name: "Ngày tạo nhà thuốc", disable: false },
+    { id: 2, name: "Ngày giao dịch", disable: false },
+    { id: 3, name: "Ngày thu tiền", disable: false }
+  ];
+  znsTypes = [
+    { name: "Xác nhận thanh toán", value: 1 },
+    { name: "Tạo tài khoản", value: 3 }
+  ];
+  connectivityTypes = [
+    { name: "Đã liên thông", value: 1 },
+    { name: "Chưa liên thông", value: 3 }
+  ];
+  listSuperUser : any[] = [];
+  listTieuChiTrienKhai : any[] = [];
+  listTinhThanh : any[] = [];
+  listTypeBasis: any[] = [];
+
   constructor(
     injector: Injector,
     private titleService: Title,
     private _service: NhaThuocsService,
-    // private dialog: MatDialog
+    private userProfileService : UserProfileService,
+    private tieuChiTrienKhaiService : TieuChiTrienKhaiService,
+    private tinhThanhsService : TinhThanhsService,
+    private typeBasisService: TypeBasisService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-
+      textSearch: [''],
+      storeTypeId: [null],
+      storeDeployTypeId: [null],
+      numDaysNoTrans: [0],
+      hoatDong: [true],
+      createdByUserId: [null],
+      tinhThanhId: [null],
+      idTypeBasic: [null],
+      storePaymentTypeId: [null],
+      expiredType: [null],
+      supporterId: [null],
+      typeZNS: [null],
+      outOfInvoice: [false]
     });
   }
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.getDataFilter();
     await this.searchPage();
-    console.log(this.dataTable)
   }
 
-  onTableScroll() {
-    const titleCode = this.titleCodeRef?.nativeElement;
-    const titleName = this.titleNameRef?.nativeElement;
-    const titleAddress = this.titleAddressRef?.nativeElement;
-    const titlePhone = this.titlePhoneRef?.nativeElement;
-    const titleCodeWidth = titleCode.offsetWidth - 2; // - border
-    const titleNameWidth = titleName.offsetWidth - 2; // - border
-    const titleAddressWidth = titleAddress.offsetWidth - 2; // - border
-    titleCode.style.left = '-1px'; // - border
-    this.contentCodeLeft = -1; // - border
-    titleName.style.left = titleCodeWidth + 'px';
-    this.contentNameLeft = titleCodeWidth;
-    titleAddress.style.left = titleCodeWidth + titleNameWidth + 'px';
-    this.contentAddressLeft = titleCodeWidth + titleNameWidth;
-    titlePhone.style.left= titleCodeWidth + titleNameWidth + titleAddressWidth + 'px';
-    this.contentPhoneLeft = titleCodeWidth + titleNameWidth + titleAddressWidth;
+  @ViewChild(MatSort) sort?: MatSort;
+
+  async ngAfterViewInit() {
+    this.dataSource.sort = this.sort!;
   }
 
-  getPhoneNumbers(item: any) {
-    let result = '';
-    if (item.mobile != null && item.mobile.length > 0) {
-      result = item.mobile;
-    }
-    if (item.dienThoai != null && item.dienThoai.length > 0) {
-      if (result.length > 0) {
-        result += ("<br>" + item.dienThoai);
+  getDataFilter(){
+    // Danh sách tài khoản quyền hệ thống
+    this.userProfileService.searchListUserManagement({roleName: 'SuperUser'}).then((res)=>{
+      if(res?.statusCode == STATUS_API.SUCCESS){
+        this.listSuperUser = res.data;
       }
-      else {
-        result = item.dienThoai;
+    });
+    // Tiêu chí triển khai
+    this.tieuChiTrienKhaiService.searchList({type: 0}).then((res)=>{
+      if(res?.statusCode == STATUS_API.SUCCESS){
+        this.listTieuChiTrienKhai = res.data;
+        this.listTieuChiTrienKhai.unshift({ id: 0, name: "Chưa triển khai" });
       }
-    }
-    return result;
+    });
+    // Tỉnh thành
+    this.tinhThanhsService.searchList({}).then((res) => {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
+        this.listTinhThanh = res.data;
+      }
+    });
+    // Chính sách bán hàng
+    this.typeBasisService.searchList({}).then((res) => {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
+        this.listTypeBasis = res.data;
+      }
+    });
   }
 
-  onCheckConnectivity(item: any) {
+  async onResetSearching() {
+    this.formData.reset();
+    await this.searchPage();
+  }
 
+  onChangeDisplayedColumns(value: any){
+    if(value == 'all'){
+      if(this.hideColumns.value?.includes('all')){
+        this.hideColumns.setValue(this.hideColumnList.map(i => i.value));
+      } else{
+        this.hideColumns.setValue([]);
+      }
+    }
+    this.displayedColumns = this.columns.filter(col=> !this.hideColumns.value.includes(col));
+  }
+
+  @ViewChildren('pickerPaidDate') pickerPaidDate!: QueryList<MatDatepicker<Date>>;
+
+  openDatepicker(rowIndex: number): void {
+    const datepicker: MatDatepicker<Date> = this.pickerPaidDate.toArray()[rowIndex];
+    if (datepicker) {
+      datepicker.open();
+    }
+  }
+
+  getMessageConfirmPaymentZNS(code: any) {
+    let val = "";
+    switch (code)
+    {
+      case -106:
+        val = "-106: Phương thức không được hỗ trợ";
+        break;
+      case -108:
+        val = "-108: Số điện thoại không hợp lệ";
+        break;
+      case -109:
+        val = "-109: ID mẫu ZNS không hợp lệ";
+        break;
+      case -112:
+        val = "-112: Nội dung mẫu ZNS không hợp lệ";
+        break;
+      case -114:
+        val = "-114: Người dùng không nhận được ZNS vì các lý do: Trạng thái tài khoản, Tùy chọn nhận ZNS, Sử dụng Zalo phiên bản cũ, hoặc các lỗi nội bộ khác";
+        break;
+      case -115:
+        val = "-115: Tài khoản ZNS không đủ số dư";
+        break;
+      case -117:
+        val = "-117: OA hoặc ứng dụng gửi ZNS chưa được cấp quyền sử dụng mẫu ZNS này";
+        break;
+      case -118:
+        val = "-118: Tài khoản Zalo không tồn tại hoặc đã bị vô hiệu hoá";
+        break;
+      case -119:
+        val = "-119: Tài khoản không thể nhận ZNS";
+        break;
+      default:
+        val = "Gửi thành công";
+        break;
+    }
+    return val;
+  }
+
+  async onBusinessChanged($event: any) {
+
+  }
+
+  async onSupporterChanged($event: any) {
+
+  }
+
+  async onUpdateNoteType(item: any) {
+
+  }
+
+  async onUpdateBusinessDescription(item: any) {
+
+  }
+
+  async onResultBusinessChanged(item: any) {
+
+  }
+
+  async onCheckConnectivity(item: any) {
+
+  }
+
+  async onUpdateInfoCustomerPayment(item: any) {
+
+  }
+
+  async openRegionalDetailDialog(item: any) {
+
+  }
+
+  async openGeneralStoreMappingDialog(item: any) {
+
+  }
+
+  async openDrugStoreDetailDialog(item: any) {
+
+  }
+
+  async openAddEditDialog(item: any) {
+    const dialogRef = this.dialog.open(DrugStoreAddEditDialogComponent, {
+      data: item,
+      width: '90%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
+    });
   }
 }
