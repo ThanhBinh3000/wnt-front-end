@@ -34,6 +34,7 @@ export class CustomerListComponent  extends BaseComponent implements OnInit, Aft
   listNguoiQuanTamOA : any[] = [];
   listNhaThuocDongBo : any[] = [];
   count : any = 1;
+  isDeleted : boolean = false;
 
 constructor(
   injector: Injector,
