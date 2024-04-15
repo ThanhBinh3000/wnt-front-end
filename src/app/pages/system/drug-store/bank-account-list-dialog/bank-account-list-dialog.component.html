@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">Danh sách tài khoản ngân hàng
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="mat-table-container">
+        <table mat-table
+               class="table table-striped table-bordered table-hover tr-ng-grid"
+               [dataSource]="getDataSource()" matSort>
+
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef> #</th>
+            <td mat-cell *matCellDef="let data; index as i;">
+              <div class="text-right">
+                {{ (page - 1) * pageSize + i + 1 }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="accountNo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Thông tin tài khoản</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{data.bankCode}} - {{data.accountNo}} - {{data.accountName}}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="bankBin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngân hàng</th>
+            <td mat-cell *matCellDef="let data">
+              <div>
+                <a [href]="data.bankLogo">
+                  <img [src]="data.bankLogo" height="50" [alt]="data.bankName"/>
+                </a>
+                <span>{{data.bankName}} ({{data.bankShortName}})</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let data">
+              <div class="baocao-actions">
+                <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                  class="fa-regular fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger"
+                        (click)="delete('Bạn có chắc chắn muốn xóa tài khoản \'' + data.bankCode + ' - ' + data.accountNo + ' - ' + data.accountName + '\' ?', data)">
+                  <i class="fa-regular fa-trash"></i></button>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100">
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                              (pageChange)="changePageIndex($event)"
+                              (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+      <button type="button" class="btn btn-primary" (click)="openAddEditDialog(null)">Thêm mới</button>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {SystemComponent} from './system.component';
 import {RouterOutlet} from "@angular/router";
 import {SystemRoutingModule} from "./system.routing";
@@ -20,6 +20,17 @@ import {
 } from './drug-store/criteria-business-dialog/criteria-business-dialog.component';
 import {DrugStoreInformationComponent} from './drug-store/drug-store-information/drug-store-information.component';
 import {ComponentsModule} from "../../component/base/components.module";
+import {
+  DrugStoreAddEditDialogComponent
+} from "./drug-store/drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
+import {BankAccountListDialogComponent} from "./drug-store/bank-account-list-dialog/bank-account-list-dialog.component";
+import {
+  BankAccountAddEditDialogComponent
+} from "./drug-store/bank-account-add-edit-dialog/bank-account-add-edit-dialog.component";
+import {UserPickerListDialogComponent} from "./drug-store/user-picker-list-dialog/user-picker-list-dialog.component";
+import {
+  DrugStorePickerListDialogComponent
+} from "./drug-store/drug-store-picker-list-dialog/drug-store-picker-list-dialog.component";
 
 @NgModule({
   declarations: [
@@ -32,12 +43,18 @@ import {ComponentsModule} from "../../component/base/components.module";
     ConfirmPaymentSendZnsDialogComponent,
     GeneralStoreMappingDialogComponent,
     CriteriaBusinessDialogComponent,
+    DrugStoreAddEditDialogComponent,
+    BankAccountListDialogComponent,
+    BankAccountAddEditDialogComponent,
+    UserPickerListDialogComponent,
+    DrugStorePickerListDialogComponent
   ],
   imports: [
     CommonModule,
     RouterOutlet,
     SystemRoutingModule,
     ComponentsModule,
+    NgOptimizedImage,
   ],
   exports: [
     AccountAddEditDialogComponent,
@@ -45,6 +62,11 @@ import {ComponentsModule} from "../../component/base/components.module";
     ConfirmPaymentSendZnsDialogComponent,
     GeneralStoreMappingDialogComponent,
     CriteriaBusinessDialogComponent,
+    DrugStoreAddEditDialogComponent,
+    BankAccountListDialogComponent,
+    BankAccountAddEditDialogComponent,
+    UserPickerListDialogComponent,
+    DrugStorePickerListDialogComponent
   ],
 })
 export class SystemModule {

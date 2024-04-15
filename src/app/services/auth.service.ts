@@ -64,6 +64,21 @@ export class AuthService extends BaseService {
     return (!(this.getUser() == null || this.getUser() == undefined));
   }
 
+  isSuperUser() {
+    var roles = this.getUser()?.roles;
+    return roles.some((item: any) => item.roleName === "Super User");
+  }
+
+  isAdmin() {
+    var roles = this.getUser()?.roles;
+    return roles.some((item: any) => item.roleName === "Admin");
+  }
+
+  isUser() {
+    var roles = this.getUser()?.roles;
+    return roles.some((item: any) => item.roleName === "User");
+  }
+
   logout() {
     localStorage.clear();
     this.router.navigate(['login']).then(r => {

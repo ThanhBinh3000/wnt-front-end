@@ -57,88 +57,71 @@
     </div>
 
     <div class="col-md-9">
-      <div class="box-group-white">
-        <h2 class="text-center"><b>QUẢN LÝ TÀI KHOẢN NGƯỜI DÙNG</b></h2>
-        <div class="baocao-container">
-          <table class="table table-striped table-bordered table-hover tr-ng-grid">
-            <thead>
-            <tr>
-              <th class="text-right">
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> #</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Tên đăng nhập</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Họ và tên</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Thư điện tử</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Nhóm quyền</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Nhà thuốc</div>
-                </div>
-              </th>
-              <th>
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Hoạt động</div>
-                </div>
-              </th>
-              <!--Quyền do TechnicalSupport cấp-->
-              <th *ngIf="true" style="width: 15%">
-                <div class="tr-ng-column-header tr-ng-cell">
-                  <div class="tr-ng-title"> Quyền</div>
-                </div>
-              </th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of dataTable; index as i;">
-              <td>
+      <div class="baocao-container box-group-white">
+        <h2 class="text-center"><b>{{title}}</b></h2>
+        <div class="mat-table-container">
+          <table mat-table
+                 class="table table-striped table-bordered table-hover tr-ng-grid"
+                 [dataSource]="getDataSource()" matSort>
+
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef> #</th>
+              <td mat-cell *matCellDef="let data; index as i;">
                 <div class="text-right">
-                  <a href=""
-                     ng-click="onRegionalDetails(gridItem.UserId, 3); $event.preventDefault(); $event.stopPropagation();">
+                  <a (click)="openRegionalDetailDialog(data)">
                     {{ (page - 1) * pageSize + i + 1 }}
                   </a>
                 </div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="userName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên đăng nhập</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.userName }}</div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="tenDayDu">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ và tên</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.tenDayDu }}</div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Thư điện tử</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left"><a href="mailto:{{ data.email }}">{{ data.email }}</a></div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="nhomQuyens">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhóm quyền</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.nhomQuyens }}</div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="nhaThuocs">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhà thuốc</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.nhaThuocs }}</div>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="hoatDong">
+              <th mat-header-cell *matHeaderCellDef> Hoạt động</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-center">
                   <input type="checkbox" [(ngModel)]="data.hoatDong" disabled>
                 </div>
               </td>
-              <!--Quyền do TechnicalSupport cấp-->
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="permissions">
+              <th mat-header-cell *matHeaderCellDef> Quyền</th>
+              <td mat-cell *matCellDef="let data">
                 <form class="ng-pristine ng-valid ng-scope">
                   <div class="multiselect">
                     <div class="selectBox" ng-click="showCheckboxes(gridItem)">
@@ -191,7 +174,11 @@
                   </div>
                 </form>
               </td>
-              <td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let data">
                 <div class="baocao-actions" style="justify-content: start;">
                   <button class="btn btn-sm btn-primary" title="Cập nhật thông tin người dùng"
                           (click)="openAddEditDialog(data)"><i class="fas fa-pen-to-square"></i></button>
@@ -203,17 +190,20 @@
                           (click)="openResetPasswordDialog(data)"><i class="fa-regular fa-key"></i></button>
                 </div>
               </td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr id="footerId">
-              <td colspan="100">
+            </ng-container>
+
+            <ng-container matColumnDef="footer">
+              <td mat-footer-cell *matFooterCellDef colspan="100">
                 <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
                                 (pageChange)="changePageIndex($event)"
                                 (pageSizeChange)="changePageSize($event)"></app-pagination>
               </td>
-            </tr>
-            </tfoot>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="['footer']; sticky: true"></tr>
+
           </table>
         </div>
       </div>

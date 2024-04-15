@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {UserProfileService} from "../../../../services/system/user-profile.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -8,14 +8,26 @@ import {AccountAddEditDialogComponent} from "../account-add-edit-dialog/account-
 import {
   AccountResetPasswordDialogComponent
 } from "../account-reset-password-dialog/account-reset-password-dialog.component";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'account-manager',
   templateUrl: './account-manager.component.html',
   styleUrl: './account-manager.component.css'
 })
-export class AccountManagerComponent extends BaseComponent implements OnInit {
+export class AccountManagerComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Quản lý tài khoản người dùng";
+  displayedColumns = [
+    '#',
+    'userName',
+    'tenDayDu',
+    'email',
+    'nhomQuyens',
+    'nhaThuocs',
+    'hoatDong',
+    'permissions',
+    'action'
+  ];
   drugStores = [
     {
       code: '0010',
@@ -51,6 +63,11 @@ export class AccountManagerComponent extends BaseComponent implements OnInit {
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     await this.searchPageUserManagement();
+  }
+
+  @ViewChild(MatSort) sort?: MatSort;
+  async ngAfterViewInit() {
+    this.dataSource.sort = this.sort!;
   }
 
   async searchPageUserManagement() {
@@ -94,5 +111,9 @@ export class AccountManagerComponent extends BaseComponent implements OnInit {
         await this.searchPage();
       }
     });
+  }
+
+  async openRegionalDetailDialog(userProfile: any) {
+
   }
 }

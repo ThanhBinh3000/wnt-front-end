@@ -7,7 +7,6 @@ import {
   CustomerGroupAddEditDialogComponent
 } from "../customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 import {MatSort} from "@angular/material/sort";
-import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'customer-group-list',
@@ -30,13 +29,12 @@ export class CustomerGroupListComponent extends BaseComponent implements OnInit,
     });
   }
 
-  @ViewChild(MatSort) sort?: MatSort;
-
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     await this.searchPage();
   }
 
+  @ViewChild(MatSort) sort?: MatSort;
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
   }

@@ -1,0 +1,12 @@
+.tab-check-color {
+  background-color: #35a6ca!important;
+  color: #fff!important;
+}
+
+.tab-uncheck-color {
+  color: #337ab7!important;
+}
+
+.border-upload-image{
+  border: 1px solid black;
+}
