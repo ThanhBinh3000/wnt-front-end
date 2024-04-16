@@ -7,14 +7,28 @@ import { ReportComponent } from './report.component';
 import { DrugTransactionHistoryComponent } from './drug-transaction-history/drug-transaction-history.component';
 import { TransactionHistoryDeliveryItemTablePartialComponent } from './transaction-history-delivery-item-table-partial/transaction-history-delivery-item-table-partial.component';
 import { TransactionHistoryReceiptItemTablePartialComponent } from './transaction-history-receipt-item-table-partial/transaction-history-receipt-item-table-partial.component';
+import {RevenueDetailsByDayComponent} from "./RevenueDetailsByDay/RevenueDetailsByDay.component";
+import {ComponentsModule} from "../../component/base/components.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatFooterCell,
+  MatFooterRow,
+  MatFooterRowDef,
+  MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable
+} from "@angular/material/table";
+import {MatSort, MatSortHeader} from "@angular/material/sort";
 @NgModule({
   declarations: [
     ReportComponent,
     DrugTransactionHistoryComponent,
     TransactionHistoryDeliveryItemTablePartialComponent,
-    TransactionHistoryReceiptItemTablePartialComponent
+    TransactionHistoryReceiptItemTablePartialComponent,
+    RevenueDetailsByDayComponent,
   ],
-  imports: [CommonModule, RouterOutlet, ReportRoutingModule],
+  imports: [CommonModule, RouterOutlet, ReportRoutingModule, ComponentsModule, FormsModule, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatSort, MatSortHeader, MatTable, ReactiveFormsModule],
   exports: [],
 })
 export class ReportModule {
