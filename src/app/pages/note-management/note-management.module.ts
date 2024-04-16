@@ -24,6 +24,7 @@ import { SupplierModule } from '../supplier/supplier.module';
 import { CustomerModule } from '../customer/customer.module';
 import { InventoryModule } from '../inventory/inventory.module';
 import { TransactionModule } from '../transaction/transaction.module';
+import {ComponentsModule} from "../../component/base/components.module";
 
 @NgModule({
   declarations: [
@@ -46,9 +47,10 @@ import { TransactionModule } from '../transaction/transaction.module';
     WarehouseTransferNoteDetailComponent
   ],
   imports: [
-    CommonModule, 
-    RouterOutlet, 
-    NoteManagementRoutingModule, 
+    CommonModule,
+    ComponentsModule,
+    RouterOutlet,
+    NoteManagementRoutingModule,
     DrugModule,
     SupplierModule,
     InventoryModule,

@@ -20,4 +20,10 @@ export const RECORD_STATUS = {
   DELETED_DATABASE: 3,
 };
 
+export const LOAI_PHIEU = {
+  PHIEU_NHAP : 1,
+  PHIEU_XUAT : 2,
+  PHIEU_NHAP_TU_KH : 3
+}
+
 export const PAGE_SIZE_DEFAULT = 10;

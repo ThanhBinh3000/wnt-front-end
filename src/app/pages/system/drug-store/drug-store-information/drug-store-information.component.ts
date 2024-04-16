@@ -43,7 +43,7 @@ export class DrugStoreInformationComponent extends BaseComponent implements OnIn
     private titleService: Title,
     injector: Injector,
     private nhaThuocsService: NhaThuocsService,
-    private authService: AuthService
+    // private authService: AuthService
   ) {
     super(injector, nhaThuocsService);
     this.titleService.setTitle(this.title);

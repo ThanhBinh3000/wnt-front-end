@@ -16,10 +16,10 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
 
   constructor(
     injector: Injector,
-    public authService: AuthService,
+    public _service: AuthService,
     public userProfileService: UserProfileService,
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,) {
-    super(injector, authService);
+    super(injector, _service);
   }
 
   ngOnInit() {

@@ -15,7 +15,10 @@ import {NhaThuocsService} from "../../../services/system/nha-thuocs.service";
 export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
   private nhaThuoc: any = undefined;
 
-  constructor(injector: Injector, private router: Router, private loadingService: SpinnerService, private authService: AuthService, private nhaThuocsService: NhaThuocsService, public notificationService: NotificationService) {
+  constructor(
+    injector: Injector,
+    private router: Router,
+    private loadingService: SpinnerService, private nhaThuocsService: NhaThuocsService, public notificationService: NotificationService) {
     super(injector, nhaThuocsService);
   }
 

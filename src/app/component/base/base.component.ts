@@ -16,6 +16,7 @@ import {ModalService} from "../../services/modal.service";
 import {HelperService} from "../../services/helper.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
@@ -52,6 +53,8 @@ export class BaseComponent  {
   allChecked = false;
   indeterminate = false;
 
+  authService : AuthService;
+
   constructor(
     injector: Injector,
     service: BaseService
@@ -69,6 +72,7 @@ export class BaseComponent  {
     this.userInfo = this.userService.getUserLogin();
     this.department = this.userInfo.department;
     this.dialog = this.injector.get(MatDialog);
+    this.authService = this.injector.get(AuthService);
   }
 
   getDataSource(){

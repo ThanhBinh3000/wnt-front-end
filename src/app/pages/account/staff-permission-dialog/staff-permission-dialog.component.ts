@@ -14,10 +14,10 @@ export class StaffPermissionDialogComponent extends BaseComponent implements OnI
 
   constructor(
     injector: Injector,
-    public authService: AuthService,
+    public _service: AuthService,
     public userProfileService: UserProfileService,
     public dialogRef: MatDialogRef<StaffPermissionDialogComponent>,) {
-    super(injector, authService);
+    super(injector, _service);
   }
 
   ngOnInit() {
