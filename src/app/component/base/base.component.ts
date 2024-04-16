@@ -88,6 +88,10 @@ export class BaseComponent {
         limit: this.pageSize,
         page: this.page - 1
       }
+      if(this.filterType == 1){
+        body.fromDate = this.fromDate;
+        body.toDate = this.toDate;
+      }
       let res = await this.service.searchPage(body);
       if (res?.statusCode == STATUS_API.SUCCESS) {
         let data = res.data;
@@ -152,28 +156,16 @@ export class BaseComponent {
     }
   }
 
-  async changeFilterType(event: any) {
-    try {
-      if(event == 0){
-        this.fromDate = '';
-        this.toDate = '';
-      }
-      else {
-
-      }
-      this.searchPage();
-    } catch (e) {
-      this.spinner.hide();
-      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
-    }
+  async changeFilterType(filterType: number) {
+    this.filterType = filterType;
   }
 
-  async changeFromDate(event: any) {
-    this.fromDate = event;
+  async changeFromDate(fromDate: string) {
+    this.fromDate = fromDate;
   }
 
-  async changeToDate(event: any) {
-    this.toDate = event;
+  async changeToDate(toDate: string) {
+    this.toDate = toDate;
   }
 
   // DELETE 1 item table

@@ -39,9 +39,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     'paidDate', 'tongNX', 'action'
   ];
   displayedColumns: string[] = this.columns;
-  hideColumns = new FormControl();
   hideColumnList = [
-    { name: "--Tất cả--", value: 'all' },
     { name: "Địa chỉ", value: 'diaChi' },
     { name: "Người đại diện", value: 'nguoiDaiDien' },
     { name: "Người tạo", value: 'createdByUserName' },
@@ -74,14 +72,11 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     { name: "Dưới 7 ngày", value: 3 },
     { name: "Đã hết hạn", value: 4 },
   ];
-  drugStoreDeployTypes = [
-    { name: "Chưa triển khai", value: 0 },
-    { name: "Đã triển khai", value: 1 }
-  ];
-  typeDateItem = [
-    { id: 1, name: "Ngày tạo nhà thuốc", disable: false },
-    { id: 2, name: "Ngày giao dịch", disable: false },
-    { id: 3, name: "Ngày thu tiền", disable: false }
+  typeDates = [
+    { name: "Ngày tạo cơ sở", value: 1 },
+    { name: "Ngày giao dịch", value: 2 },
+    { name: "Ngày thu tiền", value: 3 },
+    { name: "Ngày tạo cơ sở và thu tiền", value: 4 },
   ];
   znsTypes = [
     { name: "Xác nhận thanh toán", value: 1 },
@@ -119,7 +114,9 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
       expiredType: [null],
       supporterId: [null],
       typeZNS: [null],
-      outOfInvoice: [false]
+      outOfInvoice: [false],
+      typeDate: [null],
+      connectivityFilterTypeId: [null],
     });
   }
 
@@ -169,14 +166,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
   }
 
   onChangeDisplayedColumns(value: any){
-    if(value == 'all'){
-      if(this.hideColumns.value?.includes('all')){
-        this.hideColumns.setValue(this.hideColumnList.map(i => i.value));
-      } else{
-        this.hideColumns.setValue([]);
-      }
-    }
-    this.displayedColumns = this.columns.filter(col=> !this.hideColumns.value.includes(col));
+    this.displayedColumns = this.columns.filter(col=> !value.map((item: any) => item.value).includes(col));
   }
 
   @ViewChildren('pickerPaidDate') pickerPaidDate!: QueryList<MatDatepicker<Date>>;
