@@ -1,13 +1,4 @@
 {
-  "/api/wnt-products/": {
-    "target": "http://localhost:189",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug",
-    "pathRewrite": {
-      "^/api/wnt-products/": ""
-    }
-  },
   "/api/": {
     "target": "http://10.0.13.41:8888",
     "secure": false,
