@@ -23,7 +23,6 @@ export class BankAccountListDialogComponent extends BaseComponent implements OnI
   constructor(
     injector: Injector,
     public _service: BankAccountService,
-    public authService: AuthService,
     public dialogRef: MatDialogRef<BankAccountListDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public storeCode: any
   ) {

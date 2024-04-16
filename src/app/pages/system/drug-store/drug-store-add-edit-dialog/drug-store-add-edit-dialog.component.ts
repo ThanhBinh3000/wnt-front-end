@@ -56,7 +56,6 @@ export class DrugStoreAddEditDialogComponent extends BaseComponent implements On
   constructor(
     injector: Injector,
     public _service: NhaThuocsService,
-    private authService: AuthService,
     private tinhThanhsService: TinhThanhsService,
     private typeBasisService: TypeBasisService,
     public dialogRef: MatDialogRef<DrugStoreAddEditDialogComponent>,
