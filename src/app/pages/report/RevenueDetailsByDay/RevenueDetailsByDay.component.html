@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="baocao-container box-group-white">
+      <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
+      <div class="text-center card-desc">
+        Ngày:
+        <div class="clickable-text daterange-picker">
+          <input type="text" ng-disabled="!isEditing" name="orderDate" id="order-date-id"
+                 ng-model="viewModel.OrderDate">
+          <span class="text-link font-weight-bold">
+                        <!-- {{viewModel.OrderDate}} -->16/04/2024
+          </span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Cơ sở</label>
+        <select class="form-control mb-0">
+          <option value="-1" selected>--Tất cả--</option>
+          <option value="0">Thật là vô nghĩa</option>
+        </select>
+      </div>
+      <table class="table table-striped table-bordered table-hover tr-ng-grid">
+        <thead>
+        <tr>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-title"> STT</div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Tên khách</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Số phiếu</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Tiền nợ</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> CKD</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Trừ điểm(VNĐ)</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> VAT</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Mặt hàng</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Đơn vị</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Số lượng</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Đơn giá</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> CKĐ</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Thành tiền</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Lợi nhuận</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> Tính lại</div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="tr-ng-column-header tr-ng-cell">
+              <div class="tr-ng-column-header tr-ng-cell">
+                <div class="tr-ng-title"> P.Nhập</div>
+              </div>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of dataTable; index as i;">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ data.tenKhachHang }}</td>
+          <td>{{ data.soPhieuXuat }}</td>
+          <td>{{ data.debtPaymentAmount }}</td>
+          <td>{{ data.discount }}</td>
+          <td>{{ data.paymentScoreAmount }}</td>
+          <td>{{ data.vat }}</td>
+          <td>{{ data.maThuoc + " - " + data.tenThuoc}}  </td>
+          <td>{{ data.tenDonViTinh }}</td>
+          <td>{{ data.soLuong }}</td>
+          <td>{{ data.giaXuat }}</td>
+          <td>{{ data.transPaymentAmount }}</td>
+          <td>{{ data.tongTien }}</td>
+          <td>{{ data.revenue }}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
