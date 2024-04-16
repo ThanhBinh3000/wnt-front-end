@@ -1,10 +1,12 @@
-import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
+import { Component, Inject, Injector, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { BaseComponent } from '../../../component/base/base.component';
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { NhomKhachHangService } from '../../../services/categories/nhom-khach-hang.service';
 import { STATUS_API } from '../../../constants/message';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'customer-add-edit-dialog',
@@ -23,6 +25,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     private nhomKhachHangService : NhomKhachHangService,
     public dialogRef: MatDialogRef<CustomerAddEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public customerID: any,
+    private datePipe: DatePipe
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -77,6 +80,9 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     if (this.customerID) {
       const data = await this.detail(this.customerID);
       if (data) {
+        if(data.birthDate){
+          data.birthDate = new Date(data.birthDate);
+        }
         this.formData.patchValue(data);
       }
       
@@ -93,6 +99,9 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   }
   async saveEdit() {
     let body = this.formData.value;
+    if(body.birthDate){
+      body.birthDate = this.datePipe.transform(body.birthDate, 'dd/MM/yyyy HH:mm:ss') ?? '';
+    }
     let data = await this.save(body);
     if (data) {
       this.dialogRef.close(data);
@@ -106,4 +115,5 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+  @ViewChildren('pickerBirthDate') pickerBirthDate!: Date;
 }
