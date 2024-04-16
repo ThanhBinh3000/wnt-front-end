@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 // @ts-ignore
 import {saveAs} from 'file-saver';
@@ -23,7 +23,7 @@ import {AuthService} from "../../services/auth.service";
   selector: 'app-base',
   templateUrl: './base.component.html',
 })
-export class BaseComponent  {
+export class BaseComponent {
   // User Info
   userInfo: UserLogin;
   department: Department;
@@ -33,6 +33,9 @@ export class BaseComponent  {
   dataTable: any[] = [];
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
+  filterType: number = 0;
+  fromDate: string = '';
+  toDate: string = '';
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
@@ -84,9 +87,14 @@ export class BaseComponent  {
   async searchPage() {
     try {
       let body = this.formData.value
+      console.log(body)
       body.paggingReq = {
         limit: this.pageSize,
         page: this.page - 1
+      }
+      if(this.filterType == 1){
+        body.fromDate = this.fromDate;
+        body.toDate = this.toDate;
       }
       let res = await this.service.searchPage(body);
       if (res?.statusCode == STATUS_API.SUCCESS) {
@@ -150,6 +158,18 @@ export class BaseComponent  {
       this.spinner.hide();
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     }
+  }
+
+  async changeFilterType(filterType: number) {
+    this.filterType = filterType;
+  }
+
+  async changeFromDate(fromDate: string) {
+    this.fromDate = fromDate;
+  }
+
+  async changeToDate(toDate: string) {
+    this.toDate = toDate;
   }
 
   // DELETE 1 item table

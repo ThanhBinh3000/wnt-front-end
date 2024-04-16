@@ -18,9 +18,9 @@ import { RegionInformationEditDialogComponent } from '../../utilities/region-inf
 export class CustomerListComponent  extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Danh sách khách hàng";
   displayedColumns = [
-    '#', 
-    'code', 
-    'tenKhachHang', 
+    '#',
+    'code',
+    'tenKhachHang',
     'tenNhomKhachHang',
     'soDienThoai',
     'ngaySinh',
@@ -34,6 +34,7 @@ export class CustomerListComponent  extends BaseComponent implements OnInit, Aft
   listNguoiQuanTamOA : any[] = [];
   listNhaThuocDongBo : any[] = [];
   count : any = 1;
+  isDeleted : boolean = false;
 
 constructor(
   injector: Injector,
@@ -78,7 +79,7 @@ async danhSachNguoiQuanTamOA(){
       page: 0
     }
   };
-      
+
   this._service.searchPageNguoiQuanTamOA(body).then((res)=>{
     if(res?.statusCode == STATUS_API.SUCCESS){
       this.listNguoiQuanTamOA = res.data.content;
@@ -110,7 +111,7 @@ async danhSachNhaThuocDonghBoPhieu(){
       page: 0
     }
   };
-      
+
   this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res)=>{
     if(res?.statusCode == STATUS_API.SUCCESS){
       this.listNhaThuocDongBo = res.data.content;
@@ -152,9 +153,9 @@ async openAddEditDialog(customerID: any) {
 }
 async openUpdateRegionInformationDialog(data: any) {
   let object = {
-    id : data.id, 
-    code : data.code, 
-    name : data.tenKhachHang, 
+    id : data.id,
+    code : data.code,
+    name : data.tenKhachHang,
     address : data.diaChi,
     cityId : data.cityId,
     regionId: data.regionId,
@@ -166,7 +167,6 @@ async openUpdateRegionInformationDialog(data: any) {
   });
   dialogRef.afterClosed().subscribe(async result => {
     if (result) {
-      console.log('closed');
       await this.searchPage();
     }
   });

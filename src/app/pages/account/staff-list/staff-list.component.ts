@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {STATUS_API} from "../../../constants/message";
 import {UserProfileService} from "../../../services/system/user-profile.service";
@@ -12,15 +12,16 @@ import {
 } from "../../system/admin/account-reset-password-dialog/account-reset-password-dialog.component";
 import {StaffAddEditDialogComponent} from "../staff-add-edit-dialog/staff-add-edit-dialog.component";
 import {StaffPermissionDialogComponent} from "../staff-permission-dialog/staff-permission-dialog.component";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-account',
   templateUrl: './staff-list.component.html',
   styleUrls: ['./staff-list.component.css'],
 })
-export class StaffListComponent extends BaseComponent implements OnInit {
+export class StaffListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Danh sách nhân viên";
-  staffID: number = 0;
+  displayedColumns = ['#', 'tenDayDu', 'userName', 'soDienThoai', 'role', 'hoatDong', 'action'];
 
   constructor(
     injector: Injector,
@@ -38,6 +39,11 @@ export class StaffListComponent extends BaseComponent implements OnInit {
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     await this.searchPageStaffManagement();
+  }
+
+  @ViewChild(MatSort) sort?: MatSort;
+  async ngAfterViewInit() {
+    this.dataSource.sort = this.sort!;
   }
 
   async searchPageStaffManagement() {
