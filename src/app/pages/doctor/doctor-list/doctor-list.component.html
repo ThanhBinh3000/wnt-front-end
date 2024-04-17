@@ -75,12 +75,20 @@
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let data">
-                        <div class="baocao-actions">
+                        <div *ngIf="data.recordStatusId == 0" class="baocao-actions">
                             <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
                             <button class="btn btn-sm btn-danger"
                                 (click)="delete('Bạn có chắc chắn muốn xóa bác sỹ \'' +data.tenBacSy + '\' ?', data)">
                                 <i class="fa-regular fa-trash"></i></button>
+                        </div>
+                        <div *ngIf="data.recordStatusId == 2" class="baocao-actions">
+                            <button class="btn btn-sm btn-primary"><i class="fa-regular fa-arrows-rotate"
+                                (click)="restore('Bạn có chắc chắn muốn khôi phục bác sỹ \'' +data.tenBacSy + '\' ?', data)"></i>
+                            </button>
+                            <!-- <button class="btn btn-sm btn-danger"
+                                (click)="delete('Bạn có chắc chắn muốn xóa bác sỹ \'' +data.tenBacSy + '\' ?', data)">
+                                <i class="fa-regular fa-trash"></i></button> -->
                         </div>
                     </td>
                 </ng-container>

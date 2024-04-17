@@ -21,6 +21,7 @@ import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-
 })
 export class DrugListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách thuốc";
+  displayedColumns = ['checkbox', '#', 'upload', 'tenThuoc', 'tenNhomThuoc', 'donVi', 'gia', 'discount', 'gioiHan', 'tonKho', 'action'];
   drugID: number = 0;
 
   listNhomThuoc : any[] = []
@@ -93,7 +94,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     console.log($event);
     const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
       data: $event,
-      width: '1200px',
+      width: '90%',
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
