@@ -4,6 +4,7 @@ import { BaseComponent } from '../../../component/base/base.component';
 import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
 import { MatSort } from '@angular/material/sort';
 import { SupplierAddEditDialogComponent } from '../supplier-add-edit-dialog/supplier-add-edit-dialog.component';
+import { SupplierRewardProgramDialogComponent } from '../supplier-reward-program-dialog/supplier-reward-program-dialog.component';
 
 @Component({
   selector: 'supplier-list',
@@ -51,6 +52,17 @@ export class SupplierListComponent extends BaseComponent implements OnInit, Afte
     const dialogRef = this.dialog.open(SupplierAddEditDialogComponent, {
       data: supplierID,
       width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
+    });
+  }
+  async openChuongTrinhKMDialog(data: any) {
+    const dialogRef = this.dialog.open(SupplierRewardProgramDialogComponent, {
+      data: data,
+      width: '60%',
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {

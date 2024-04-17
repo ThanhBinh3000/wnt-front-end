@@ -94,6 +94,8 @@
                             <button class="btn btn-sm btn-danger"
                                 (click)="delete('Bạn có chắc chắn muốn xóa nhà cung cấp \'' +data.tenNhaCungCap + '\' ?', data)">
                                 <i class="fa-regular fa-trash"></i></button>
+                                <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" title="Quản lý trả thưởng" (click)="openChuongTrinhKMDialog(data)"><i
+                                    class="fa-regular fa fa-gift"></i></button>
                         </div>
                     </td>
                 </ng-container>
