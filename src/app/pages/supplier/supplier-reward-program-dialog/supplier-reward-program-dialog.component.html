@@ -1,110 +1,95 @@
-<div class="modal fade" id="supplier-reward-program-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-width">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title modal-title-color"><strong>Chương trình trả thưởng nhà cung cấp<br /><span
-                            class="text-uppercase">Name</span></strong></h4>
-            </div>
-            <div class="modal-body">
-                <label>Danh sách chương trình</label> <span style="margin: 5px" class="pull-right btn btn-primary"
-                    ng-click="onAddInfo()" data-toggle="modal" data-target="#supplier-reward-program-detail-dialog"
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title modal-title-color"><strong>Chương trình trả thưởng nhà cung cấp<br /><span
+                        class="text-uppercase">{{object.tenNhaCungCap}}</span></strong></h4>
+        </div>
+        <div class="modal-body">
+            <div class="model-scroll-content">
+                <div class="baocao-container box-group-white">
+                    <label>Danh sách chương trình</label> <span style="margin: 5px" class="pull-right btn btn-primary"
+                    (click)="openAddEditDialog({})"
                     title="Thêm mới chương trình trả thưởng">Thêm mới</span>
-                <div class="model-scroll-content table-fix-head">
-                    <table class="table table-bordered table-history table-program-detail">
-                        <thead>
-                            <tr>
-                                <th rowspan="2">STT</th>
-                                <th colspan="2">Thời gian áp dụng</th>
-                                <th rowspan="2" class="text-center">Nội dung</th>
-                                <th rowspan="2" width="30%">Lịch sử trả thưởng<br />(Số phiếu - Ngày - Số tiền)</th>
-                                <th rowspan="2">#</th>
-                            </tr>
-                            <tr>
-                                <th>Bắt đầu</th>
-                                <th>Kết thúc</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="i in items" class="ng-scope">
-                                <td class="ng-binding">1</td>
-                                <td class="ng-binding">28/02/2024</td>
-                                <td class="ng-binding">26/03/2024</td>
-                                <td class="ng-binding">Nội dung ct trả thưởng</td>
-                                <td>
+                    <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid"
+                        [dataSource]="dataTable" matSort>
+
+                        <ng-container matColumnDef="stt">
+                            <th mat-header-cell *matHeaderCellDef style="width:8%; display: none;">STT</th>
+                            <td mat-cell *matCellDef="let data; index as i;" style="width:8%">
+                                {{ (page - 1) * pageSize + i + 1 }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="stt2">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">STT</th>
+                          </ng-container>
+                        <ng-container matColumnDef="fromDate">
+                            <th mat-header-cell *matHeaderCellDef>Ngày bắt đầu</th>
+                            <td mat-cell *matCellDef="let data"> {{ data.fromDate ? (data.fromDate | appDate ) : ''  }}</td>
+                          </ng-container>
+                          
+                          <ng-container matColumnDef="toDate">
+                            <th mat-header-cell *matHeaderCellDef>Ngày kết thúc</th>
+                            <td mat-cell *matCellDef="let data"> {{ data.toDate ? (data.toDate | appDate) : '' }}</td>
+                          </ng-container>
+                        <ng-container matColumnDef="content">
+                            <th mat-header-cell *matHeaderCellDef style="display: none;"> Nội dung</th>
+                            <td mat-cell *matCellDef="let data"> {{ data.content }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="content2">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Nội dung</th>
+                          </ng-container>
+                        <ng-container matColumnDef="history">
+                            <th mat-header-cell *matHeaderCellDef style="display: none;"> Lịch sử trả thưởng<br />(Số phiếu - Ngày
+                                - Số tiền)</th>
+                            <td mat-cell *matCellDef="let data">
+                                <div>
                                     <ul>
                                         <li class="btn btn-link">
-                                            <span ng-if="permittedFields.InOutComingNote_Create"
-                                                ng-click="onPaymentInfo(i,1)" title="Viết phiếu thu trả thưởng"
-                                                data-toggle="modal" data-target="#supplier-reward-receipt-dialog"
-                                                class="ng-scope">
-                                                Viết phiếu thu <i class="fa fa-usd btn-info" aria-hidden="true"></i>
+                                            <span title="Viết phiếu thu trả thưởng">
+                                                Viết phiếu thu<i class="fa fa-usd btn-info"></i>
                                             </span>
                                         </li>
-                                        <li ng-repeat="item in i.Items" class="pull-right ng-scope">
-                                            <span class="ng-binding">
-                                                <span ng-disabled="!permittedFields.InOutComingNote_Read"
-                                                    class="btn btn-link ng-binding" ng-click="onPaymentInfo(item,2)"
-                                                    data-toggle="modal" data-target="#supplier-reward-receipt-dialog"
-                                                    title="Xem chi tiết phiếu thu">449</span>- 19/03/2024 - 10,000 VND
-                                            </span>
+                                        <li *ngFor="let item of data.items; index as i;">
+                                            <span class="btn btn-link ng-binding" title="Xem chi tiết phiếu thu">
+                                                {{item.noteNumber}}</span>- 
+                                                {{item.noteDate ? (item.noteDate | appDate) : ''}} - 
+                                                {{item.amount ? (item.amount| number) : ''}} VND
                                         </li>
                                     </ul>
-                                </td>
-                                <td>
-                                    <span class="btn btn-primary" ng-click="onUpdateInfo(i)" data-toggle="modal"
-                                        data-target="#supplier-reward-program-detail-dialog"
-                                        title="Sửa thông tin chương trình KM"><i class="fa-regular fa-pen-to-square"
-                                            aria-hidden="true"></i></span>&nbsp;
-
-                                    <span class="btn btn-danger" ng-click="onDelete(i)"
-                                        title="Xóa thông tin chương trình KM"><i class="fa-regular fa-trash"
-                                            aria-hidden="true"></i></span>
-                                </td>
-                            </tr>
-                        </tbody>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="history2">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Lịch sử trả thưởng<br />(Số phiếu - Ngày
+                                - Số tiền)</th>
+                          </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef style="display: none;">#</th>
+                            <td mat-cell *matCellDef="let data">
+                                <div class="baocao-actions">
+                                    <button class="btn btn-sm btn-primary"><i
+                                            class="fa-regular fa-pen-to-square" (click)="openAddEditDialog(data)"></i></button>
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="deleteRewardProgram('Bạn có chắc chắn muốn xóa chương trình khuyến mại với nội dung \'' +data.content+ '\' ?', data)">
+                                        <i class="fa-regular fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action2">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">#</th>
+                          </ng-container>
+                        <ng-container matColumnDef="time">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> Thời gian áp dụng </th>
+                          </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedHeaderColumns"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-            </div>
         </div>
-    </div>
-</div>
-<div class="modal fade" id="supplier-reward-program-detail-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title modal-title-color"><strong>Thông tin chương trình khuyến mại</strong></h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label class="control-label"> Nội dung chương trình khuyến mại</label>
-                        <div class="w-100">
-                            <textarea class="form-control" style="text-align:left" type="text"
-                                ng-model="viewModel.Content"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <label class="control-label">Thời gian áp dụng(bắt đầu - kết thúc)</label>
-                    </div>
-                    <div class="col-md-6">
-                        <input class="input-datetime form-control text-box single-line" placeholder="Bắt đầu"
-                            style="text-align:left" type="date" ng-model="viewModel.FromDate" />
-                    </div>
-                    <div class="col-md-6">
-                        <input class="input-datetime form-control text-box single-line" placeholder="Kết thúc"
-                            style="text-align:left" type="date" ng-model="viewModel.ToDate" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">{{true ? 'Cập nhật' : 'Thêm mới'}}</button>
-            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
         </div>
     </div>
 </div>
@@ -152,13 +137,13 @@
                             <div id="payment-inout-slide" class="form-check col-md-8" style="display: block;">
                                 <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
                                     <input type="radio" class="form-check-input"
-                                        ng-checked="paymentModel.PaymentTypeId == item.Id"
-                                        ng-click="changePay(item)" name="optradio" checked="checked">Tiền mặt
+                                        ng-checked="paymentModel.PaymentTypeId == item.Id" ng-click="changePay(item)"
+                                        name="optradio" checked="checked">Tiền mặt
                                 </p>
                                 <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
                                     <input type="radio" class="form-check-input"
-                                        ng-checked="paymentModel.PaymentTypeId == item.Id"
-                                        ng-click="changePay(item)" name="optradio">Chuyển khoản
+                                        ng-checked="paymentModel.PaymentTypeId == item.Id" ng-click="changePay(item)"
+                                        name="optradio">Chuyển khoản
                                 </p>
                             </div>
                         </div>
