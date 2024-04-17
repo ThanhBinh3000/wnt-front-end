@@ -14,15 +14,16 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./customer-add-edit-dialog.component.css'],
 })
 export class CustomerAddEditDialogComponent extends BaseComponent implements OnInit {
-  oldNumber :number = 0;
+  oldNumber: number = 0;
   @Input() isMinimized: boolean = false;
   showMoreForm: boolean = false;
   expandLabel: string = '[+]';
-  listNhomKhachHang : any[] = [];
+  listNhomKhachHang: any[] = [];
+
   constructor(
     injector: Injector,
     private _service: KhachHangService,
-    private nhomKhachHangService : NhomKhachHangService,
+    private nhomKhachHangService: NhomKhachHangService,
     public dialogRef: MatDialogRef<CustomerAddEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public customerID: any,
     private datePipe: DatePipe
@@ -33,45 +34,45 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
       tenKhachHang: ['', Validators.required],
       code: [''],
       soDienThoai: [''],
-      diaChi : [''],
+      diaChi: [''],
       sexId: [''],
       noDauKy: [0],
       barCode: [''],
-      maNhomKhachHang : ['', Validators.required],
-      birthDate :[''],
-      email : ['', Validators.email],
-      donViCongTac : [''],
-      cusType : [null],
-      phoneContacter : [''],
-      nameContacter : [''],
-      refCus : [''],
-      ghiChu : [''],
-      nationalFacilityCode : [''],
-      medicalIdentifier : [''],
-      citizenIdentification : [''],
-      healthInsuranceNumber : [''],
-      job : [''],
-      abilityToPay : [''],
-      taxCode : [''],
-      maNhaThuoc :[''],
-      storeId : [0],
-      created : [],
-      createdByUserId : [],
-      totalScore : [0],
-      zaloId : [''],
-      cityId : [0],
-      regionId : [0],
-      referenceId : [0],
-      archivedId : [0],
-      initScore : [0],
-      score : [0],
-      active : [false],
-      recordStatusId : [0],
-      mappingStoreId : [0],
-      preMetadataHash : [0],
-      metadataHash : [0],
-      masterId : [0],
-      wardId : [0]
+      maNhomKhachHang: ['', Validators.required],
+      birthDate: [''],
+      email: ['', Validators.email],
+      donViCongTac: [''],
+      cusType: [null],
+      phoneContacter: [''],
+      nameContacter: [''],
+      refCus: [''],
+      ghiChu: [''],
+      nationalFacilityCode: [''],
+      medicalIdentifier: [''],
+      citizenIdentification: [''],
+      healthInsuranceNumber: [''],
+      job: [''],
+      abilityToPay: [''],
+      taxCode: [''],
+      maNhaThuoc: [''],
+      storeId: [0],
+      created: [],
+      createdByUserId: [],
+      totalScore: [0],
+      zaloId: [''],
+      cityId: [0],
+      regionId: [0],
+      referenceId: [0],
+      archivedId: [0],
+      initScore: [0],
+      score: [0],
+      active: [false],
+      recordStatusId: [0],
+      mappingStoreId: [0],
+      preMetadataHash: [0],
+      metadataHash: [0],
+      masterId: [0],
+      wardId: [0]
     });
   }
 
@@ -80,26 +81,30 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
     if (this.customerID) {
       const data = await this.detail(this.customerID);
       if (data) {
-        if(data.birthDate){
+        if (data.birthDate) {
           data.birthDate = new Date(data.birthDate);
         }
         this.formData.patchValue(data);
       }
-      
+    }
+    if (!this.customerID) {
+      this.genBarcodeCustomer();
     }
   }
-  getDataFilter(){
+
+  getDataFilter() {
     // Nhóm khách hàng
-    this.nhomKhachHangService.searchList({}).then((res)=>{
-      if(res?.statusCode == STATUS_API.SUCCESS){
+    this.nhomKhachHangService.searchList({}).then((res) => {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
         this.listNhomKhachHang = res.data;
-        this.listNhomKhachHang.unshift({id: '', tenNhomKhachHang : 'Chọn nhóm khách hàng'});
+        this.listNhomKhachHang.unshift({ id: '', tenNhomKhachHang: 'Chọn nhóm khách hàng' });
       }
     });
   }
+
   async saveEdit() {
     let body = this.formData.value;
-    if(body.birthDate){
+    if (body.birthDate) {
       body.birthDate = this.datePipe.transform(body.birthDate, 'dd/MM/yyyy HH:mm:ss') ?? '';
     }
     let data = await this.save(body);
@@ -111,9 +116,16 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   closeModal() {
     this.dialogRef.close();
   }
+
   expandForm() {
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+
   @ViewChildren('pickerBirthDate') pickerBirthDate!: Date;
+
+  async genBarcodeCustomer() {
+    let barcode = this.genBarcode(12);
+    this.formData.patchValue({ barCode: (await barcode).valueOf() });
+  }
 }

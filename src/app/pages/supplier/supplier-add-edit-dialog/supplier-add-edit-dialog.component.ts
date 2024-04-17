@@ -15,11 +15,11 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
   @Input() isMinimized: boolean = false;
   showMoreForm: boolean = false;
   expandLabel: string = '[+]';
-  listNhomNhaCungCap : any[] = [];
+  listNhomNhaCungCap: any[] = [];
   constructor(
     injector: Injector,
     private _service: NhaCungCapService,
-    private nhomNhaCungCapService : NhomNhaCungCapService,
+    private nhomNhaCungCapService: NhomNhaCungCapService,
     public dialogRef: MatDialogRef<SupplierAddEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public supplierID: any,
   ) {
@@ -29,17 +29,17 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
       tenNhaCungCap: ['', Validators.required],
       code: [''],
       soDienThoai: [''],
-      diaChi : [''],
+      diaChi: [''],
       noDauKy: [0],
       barcode: [''],
-      maNhomNhaCungCap : ['', Validators.required],
-      email : ['', Validators.email],
-      soFax : [''],
-      website : [''],
-      maSoThue : [''],
-      nguoiDaiDien : [''],
-      nguoiLienHe : [''],
-      diaBanHoatDong : [''],
+      maNhomNhaCungCap: ['', Validators.required],
+      email: ['', Validators.email],
+      soFax: [''],
+      website: [''],
+      maSoThue: [''],
+      nguoiDaiDien: [''],
+      nguoiLienHe: [''],
+      diaBanHoatDong: [''],
     });
   }
 
@@ -50,19 +50,22 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
       if (data) {
         this.formData.patchValue(data);
       }
-      
+    } else {
+      this.genBarcodeSupplier();
     }
   }
-  getDataFilter(){
+
+  getDataFilter() {
     // Nhóm khách hàng
-    this.nhomNhaCungCapService.searchList({}).then((res)=>{
-      if(res?.statusCode == STATUS_API.SUCCESS){
+    this.nhomNhaCungCapService.searchList({}).then((res) => {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
         this.listNhomNhaCungCap = res.data;
         console.log(res.data);
-        this.listNhomNhaCungCap.unshift({id: '', tenNhomNhaCungCap : 'Chọn nhóm nhà cung cấp'});
+        this.listNhomNhaCungCap.unshift({ id: '', tenNhomNhaCungCap: 'Chọn nhóm nhà cung cấp' });
       }
     });
   }
+
   async saveEdit() {
     let body = this.formData.value;
     let data = await this.save(body);
@@ -74,9 +77,14 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
   closeModal() {
     this.dialogRef.close();
   }
-  
+
   expandForm() {
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+
+  async genBarcodeSupplier() {
+    let barcode = this.genBarcode(12);
+    this.formData.patchValue({ barcode: (await barcode).valueOf() });
+  }
 }

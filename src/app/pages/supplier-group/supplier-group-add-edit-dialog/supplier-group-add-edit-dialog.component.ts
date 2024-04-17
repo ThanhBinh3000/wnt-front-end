@@ -36,7 +36,6 @@ export class SupplierGroupAddEditDialogComponent extends BaseComponent implement
     if (this.supplierGroupID) {
       const data = await this.detail(this.supplierGroupID);
       if (data) {
-        console.log(data);
         this.formData.patchValue(data);
       }
     }

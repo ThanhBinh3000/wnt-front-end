@@ -495,6 +495,5 @@ export class BaseComponent {
   goToUrl(url,id?){
     this.router.navigate([url,id]);
   }
-
 }
 
