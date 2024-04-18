@@ -7,7 +7,8 @@ import {
 import {MatDialog} from "@angular/material/dialog";
 import {
   DrugStoreAddEditDialogComponent
-} from "../../pages/system/drug-store/drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
+} from "../../pages/drug-store/drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
+
 
 @Component({
   selector: 'app-header',

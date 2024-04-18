@@ -24,9 +24,15 @@ export class UtilitiesService extends BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
   updateThongTinKhuVuc(body: any, type: any) {
-    const url = type == "customer" ?
-      `/api/wnt-customer/khach-hangs/update-thong-tin-khu-vuc` :
-      `/api/wnt-system/nha-thuocs/update-thong-tin-khu-vuc`;
+    let url = '';
+    switch (type) {
+      case 'customer':
+        url = '/api/wnt-customer/khach-hangs/update-thong-tin-khu-vuc';
+        break;
+      case 'drug-store':
+        url = '/api/wnt-system/nha-thuocs/update-thong-tin-khu-vuc'
+        break;
+    }
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 }

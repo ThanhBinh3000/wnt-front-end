@@ -68,7 +68,10 @@ export class DateRangeFilterComponent implements OnInit {
 
     this.dateForm = new FormGroup({
       pickerFromDate: new FormControl(fromDate),
-      pickerToDate: new FormControl(toDate)
+      pickerToDate: new FormControl(toDate),
     });
+    this.filterTypeChange.emit(this.filterType);
+    this.fromDateChange.emit(this.datePipe.transform(fromDate, 'dd/MM/yyyy HH:mm:ss') ?? '');
+    this.toDateChange.emit(this.datePipe.transform(toDate, 'dd/MM/yyyy HH:mm:ss') ?? '');
   }
 }

@@ -1,27 +1,49 @@
 import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import {STATUS_API} from "../../../constants/message";
+import {Title} from '@angular/platform-browser';
 import {UserProfileService} from "../../../services/system/user-profile.service";
-import {MatDialog} from "@angular/material/dialog";
 import {BaseComponent} from "../../../component/base/base.component";
-import {
-  AccountAddEditDialogComponent
-} from "../account-add-edit-dialog/account-add-edit-dialog.component";
+import {STATUS_API} from "../../../constants/message";
+import {AccountAddEditDialogComponent} from "../account-add-edit-dialog/account-add-edit-dialog.component";
 import {
   AccountResetPasswordDialogComponent
 } from "../account-reset-password-dialog/account-reset-password-dialog.component";
-import {StaffAddEditDialogComponent} from "../staff-add-edit-dialog/staff-add-edit-dialog.component";
-import {StaffPermissionDialogComponent} from "../staff-permission-dialog/staff-permission-dialog.component";
 import {MatSort} from "@angular/material/sort";
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './staff-list.component.html',
-  styleUrls: ['./staff-list.component.css'],
+  selector: 'account-list',
+  templateUrl: './account-list.component.html',
+  styleUrl: './account-list.component.css'
 })
-export class StaffListComponent extends BaseComponent implements OnInit, AfterViewInit {
-  title: string = "Danh sách nhân viên";
-  displayedColumns = ['#', 'tenDayDu', 'userName', 'soDienThoai', 'role', 'hoatDong', 'action'];
+export class AccountListComponent extends BaseComponent implements OnInit, AfterViewInit {
+  title: string = "Quản lý tài khoản người dùng";
+  displayedColumns = [
+    '#',
+    'userName',
+    'tenDayDu',
+    'email',
+    'nhomQuyens',
+    'nhaThuocs',
+    'hoatDong',
+    'permissions',
+    'action'
+  ];
+  drugStores = [
+    {
+      code: '0010',
+      name: 'Công ty TNHH Web Nhà Thuốc',
+      fullInfo: `0010 - Công ty TNHH Web Nhà Thuốc - Số 133, Yên Duyên, Yên Sở, Hoàng Mai, Hà Nội - Admin1`
+    },
+    {
+      code: '0011',
+      name: 'Chi nhánh công ty TNHH Web Nhà Thuốc',
+      fullInfo: `0011 - Chi nhánh công ty TNHH Web Nhà Thuốc - Ba Vì, Hà Nội - Chủ quầy thuốc`
+    },
+    {
+      code: '0013',
+      name: 'QT Thủy Tiên CL',
+      fullInfo: `0013 - QT Thủy Tiên CL - Tiền Giang - Web Nhà Thuốc`
+    },
+  ];
 
   constructor(
     injector: Injector,
@@ -31,8 +53,9 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-      tenDayDu: [''],
-      isNotActive: [false]
+      userName: [''],
+      roleName: [null],
+      maNhaThuoc: [null],
     });
   }
 
@@ -48,12 +71,11 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
 
   override async searchPage() {
     let body = this.formData.value;
-    body.hoatDong = !body.isNotActive;
     body.paggingReq = {
       limit: this.pageSize,
       page: this.page - 1
     }
-    let res = await this._service.searchPageStaffManagement(body);
+    let res = await this._service.searchPageUserManagement(body);
     if (res?.statusCode == STATUS_API.SUCCESS) {
       let data = res.data;
       this.dataTable = data.content;
@@ -67,7 +89,7 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
   }
 
   async openAddEditDialog(userProfile: any) {
-    const dialogRef = this.dialog.open(StaffAddEditDialogComponent, {
+    const dialogRef = this.dialog.open(AccountAddEditDialogComponent, {
       data: userProfile,
       width: '600px',
     });
@@ -78,12 +100,6 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
     });
   }
 
-  async openPermissionDialog(userProfile: any) {
-    this.dialog.open(StaffPermissionDialogComponent, {
-      data: userProfile,
-      width: '600px',
-    });
-  }
   async openResetPasswordDialog(userProfile: any) {
     const dialogRef = this.dialog.open(AccountResetPasswordDialogComponent, {
       data: userProfile,
@@ -96,4 +112,7 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
     });
   }
 
+  async openRegionalDetailDialog(userProfile: any) {
+
+  }
 }

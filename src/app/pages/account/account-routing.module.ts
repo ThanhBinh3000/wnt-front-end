@@ -4,6 +4,7 @@ import {AccountComponent} from "./account.component";
 import {AuthGuard} from "../../guard/auth.guard";
 import {ChooseNhaThuocComponent} from "./choose-nha-thuoc/choose-nha-thuoc.component";
 import { StaffListComponent } from './staff-list/staff-list.component';
+import {AccountListComponent} from "./account-list/account-list.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
       {
         path: 'staff-list',
         component: StaffListComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'account-list',
+        component: AccountListComponent,
         // canActivate: [AuthGuard],
       }
     ],

@@ -1,0 +1,115 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">Thiết lập nhà tổng đặt hàng</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="formData">
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="textSearch" (keyup.enter)="searchPage()"
+                     placeholder="Tìm cơ sở theo mã, tên, địa chỉ...">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="searchPage()">Tìm</button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="mat-table-container">
+        <table mat-table
+               class="table table-striped table-bordered table-hover tr-ng-grid"
+               [dataSource]="getDataSource()" matSort>
+
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef> #</th>
+            <td mat-cell *matCellDef="let data; index as i;">
+              <div class="text-right">
+                {{ (page - 1) * pageSize + i + 1 }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef> Kích hoạt</th>
+            <td mat-cell *matCellDef="let data;">
+              <div class="text-center">
+                <mat-checkbox
+                  name="orderingActived"
+                  (change)="updateOrderStoreMapping(data, ORDER_STORE_MAPPING.ACTIVE, $event.checked)"
+                  [checked]="data.orderingActivated">
+                </mat-checkbox>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="default">
+            <th mat-header-cell *matHeaderCellDef> Mặc định</th>
+            <td mat-cell *matCellDef="let data;">
+              <div class="text-center">
+                <mat-radio-button
+                  name="isDefault"
+                  (change)="updateOrderStoreMapping(data, ORDER_STORE_MAPPING.SET_DEFAULT, null)"
+                  [checked]="data.isDefault"
+                  >
+                </mat-radio-button>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="maNhaThuoc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã - Tên cơ sở</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">
+                 <span style="color:seagreen">{{ data.maNhaThuoc }}</span> - <span>{{ data.tenNhaThuoc }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="diaChi">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Địa chỉ</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{ data.diaChi }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dienThoai">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Điện thoại</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">
+                {{ data.mobile }}
+                <br>
+                {{ data.dienThoai }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nguoiDaiDien">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Người đại diện</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{ data.nguoiDaiDien }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100">
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                              (pageChange)="changePageIndex($event)"
+                              (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>

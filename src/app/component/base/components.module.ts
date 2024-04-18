@@ -23,6 +23,7 @@ import {SanitizeHtmlPipe} from "../pipe/sanitize-html.pipe";
 import {MatRadioButton} from "@angular/material/radio";
 import {DateRangeFilterComponent} from "../date-range-filter/date-range-filter.component";
 import {CustomDateAdapter} from "../../utils/custom-date-adapter";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {CustomDateAdapter} from "../../utils/custom-date-adapter";
     MatOption,
     MatInput,
     MatRadioButton,
+    MatCheckbox,
     MatDatepickerModule,
     MatNativeDateModule,
     ToastrModule.forRoot(),
@@ -76,6 +78,7 @@ import {CustomDateAdapter} from "../../utils/custom-date-adapter";
     MatOption,
     MatInput,
     MatRadioButton,
+    MatCheckbox,
     MatDatepickerModule,
     MatNativeDateModule,
     ToastrModule,

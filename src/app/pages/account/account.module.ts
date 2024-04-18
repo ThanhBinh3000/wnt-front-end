@@ -9,6 +9,12 @@ import {StaffAddEditDialogComponent} from "./staff-add-edit-dialog/staff-add-edi
 import {StaffListComponent} from "./staff-list/staff-list.component";
 import {ComponentsModule} from "../../component/base/components.module";
 import { StaffPermissionDialogComponent } from './staff-permission-dialog/staff-permission-dialog.component';
+import {AccountAddEditDialogComponent} from "./account-add-edit-dialog/account-add-edit-dialog.component";
+import {AccountListComponent} from "./account-list/account-list.component";
+import {
+  AccountResetPasswordDialogComponent
+} from "./account-reset-password-dialog/account-reset-password-dialog.component";
+import {AccountPickerListDialogComponent} from "./account-picker-list-dialog/account-picker-list-dialog.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +24,10 @@ import { StaffPermissionDialogComponent } from './staff-permission-dialog/staff-
     StaffAddEditDialogComponent,
     StaffPermissionDialogComponent,
     StaffListComponent,
+    AccountAddEditDialogComponent,
+    AccountListComponent,
+    AccountResetPasswordDialogComponent,
+    AccountPickerListDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, AccountRoutingModule, ComponentsModule],
   exports: [

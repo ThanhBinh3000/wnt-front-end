@@ -87,7 +87,6 @@ export class BaseComponent {
   async searchPage() {
     try {
       let body = this.formData.value
-      console.log(body)
       body.paggingReq = {
         limit: this.pageSize,
         page: this.page - 1
