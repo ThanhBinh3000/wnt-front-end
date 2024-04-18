@@ -83,8 +83,8 @@ const routes: Routes = [
         loadChildren: () => import('../pages/doctor/doctor.module').then((m) => m.DoctorModule),
       },
       {
-        path: 'system',
-        loadChildren: () => import('../pages/system/system.module').then((m) => m.SystemModule),
+        path: 'drug-store',
+        loadChildren: () => import('../pages/drug-store/drug-store.module').then((m) => m.DrugStoreModule),
       },
       {
         path: 'order',

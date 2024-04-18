@@ -26,4 +26,10 @@ export const LOAI_PHIEU = {
   PHIEU_NHAP_TU_KH : 3
 }
 
+export const ORDER_STORE_MAPPING = {
+  NONE : 0,
+  ACTIVE : 1,
+  SET_DEFAULT : 2
+}
+
 export const PAGE_SIZE_DEFAULT = 10;

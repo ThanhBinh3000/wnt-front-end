@@ -1,0 +1,629 @@
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <form [formGroup]="formData">
+        <div class="sidebar-bg">
+          <fieldset class="mb-3">
+            <label>Loại cơ sở</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="storeTypes"
+              formControlName="storeTypeId"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn loại cơ sở"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Tìm theo</label>
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="textSearch" (keyup.enter)="searchPage()"
+                     placeholder="Tìm cơ sở theo mã, tên, địa chỉ...">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="onResetSearching()"><i
+                  class="fa-regular fa-arrows-rotate"></i></button>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset class="mb-3 form-check">
+            <input type="checkbox" formControlName="hoatDong" class="form-check-input form-control">
+            <label class="form-check-label">NT đã kích hoạt</label>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Số ngày không giao dịch</label>
+            <input type="text" class="form-control mb-0" formControlName="numDaysNoTrans" mask="separator"/>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Trạng thái triển khai</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="listTieuChiTrienKhai"
+              formControlName="storeDeployTypeId"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Chọn trạng thái triển khai"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Người tạo</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="listSuperUser"
+              formControlName="createdByUserId"
+              bindLabel="tenDayDu"
+              bindValue="id"
+              placeholder="Chọn người tạo"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Tỉnh thành</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="listTinhThanh"
+              formControlName="tinhThanhId"
+              bindLabel="tenTinhThanh"
+              bindValue="id"
+              placeholder="Chọn tỉnh thành"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.tenTinhThanh }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Lựa chọn chính sách bán hàng</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="listTypeBasis"
+              formControlName="idTypeBasic"
+              bindLabel="nameType"
+              bindValue="id"
+              placeholder="Chọn chính sách bán hàng"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.nameType }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Trạng thái thanh toán</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="drugStorePaymentTypes"
+              formControlName="storePaymentTypeId"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn trạng thái thanh toán"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Ngày hết hạn</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="expiredTypes"
+              formControlName="expiredType"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn loại ngày hết hạn"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3 form-check">
+            <input type="checkbox" formControlName="outOfInvoice" class="form-control form-check-input">
+            <label class="form-check-label">Đã hết số lượng chứng từ</label>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Trạng thái gửi ZNS</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="znsTypes"
+              formControlName="typeZNS"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn trạng thái gửi ZNS"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Chăm sóc sau bán hàng</label>
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="listSuperUser"
+              formControlName="supporterId"
+              bindLabel="tenDayDu"
+              bindValue="id"
+              placeholder="Chọn người chăm sóc sau bán hàng"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3">
+            <label>Lựa chọn kiểu ngày lọc</label>
+            <!--chua lam: con kieu ngay giao dich-->
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="typeDates"
+              formControlName="typeDate"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn kiểu ngày lọc"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="mb-3" *ngIf="formData.get('typeDate')?.value === 2">
+            <label>Trạng thái phiếu liên thông</label>
+            <!--chua lam: ngay giao dich-->
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="connectivityTypes"
+              formControlName="connectivityFilterTypeId"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Chọn trạng thái phiếu liên thông"
+              notFoundText="Không tìm thấy mục nào"
+            >
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.name }}</span>
+              </ng-template>
+            </ng-select>
+          </fieldset>
+          <fieldset class="baocao-filter">
+            <app-date-range-filter *ngIf="formData.get('typeDate')?.value"
+                                   [filterType]="0"
+                                   (filterTypeChange)="changeFilterType($event)"
+                                   (fromDateChange)="changeFromDate($event)"
+                                   (toDateChange)="changeToDate($event)"
+            ></app-date-range-filter>
+            <button type="button" class="btn btn-primary w-100" (click)="searchPage()">Xem</button>
+            <button type="button" class="btn btn-primary mt-3 w-100">Xuất Excel</button>
+            <button type="button" class="btn btn-primary mt-3 w-100" (click)="openAddEditDialog(null)">
+              Thêm mới
+            </button>
+          </fieldset>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-9">
+      <div class="baocao-container box-group-white">
+        <div style="padding: 20px 0">
+          <div id="customCheckboxs">
+            <ng-select
+              appendTo="body"
+              appearance="outline"
+              [items]="hideColumnList"
+              [multiple]="true"
+              bindValue="value"
+              placeholder="Ẩn/Hiện thông tin"
+              notFoundText="Không tìm thấy mục nào"
+              [closeOnSelect]="false"
+              (change)="onChangeDisplayedColumns($event)">
+              <ng-template ng-multi-label-tmp>
+                <span style="display:block" class="ng-placeholder">Ẩn/Hiện thông tin</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-hide-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+          <h2 class="text-center"><b>DANH SÁCH NHÀ THUỐC</b></h2>
+        </div>
+        <div class="mat-table-container">
+          <table mat-table
+                 class="table table-striped table-bordered table-hover tr-ng-grid"
+                 [dataSource]="getDataSource()" matSort>
+
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef> #</th>
+              <td mat-cell *matCellDef="let data; index as i;">
+                <div class="text-right">
+                  <a (click)="openRegionalDetailDialog(data)">
+                    {{ (page - 1) * pageSize + i + 1 }}
+                  </a>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="maNhaThuoc" [sticky]="true">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã</th>
+              <td mat-cell *matCellDef="let data"
+                  [ngClass]="data.isConnectivity ? 'row-item-connectivity' : 'bg-white'">
+                <div class="text-left">
+                  <a (click)="openGeneralStoreMappingDialog(data)">
+                    {{ data.maNhaThuoc }}
+                  </a>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tenNhaThuoc" [sticky]="true">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên</th>
+              <td mat-cell *matCellDef="let data" class="bg-white">
+                <div class="text-left">
+                  <span class="label label-info pull-right" title="{{data.storeHatTile}}">
+                       {{ data.storeHat }}
+                  </span>
+                  <br/>
+                  <a (click)="openAddEditDialog(data)">
+                    {{ data.tenNhaThuoc }}
+                  </a>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="diaChi" [sticky]="true">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Địa chỉ</th>
+              <td mat-cell *matCellDef="let data" class="bg-white">
+                <div class="text-left">{{ data.diaChi }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tenTinhThanh">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tỉnh thành</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.tenTinhThanh }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dienThoai" [sticky]="true">
+              <th mat-header-cell *matHeaderCellDef> Điện thoại</th>
+              <td mat-cell *matCellDef="let data" class="bg-white">
+                <div class="text-left">
+                  {{ data.mobile }}
+                  <br>
+                  {{ data.dienThoai }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nguoiDaiDien">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Người đại diện</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.nguoiDaiDien }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdByUserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Người tạo</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.createdByUserName }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo<br>Ngày hết hạn</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  {{ data.created | appDate }}
+                  <br>
+                  {{ data.expiredDate ? (data.expiredDate | appDate) : '' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ttGuiTinXNtaoTK">
+              <th mat-header-cell *matHeaderCellDef> TT gửi tin XN tạo TK</th>
+              <!--Check không có quyền cập nhật trang thái thanh toán-->
+              <td mat-cell *matCellDef="let data"
+                  [ngClass]="{'row-item-connectivity': data.znsstatusSendCreateAccount && !false}">
+                <div class="text-left">
+                  {{ data.znsstatusSendCreateAccount ? 'Đã gửi' : 'Chưa gửi' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="connectivityCode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã QG</th>
+              <td mat-cell *matCellDef="let data"
+                  [ngClass]="data.isConnectivity ? (data.isNationalDBConnected ? 'row-item-connectivity' : 'row-item-connectivity-not-connected') : ''">
+                <div class="text-left">
+                  <span>{{ data.connectivityCode }}</span>
+                  <button *ngIf="data.isConnectivity"
+                          class="btn btn-primary btn-sm"
+                          (click)="onCheckConnectivity(data)">
+                    <i class="fa-regular fa-arrows-rotate"></i>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="connectivityUserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> TK LT</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  {{ data.connectivityUserName }}
+                  <br>
+                  {{ data.connectivityPassword }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nameTypeBasis">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> C.S bán hàng</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  {{ data.nameTypeBasis }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nhanVienKinhDoanh">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhân viên kinh doanh</th>
+              <td mat-cell *matCellDef="let data">
+                <ng-select
+                  appendTo="body"
+                  appearance="outline"
+                  [items]="listSuperUser"
+                  [(ngModel)]="data.businessId"
+                  bindLabel="tenDayDu"
+                  bindValue="id"
+                  placeholder="Chọn nhân viên"
+                  notFoundText="Không tìm thấy mục nào"
+                  (change)="onBusinessChanged($event, data)"
+                >
+                  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+                  </ng-template>
+                </ng-select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="chamSocSauBanHang">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Chăm sóc sau bán hàng</th>
+              <td mat-cell *matCellDef="let data">
+                <ng-select
+                  appendTo="body"
+                  appearance="outline"
+                  [items]="listSuperUser"
+                  [(ngModel)]="data.supporterId"
+                  bindLabel="tenDayDu"
+                  bindValue="id"
+                  placeholder="Chọn nhân viên"
+                  notFoundText="Không tìm thấy mục nào"
+                  (change)="onSupporterChanged($event, data)"
+                >
+                  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+                  </ng-template>
+                </ng-select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ghiChu">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú kinh doanh</th>
+              <td mat-cell *matCellDef="let data">
+                <div style="width: 150px">
+                  <div *ngIf="!data.isEditNoteType">
+                    {{ data.ghiChu }}
+                    <a class="btn btn-sm btn-primary" title="Cập nhật thông tin"
+                       (click)="data.isEditNoteType = true;"><i
+                      class="fa-regular fa-pen"></i></a>
+                  </div>
+                  <div *ngIf="data.isEditNoteType">
+                    <textarea type="text" [(ngModel)]="data.ghiChu" class="form-control mb-2"></textarea>
+                    <input type="button" value="Lưu" class="btn btn-sm btn-primary w-100"
+                           (click)="onUpdateNoteType(data)">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="businessDescription">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú triển khai</th>
+              <td mat-cell *matCellDef="let data">
+                <div style="width: 150px">
+                  <div *ngIf="!data.isEditBusinessDescription">
+                    {{ data.businessDescription }}
+                    <a class="btn btn-sm btn-primary" title="Cập nhật thông tin"
+                       (click)="data.isEditBusinessDescription = true;"><i
+                      class="fa-regular fa-pen"></i></a>
+                  </div>
+                  <div *ngIf="data.isEditBusinessDescription">
+                    <textarea type="text" [(ngModel)]="data.businessDescription" class="form-control mb-2">
+                    </textarea>
+                    <input type="button" value="Lưu" class="btn btn-sm btn-primary w-100"
+                           (click)="onUpdateBusinessDescription(data)">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ketQuaTrienKhai">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Kết quả triển khai</th>
+              <td mat-cell *matCellDef="let data">
+                <ng-select
+                  appendTo="body"
+                  appearance="outline"
+                  [items]="listTieuChiTrienKhai"
+                  [(ngModel)]="data.resultBusinessId"
+                  bindLabel="name"
+                  bindValue="id"
+                  placeholder="Chưa triển khai"
+                  notFoundText="Không tìm thấy mục nào"
+                  (change)="onResultBusinessChanged($event, data)"
+                >
+                  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                  </ng-template>
+                </ng-select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tienThanhToan">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiền thanh toán</th>
+              <td mat-cell *matCellDef="let data; index as i;">
+                <div style="width: 150px">
+                  <div *ngIf="!data.isEditPaid">
+                    <span *ngIf="data.paidDate">{{ data.paidDate | appDate }}<br></span>
+                    <span *ngIf="data.paidMoney">{{ data.paidMoney | number }}<br></span>
+                    <a class="btn btn-sm btn-primary" title="Cập nhật thông tin"
+                       (click)="data.isEditPaid = true;"><i
+                      class="fa-regular fa-pen"></i></a>
+                  </div>
+                  <div *ngIf="data.isEditPaid">
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" [matDatepicker]="pickerPaidDate"
+                             [(ngModel)]="data.paidDate" (click)="pickerPaidDate.open()"
+                             placeholder="dd/MM/yyyy">
+                      <mat-datepicker #pickerPaidDate></mat-datepicker>
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" (click)="pickerPaidDate.open()"><i
+                          class="fa-regular fa-calendar-days"></i></button>
+                    </span>
+                    </div>
+                    <div class="mb-2">
+                      <input type="text" [(ngModel)]="data.paidMoney" mask="separator" class="form-control"/>
+                    </div>
+                    <input type="button" value="Lưu" class="btn btn-sm btn-primary w-100"
+                           (click)="onUpdateInfoCustomerPayment(data)">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paidAmount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tổng tiền</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-right">
+                  {{ data.paidAmount | number }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ttThuTien">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> TT thu tiền</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  <input type="checkbox" class="form-check-input" [checked]="data.paidMoney > 0"
+                         onclick="this.checked = !this.checked;"/>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ttGuiTinXNTT">
+              <th mat-header-cell *matHeaderCellDef> TT gửi tin XNTT</th>
+              <td mat-cell *matCellDef="let data"
+                  [ngClass]="{'row-item-connectivity': data.znsstatusSendPayment && !false}">
+                <div class="text-left">
+                  {{ data.znsstatusSendPayment ? 'Đã gửi' : 'Chưa gửi' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="kqGuiTinXNTT">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> KQ gửi tin XNTT</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left" *ngIf="data.znsstatusSendPayment">
+                  {{ data.znsconfirmPaymentResult }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paidDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày thu tiền</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  {{ data.paidDate ? (data.paidDate | appDate) : '' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tongNX">
+              <th mat-header-cell *matHeaderCellDef> Tổng (nhập/ xuất)</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">
+                  <!-- {{gridItem.TotalReceiptNote | number:0}}<br /> {{gridItem.TotalDeliveryNote | number:0}} -->
+                  10/15
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let data">
+                <div *ngIf="data.hoatDong" class="baocao-actions baocao-actions-row">
+                  <div class="baocao-actions-item">
+                    <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data)">
+                      <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                            (click)="delete('Bạn có chắc chắn muốn xóa cơ sở \'' +data.tenNhaThuoc + '\' ?', data)">
+                      <i class="fa-regular fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div *ngIf="!data.hoatDong">
+                  <button class="btn btn-sm btn-primary"
+                          (click)="restore('Bạn có chắc chắn muốn khôi phục cơ sở \'' +data.tenNhaThuoc + '\' ?', data)">
+                    Khôi phục
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="footer">
+              <td mat-footer-cell *matFooterCellDef colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="['footer']; sticky: true"></tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,23 +1,23 @@
 import {Component, Inject, Injector, OnInit} from '@angular/core';
-import {BaseComponent} from "../../../component/base/base.component";
 import {UserProfileService} from "../../../services/system/user-profile.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {BaseComponent} from "../../../component/base/base.component";
 import {FormGroup, Validators} from "@angular/forms";
 import {passwordValidator} from "../../../validators/password.validator";
 import {phoneNumberValidator} from "../../../validators/phone-number.validator";
 import {MESSAGE, STATUS_API} from "../../../constants/message";
 
 @Component({
-  selector: 'staff-add-edit-dialog',
-  templateUrl: './staff-add-edit-dialog.component.html',
-  styleUrls: ['./staff-add-edit-dialog.component.css'],
+  selector: 'account-add-edit-dialog',
+  templateUrl: './account-add-edit-dialog.component.html',
+  styleUrl: './account-add-edit-dialog.component.css'
 })
-export class StaffAddEditDialogComponent extends BaseComponent implements OnInit {
+export class AccountAddEditDialogComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
     public userProfileService: UserProfileService,
-    public dialogRef: MatDialogRef<StaffAddEditDialogComponent>,
+    public dialogRef: MatDialogRef<AccountAddEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public userProfile: any) {
     super(injector, userProfileService);
     this.formData = this.fb.group({
@@ -29,14 +29,15 @@ export class StaffAddEditDialogComponent extends BaseComponent implements OnInit
       email: ['', Validators.email],
       soDienThoai: ['', Validators.required, phoneNumberValidator],
       soCMT: [''],
+      mobileDeviceId: [''],
       hoatDong: [false],
+      isSuperRole: [false],
       addresses: [''],
       archivedId: [0],
       storeId: [0],
       regionId: [0],
       cityId: [0],
-      wardId: [0],
-      isVerificationAccount: [false]
+      wardId: [0]
     }, { validators: userProfile ? null : this.passwordMatchValidator });
   }
 
@@ -60,9 +61,9 @@ export class StaffAddEditDialogComponent extends BaseComponent implements OnInit
     let body = this.formData.value;
     let res;
     if (body.id && body.id > 0) {
-      res = await this.userProfileService.updateStaff(body);
+      res = await this.userProfileService.updateUser(body);
     } else {
-      res = await this.userProfileService.createStaff(body);
+      res = await this.userProfileService.createUser(body);
     }
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       if (body.id && body.id > 0) {

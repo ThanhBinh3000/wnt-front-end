@@ -6,11 +6,11 @@
           <label>Nhân viên</label>
           <div class="control-group">
             <input formControlName="tenDayDu" type="text" class="form-control" placeholder="Tìm nhân viên theo tên..."
-                   (keyup.enter)="searchPageStaffManagement()"/>
+                   (keyup.enter)="searchPage()"/>
           </div>
           <div class="mb-3">
             <div class="form-check">
-              <input formControlName="isNotActive" type="checkbox" class="form-control form-check-input" (change)="searchPageStaffManagement()">
+              <input formControlName="isNotActive" type="checkbox" class="form-control form-check-input">
               <label class="form-check-label">Nhân viên không hoạt động</label>
             </div>
           </div>
@@ -18,7 +18,7 @@
         <fieldset>
           <div class="control-group d-flex justify-content-between gap-10">
             <input type="button" value="Xem" title="Xem" class="btn btn-primary w-50"
-                   (click)="searchPageStaffManagement()"/>
+                   (click)="searchPage()"/>
             <a (click)="openAddEditDialog(null)" class="btn btn-primary w-50">Thêm</a>
           </div>
           <!--Quyền của SuperUser-->
