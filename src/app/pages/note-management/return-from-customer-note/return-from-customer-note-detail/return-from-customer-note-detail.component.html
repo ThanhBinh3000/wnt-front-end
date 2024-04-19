@@ -3,34 +3,20 @@
 
     <div class="text-center card-desc">
         <div class="card-code">
-            Mã số: <strong>2432</strong>
+            Mã số: <strong>{{formData.value.soPhieuNhap}}</strong>
         </div>
-
         <span style="width: 10%">Ngày: <strong>16/03/2024 10:32</strong></span>
     </div>
-
-    <input value="25/03/2024 15:41" data-val="true" data-val-date="The field Ngày Nhập must be a date." id="NgayNhap"
-        name="NgayNhap" type="hidden">
-
-    <div class="validation-summary-errors text-danger">
-        <ul>
-            <li style="display:none"></li>
-        </ul>
-    </div>
-    <input value="0" data-val="true" data-val-number="The field MaPhieuNhap must be a number." id="MaPhieuNhap"
-        name="MaPhieuNhap" type="hidden">
-
-    <input value="3" data-val="true" data-val-number="The field MaLoaiXuatNhap must be a number."
-        data-val-required="The MaLoaiXuatNhap field is required." id="MaLoaiXuatNhap" name="MaLoaiXuatNhap"
-        type="hidden">
     <table class="table borderless table-condensed">
         <tbody>
             <tr>
                 <td style="text-align: left">
                     <label class="control-label">Khách hàng:</label>
-                    <label class="control-label" style="font-weight: normal">Mai1111</label>
+                    <ng-select formControlName="idWarehouseLocation" (keyup.enter)="searchListNhaCungCap($event)">
+                      <ng-option *ngFor="let item of listNhaCungCap"
+                                 [value]="item.id">{{item.tenNhaCungCap}}</ng-option>
+                    </ng-select>
                 </td>
-
             </tr>
         </tbody>
     </table>
@@ -44,10 +30,7 @@
                 <th style="width: 100px;">Đơn vị</th>
                 <th style="width: 100px; text-align: right">SL</th>
                 <th style="width: 150px; text-align: right">Giá nhập</th>
-
                 <th style="width: 80px; text-align: right">C.K</th>
-
-
                 <th style="width: 150px; text-align: right">Thành tiền</th>
             </tr>
         </thead>

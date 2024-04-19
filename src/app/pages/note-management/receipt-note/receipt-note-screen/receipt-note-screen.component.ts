@@ -2,7 +2,7 @@ import {Component, Injector, OnInit} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../../component/base/base.component";
 import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
-import {LOAI_PHIEU} from "../../../../constants/config";
+import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
 import {NhaCungCapService} from "../../../../services/categories/nha-cung-cap.service";
 import {DrugAddEditDialogComponent} from "../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component";
 import {ThuocService} from "../../../../services/products/thuoc.service";
@@ -32,44 +32,72 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     super(injector,_service);
     this.formData = this.fb.group({
       id : null,
+      soPhieuNhap : [],
+      noteNumber : '',
+      noteDate : [],
+      nhaCungCapMaNhaCungCap : '',
       idWarehouseLocation : '',
       invoiceNo : '',
       invoiceDate : '',
-      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP
+      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
+      tongTien : [0],
+      vat : '',
+      daTra : [0],
+      discount : [0],
+      discountWithRatio : [],
+      dienGiai : '',
+      ngayNhap : [],
     })
   }
 
   ngOnInit() {
     this.titleService.setTitle(this.title);
+    let body = {
+      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
+      id : null
+    }
+    this.service.init(body).then((res)=>{
+      console.log(res)
+      if(res && res.data){
+        const data = res.data;
+        this.formData.patchValue({
+          ngayNhap : data.ngayNhap,
+          soPhieuNhap : data.soPhieuNhap
+        })
+      }
+    });
   }
-
 
   searchListNhaCungCap($event){
     this.listNhaCungCap = [];
-    console.log($event.target.value);
-    let body = {
-      tenNhaCungCap : $event.target.value,
-      maNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc
-  };
-    this.nhaCungCapService.searchList(body).then((res)=>{
-      console.log(res)
-      if(res && res.data){
-        this.listNhaCungCap = res.data;
-      }
-    })
+    if($event.target.value){
+      let body = {
+        tenNhaCungCap : $event.target.value,
+        maNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc,
+        recordStatusId : RECORD_STATUS.ACTIVE
+      };
+      this.nhaCungCapService.searchList(body).then((res)=>{
+        console.log(res)
+        if(res && res.data){
+          this.listNhaCungCap = res.data;
+        }
+      })
+    }
   }
 
   searchListThuoc($event){
-    console.log($event.target.value);
-    let body = {
-      tenThuoc : $event.target.value,
-      nhaThuocMaNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc
-    };
-    this.thuocService.searchList(body).then((res)=>{
-      if(res && res.data){
-        this.listThuoc = res.data;
-      }
-    })
+    if($event.target.value){
+      let body = {
+        tenThuoc : $event.target.value,
+        nhaThuocMaNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc,
+        recordStatusId : RECORD_STATUS.ACTIVE
+      };
+      this.thuocService.searchList(body).then((res)=>{
+        if(res && res.data){
+          this.listThuoc = res.data;
+        }
+      })
+    }
   }
 
   onChangeNhaCungCap($event){
@@ -78,6 +106,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   addDrugToTable(){
     this.dataTable.push(this.rowItem);
+    this.calendarTongTien();
   }
 
   addNewDrug(){
@@ -92,34 +121,57 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   }
 
   onChangeThuoc($event){
-    console.log($event)
     this.thuocService.getDetail($event).then((res)=>{
-      console.log(res);
       if(res && res.data){
         const data = res.data;
         console.log(data);
         this.rowItem.maThuoc = data.maThuoc;
         this.rowItem.tenThuoc = data.tenThuoc;
-        this.rowItem.donViTinhMaDonViTinh = data.donViTinhMaDonViTinh ;
         this.rowItem.soLuong = 0;
         this.rowItem.giaNhap = data.giaNhap;
         this.rowItem.giaBanLe = data.giaBanLe;
         this.rowItem.chietKhau = data.chietKhau;
-        this.rowItem.rateRevenue = (data.giaBanLe - data.giaNhap) / data.giaNhap * 100 ;
+        let rateRevenue = (data.giaBanLe - data.giaNhap) / data.giaNhap * 100 ;
+        this.rowItem.rateRevenue = Math.round(rateRevenue * 100) / 100;
         this.rowItem.vat = data.vat;
+        this.rowItem.donViTinhMaDonViTinh = data.listDonViTinhs[0].id;
+        this.rowItem.listDonViTinhs = data.listDonViTinhs;
       }
     })
+  }
+
+  onChangeDviTinh(idDviTinh,rowTable?){
+    console.log(idDviTinh);
+    if(rowTable){
+
+    }else{
+      let dviTinh = this.rowItem.listDonViTinhs.find(item => item.id == idDviTinh);
+      console.log(dviTinh);
+      this.rowItem.giaNhap = dviTinh.giaNhap;
+      this.rowItem.giaBan = dviTinh.giaBan;
+      // if(this.rowItem.listDonViTinhs.indexOf(dviTinh) == 0 && this.rowItem.listDonViTinhs.length > 1){
+      //    = Math.round(this.rowItem.giaNhap / this.rowItem.listDonViTinhs[1].factor * 100)/100;
+      // }else{
+      //   this.rowItem.giaNhap = Math.round(this.rowItem.giaNhap * dviTinh.factor * 100) / 100;
+      // }
+      // if(this.rowItem.listDonViTinhs.indexOf(dviTinh) == 0){
+      //   this.rowItem.giaBanLe =
+      // }
+    }
+    this.calendarTongTien();
   }
 
   onChangePrice(rowTable?){
     if(rowTable){
       rowTable.rateRevenue = (rowTable.giaBanLe - rowTable.giaNhap) / rowTable.giaNhap * 100 ;
     }else{
-      this.rowItem.rateRevenue = (this.rowItem.giaBanLe - this.rowItem.giaNhap) / this.rowItem.giaNhap * 100 ;
+      let rateRevenue = (this.rowItem.giaBanLe - this.rowItem.giaNhap) / this.rowItem.giaNhap * 100 ;
+      this.rowItem.rateRevenue = Math.round(rateRevenue * 100) / 100;
     }
+    this.calendarTongTien();
   }
 
-  onChangeSoLuong(rowTable?){1
+  onChangeSoLuong(rowTable?){
     if(rowTable){
       let giaNhap = rowTable.soLuong * rowTable.giaNhap;
       if(rowTable.chietKhau > 0){
@@ -139,11 +191,12 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       }
       this.rowItem.tongTien =  giaNhap
     }
+    this.calendarTongTien();
   }
 
   createUpdate(){
     let body = this.formData.value;
-    body.chilren = this.dataTable;
+    body.children = this.dataTable;
     this.save(body).then(res=>{
       console.log(res)
     });
@@ -151,6 +204,38 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   onDelete(data){
     console.log(data);
+  }
+
+  calendarTongTien(){
+    let tongTien = 0
+    this.dataTable.forEach(item => {
+      tongTien += item.tongTien
+    })
+    this.formData.patchValue({
+      tongTien : tongTien
+    })
+    return tongTien;
+  }
+
+  onChangeDiscount($event,type){
+    let tongTien = this.formData.value.tongTien;
+    console.log($event,tongTien)
+    if(+$event > 0 && tongTien > 0){
+      let input = +$event;
+      if(type == 1){
+        let percent = (input/tongTien) * 100;
+        this.formData.patchValue({
+          discountWithRatio : percent,
+          daTra : (tongTien - input)
+        })
+      }else{
+        let discount = tongTien * (input / 100);
+        this.formData.patchValue({
+          discount : discount,
+          daTra : tongTien - discount
+        });
+      }
+    }
   }
 
 }

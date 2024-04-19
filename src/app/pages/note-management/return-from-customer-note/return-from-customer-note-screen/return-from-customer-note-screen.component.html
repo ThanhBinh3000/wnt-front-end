@@ -1,9 +1,9 @@
 <div class="card-bg">
-    <h2 class="card-title text-center mb-0">
-        <b class="ng-binding">KHÁCH TRẢ LẠI HÀNG</b>
-        <span ng-if="deviceType==0" style="padding-bottom: 12px; padding-left: 8px"
-            class="btn tooltip-content-drug ng-scope">
-            <span ng-click="">
+  <h2 class="card-title text-center mb-0">
+    <b class="ng-binding">KHÁCH TRẢ LẠI HÀNG</b>
+    <span style="padding-bottom: 12px; padding-left: 8px"
+          class="btn tooltip-content-drug ng-scope">
+            <span >
                 <i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i>
             </span>
             <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
@@ -14,652 +14,314 @@
                 <b>↑ và ↓:</b> Đi từ trên xuống<br>
             </span>
         </span>
-    </h2>
-    <div class="text-center card-desc">
-        <div class="card-code">
-            Mã số: <strong class="ng-binding">2432</strong>
-        </div>
-        Ngày: <div class="clickable-text daterange-picker text-link font-weight-bold"><input type="text"
-                name="noteDate" id="note-date-id" ng-model="noteDate" class="ng-pristine ng-untouched ng-valid"><span
-                class="ng-binding">16/03/2024</span> <span ng-if="viewModel.NoteId > 0"
-                class="ng-binding ng-scope">10:32</span></div>
+  </h2>
+  <div class="text-center card-desc">
+    <div class="card-code">
+      Mã số: <strong class="ng-binding">{{formData.value.soPhieuNhap}}</strong>
     </div>
-
-    <div>
-
-        <table class="table borderless table-condensed ng-scope" ng-if="deviceType != 1">
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="form-inline-flex mb-3 align-items-start">
-                            <label class="control-label">
-
-                                <span ng-if="viewModel.NoteTypeId==3" class="ng-scope">Khách hàng:</span>
-                            </label>
-                            <div class="input-group flex-direction-column">
-
-
-                                <div class="input-group ng-scope" ng-if="viewModel.NoteTypeId==3">
-                                    <div item-search-filter="" select-changed-callback="onCustomerItemChanged"
-                                        clear-after-selected="false" only-single-item="true"
-                                        default-selected-item="receiverSelectedItem" show-cam-barcode-scanner="false"
-                                        handle-broadcast="true" search-type="3"
-                                        class="ip-position ip-min-width ng-isolate-scope" id="customerSearchBoxId">
-
-
-                                        <div ng-if="!showCamBarcodeScanner" class="">
-                                            <div class="w-100">
-                                                <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                    ng-class="{open: $select.open}" ng-model="data.selected"
-                                                    theme="bootstrap" id="itemSearchId"
-                                                    reset-search-input="clearAfterSelected"
-                                                    forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                                                    <div><span
-                                                            class="text-truncate-line ui-select-match ui-select-match"
-                                                            placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                            id="itemSearchUISelectID"><span
-                                                                ng-repeat="$item in $select.selected track by $index"
-                                                                class="ng-scope"><span
-                                                                    class="ui-select-match-item btn btn-default btn-xs"
-                                                                    tabindex="-1" type="button"
-                                                                    ng-disabled="$select.disabled"
-                                                                    ng-click="$selectMultiple.activeMatchIndex = $index;"
-                                                                    ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
-                                                                    ui-select-sort="$select.selected"><span
-                                                                        class="close ui-select-match-close"
-                                                                        ng-hide="$select.disabled"
-                                                                        ng-click="$selectMultiple.removeChoice($index)">&nbsp;×</span>
-                                                                    <span uis-transclude-append=""><span
-                                                                            class="ng-binding ng-scope">
-                                                                            Mai1111
-                                                                        </span></span></span></span></span><input
-                                                            type="search" autocomplete="off" autocorrect="off"
-                                                            autocapitalize="off" spellcheck="false"
-                                                            class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                            placeholder="" ng-disabled="$select.disabled"
-                                                            ng-click="$select.activate()" ng-model="$select.search"
-                                                            role="combobox" aria-expanded="false"
-                                                            aria-label="Select box"
-                                                            ng-class="{'spinner': $select.refreshing}"
-                                                            ondrop="return false;" style="width: 219px;"></div>
-                                                    <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                        ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                        refresh="fetch($select)" refresh-delay="500"
-                                                        repeat="item in items" id="selectChoiceId">
-                                                        <li class="ui-select-choices-group" id="ui-select-choices-37">
-                                                            <div class="divider ng-hide"
-                                                                ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                                                            <div ng-show="$select.isGrouped"
-                                                                class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                                ng-bind="$group.name"></div>
-
-                                                        </li>
-                                                    </ul>
-                                                    <div class="ui-select-no-choice"></div>
-
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                        <span id="Logo" style="display:none;"></span>
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary"
-                                            ng-click="addCustomer(); $event.preventDefault(); $event.stopPropagation();"
-                                            title="Thêm mới nếu chưa có">
-                                            <i class="fa-regular fa-plus"></i>
-                                        </button>
-                                        <input type="button" value="LS" title="Chi tiết lịch sử giao dịch"
-                                            class="btn btn-primary"
-                                            ng-click="onTransByObjectDetails(4); $event.preventDefault(); $event.stopPropagation();">
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="row mb-3 ng-hide"
-            ng-show="viewModel.NoteTypeId==1 &amp;&amp; viewModel.EnableElectronicInvoice &amp;&amp; deviceType != 1">
-            <div class="col-sm-3">
-                <div class="form-inline-flex">
-                    <label class="control-label">Số hóa đơn:</label>
-                    <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                        ng-model="viewModel.InvoiceNo" placeholder="Số hóa đơn">
+    Ngày: <span class="ng-binding">{{formData.value.ngayNhap}}</span>
+  </div>
+  <div>
+    <table class="table borderless table-condensed ng-scope" >
+      <tbody>
+      <tr>
+        <td>
+          <div class="form-inline-flex mb-3 align-items-start">
+            <label class="control-label">
+              <span class="ng-scope">Khách hàng:</span>
+            </label>
+            <div class="input-group flex-direction-column">
+              <div class="input-group ng-scope">
+                <div class="ip-position ip-min-width ng-isolate-scope" id="customerSearchBoxId">
+                  <div class="w-100">
+                    <ng-select formControlName="idWarehouseLocation" (keyup.enter)="searchListNhaCungCap($event)">
+                      <ng-option *ngFor="let item of listNhaCungCap"
+                                 [value]="item.id">{{item.tenNhaCungCap}}</ng-option>
+                    </ng-select>
+                  </div>
                 </div>
+                <div class="input-group-btn">
+                  <button class="btn btn-primary"
+                          ng-click="addCustomer(); $event.preventDefault(); $event.stopPropagation();"
+                          title="Thêm mới nếu chưa có">
+                    <i class="fa-regular fa-plus"></i>
+                  </button>
+                  <input type="button" value="LS" title="Chi tiết lịch sử giao dịch"
+                         class="btn btn-primary"
+                         ng-click="onTransByObjectDetails(4); $event.preventDefault(); $event.stopPropagation();">
+                </div>
+              </div>
             </div>
-            <div class="col-sm-4">
-                <div class="form-inline-flex">
-                    <label class="control-label">Ngày hóa đơn:</label>
-                    <div class="control-label">
-                        <div class="input-group">
-                            <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                                name="invoiceDate" id="invoice-date-id" placeholder="Ngày hóa đơn"
-                                ng-model="invoiceDate">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary"
-                                    ng-click="onInvoiceDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
-                                        class="fa-regular fa-calendar-days"></i></button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="table table-condensed table-responsive display dataTable no-footer" style="font-size:14px;">
+      <thead>
+      <tr>
+        <th style="width: 3%">#</th>
+        <th style="width: 3%">STT</th>
+        <th style="width: 6%" class="ng-scope">Ảnh</th>
+        <th style="width: 40%;">Mặt hàng <span class="ng-scope"> [Mã-Tên]</span></th>
+        <th style="width: 10%;"><span class="ng-scope">Đơn vị</span></th>
+        <th style="width: 9%;">SL</th>
+        <th style="width: 17%"  class="ng-scope">Giá bán</th>
+        <th style="width: 3%">C.K(%)</th>
+        <th style="text-align:right;" class="ng-scope"><span  class="ng-scope">Thành tiền</span></th>
+      </tr>
+      </thead>
+      <tbody class="ng-scope">
+      <tr style="border-bottom: 1px solid #ccc; font-size: 14px">
+        <td>
+          <div class="ng-scope">
+            <a class="btn btn-primary" title="Thêm mới" (click)="addDrugToTable()"><i class="fa-regular fa-plus"></i></a>
+          </div>
+        </td>
+        <td class="ng-scope">
+        </td>
+        <td class="ng-scope">
+        </td>
+        <td>
+          <div class="ng-scope ng-isolate-scope">
+            <div class="input-group">
+              <div class="w-100">
+                <ng-select [(ngModel)]="rowItem.a" (keyup.enter)="searchListThuoc($event)"
+                           (ngModelChange)="onChangeThuoc($event)">
+                  <ng-option *ngFor="let item of listThuoc"
+                             [value]="item.id">{{item.tenThuoc}}</ng-option>
+                </ng-select>
+              </div>
+              <span class="input-group-btn ng-scope">
+                  <a (click)="addNewDrug();" class="btn btn-primary btn-radius"
+                     title="Thêm mới">
+                      <i class="fa-regular fa-plus"></i>
+                  </a>
+              </span>
             </div>
+            <span id="Logo" style="display:none;"></span>
+          </div>
+        </td>
+        <td>
+          <div class="ng-scope">
+            <ng-select [(ngModel)]="rowItem.donViTinhMaDonViTinh" (ngModelChange)="onChangeDviTinh($event)"
+                       [clearable]="false">
+              <ng-option *ngFor="let item of rowItem.listDonViTinhs"
+                         [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+            </ng-select>
+          </div>
+        </td>
+        <!--Số Lượng-->
+        <td>
+          <div class="ng-scope">
+            <input type="text" id="tbxQuantityId" [(ngModel)]="rowItem.soLuong" (ngModelChange)="onChangeSoLuong()"
+                   class="form-control mb-0  mousetrap row-item-quantiy"
+                   style="width: 100%; text-align:right; font-size:14px;">
+          </div>
+        </td>
+        <!--Giá Bán Lẻ-->
+        <td class="ng-scope">
+          <div class="input-group mb-3 ">
+            <input type="text" [(ngModel)]="rowItem.giaBanLe" (ngModelChange)="onChangeSoLuong()"
+                   class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope">
+            <input type="text"
+                   class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;">
+          </div>
+        </td>
+        <!--C.K-->
+        <td class="ng-scope">
+          <input id="tbxDiscountId" type="text" [(ngModel)]="rowItem.chietKhau" (ngModelChange)="onChangeSoLuong()"
+                 class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                 style="width: 100%; text-align:right;">
+        </td>
+        <!--Thành Tiền-->
+        <td>
+          <div class="number-value">
+            <strong
+              class="ng-binding ng-scope">{{rowItem.tongTien}}</strong>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+      <tbody class="ng-scope">
+      <tr *ngFor="let data of dataTable; index as i;" style="border-bottom: 1px solid #ccc; font-size: 14px">
+        <!--Actions-->
+        <td>
+          <div class="ng-scope">
+            <a class="btn btn-danger delete-drug" title="Xóa" (click)="onDelete(data);">
+              <i class="fa-regular fa-trash"></i></a>
+          </div>
+        </td>
+        <!--STT-->
+        <td class="ng-scope">
+          <a ng-click="onDrugInfoDetails(gridItem.DrugId);">
+            {{i + 1}}
+          </a>
+        </td>
+        <!--Hình ảnh-->
+        <td class="ng-scope">
+
+        </td>
+        <td>
+          <div class="ng-scope">
+                <span class="ng-scope">
+                      <span style="color:seagreen; padding:0;" class="btn-link">
+                          <span class="btn-link ng-binding"
+                                style="background:lightgreen"
+                          >{{data.maThuoc}}</span>
+                      </span>
+                      <span>-</span>
+                      <span class="btn-link tooltip-content-drug ng-binding" style="background:lightgreen"
+                            title="Tra cứu giá thị trường">
+                          {{data.tenThuoc}}
+                      </span>
+                <p class="btn-link tooltip-content-drug"
+                   style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
+                   ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
+                  <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
+                </p>
+                </span>
+          </div>
+        </td>
+        <!--Đơn Vị-->
+        <td>
+          <div>
+            <div class="ng-scope">
+              <ng-select [(ngModel)]="data.donViTinhMaDonViTinh">
+                <ng-option *ngFor="let item of data.listDonViTinhs" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </td>
+        <!--Số Lượng-->
+        <td>
+          <div class="ng-scope">
+            <input type="text" [(ngModel)]="data.soLuong" (ngModelChange)="onChangeSoLuong(data)"
+                   class="form-control mb-0  mousetrap row-item-quantiy"
+                   style="width: 100%; text-align:right; font-size:14px;">
+          </div>
+        </td>
+
+        <!--Giá Bán Lẻ-->
+
+        <td class="ng-scope">
+          <div class="input-group mb-3 ">
+            <input type="text" [(ngModel)]="data.giaBanLe" (ngModelChange)="onChangeSoLuong(data)"
+                   class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope">
+            <input type="text" [(ngModel)]="data.rateRevenue"
+                   class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;">
+          </div>
+        </td>
+        <td class="ng-scope">
+            <input id="tbxDiscountId1" type="text"
+                   class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                   style="width: 100%; text-align:right;" [(ngModel)]="data.chietKhau" (ngModelChange)="onChangeSoLuong(data)">
+        </td>
+        <!--Thành Tiền-->
+        <td>
+          <div class="number-value"><strong  class="ng-binding ng-scope">{{data.tongTien}}</strong>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="row mt-3 mb-3">
+      <form [formGroup]="formData" class="form-inline ng-pristine ng-valid" novalidate="novalidate">
+        <div class="col-sm-3">
+          <b>
+            Tổng số tiền:
+            <span class="ng-binding ng-scope">{{calendarTongTien()}}</span>
+          </b>
         </div>
-
-        <table class="table table-condensed table-responsive display dataTable no-footer" style="font-size:14px;">
-            <thead>
-                <tr>
-                    <th style="width: 3%">#</th>
-                    <th style="width: 3%">STT</th>
-
-                    <th ng-if="1 == 1 &amp;&amp; deviceType != 1" style="width: 6%" class="ng-scope">Ảnh</th>
-
-                    <th style="width: 40%;">Mặt hàng <span ng-if="deviceType!=1" class="ng-scope"> [Mã-Tên]</span></th>
-                    <th style="width: 10%;"><span ng-if="deviceType!=1" class="ng-scope">Đơn
-                            vị</span></th>
-                    <th style="width: 9%;">SL</th>
-
-
-
-
-                    <th style="width: 17%" ng-if="viewModel.NoteTypeId==3" class="ng-scope">Giá bán</th>
-
-
-                    <th style="width: 3%">C.K(%)</th>
-
-
-
-
-                    <th style="text-align:right;" ng-if="viewModel.NoteTypeId != 10" class="ng-scope">
-                        <span ng-if="deviceType!=1" class="ng-scope">Thành
-                            tiền</span>
-                    </th>
-
-
-
-
-                </tr>
-            </thead>
-
-            <tbody ng-repeat="gridItem in viewModel.NoteItems" class="ng-scope">
-                <tr style="border-bottom: 1px solid #ccc; font-size: 14px"
-                    ng-show="deviceType==0 || !gridItem.IsEditingItem">
-
-                    <td>
-
-
-                        <div ng-if="gridItem.IsEditingItem" class="ng-scope">
-                            <a class="btn btn-primary" title="Thêm mới"
-                                ng-click="onAddNewItem(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
-                                    class="fa-regular fa-plus"></i></a>
-                        </div>
-                    </td>
-
-
-
-                    <td ng-if="deviceType!=1" class="ng-scope">
-
-                        <a href=""
-                            ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                            ng-show="!gridItem.IsEditingItem" class="ng-binding ng-hide">
-                            0
-                        </a>
-                    </td>
-
-
-                    <td ng-if="1 == 1 &amp;&amp; deviceType != 1" class="ng-scope">
-
-                    </td>
-
-
-                    <td>
-
-
-                        <div ng-if="gridItem.IsEditingItem" item-search-filter="" mousetrap=""
-                            select-changed-callback="onDrugSelectChanged"
-                            default-selected-changed-callback="onDefaultSelectedChanged" clear-after-selected="true"
-                            only-single-item="true" default-selected-item="selectedDrugItem"
-                            func-calls="drugSearchFuncCalls" show-cam-barcode-scanner="false"
-                            cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                            inventory-viewable="permittedFields.Drug_ViewInventory"
-                            addable="viewModel.NoteTypeId==1 &amp;&amp; permittedFields.Drug_Create"
-                            addable-callback="onAddNewDrug" view-in-price="true"
-                            permission-in-price="permittedFields.Drug_ViewInputPrice" search-type="1"
-                            id="drugSearchBoxId" class="ng-scope ng-isolate-scope">
-
-
-                            <div ng-if="!showCamBarcodeScanner" class="">
-                                <div class="w-100">
-                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                        ng-class="{open: $select.open}" ng-model="data.selected" theme="bootstrap"
-                                        id="itemSearchId" reset-search-input="clearAfterSelected"
-                                        forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                                        <div><span class="text-truncate-line ui-select-match ui-select-match"
-                                                placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                id="itemSearchUISelectID"></span><input type="search" autocomplete="off"
-                                                autocorrect="off" autocapitalize="off" spellcheck="false"
-                                                class="ui-select-search input-xs ng-pristine ng-valid ng-touched"
-                                                placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                ng-disabled="$select.disabled" ng-click="$select.activate()"
-                                                ng-model="$select.search" role="combobox" aria-expanded="false"
-                                                aria-label="Select box" ng-class="{'spinner': $select.refreshing}"
-                                                ondrop="return false;" style="width: 1013px;"></div>
-                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                            refresh="fetch($select)" refresh-delay="500" repeat="item in items"
-                                            id="selectChoiceId" style="display: block; opacity: 0;">
-                                            <li class="ui-select-choices-group" id="ui-select-choices-38">
-                                                <div class="divider ng-hide"
-                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                                                <div ng-show="$select.isGrouped"
-                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                    ng-bind="$group.name"></div>
-                                            </li>
-                                        </ul>
-                                        <div class="ui-select-no-choice"></div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <span id="Logo" style="display:none;"></span>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <div>
-
-                            <div ng-if="isEditing" class="ng-scope">
-                                <select class="form-control mb-0 " ng-model="gridItem.SelectedUnitId"
-                                    ng-options="item.UnitId as item.UnitName for item in gridItem.Units"
-                                    ng-change="onUnitChanged(gridItem)" style="width:100%">
-                                    <option value="?" selected="selected"></option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" id="tbxQuantityId" class="form-control mb-0  mousetrap row-item-quantiy"
-                                style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Quantity"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-
-                    <td ng-if="deviceType!=1" class="ng-scope">
-
-
-
-
-                        <div class="input-group mb-3 " ng-if="isEditing">
-                            <input type="text"
-                                class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                ng-model="gridItem.OutPrice" ng-change="onOutpriceChange(gridItem,'outprice')"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                            <input ng-if="permittedFields.Drug_ViewInputPrice" type="text"
-                                class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;"
-                                ng-model="gridItem.RateRevenue" ng-change="onOutpriceChange(gridItem,'raterevenue')">
-
-
-                        </div>
-                    </td>
-
-
-
-                    <td ng-if="deviceType != 1" class="ng-scope">
-
-                        <div ng-if="isEditing" class="ng-scope">
-
-                            <input id="tbxDiscountId" type="text"
-                                class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                style="width: 100%; text-align:right;" ng-model="gridItem.Discount"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-
-
-                    <td>
-                        <div class="number-value">
-                            <strong ng-if="permittedFields.Drug_ViewInputPrice || viewModel.NoteTypeId == 3"
-                                class="ng-binding ng-scope">0</strong>
-
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-                </tr>
+        <div class="col-sm-3 ng-scope"
+             style="z-index:0">
+          <table>
+            <tbody>
+            <tr>
+              <td>
+                <div class="form-inline-flex mb-2">
+                  <label>Trả: </label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      id="tbxPaymentAmount"
+                      class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
+                      style="width:50%;" formControlName="daTra">
+                    <input class="btn btn-primary btn-group" type="button" value="F"
+                           title="Ấn vào đây để trả đủ số tiền" id="btnFull"
+                           (click)="onPayFull();">
+                  </div>
+                </div>
+                <div class="msg_payment_header">Hình thức thanh toán <span>[+]</span></div>
+                <div id="paymentSlide" class="form-check" style="display: none;">
+                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
+                     ng-repeat="item in listPayType">
+                    <input type="radio" class="form-check-input"
+                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
+                           name="optradio" checked="checked">Tiền mặt
+                  </p>
+                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
+                     ng-repeat="item in listPayType">
+                    <input type="radio" class="form-check-input"
+                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
+                           name="optradio">Chuyển khoản
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="text-danger ng-binding ng-scope">Còn nợ: {{formData.value.tongTien - formData.value.daTra}}</span>
+              </td>
+            </tr>
             </tbody>
-            <tbody ng-repeat="gridItem in viewModel.NoteItems" class="ng-scope">
-                <tr style="border-bottom: 1px solid #ccc; font-size: 14px"
-                    ng-show="deviceType==0 || !gridItem.IsEditingItem">
-
-                    <td>
-
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                            <a class="btn btn-danger delete-drug" title="Xóa"
-                                ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();"
-                                ng-show="isEditing"><i class="fa-regular fa-trash"></i></a>
-                        </div>
-
-                    </td>
-
-
-
-                    <td ng-if="deviceType!=1" class="ng-scope">
-
-                        <a href=""
-                            ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                            ng-show="!gridItem.IsEditingItem" class="ng-binding">
-                            1
-                        </a>
-                    </td>
-
-
-                    <td ng-if="1 == 1 &amp;&amp; deviceType != 1" class="ng-scope">
-
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-
-                        </div>
-                    </td>
-
-
-                    <td>
-
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-
-                            <span ng-if="(deviceType!=1 &amp;&amp; !enableTraining) || viewModel.NoteTypeId != 1"
-                                class="ng-scope">
-
-                                <span style="color:seagreen">
-                                    <span class="btn-link" title="Xem LS giao dịch"
-                                        ng-click="onTransByObjectDetails(5, [gridItem.DrugId]); $event.preventDefault(); $event.stopPropagation();">
-                                        <span data-container="body" style="color:seagreen" class="btn btn-link"
-                                            data-toggle="tooltip" data-html="true" title=""
-                                            ng-click="onTransByObjectDetails(5, [gridItem.DrugId]); $event.preventDefault(); $event.stopPropagation();">
-
-                                        </span>
-                                    </span>
-                                </span>
-                                <span ng-if="viewModel.NoteTypeId!=1" class="ng-binding ng-scope">TH466-</span>
-                                <span title="Đã TL LT" class="ng-binding">test111</span>
-
-
-                            </span>
-
-                            <p class="btn-link tooltip-content-drug"
-                                style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
-                                ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
-                                <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
-                            </p>
-                        </div>
-
-                    </td>
-
-
-                    <td>
-                        <div>
-
-                            <div ng-if="isEditing" class="ng-scope">
-                                <select class="form-control mb-0 " ng-model="gridItem.SelectedUnitId"
-                                    ng-options="item.UnitId as item.UnitName for item in gridItem.Units"
-                                    ng-change="onUnitChanged(gridItem)" style="width:100%">
-                                    <option label="Bịch" value="number:699963" selected="selected">Bịch</option>
-                                    <option label="hộp" value="number:705283">hộp</option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" id="tbxQuantityId1" class="form-control mb-0  mousetrap row-item-quantiy"
-                                style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Quantity"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-
-                    <td ng-if="deviceType!=1" class="ng-scope">
-
-
-
-
-                        <div class="input-group mb-3 " ng-if="isEditing">
-                            <input type="text"
-                                class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                ng-model="gridItem.OutPrice" ng-change="onOutpriceChange(gridItem,'outprice')"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                            <input ng-if="permittedFields.Drug_ViewInputPrice" type="text"
-                                class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;"
-                                ng-model="gridItem.RateRevenue" ng-change="onOutpriceChange(gridItem,'raterevenue')">
-
-
-                        </div>
-                    </td>
-
-
-
-                    <td ng-if="deviceType != 1" class="ng-scope">
-
-                        <div ng-if="isEditing" class="ng-scope">
-
-                            <input id="tbxDiscountId1" type="text"
-                                class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                style="width: 100%; text-align:right;" ng-model="gridItem.Discount"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-
-
-                    <td>
-                        <div class="number-value">
-                            <strong ng-if="permittedFields.Drug_ViewInputPrice || viewModel.NoteTypeId == 3"
-                                class="ng-binding ng-scope">350,000</strong>
-
-                        </div>
-                    </td>
-
-
-
-
-
-
-
-
-                </tr>
-            </tbody>
-        </table>
-        <div class="row mt-3 mb-3">
-            <form class="form-inline ng-pristine ng-valid" novalidate="novalidate">
-                <div class="col-sm-3">
-                    <b>
-                        Tổng số tiền:
-                        <span ng-if="permittedFields.Drug_ViewInputPrice || viewModel.NoteTypeId == 3"
-                            class="ng-binding ng-scope">350,000</span>
-
-                    </b>
-                </div>
-                <div class="col-sm-3 ng-hide" ng-show="viewModel.NoteTypeId==1">
-                    <div class="input-group">
-                        <b style="width:36%">C.K.Đơn (VNĐ)</b>
-                        <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                            style="width:100%;" ng-model="viewModel.Discount" awnum="app-decimal-number"
-                            ng-change="onDiscountChanged(1)">
-                    </div>
-
-                </div>
-                <div class="col-sm-3 ng-hide" ng-show="viewModel.NoteTypeId==1">
-                    <div class="input-group">
-                        <b style="width:27%">C.K.Đơn (%)</b>
-                        <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                            style="width:100%;" ng-model="discountWithRatio" awnum="app-decimal-number"
-                            ng-change="onDiscountChanged(2)">
-                    </div>
-                </div>
-
-
-
-                <div class="col-sm-3 ng-scope" ng-if="viewModel.NoteTypeId==1 || viewModel.NoteTypeId == 3"
-                    style="z-index:0">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-inline-flex mb-2">
-                                        <label>Trả: </label>
-                                        <div class="input-group">
-                                            <input type="text"
-                                                ng-if="permittedFields.Drug_ViewInputPrice || viewModel.NoteTypeId == 3"
-                                                id="tbxPaymentAmount"
-                                                class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
-                                                style="width:50%;" ng-model="viewModel.PaymentAmount"
-                                                awnum="app-decimal-number">
-
-                                            <input class="btn btn-primary btn-group" type="button" value="F"
-                                                title="Ấn vào đây để trả đủ số tiền" id="btnFull"
-                                                ng-click="onPayFull(); $event.preventDefault(); $event.stopPropagation();">
-                                        </div>
-                                    </div>
-                                    <div class="msg_payment_header">Hình thức thanh toán <span>[+]</span></div>
-                                    <div id="paymentSlide" class="form-check" style="display: none;">
-
-                                        <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
-                                            ng-repeat="item in listPayType">
-                                            <input type="radio" class="form-check-input"
-                                                ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
-                                                name="optradio" checked="checked">Tiền mặt
-                                        </p>
-                                        <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
-                                            ng-repeat="item in listPayType">
-                                            <input type="radio" class="form-check-input"
-                                                ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
-                                                name="optradio">Chuyển khoản
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="text-danger ng-binding ng-scope"
-                                        ng-if="permittedFields.Drug_ViewInputPrice || viewModel.NoteTypeId == 3">Còn nợ:
-                                        0</span>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+          </table>
         </div>
-        <table class="table borderless table-condensed">
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-10 text-left">
-                            <label for="">Diễn giải:</label>
-                            <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
-                                ng-model="viewModel.Description"></textarea>
-                        </div>
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table borderless table-condensed">
-            <tbody>
-                <tr ng-if="viewModel.TaskMode==2" class="ng-scope">
-                    <td style="width: 50%;"></td>
-                    <td>
-                        <div class="d-flex justify-content-between">
-                            <div class="flex-grow-1 text-left">
-                                <span>[Người lập: </span>
-                                <span class="ng-binding">Đỗ Thanh Mai]</span>
-                            </div>
-                            <div class="flex-grow-1 text-right">
-                                <span>[Ngày lập: </span>
-                                <span class="ng-binding">16/03/2024]</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="d-flex align-items-center justify-content-center gap-10">
-                            <input type="button" value="Quay lại" class="btn btn-default"
-                                ng-click="onBack(); $event.preventDefault(); $event.stopPropagation();">
-                            <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
-                                class="btn btn-primary btn btn-default"
-                                ng-click="saveReceiptNote(); $event.preventDefault(); $event.stopPropagation();">
-
-                            <a class="btn btn-primary ng-scope"
-                                ng-if="viewModel.TaskMode==2 &amp;&amp; deviceType==0 &amp;&amp; viewModel.NoteTypeId==3"
-                                ng-click="onPrint(viewModel.NoteId, 3, 1)">
-                                In
-                            </a>
-
-                            <span ng-if="viewModel.TaskMode==2" class="ng-scope">
-                                <span ng-if="viewModel.Editable" class="ng-scope">
-                                    <a href="/PhieuNhaps/delete/3621741" class="btn btn-danger btn btn-danger">Xóa
-                                        phiếu</a>
-                                </span>
-                                <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"
-                                    title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>
-                            </span>
-
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+      </form>
     </div>
+    <table class="table borderless table-condensed">
+      <form [formGroup]="formData">
+        <tbody>
+        <tr>
+          <td>
+            <div class="d-flex gap-10 text-left">
+              <label for="">Diễn giải:</label>
+              <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
+                        formControlName="dienGiai"></textarea>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </form>
+    </table>
+    <table class="table borderless table-condensed">
+      <tbody>
+        <tr>
+          <td colspan="3">
+            <div class="d-flex align-items-center justify-content-center gap-10">
+              <input type="button" value="Quay lại" class="btn btn-default"
+                     ng-click="onBack();">
+              <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
+                     class="btn btn-primary btn btn-default"
+                     (click)="createUpdate();">
+  <!--            <a class="btn btn-primary ng-scope"-->
+  <!--               ng-if="viewModel.TaskMode==2 &amp;&amp; deviceType==0 &amp;&amp; viewModel.NoteTypeId==3"-->
+  <!--               ng-click="onPrint(viewModel.NoteId, 3, 1)">-->
+  <!--              In-->
+  <!--            </a>-->
+
+  <!--            <span ng-if="viewModel.TaskMode==2" class="ng-scope">-->
+  <!--                  <span ng-if="viewModel.Editable" class="ng-scope">-->
+  <!--                      <a href="/PhieuNhaps/delete/3621741" class="btn btn-danger btn btn-danger">Xóa-->
+  <!--                          phiếu</a>-->
+  <!--                  </span>-->
+  <!--                  <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"-->
+  <!--                     title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>-->
+  <!--            </span>-->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
