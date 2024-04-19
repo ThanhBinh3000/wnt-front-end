@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AuthGuard} from "../../guard/auth.guard";
-import { ReportComponent } from './report.component';
-import { DrugTransactionHistoryComponent } from './drug-transaction-history/drug-transaction-history.component';
+import {ReportComponent} from './report.component';
+import {DrugTransactionHistoryComponent} from './drug-transaction-history/drug-transaction-history.component';
 import {RevenueDetailsByDayComponent} from "./RevenueDetailsByDay/RevenueDetailsByDay.component";
+import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOutCommingDetailsByDay.component";
 
 const routes: Routes = [
   {
@@ -18,6 +18,11 @@ const routes: Routes = [
       {
         path: 'RevenueDetailsByDay',
         component: RevenueDetailsByDayComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'InOutCommingDetailsByDay',
+        component: InOutCommingDetailsByDayComponent,
         // canActivate: [AuthGuard],
       },
     ],

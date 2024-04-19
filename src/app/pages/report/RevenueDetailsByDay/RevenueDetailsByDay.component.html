@@ -1,160 +1,226 @@
 <div class="row">
-  <div class="col-md-12">
-    <div class="baocao-container box-group-white">
-      <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
-      <div class="text-center card-desc">
-        Ngày:
-        <div class="clickable-text daterange-picker">
-          <input type="text" ng-disabled="!isEditing" name="orderDate" id="order-date-id"
-                 ng-model="viewModel.OrderDate">
-          <span class="text-link font-weight-bold">
-                        <!-- {{viewModel.OrderDate}} -->16/04/2024
-          </span>
+  <div class="col-md-3 baocao-filter">
+    <form nzLayout="vertical" [formGroup]="formData">
+      <div class="sidebar-bg">
+        <fieldset class="mb-3">
+          <label>Khách hàng</label>
+          <select class="form-control" formControlName="checkOption" (ngModelChange)="handleSelectChange()">
+            <option value="1" selected>--Tất cả--</option>
+            <option value="2">Theo nhóm</option>
+            <option value="3">Theo tên</option>
+          </select>
+          <select class="form-control" *ngIf="formData.value.checkOption !== '1'">
+            <option value="">Chọn hoặc gõ vào để tìm...</option>
+          </select>
+        </fieldset>
+        <fieldset class="baocao-filter">
+          <label>Thời gian</label>
+          <div>
+            <div class="radio">
+              <div>
+                <input type="radio" id="rdFilterAll" name="dateRangeFilterType" [checked]="filterTransactionType === 0"
+                       (change)="onFilterTransactionTypeChange(0)">
+                <label for="rdFilterAll">Tất cả</label>
+              </div>
+              <div>
+                <input type="radio" id="rdFilterByRange" name="dateRangeFilterType"
+                       [checked]="filterTransactionType === 1"
+                       (change)="onFilterTransactionTypeChange(1)">
+                <label for="rdFilterByRange">Theo ngày</label>
+              </div>
+              <div class="input-daterange input-group" id="datepicker" *ngIf="filterTransactionType === 1">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Từ ngày.."
+                         [matDatepicker]="ngayXuatTu"
+                         formControlName="ngayXuatTu"
+                         (dateChange)="onTransactionFromDateChange($event.value)"
+                         (click)="ngayXuatTu.open()">
+                  <mat-datepicker #ngayXuatTu></mat-datepicker>
+                  <span class="input-group-btn">
+                  <button class="btn btn-primary" (click)="ngayXuatTu.open()">
+                    <i class="fa-regular fa-calendar-days"></i>
+                  </button>
+                </span>
+                </div>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Đến ngày.."
+                         [matDatepicker]="ngayXuatDen"
+                         formControlName="ngayXuatDen"
+                         (dateChange)="onTransactionToDateChange($event.value)"
+                         (click)="ngayXuatDen.open()">
+                  <mat-datepicker #ngayXuatDen></mat-datepicker>
+                  <span class="input-group-btn">
+                  <button class="btn btn-primary" (click)="ngayXuatDen.open()">
+                    <i class="fa-regular fa-calendar-days"></i>
+                  </button>
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="control-group d-flex justify-content-between gap-10">
+            <input type="button" value="Xem" title="Xem" (click)="searchPage()" class="btn btn-primary w-50"/>
+            <input type="button" value="In" title="Tải file" class="btn btn-default w-50"/>
+          </div>
+          <div class="btn-group-flex gap-10 mt-3">
+            <input type="button" value="Xuất Excel" title="Xuất Excel" class="btn btn-primary w-100"/>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-9">
+    <div class="box-group-white">
+      <div class="text-center mb-3 box-group-title">
+        <h2 class="mb-0"><b>{{ title }}</b></h2>
+        <form class="form-inline">
+          <div class="form-group inner">
+            Ngày: 16/04/2024
+          </div>
+        </form>
+      </div>
+      <div class="form-group mb-0" style="width:30%">
+        <label> Cơ sở</label>
+        <div class="form-group">
+          <select class="form-control">
+            <option value="" selected>--Tất cả--</option>
+            <option value="1">Thật là vô nghĩa</option>
+          </select>
         </div>
       </div>
-      <div class="mb-3">
-        <label>Cơ sở</label>
-        <select class="form-control mb-0">
-          <option value="-1" selected>--Tất cả--</option>
-          <option value="0">Thật là vô nghĩa</option>
-        </select>
+      <div class="baocao-container">
+        <form nzLayout="vertical" [formGroup]="formData">
+          <table class="mb-3 w-100">
+            <tr>
+              <td align="right">Doanh số:
+                <span class="revenue-value">{{ formData.value?.deliveryTotal | number }}</span>
+              </td>
+              <td align="right">Tổng khách trả:
+                <span class="revenue-value"> 0</span>
+              </td>
+              <td align="right">Tổng C.K.Đơn:
+                <span class="revenue-value">{{ formData.value?.totalDiscount | number }}</span>
+              </td>
+              <td align="right">Tổng trừ điểm:
+                <span class="revenue-value">{{ formData.value?.totalPaymentScoreAmount | number }}</span>
+              </td>
+              <td align="right">Doanh thu <b class="msg_payment_header"> <span>[+]</span> </b>:
+                <span class="revenue-value">{{ formData.value?.deliveryTotal | number }}</span>
+              </td>
+              <td align="right">Tổng lợi nhuận:
+                <span class="revenue-value">{{ formData.value?.totalRevenue | number }}</span>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <div>
+          <table class="table table-striped table-bordered table-hover tr-ng-grid">
+            <thead>
+            <tr>
+              <th class="text-center">STT</th>
+              <th class="text-left">Tên khách</th>
+              <th class="text-left">Bác sỹ</th>
+              <th class="text-left">Số phiếu</th>
+              <th class="text-left">Ngày</th>
+              <th class="text-left">Tiền nợ</th>
+              <th class="text-left">CKD</th>
+              <th class="text-left">Trừ điểm(VNĐ)</th>
+              <th class="text-left">VAT</th>
+              <th class="text-left">Mặt hàng</th>
+              <th class="text-left">Đơn vị</th>
+              <th class="text-left">Số lượng</th>
+              <th class="text-left">Đơn giá</th>
+              <th class="text-left">CKĐ</th>
+              <th class="text-left">Thành tiền</th>
+              <th class="text-left">Lợi nhuận</th>
+              <th class="text-left">Tính lại</th>
+              <th class="text-left">P.Nhập</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let data of dataTable; index as i;">
+              <tr>
+                <td class="text-center">{{ (page - 1) * pageSize + i + 1 }}</td>
+                <td class="text-left">{{ data.tenKhachHang }}</td>
+                <td class="text-left">--Mặc định--</td>
+                <td class="text-left">
+                  <a class="ng-binding">
+                    {{ data.soPhieuXuat }}
+                  </a>
+                </td>
+                <td class="text-left">{{ data.ngayXuat }}</td>
+                <td class="text-left">{{ data.debtPaymentAmount | number }}</td>
+                <td class="text-left">{{ data.discount | number }}</td>
+                <td class="text-left">{{ data.paymentScoreAmount | number }}</td>
+                <td class="text-left">{{ data.vat }}</td>
+                <td class="text-left">
+                  <div>
+                    <span class="btn-link" title="xem LS giao dịch" style="color: seagreen">{{ data.maThuoc }}&nbsp;-&nbsp;</span>
+                    <span class="btn-link tooltip-content-drug">
+                        <a class="ng-binding">
+                          {{ data.tenThuoc }}
+                        </a>
+                      </span>
+                  </div>
+                </td>
+                <td class="text-left">{{ data.tenDonViTinh }}</td>
+                <td class="text-left">{{ data.soLuong | number }}</td>
+                <td class="text-left">{{ data.giaXuat | number }}</td>
+                <td class="text-left">{{ data.transPaymentAmount | number }}</td>
+                <td class="text-left">{{ data.tongTien | number }}</td>
+                <td class="text-left">{{ data.revenue | number }}</td>
+                <td>
+                  <div style="text-align:right">
+                    <button class="btn btn-sm btn-default">
+                      <i class="fa fa-flag-checkered"></i>
+                    </button>
+                  </div>
+                </td>
+                <td class="text-left"></td>
+              </tr>
+            </ng-container>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+        <form nzLayout="vertical" [formGroup]="formData">
+          <table class="w-100 mt-3 mb-3">
+            <tr>
+              <td align="right">Doanh số:
+                <span class="revenue-value">{{ formData.value?.deliveryTotal | number }}</span>
+              </td>
+              <td align="right">Tổng khách trả:
+                <span class="revenue-value"> 0</span>
+              </td>
+              <td align="right">Tổng C.K.Đơn:
+                <span class="revenue-value">{{ formData.value?.totalDiscount | number }}</span>
+              </td>
+              <td align="right">Tổng trừ điểm:
+                <span class="revenue-value">{{ formData.value?.totalPaymentScoreAmount | number }}</span>
+              </td>
+              <td align="right">Tổng nợ:
+                <span class="revenue-value"> 0</span>
+              </td>
+              <td align="right">Doanh thu:
+                <span class="revenue-value">{{ formData.value?.deliveryTotal | number }}</span>
+              </td>
+              <td align="right">Tổng lợi nhuận:
+                <span class="revenue-value">{{ formData.value?.totalRevenue | number }}</span>
+              </td>
+            </tr>
+          </table>
+        </form>
       </div>
-      <table class="table table-striped table-bordered table-hover tr-ng-grid">
-        <thead>
-        <tr>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-title"> STT</div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Tên khách</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Số phiếu</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Tiền nợ</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> CKD</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Trừ điểm(VNĐ)</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> VAT</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Mặt hàng</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Đơn vị</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Số lượng</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Đơn giá</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> CKĐ</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Thành tiền</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Lợi nhuận</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> Tính lại</div>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="tr-ng-column-header tr-ng-cell">
-              <div class="tr-ng-column-header tr-ng-cell">
-                <div class="tr-ng-title"> P.Nhập</div>
-              </div>
-            </div>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let data of dataTable; index as i;">
-          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-          <td>{{ data.tenKhachHang }}</td>
-          <td>{{ data.soPhieuXuat }}</td>
-          <td>{{ data.debtPaymentAmount }}</td>
-          <td>{{ data.discount }}</td>
-          <td>{{ data.paymentScoreAmount }}</td>
-          <td>{{ data.vat }}</td>
-          <td>{{ data.maThuoc + " - " + data.tenThuoc}}  </td>
-          <td>{{ data.tenDonViTinh }}</td>
-          <td>{{ data.soLuong }}</td>
-          <td>{{ data.giaXuat }}</td>
-          <td>{{ data.transPaymentAmount }}</td>
-          <td>{{ data.tongTien }}</td>
-          <td>{{ data.revenue }}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>
