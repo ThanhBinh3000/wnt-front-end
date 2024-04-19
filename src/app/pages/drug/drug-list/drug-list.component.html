@@ -66,7 +66,7 @@
         </h2>
         <div class="baocao-actions">
           <button *ngIf="!this.formData.value.dataDelete" (click)="deleteMulti()"
-            class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa
+            class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa thuốc đã chọn
           </button>
           <button *ngIf="this.formData.value.dataDelete" (click)="deleteMultiDatabase()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa vĩnh viễn
@@ -91,8 +91,11 @@
 
         <ng-container matColumnDef="#">
           <th mat-header-cell *matHeaderCellDef> #</th>
-          <td mat-cell *matCellDef="let data; index as i;"> {{ (page - 1) * pageSize + i + 1
-            }}</td>
+          <td mat-cell *matCellDef="let data; index as i;"> 
+            <a (click)="openDetailDialog(data.id)">
+              {{ (page - 1) * pageSize + i + 1 }}
+            </a>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="upload">
@@ -139,9 +142,7 @@
                   <div class="input-group ng-scope">
                     <span>
                       <span ng-if="deviceType==0" class="ng-scope">
-                        <a href="javascript:void(0)" (click)="drugID = 1" data-toggle="modal"
-                          data-target="#drug-detail-dialog"
-                          ng-click="onDrugInfoDetails(gridItem.Id); $event.preventDefault(); $event.stopPropagation();">
+                        <a href="javascript:void(0)" (click)="openDetailDialog(data.id)">
                           <span style="color:seagreen" class="ng-binding">
                             {{ data.maThuoc }}-
                           </span><span ng-mouseover="onShowTitle(gridItem)" class="tooltip-content-drug ng-binding">
@@ -183,8 +184,8 @@
           <th mat-header-cell *matHeaderCellDef> Giá</th>
           <td mat-cell *matCellDef="let data">
             <p>- Giá nhập: {{ data.giaNhap | number }}</p>
-            <p>- Giá bán lẻ: {{ data.giaBanLe }}</p>
-            <p>- Giá bán sỉ: {{ data.giaBanBuon }}</p>
+            <p>- Giá bán lẻ: {{ data.giaBanLe | number }}</p>
+            <p>- Giá bán sỉ: {{ data.giaBanBuon | number }}</p>
           </td>
         </ng-container>
 
@@ -201,6 +202,11 @@
         <ng-container matColumnDef="tonKho">
           <th mat-header-cell *matHeaderCellDef> Tồn</th>
           <td mat-cell *matCellDef="let data"> 0</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tuKho">
+          <th mat-header-cell *matHeaderCellDef> Vị trí tủ/kho</th>
+          <td mat-cell *matCellDef="let data"> {{ data.tenViTri }}</td>
         </ng-container>
 
         <ng-container matColumnDef="action">
