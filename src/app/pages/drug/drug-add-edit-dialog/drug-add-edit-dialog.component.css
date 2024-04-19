@@ -6,3 +6,7 @@
 .tab-uncheck-color {
     color: #337ab7!important;
 }
+
+.ng-select .ng-select-container {
+    min-height: 34px !important;
+}

@@ -13,6 +13,7 @@ import {
   CustomerGroupAddEditDialogComponent
 } from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-dialog.component";
+import { DrugDetailDialogComponent } from '../drug-detail-dialog/drug-detail-dialog.component';
 
 @Component({
   selector: 'drug-list',
@@ -21,7 +22,7 @@ import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-
 })
 export class DrugListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách thuốc";
-  displayedColumns = ['checkbox', '#', 'upload', 'tenThuoc', 'tenNhomThuoc', 'donVi', 'gia', 'discount', 'gioiHan', 'tonKho', 'action'];
+  displayedColumns = ['checkbox', '#', 'upload', 'tenThuoc', 'tenNhomThuoc', 'donVi', 'gia', 'discount', 'gioiHan', 'tonKho', 'tuKho', 'action'];
   drugID: number = 0;
 
   listNhomThuoc : any[] = []
@@ -100,6 +101,13 @@ export class DrugListComponent extends BaseComponent implements OnInit {
       if (result) {
         await this.searchPage();
       }
+    });
+  }
+
+  openDetailDialog(drugId:any){
+    const dialogRef = this.dialog.open(DrugDetailDialogComponent, {
+      data: drugId,
+      width: '600px',
     });
   }
 

@@ -120,10 +120,9 @@
                     <div class="input-group">
                       <input type="text" name="GiaNhap" id="GiaNhap"
                         class="form-control mb-0 ng-pristine ng-valid ng-isolate-scope ng-touched" tabindex="13"
-                        formControlName="giaNhap" awnum="app-decimal-number" placeholder="Giá nhập theo đơn vị xuất lẻ"
-                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                        formControlName="giaNhap" placeholder="Giá nhập theo đơn vị xuất lẻ">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">/{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                       <!-- <div class="input-group-btn">
                         <span ng-show="false" class="btn btn-primary ng-hide"
                           ng-click="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();"
@@ -171,10 +170,9 @@
                       <input type="text" name="GiaBanLe" id="GiaBanLe"
                         class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="14"
                         formControlName="giaBanLe" awnum="app-decimal-number"
-                        placeholder="Giá bán lẻ theo đơn vị xuất lẻ"
-                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'suffix': '', 'placeholder': '0'">
+                        placeholder="Giá bán lẻ theo đơn vị xuất lẻ">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">/{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                       <!-- <div class="input-group-btn">
                         <span ng-show="false" class="btn btn-primary ng-hide"
                           ng-click="onUpdatePriceChildStore(1); $event.preventDefault(); $event.stopPropagation();"
@@ -244,8 +242,9 @@
                         class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="16"
                         formControlName="heSo" awnum="app-decimal-number">
                       <span class="input-group-addon flex-grow-width-25 ng-scope">
-                        {{getQuyCach(formData.get('donViXuatLeMaDonViTinh')?.value,
-                        formData.get('donViThuNguyenMaDonViTinh')?.value, formData.get('heSo')?.value)}}
+                        {{formData.get('tenDonViTinhThuNguyen')?.value != '' 
+                        ? formData.get('tenDonViTinhThuNguyen')?.value + ' ' + formData.get('heSo')?.value + ' ' + formData.get('tenDonViTinhXuatLe')?.value 
+                        : formData.get('tenDonViTinhXuatLe')?.value}}
                       </span>
                     </div>
                     <span *ngIf="formData.get('heSo')?.invalid && formData.get('heSo')?.valueChanges">
@@ -295,10 +294,10 @@
                         class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="17"
                         formControlName="giaBanBuon" awnum="app-decimal-number">
                       <span *ngIf="formData.get('donViThuNguyenMaDonViTinh')?.value > 0"
-                        class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/{{getTenDonViTinh(formData.get('donViThuNguyenMaDonViTinh')?.value)}}
+                        class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/{{formData.get('tenDonViTinhThuNguyen')?.value}}
                       </span>
                       <span *ngIf="formData.get('donViThuNguyenMaDonViTinh')?.value <= 0"
-                        class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}
+                        class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/{{formData.get('tenDonViTinhXuatLe')?.value}}
                       </span>
                     </div>
                   </div>
@@ -336,7 +335,7 @@
                         formControlName="soDuDauKy" formControlName="soDuDauKy" awnum="app-decimal-number"
                         placeholder="Số tồn ban đầu theo đơn vị xuất lẻ">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                     </div>
                   </div>
                 </div>
@@ -354,7 +353,7 @@
                         class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" value="0"
                         tabindex="8" formControlName="gioiHan">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                     </div>
                   </div>
                 </div>
@@ -369,7 +368,7 @@
                         tabindex="19" formControlName="giaDauKy" awnum="app-decimal-number"
                         placeholder="Giá nhập ban đầu cho số tồn b.đầu">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">/{{getTenDonViTinh(formData.get('donViXuatLeMaDonViTinh')?.value)}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                     </div>
                   </div>
                 </div>

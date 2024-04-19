@@ -83,7 +83,9 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       nhaThuocMaNhaThuoc: [],
       productTypeId: [1],
       groupIdMapping: [0],
-      flag: [false]
+      flag: [false],
+      tenDonViTinhXuatLe: [],
+      tenDonViTinhThuNguyen: []
     });
   }
 
@@ -140,29 +142,6 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     if (res) {
       this.dialogRef.close(res);
     }
-  }
-
-  getQuyCach(donViXuatLe: any, donViThuNguyen: any, heSo: any) {
-    let tenDonViXuatLe = '';
-    let tenDonViThuNguyen = '';
-    this.listDonViTinh.forEach(x => {
-      if (donViXuatLe == x.id) tenDonViXuatLe = x.tenDonViTinh;
-      if (donViThuNguyen == x.id) tenDonViThuNguyen = x.tenDonViTinh;
-    });
-    if (donViThuNguyen > 0) {
-      return '1 ' + tenDonViThuNguyen + ' = ' + heSo + ' ' + tenDonViXuatLe;
-    }
-    else {
-      return tenDonViXuatLe;
-    }
-  }
-
-  getTenDonViTinh(donVi: any) {
-    let tenDonVi = '';
-    this.listDonViTinh.forEach(x => {
-      if (donVi == x.id) tenDonVi = x.tenDonViTinh;
-    });
-    return tenDonVi;
   }
 
   genBarcode(){

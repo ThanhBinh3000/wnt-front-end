@@ -1,123 +1,116 @@
-<div class="modal fade" id="drug-detail-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title">Thông tin mặt hàng
-                </h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered table-userpicker">
-                    <tbody>
-                        <tr class="">
-                            <td><b ng-show="viewModel.TypeService == 0" class="">Mã thuốc:</b></td>
-                            <td class="ng-binding">TH505</td>
-                        </tr>
-                        <tr>
-                            <td><b ng-show="viewModel.TypeService == 0" class="">Tên thuốc:</b> </td>
-                            <td class="ng-binding">
-                                GÒN BẠCH TUYẾT 100GR 1
-                            </td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0 &amp;&amp; viewModel.WarehouseLocationName != null">
-                            <td><b>Vị trí tủ/ kho:</b></td>
-                            <td class="ng-binding">
-                            </td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0" class="">
-                            <td><b>Mã vạch:</b></td>
-                            <td class="ng-binding">001027064463</td>
-                        </tr>
-                        <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain &amp;&amp; viewModel.TypeService == 0"
-                            class="ng-scope">
-                            <td><b>Hàng tư vấn:</b></td>
-                            <td ng-if="!viewModel.AdvisoryDrug" class="ng-scope"><i
-                                    class="fa-regular fa-xmark text-danger"></i></td>
-                        </tr>
-                        <tr ng-if="viewModel.TypeService == 0 &amp;&amp; viewModel.IsTranningStaff" class="ng-scope">
-                            <td><b>Ưu điểm:</b></td>
-                            <td ng-bind-html="viewModel.Advantages" class="ng-binding"></td>
-                        </tr>
-                        <tr ng-if="viewModel.TypeService == 0 &amp;&amp; viewModel.IsTranningStaff" class="ng-scope">
-                            <td><b>Đối tượng sử dụng:</b></td>
-                            <td class="ng-binding"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain &amp;&amp; viewModel.TypeService == 0"
-                            class="ng-scope">
-                            <td><b>Đơn vị xuất lẻ:</b></td>
-                            <td class="ng-binding">gói</td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0" class="">
-                            <td><b>Quy cách:</b></td>
-                            <td class="ng-binding">Thùng 50 gói</td>
-                        </tr>
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title">Thông tin mặt hàng
+            </h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered table-userpicker">
+                <tbody>
+                    <tr class="">
+                        <td><b>Mã thuốc:</b></td>
+                        <td>{{formData.get('maThuoc')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Tên thuốc:</b> </td>
+                        <td>
+                            {{formData.get('tenThuoc')?.value}}
+                        </td>
+                    </tr>
+                    <tr ng-show=" viewModel.WarehouseLocationName != null">
+                        <td><b>Vị trí tủ/ kho:</b></td>
+                        <td>
+                            {{formData.get('tenViTri')?.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Mã vạch:</b></td>
+                        <td>{{formData.get('barCode')?.value}}</td>
+                    </tr>
+                    <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain">
+                        <td><b>Hàng tư vấn:</b></td>
+                        <td *ngIf="formData.get('hangTuVan')?.value"><i class="fa-regular fa-check text-success"></i>
+                        </td>
+                        <td *ngIf="!formData.get('hangTuVan')?.value"><i class="fa-regular fa-xmark text-danger"></i>
+                        </td>
+                    <tr ng-if="viewModel.IsTranningStaff">
+                        <td><b>Ưu điểm:</b></td>
+                        <td>{{formData.get('advantages')?.value}}</td>
+                    </tr>
+                    <tr ng-if="viewModel.IsTranningStaff">
+                        <td><b>Đối tượng sử dụng:</b></td>
+                        <td>{{formData.get('userObject')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Đơn vị xuất lẻ:</b></td>
+                        <td>{{formData.get('tenDonViTinhXuatLe')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Quy cách:</b></td>
+                        <td>{{formData.get('tenDonViTinhThuNguyen')?.value != ''
+                            ? formData.get('tenDonViTinhThuNguyen')?.value + ' ' + formData.get('heSo')?.value + ' ' +
+                            formData.get('tenDonViTinhXuatLe')?.value
+                            : formData.get('tenDonViTinhXuatLe')?.value}}</td>
+                    </tr>
 
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain" class="ng-scope">
-                            <td><b>Giá nhập lẻ:</b></td>
-                            <td ng-if="viewModel.ViewInPricePermission" class="ng-binding ng-scope">
-                                9,400<span ng-if="viewModel.UnitId > 0"
-                                    class="ng-binding ng-scope">/gói</span></td>
-                        </tr>
-                        <tr>
-                            <td><b>Giá bán lẻ:</b></td>
-                            <td style="text-align:left" class="ng-binding">
-                                15,500<span
-                                    ng-if="viewModel.UnitId > 0 &amp;&amp; !viewModel.IsSlaveInGenaralPharmacyChain"
-                                    class="ng-binding ng-scope">/gói</span>
-                            </td>
-                        </tr>
-                        <tr class="" style="display: none">
-                            <td><b>Ngày cập nhật:</b></td>
-                            <td style="text-align:left" class="ng-binding"></td>
-                        </tr>
-                        <tr class="ng-scope"
-                            ng-if="!viewModel.IsSlaveInGenaralPharmacyChain &amp;&amp; viewModel.TypeService == 0">
-                            <td><b>Giá bán sỉ:</b></td>
-                            <td style="text-align:left" class="ng-binding">0<span
-                                    ng-if="viewModel.UnitId > 0"
-                                    class="ng-binding ng-scope">/Thùng</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr ng-if="viewModel.ViewInventoryPermission &amp;&amp; viewModel.TypeService == 0"
-                            class="ng-scope">
-                            <td><b>Tồn đầu kỳ:</b></td>
-                            <td style="text-align:left" class="ng-binding">0 gói</td>
-                        </tr>
-                        <tr class="ng-scope"
-                            ng-if="!viewModel.IsSlaveInGenaralPharmacyChain &amp;&amp; viewModel.TypeService == 0">
-                            <td><b>Giới hạn tồn:</b></td>
-                            <td style="text-align:left" class="ng-binding">0</td>
-                        </tr>
-                        <tr class="ng-scope"
-                            ng-if="viewModel.ViewInventoryPermission &amp;&amp; !viewModel.IsSlaveInGenaralPharmacyChain &amp;&amp; viewModel.TypeService == 0">
-                            <td><b>Tồn kho hiện tại:</b></td>
-                            <td style="text-align:left" class="ng-binding">0 gói</td>
-                        </tr>
-                        <tr class="ng-scope" ng-if="viewModel.TypeService == 0 &amp;&amp; viewModel.IsTranningStaff">
-                            <td><b>Hàng thay thế:</b></td>
-                            <td style="text-align:left">
-                            </td>
-                        </tr>
-                        <tr class="ng-scope" ng-if="viewModel.TypeService == 0 &amp;&amp; viewModel.IsTranningStaff">
-                            <td><b>Hàng bán kèm:</b></td>
-                            <td style="text-align:left">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-            </div>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain">
+                        <td><b>Giá nhập lẻ:</b></td>
+                        <td ng-if="viewModel.ViewInPricePermission">
+                            {{formData.get('giaNhap')?.value | number}}/{{formData.get('tenDonViTinhXuatLe')?.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Giá bán lẻ:</b></td>
+                        <td style="text-align:left">
+                            {{formData.get('giaBanLe')?.value | number}}/{{formData.get('tenDonViTinhXuatLe')?.value}}
+                        </td>
+                    </tr>
+                    <tr class="" style="display: none">
+                        <td><b>Ngày cập nhật:</b></td>
+                        <td style="text-align:left"></td>
+                    </tr>
+                    <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain ">
+                        <td><b>Giá bán sỉ:</b></td>
+                        <td>{{formData.get('giaBanBuon')?.value | number}}/{{formData.get('donViThuNguyenMaDonViTinh')?.value > 0 ? formData.get('tenDonViTinhThuNguyen')?.value : formData.get('tenDonViTinhXuatLe')?.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr ng-if="viewModel.ViewInventoryPermission ">
+                        <td><b>Tồn đầu kỳ:</b></td>
+                        <td style="text-align:left">{{formData.get('soDuDauKy')?.value | number}} {{formData.get('tenDonViTinhXuatLe')?.value}}</td>
+                    </tr>
+                    <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain ">
+                        <td><b>Giới hạn tồn:</b></td>
+                        <td style="text-align:left">{{formData.get('gioiHan')?.value | number}} {{formData.get('tenDonViTinhXuatLe')?.value}}</td>
+                    </tr>
+                    <tr ng-if="viewModel.ViewInventoryPermission &amp;&amp; !viewModel.IsSlaveInGenaralPharmacyChain ">
+                        <td><b>Tồn kho hiện tại:</b></td>
+                        <td style="text-align:left">0 {{formData.get('tenDonViTinhXuatLe')?.value}}</td>
+                    </tr>
+                    <tr ng-if=" viewModel.IsTranningStaff">
+                        <td><b>Hàng thay thế:</b></td>
+                        <td style="text-align:left">
+                        </td>
+                    </tr>
+                    <tr ng-if=" viewModel.IsTranningStaff">
+                        <td><b>Hàng bán kèm:</b></td>
+                        <td style="text-align:left">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
         </div>
     </div>
 </div>
