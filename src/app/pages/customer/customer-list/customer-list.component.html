@@ -132,7 +132,7 @@
             <div class="control-group">
               <ng-select [(ngModel)]="data.mappingStoreId" appendTo="body" appearance="outline"
                 [items]="listNhaThuocDongBo" bindLabel="tenNhaThuoc" bindValue="id" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" (change)="updateMappingStore($event, data.id)">
+                notFoundText="Không tìm thấy mục nào" (search)="searchStoreMapping($event)" (change)="updateMappingStore($event, data.id)">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span *ngIf="item.id" [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar" />
                     {{item.tenNhaThuoc}}</span>
@@ -149,7 +149,7 @@
             <div class="control-group">
               <ng-select [(ngModel)]="data.zaloId" appendTo="body" appearance="outline" [items]="listNguoiQuanTamOA"
                 bindLabel="userName" bindValue="userId" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" (change)="updateMappingZaloOA($event, data.id)">
+                notFoundText="Không tìm thấy mục nào" (search)="searchFlowerOA($event)" (change)="updateMappingZaloOA($event, data.id)">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span *ngIf="item.id" [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar" />
                     {{item.userName}}</span>

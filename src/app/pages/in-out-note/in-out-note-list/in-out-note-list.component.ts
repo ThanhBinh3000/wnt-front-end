@@ -7,6 +7,7 @@ import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.ser
 import { MatSort } from '@angular/material/sort';
 import { ThuChiService } from '../../../services/categories/thu-chi.service';
 import { STATUS_API } from '../../../constants/message';
+import { UserProfileService } from '../../../services/system/user-profile.service';
 
 @Component({
   selector: 'app-in-out-note',
@@ -15,7 +16,9 @@ import { STATUS_API } from '../../../constants/message';
 })
 export class InOutNoteListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Tra cứu phiếu thu chi";
-  tongTien : number = 0;
+  tongTien: number = 0;
+  tienMat: number = 0;
+  chuyenKhoan: number = 0;
   displayedColumns = [
     '#',
     'soPhieu',
@@ -30,14 +33,22 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
   listNhanVien: any[] = [];
   listNhaCungCap: any[] = [];
   listKhachHang: any[] = [];
-
+  loaiPhieus: any[] = [
+    { id: 1, value: 'Phiếu thu nợ khách hàng' },
+    { id: 2, value: 'Phiếu chi trả nhà cung cấp' },
+    { id: 3, value: 'Phiếu thu khác' },
+    { id: 4, value: 'Phiếu chi khác' },
+    { id: 5, value: 'Phiếu chi phí kinh doanh' },
+    { id: 6, value: 'Phiếu thu lại nhà cung cấp' },
+    { id: 7, value: 'Phiếu chi trả lại khách hàng' },
+  ];
   constructor(
     injector: Injector,
     private titleService: Title,
     private _service: ThuChiService,
-    private nhanVienService : NhanVienNhaThuocsService,
-    private khachHangService : KhachHangService,
-    private nhaCungCapService : NhaCungCapService,
+    private nhanVienService: UserProfileService,
+    private khachHangService: KhachHangService,
+    private nhaCungCapService: NhaCungCapService,
   ) {
 
     super(injector, _service);
@@ -46,9 +57,10 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
       loaiPhieu: [1],
       khachHangMaKhachHang: '',
       nhaCungCapMaNhaCungCap: '',
-      createdBy_UserId : '',
-      fromDate : '',
-      toDate : ''
+      createdBy_UserId: '',
+      fromDate: '',
+      toDate: '',
+      nguoiNhan: [null]
     });
   }
   ngAfterViewInit(): void {
@@ -59,22 +71,55 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    await this.searchPage();
-    if(this.dataTable){
-       this.tongTien = this.dataTable.reduce((acc, val) => acc += val.amount, 0);
-    }
+    this.fetchData();
     this.getDataFilter();
   }
-  
+  //tính tổng tiền
+  async sumTotalAmount() {
+    if (this.dataTable) {
+      this.tongTien = this.dataTable.reduce((acc, val) => acc += val.amount, 0);
+      this.tienMat = this.dataTable.filter(x => x.paymentTypeId == 0).reduce((acc, val) => acc += val.amount, 0);
+      this.chuyenKhoan = this.dataTable.filter(x => x.paymentTypeId == 1).reduce((acc, val) => acc += val.amount, 0);
+    }
+  }
+
+  async fetchData() {
+    await this.searchPage();
+    this.sumTotalAmount();
+  }
+
   //get data
   getDataFilter() {
     // Nhóm khách hàng
-    this.nhanVienService.searchList({}).then((res) => {
+    this.nhanVienService.searchListStaffManagement({}).then((res) => {
       if (res?.statusCode == STATUS_API.SUCCESS) {
-        console.log(res.data);
         this.listNhanVien = res.data;
         this.listNhanVien.unshift({ id: '', tenDayDu: 'Tất cả' });
       }
     });
+  }
+  //tìm kiếm data
+  async searchObject($event: any) {
+    console.log($event.term);
+    if ($event.term.length >= 2) {
+      let body = { textSearch : $event.term,  paggingReq: {}, dataDelete : false};
+        body.paggingReq = {
+        limit: 25,
+        page: this.page - 1
+      }
+      if(this.formData.get('loaiPhieu')?.value == 1 || this.formData.get('loaiPhieu')?.value == 7){
+        this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
+          if (res?.statusCode == STATUS_API.SUCCESS) {
+            this.listKhachHang = res.data.content;
+          }
+        });
+      }else{
+        this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
+          if (res?.statusCode == STATUS_API.SUCCESS) {
+            this.listNhaCungCap = res.data.content;
+          }
+        });
+      }
+    }
   }
 }
