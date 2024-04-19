@@ -145,7 +145,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     }
   }
 
-  genBarcode(){
+   genBarcode(){
     this._service.generateBarCode({}).then((res) => {
       if (res?.statusCode == STATUS_API.SUCCESS) {
         this.formData.patchValue({barCode: res.data});

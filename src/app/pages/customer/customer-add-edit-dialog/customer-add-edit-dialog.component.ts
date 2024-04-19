@@ -125,7 +125,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   @ViewChildren('pickerBirthDate') pickerBirthDate!: Date;
 
   async genBarcodeCustomer() {
-    let barcode = this.genBarcode(12);
+    let barcode = "";// this.genBarcode(12);
     this.formData.patchValue({ barCode: (await barcode).valueOf() });
   }
 }

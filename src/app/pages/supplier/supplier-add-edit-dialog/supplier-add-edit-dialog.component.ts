@@ -84,7 +84,7 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
   };
 
   async genBarcodeSupplier() {
-    let barcode = this.genBarcode(12);
+    let barcode = "";//this.genBarcode(12);
     this.formData.patchValue({ barcode: (await barcode).valueOf() });
   }
 }

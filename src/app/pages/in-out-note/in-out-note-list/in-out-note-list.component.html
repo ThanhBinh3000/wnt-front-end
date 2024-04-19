@@ -1,283 +1,141 @@
 <div class="row">
     <div class="col-md-3">
-        <div class="sidebar-bg">
-            <div class="mb-3">
-                <label>Loại phiếu</label>
-                <select class="form-control" name="mySelect" id="mySelect" ng-change="onInOutNoteChanged()"
-                    ng-model="data.selectedOtherInOutNote">
-                    <option label="Phiếu Thu nợ Khách hàng" value="1" selected="selected">Phiếu Thu nợ Khách hàng
-                    </option>
-                    <option label="Phiếu Trả nợ Nhà cung cấp" value="2">Phiếu Trả nợ Nhà cung cấp</option>
-                    <option label="Phiếu Thu Khác" value="3">Phiếu Thu Khác</option>
-                    <option label="Phiếu Chi Khác" value="4">Phiếu Chi Khác</option>
-                    <option label="Chi Phí Kinh Doanh" value="5">Chi Phí Kinh Doanh</option>
-                    <option label="Phiếu chi trả lại khách hàng" value="7">Phiếu chi trả lại khách hàng</option>
-                    <option label="Phiếu thu lại nhà cung cấp " value="6">Phiếu thu lại nhà cung cấp </option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Mã số phiếu</label>
-                <div>
-                    <input type="number" class="form-control" ng-change="onInOutNoteChanged()" ng-model="NoteNumber"
-                        placeholder="Nhập số phiếu...">
+        <form [formGroup]="formData">
+            <div class="sidebar-bg">
+                <div class="mb-3">
+                    <label>Loại phiếu</label>
+                    <select class="form-control" name="mySelect" id="mySelect" ng-change="onInOutNoteChanged()"
+                        ng-model="data.selectedOtherInOutNote">
+                        <option label="Phiếu Thu nợ Khách hàng" value="1" selected="selected">Phiếu Thu nợ Khách hàng
+                        </option>
+                        <option label="Phiếu Trả nợ Nhà cung cấp" value="2">Phiếu Trả nợ Nhà cung cấp</option>
+                        <option label="Phiếu Thu Khác" value="3">Phiếu Thu Khác</option>
+                        <option label="Phiếu Chi Khác" value="4">Phiếu Chi Khác</option>
+                        <option label="Chi Phí Kinh Doanh" value="5">Chi Phí Kinh Doanh</option>
+                        <option label="Phiếu chi trả lại khách hàng" value="7">Phiếu chi trả lại khách hàng</option>
+                        <option label="Phiếu thu lại nhà cung cấp " value="6">Phiếu thu lại nhà cung cấp </option>
+                    </select>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label>Khách hàng</label>
-                <select class="form-control">
-                    <option label="Tỉnh" value="1" selected="selected">Tỉnh</option>
-                    <option label="Tuấn" value="2">Tuấn</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Nhân viên</label>
-                <select class="form-control">
-                    <option label="Tỉnh" value="1" selected="selected">Tỉnh</option>
-                    <option label="Tuấn" value="2">Tuấn</option>
-                </select>
-            </div>
-            <div class="input-daterange input-group ng-scope mb-3" id="datepicker">
-                <div class="input-group">
-                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="from"
-                        id="reportFromDate" placeholder="Từ ngày.." ng-model="reportFromDate">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary"
-                            ng-click="onFromDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
-                                class="fa-regular fa-calendar-days"></i></button>
-                    </span>
+                <div class="mb-3">
+                    <label>Mã số phiếu</label>
+                    <div>
+                        <input type="number" class="form-control" ng-change="onInOutNoteChanged()" ng-model="NoteNumber"
+                            placeholder="Nhập số phiếu...">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="to"
-                        id="reportToDate" placeholder="Đến ngày.." ng-model="reportToDate">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary"
-                            ng-click="onToDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
-                                class="fa-regular fa-calendar-days"></i></button>
-                    </span>
+                <div class="mb-3">
+                    <label>Khách hàng</label>
+                    <select class="form-control">
+                        <option label="Tỉnh" value="1" selected="selected">Tỉnh</option>
+                        <option label="Tuấn" value="2">Tuấn</option>
+                    </select>
                 </div>
+                <div class="mb-3">
+                    <label>Nhân viên</label>
+                    <div class="control-group">
+                        <ng-select appendTo="body" formControlName="createdBy_UserId" appearance="outline"
+                          [items]="listNhanVien" bindLabel="tenDayDu" bindValue="id" placeholder="Tra cứu theo tên..."
+                          notFoundText="Không tìm thấy mục nào">
+                          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                            <span [ngOptionHighlight]="search">{{item.tenDayDu}}</span>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                </div>
+                <div class="input-daterange input-group ng-scope mb-3" id="datepicker">
+                    <div class="input-group">
+                        <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="from"
+                            id="reportFromDate" placeholder="Từ ngày.." ng-model="reportFromDate">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary"
+                                ng-click="onFromDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                    class="fa-regular fa-calendar-days"></i></button>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="to"
+                            id="reportToDate" placeholder="Đến ngày.." ng-model="reportToDate">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary"
+                                ng-click="onToDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                    class="fa-regular fa-calendar-days"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
+                    class="btn btn-primary w-100"
+                    ng-click="onDisplayData(true); $event.preventDefault(); $event.stopPropagation();">
             </div>
-            <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
-                class="btn btn-primary w-100"
-                ng-click="onDisplayData(true); $event.preventDefault(); $event.stopPropagation();">
-        </div>
+        </form>  
     </div>
-
     <div class="col-md-9">
         <div class="baocao-container box-group-white">
-            <h2 class="mb-3 d-block text-center"><b>{{title}}</b></h2>
-            <table class="table table-striped table-bordered table-hover tr-ng-grid">
-                <thead>
-                    <tr>
-                        <th display-name="STT">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> STT </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Số phiếu">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Số phiếu
-                                        <div class="tr-ng-sort" title="Sort">
-                                            <div
-                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Đối tác">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Đối tác
-                                        <div class="tr-ng-sort" title="Sort">
-                                            <div
-                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Ngày">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Ngày
-                                        <div class="tr-ng-sort" title="Sort">
-                                            <div
-                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Nhân viên">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Nhân viên
-                                        <div class="tr-ng-sort" title="Sort">
-                                            <div
-                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Số tiền">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Số tiền
-                                        <p class="number-value">Σ = 13,418,825</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Diễn giải">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Diễn giải
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="HTTT">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> HTTT
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th display-name="Thao tác">
-                            <div class="tr-ng-column-header tr-ng-cell">
-                                <div>
-                                    <div class="tr-ng-title"> Thao tác
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>
-                            <div>1</div>
-                        </td>
-                        <td>
-                            <div>10</div>
-                        </td>
-                        <td>
-                            <div>Tỉnh VĐ</div>
-                        </td>
-                        <td>
-                            <div>20/02/2024 11:55</div>
-                        </td>
-                        <td>
-                            <div>Tuấn LT</div>
-                        </td>
-                        <td>
-                            <div>9,000</div>
-                        </td>    
-                        <td>
-                            <div>Đã trả cho phiếu: 572, ()</div>
-                        </td>  
-                        <td>
-                            <div>Tiền mặt</div>
-                        </td>                   
-                        <td>
-                            <div class="baocao-actions">
-                                <a class="btn btn-sm btn-primary"  target="_blank" ng-if="permittedFields.InOutComingNote_Write"><i class="fa-regular fa-pen-to-square"></i></a>
-                                <a class="btn btn-sm btn-danger" ng-if="permittedFields.InOutComingNote_Delete"><i class="fa-regular fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr id="footerId">
-                        <td align="center" is-customized="true" colspan="9">
-                            <div class="tr-ng-grid-footer form-inline">
-                                <div>
-                                    <div>
-                                        <span class="form-group pull-left page-size">
-                                            <select id="ddlPageSize" class="form-control">
-                                                <option label="10" value="number:10" selected="selected">10</option>
-                                                <option label="20" value="number:20">20</option>
-                                                <option label="50" value="number:50">50</option>
-                                                <option label="100" value="number:100">100</option>
-                                                <option label="--All--" value="number:9000">--All--</option>
-                                            </select>
-                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
-                                        </span>
-                                        <span class="pull-right form-group" style="height:40px">
-                                            <ul class="pagination">
-                                                <li class="disabled">
-                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
-                                                </li>
-                                                <li class="disabled">
-                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
-                                                    </a>
-                                                </li>
-                                                <li class="active">
-                                                    <a href="javascript:void(0);" title="Trang">1</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">2</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">3</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">4</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">5</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">6</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">7</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">8</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">9</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang">10</a>
-                                                <li class="disabled"><span>...</span>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
-                                                    </a>
-                                                </li>
-                                                <li class="disabled" style="white-space: nowrap;">
-                                                    <span class="ng-hide">Không có dữ liệu</span>
-                                                    <span> Tổng: 3182 bản ghi </span>
-                                                </li>
-                                            </ul>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-
-            <!-- model.length <= 0 -->
-            <div>
-                <p class="text-danger text-center mt-3">Không tìm thấy phiếu nào</p>
-            </div>
+          <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
+          <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid" [dataSource]="getDataSource()"
+            matSort>
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef style="width:5%"> #</th>
+              <td mat-cell *matCellDef="let data; index as i;" style="width:8%" class="text-right">
+                <span class="btn-link">{{ (page - 1) * pageSize + i + 1
+                  }}</span>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="soPhieu">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Số phiếu</th>
+              <td mat-cell *matCellDef="let data" class="text-right"> {{ data.soPhieu }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="nguoiNhan">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Đối tác</th>
+              <td mat-cell *matCellDef="let data"> {{ data.nguoiNhan }}</td>
+            </ng-container>
+            <ng-container matColumnDef="ngayTao">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo</th>
+              <td mat-cell *matCellDef="let data"> {{ data.ngayTao | appDateTime }}</td>
+            </ng-container>
+            <ng-container matColumnDef="createBy_UserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhân viên</th>
+              <td mat-cell *matCellDef="let data"> {{ data.createBy_UserName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef width="10%" mat-sort-header> 
+                Số tiền<br/>Σ = {{tongTien | number}}</th>
+              <td mat-cell *matCellDef="let data" class="text-right"> {{ data.amount | number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="dienGiai">
+              <th mat-header-cell *matHeaderCellDef> Diễn giải</th>
+              <td mat-cell *matCellDef="let data"> {{ data.dienGiai }}</td>
+            </ng-container>
+            <ng-container matColumnDef="httt">
+              <th mat-header-cell *matHeaderCellDef> HTTT</th>
+              <td mat-cell *matCellDef="let data"> {{data.paymentTypeId == 0 ? '(Tiền mặt)' : '(chuyển khoản)'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let data">
+                <div class="baocao-actions">
+                  <button class="btn btn-sm btn-primary"><i
+                      class="fa-regular fa-pen-to-square"></i></button>
+                  <button class="btn btn-sm btn-danger"
+                    (click)="delete('Bạn có chắc chắn muốn xóa phiếu số \'' + data.soPhieu + ' đối tác ' + data.nguoiNhan + '\' ?', data)">
+                    <i class="fa-regular fa-trash"></i></button>
+                </div>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="footer">
+              <td mat-footer-cell *matFooterCellDef colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                  (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+    
+          </table>
         </div>
-    </div>
+      </div>
 </div>

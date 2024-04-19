@@ -1,6 +1,6 @@
 import { Component, Inject, Injector, OnInit, ViewChildren } from '@angular/core';
 import { BaseComponent } from '../../../component/base/base.component';
-import { ChuongTrinhTraThuongService } from '../../../services/categories/chuong-trinh-tra-thuongservice';
+import { ChuongTrinhTraThuongService } from '../../../services/categories/chuong-trinh-tra-thuong.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
