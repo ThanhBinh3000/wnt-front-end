@@ -635,7 +635,7 @@
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('report')">
                   <li><a href="/management/report/RevenueDetailsByDay">Báo cáo doanh thu chi tiết theo ngày</a></li>
-                  <li><a href="/Report/InOutcommingDetailsByDay">Báo cáo thu-chi hằng ngày</a></li>
+                  <li><a href="/management/report/InOutCommingDetailsByDay">Báo cáo thu-chi hằng ngày</a></li>
                   <li>
                     <a href="/Report/SynthesisReportV2">Báo cáo quản trị</a>
                   </li>
@@ -728,7 +728,7 @@
                   (mouseleave)="mouseLeave('login','none')">
                 <a href="javascript:void(0);" data-toggle="dropdown" role="button" aria-expanded="false"
                    action="javascript:void(0);"
-                   class="dropdown-toggle">{{getFullName()}}<span class="caret"></span></a>
+                   class="dropdown-toggle">{{ getFullName() }}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('login')">
                   <li>
                     <a (click)="openChangePasswordDialog()" id="loggedInUserNameId" title="Manage">Đổi mật
