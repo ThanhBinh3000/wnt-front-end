@@ -17,7 +17,7 @@
         <div class="mb-3" *ngIf="formData.get('loaiPhieu')?.value == 1 || formData.get('loaiPhieu')?.value == 7">
           <label>Khách hàng</label>
           <div class="control-group">
-            <ng-select appendTo="body" formControlName="createdBy_UserId" appearance="outline" [items]="listKhachHang"
+            <ng-select appendTo="body" formControlName="khachHangMaKhachHang" appearance="outline" [items]="listKhachHang"
               bindLabel="tenKhachHang" bindValue="id" placeholder="Tra cứu theo tên..."
               notFoundText="Không tìm thấy mục nào" refresh-delay="500" (search)="searchObject($event)">
               <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
@@ -29,7 +29,7 @@
         <div class="mb-3" *ngIf="formData.get('loaiPhieu')?.value == 2 || formData.get('loaiPhieu')?.value == 6">
           <label>Nhà cung cấp</label>
           <div class="control-group">
-            <ng-select appendTo="body" formControlName="createdBy_UserId" appearance="outline" [items]="listNhaCungCap"
+            <ng-select appendTo="body" formControlName="nhaCungCapMaNhaCungCap" appearance="outline" [items]="listNhaCungCap"
               bindLabel="tenNhaCungCap" bindValue="id" placeholder="Tra cứu theo tên..."
               notFoundText="Không tìm thấy mục nào" refresh-delay="500" (search)="searchObject($event)">
               <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">

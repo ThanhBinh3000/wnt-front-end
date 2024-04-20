@@ -55,8 +55,8 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
     this.formData = this.fb.group({
       soPhieu: '',
       loaiPhieu: [1],
-      khachHangMaKhachHang: '',
-      nhaCungCapMaNhaCungCap: '',
+      khachHangMaKhachHang: null,
+      nhaCungCapMaNhaCungCap: null,
       createdBy_UserId: '',
       fromDate: '',
       toDate: '',
