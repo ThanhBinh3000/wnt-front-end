@@ -5,10 +5,9 @@ import {BaseService} from "../base.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ReportDetailsBydayService extends BaseService {
+export class InOutCommingDetailsByDayService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-report', 'report-details-byday');
-
+    super(httpClient, 'wnt-report', 'inout-detail-byday');
   }
 }

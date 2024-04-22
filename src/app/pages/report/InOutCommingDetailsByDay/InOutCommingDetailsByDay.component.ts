@@ -1,8 +1,8 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {BaseComponent} from "../../../component/base/base.component";
-import {ReportDetailsBydayService} from "../../../services/report/Report-Details-Byday.service";
 import {DatePipe} from "@angular/common";
+import {InOutCommingDetailsByDayService} from "../../../services/report/InOut-Comming-Details-ByDay.service";
 
 
 @Component({
@@ -17,21 +17,26 @@ export class InOutCommingDetailsByDayComponent extends BaseComponent implements 
     injector: Injector,
     private titleService: Title,
     private datePipe: DatePipe,
-    private _service: ReportDetailsBydayService,
+    private _service: InOutCommingDetailsByDayService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-      tongKhachNo: [374166],
-      tongThu: [],
-      tongChi: [],
-      thuTruChi: [],
-      pickerTransactionFromDate: [],
-      pickerTransactionToDate: [],
+      nhaThuocMaNhaThuoc: [],
+      // tongKhachNo: [374166],
+      // tongThu: [],
+      // tongChi: [],
+      // thuTruChi: [],
+      // pickerTransactionFromDate: [],
+      // pickerTransactionToDate: [],
     });
   }
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.formData.patchValue({
+      nhaThuocMaNhaThuoc: this.authService.getNhaThuoc().maNhaThuoc,
+    })
+    // await this.searchList();
     this.dataTable = [
       {
         loai: 'Bán hàng',
@@ -173,13 +178,13 @@ export class InOutCommingDetailsByDayComponent extends BaseComponent implements 
   }
 
   async calculatorTable() {
-    const { thuTienMat, thuChuyenKhoan, chiTienMat, chiChuyenKhoan } = this.dataTable.reduce((acc, cur) => {
+    const {thuTienMat, thuChuyenKhoan, chiTienMat, chiChuyenKhoan} = this.dataTable.reduce((acc, cur) => {
       acc.thuTienMat += cur.thuTienMat;
       acc.thuChuyenKhoan += cur.thuChuyenKhoan;
       acc.chiTienMat += cur.chiTienMat;
       acc.chiChuyenKhoan += cur.chiChuyenKhoan;
       return acc;
-    }, { thuTienMat: 0, thuChuyenKhoan: 0, chiTienMat: 0, chiChuyenKhoan: 0 });
+    }, {thuTienMat: 0, thuChuyenKhoan: 0, chiTienMat: 0, chiChuyenKhoan: 0});
     const tongThu = thuTienMat + thuChuyenKhoan;
     const tongChi = chiTienMat + chiChuyenKhoan;
     this.formData.patchValue({
