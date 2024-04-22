@@ -5,7 +5,7 @@ import { NhanVienNhaThuocsService } from '../../../services/system/nhan-vien-nha
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
 import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
 import { MatSort } from '@angular/material/sort';
-import { ThuChiService } from '../../../services/categories/thu-chi.service';
+import { ThuChiService } from '../../../services/thu-chi.service';
 import { STATUS_API } from '../../../constants/message';
 import { UserProfileService } from '../../../services/system/user-profile.service';
 
