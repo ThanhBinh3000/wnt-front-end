@@ -1,12 +1,9 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   Injector,
   OnInit,
-  QueryList,
   ViewChild,
-  ViewChildren
 } from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {UserProfileService} from "../../../services/system/user-profile.service";
@@ -27,6 +24,7 @@ import {TypeBasisService} from "../../../services/categories/type-basis.service"
 import {
   RegionInformationEditDialogComponent
 } from "../../utilities/region-information-edit-dialog/region-information-edit-dialog.component";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'drug-store-list',
@@ -35,28 +33,35 @@ import {
 })
 export class DrugStoreListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Tra cứu thông tin nhà thuốc";
+  columnsKey = 'drug-store-list-columns';
+  columnsControl = new FormControl();
   columns = [
-    '#', 'maNhaThuoc', 'tenNhaThuoc',
-    'diaChi', 'tenTinhThanh', 'dienThoai', 'nguoiDaiDien',
-    'createdByUserName', 'created', 'ttGuiTinXNtaoTK', 'connectivityCode',
-    'connectivityUserName', 'nameTypeBasis', 'nhanVienKinhDoanh', 'chamSocSauBanHang',
-    'ghiChu', 'businessDescription', 'ketQuaTrienKhai', 'tienThanhToan',
-    'paidAmount', 'ttThuTien', 'ttGuiTinXNTT', 'kqGuiTinXNTT',
-    'paidDate', 'tongNX', 'action'
-  ];
-  displayedColumns: string[] = this.columns;
-  hideColumnList = [
-    {name: "Địa chỉ", value: 'diaChi'},
-    {name: "Người đại diện", value: 'nguoiDaiDien'},
-    {name: "Người tạo", value: 'createdByUserName'},
-    {name: "Ngày tạo - Ngày hết hạn", value: 'created'},
-    {name: "TK LT", value: 'connectivityUserName'},
-    {name: "C.S Bán hàng", value: 'csBanHang'},
-    {name: "Ghi chú kinh doanh", value: 'ghiChuKinhDoanh'},
-    {name: "Ghi chú triển khai", value: 'ghiChuTrienKhai'},
-    {name: "Kết quả triển khai", value: 'ketQuaTrienKhai'},
-    {name: "Tổng tiền", value: 'paidAmount'},
-    {name: "Ngày thu tiền", value: 'paidDate'}
+    {name: 'STT', value: '#', display: true},
+    {name: 'Mã', value: 'maNhaThuoc', display: true},
+    {name: 'Tên', value: 'tenNhaThuoc', display: true},
+    {name: 'Địa chỉ', value: 'diaChi', display: true},
+    {name: 'Tỉnh thành', value: 'tenTinhThanh', display: true},
+    {name: 'Điện thoại', value: 'dienThoai', display: true},
+    {name: 'Người đại diện', value: 'nguoiDaiDien', display: true},
+    {name: 'Người tạo', value: 'createdByUserName', display: true},
+    {name: 'Ngày tạo\nNgày hết hạn', value: 'created', display: true},
+    {name: 'TT gửi tin XN tạo TK', value: 'znsstatusSendCreateAccount', display: true},
+    {name: 'Mã QG', value: 'connectivityCode', display: true},
+    {name: 'TK LT', value: 'connectivityUserName', display: true},
+    {name: 'C.S bán hàng', value: 'nameTypeBasis', display: true},
+    {name: 'Nhân viên kinh doanh', value: 'businessId', display: true},
+    {name: 'Chăm sóc sau bán hàng', value: 'supporterId', display: true},
+    {name: 'Ghi chú kinh doanh', value: 'ghiChu', display: true},
+    {name: 'Ghi chú triển khai', value: 'businessDescription', display: true},
+    {name: 'Kết quả triển khai', value: 'resultBusinessId', display: true},
+    {name: 'Tiền thanh toán', value: 'tienThanhToan', display: true},
+    {name: 'Tổng tiền', value: 'paidAmount', display: true},
+    {name: 'TT thu tiền', value: 'paidMoney', display: true},
+    {name: 'TT gửi tin XNTT', value: 'znsstatusSendPayment', display: true},
+    {name: 'KQ gửi tin XNTT', value: 'znsconfirmPaymentResult', display: true},
+    {name: 'Ngày thu tiền', value: 'paidDate', display: true},
+    {name: 'Tổng (nhập/ xuất)', value: 'tongNX', display: true},
+    {name: 'Thao tác', value: 'action', display: true},
   ];
   storeTypes = [
     {name: "NT LT", value: 101},
@@ -131,6 +136,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
+    this.getColumns();
     await this.searchPage();
   }
 
@@ -138,6 +144,57 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
 
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+
+  getColumns() {
+    const localColumns = this.storageService.get(this.columnsKey);
+    if(localColumns){
+      this.columns = localColumns.map((localCol: any) => {
+        const column = this.columns.find(col => col.value === localCol.value);
+        return column ? {...localCol, name: column.name} : localCol;
+      });
+    }
+    this.columnsControl = new FormControl(this.getDisplayedColumns());
+  }
+
+  getDisplayedColumns() {
+    return this.columns.filter(col => col.display).map(col => col.value);
+  }
+
+  getDisplayedColumnsName(value: any) {
+    return this.columns.filter(col => col.value == value).map(col => col.name);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    this.storageService.set(this.columnsKey, this.columns);
+  }
+
+  onChangeDisplayedColumns(value: any) {
+    this.columns = this.columns.map(col => {
+      if (col.value == value) {
+        return {...col, display: !col.display};
+      }
+      return col;
+    });
+    this.storageService.set(this.columnsKey, this.columns);
+  }
+
+  refreshColumn() {
+    this.storageService.removeItem(this.columnsKey);
+    window.location.reload();
+  }
+
+  getCreatedByUserName(createdByUserId: any) {
+    return this.listSuperUser.find(x => x.id == createdByUserId)?.tenDayDu;
+  }
+
+  getTenTinhThanh(tinhThanhId: any) {
+    return this.listTinhThanh.find(x => x.id == tinhThanhId)?.tenTinhThanh;
+  }
+
+  getNameTypeBasis(idTypeBasic: any) {
+    return this.listTypeBasis.find(x => x.id == idTypeBasic)?.nameType;
   }
 
   getDataFilter() {
@@ -173,13 +230,9 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     await this.searchPage();
   }
 
-  onChangeDisplayedColumns(value: any) {
-    this.displayedColumns = this.columns.filter(col => !value.map((item: any) => item.value).includes(col));
-  }
-
   async onBusinessChanged($event: any, item: any) {
     let body = item;
-    item.businessId = $event.id;
+    item.businessId = $event?.id;
     let res =  await this.save(body);
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
@@ -189,7 +242,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
 
   async onSupporterChanged($event: any, item: any) {
     let body = item;
-    item.supporterId = $event.id;
+    item.supporterId = $event?.id;
     let res =  await this.save(body);
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);

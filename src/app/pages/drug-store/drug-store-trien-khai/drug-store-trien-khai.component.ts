@@ -28,6 +28,7 @@ import {
 } from "../../utilities/region-information-edit-dialog/region-information-edit-dialog.component";
 import moment from "moment/moment";
 import {FormControl, FormGroup} from "@angular/forms";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'drug-store-trien-khai',
@@ -36,42 +37,59 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Báo cáo triển khai";
+  columnsKey = 'drug-store-trien-khai-columns';
+  columnsControl = new FormControl();
   columns = [
-    '#', 'maNhaThuoc', 'tenNhaThuoc',
-    'diaChi', 'tenTinhThanh', 'dienThoai', 'nguoiDaiDien',
-    'createdByUserName', 'created', 'ttGuiTinXNtaoTK', 'connectivityCode',
-    'connectivityUserName', 'nameTypeBasis', 'nhanVienKinhDoanh', 'chamSocSauBanHang',
-    'ghiChu', 'businessDescription', 'ketQuaTrienKhai', 'tienThanhToan',
-    'paidAmount', 'ttThuTien', 'ttGuiTinXNTT', 'kqGuiTinXNTT',
-    'paidDate', 'tongNX', 'action'
-  ];
-  displayedColumns: string[] = this.columns;
-  hideColumnList = [
-    {name: "Địa chỉ", value: 'diaChi'},
-    {name: "Người đại diện", value: 'nguoiDaiDien'},
-    {name: "Người tạo", value: 'createdByUserName'},
-    {name: "Ngày tạo - Ngày hết hạn", value: 'created'},
-    {name: "TK LT", value: 'connectivityUserName'},
-    {name: "C.S Bán hàng", value: 'csBanHang'},
-    {name: "Ghi chú kinh doanh", value: 'ghiChuKinhDoanh'},
-    {name: "Ghi chú triển khai", value: 'ghiChuTrienKhai'},
-    {name: "Kết quả triển khai", value: 'ketQuaTrienKhai'},
-    {name: "Tổng tiền", value: 'paidAmount'},
-    {name: "Ngày thu tiền", value: 'paidDate'}
+    {name: 'STT', value: '#', display: true},
+    {name: 'Ngày tạo TK', value: 'created', display: true},
+    {name: 'Phân loại quầy', value: 'classify', display: true},
+    {name: 'Mã', value: 'maNhaThuoc', display: true, },
+    {name: 'Tên quầy', value: 'tenNhaThuoc', display: true},
+    {name: 'Điện thoại', value: 'dienThoai', display: true},
+    {name: 'Mã LT', value: 'connectivityCode', display: true},
+    {name: 'Tải App', value: 'isUsedMobileApp', display: true},
+    {name: 'Người TK', value: 'createdByUserName', display: true},
+    {name: 'Tham chiếu DM', value: 'thamChieuDanhMuc', display: false},
+    {name: 'SL thuốc trong DM', value: 'totalDrug', display: false},
+    {name: 'Ngày giao dịch gần nhất', value: 'lastTransDate', display: false},
+    {name: 'SL phiếu', value: 'totalNote', display: false},
+    {name: 'Số lượt truy cập', value: 'totalVisit', display: false},
+    {name: 'Tích điểm khách hàng', value: 'isScoreRate', display: false},
+    {name: 'C.K nhân viên', value: 'isAdviseStaff', display: false},
+    {name: 'SL nhân viên', value: 'totalStaff', display: false},
+    {name: 'Chăm sóc sau bán hàng', value: 'supporterId', display: false},
+    {name: 'Trạng thái triển khai', value: 'resultBusinessId', display: true},
+    {name: 'Ghi chú', value: 'businessDescription', display: true},
+    {name: 'Level', value: 'level', display: true},
+    {name: 'Đánh giá', value: 'evaluate', display: true},
   ];
   storeTypes = [
-    {name: "NT LT", value: 101},
-    {name: "NT QL", value: 102},
-    {name: "Phòng khám", value: 104},
+    {name: "NT LT", value: 101, title: 'Báo cáo triển khai liên thông'},
+    {name: "NT QL", value: 102, title: 'Báo cáo triển khai quản lý'},
+    {name: "Phòng khám", value: 104, title: 'Báo cáo triển khai phòng khám'},
+  ];
+  storeClassifies = [
+    {name: "Loại khác", value: 0},
+    {name: "Loại 1", value: 1},
+    {name: "Loại 2", value: 2},
+    {name: "Loại 3", value: 3}
+  ];
+  storeEvaluates = [
+    {name: "Chưa đánh giá", value: 0, backgroundColor: ''},
+    {name: "Đạt", value: 1, backgroundColor: '#5cb85c'},
+    {name: "Không đạt", value: 2, backgroundColor: 'rgb(217, 83, 79)'},
+    {name: "Không dùng", value: 3, backgroundColor: 'rgb(194, 190, 178)'},
+    {name: "Thay thế", value: 4, backgroundColor: '#5cb85c'},
+    {name: "Bận/Không liên hệ", value: 5, backgroundColor: 'rgb(194, 190, 178)'},
+  ];
+  storeMobileAppUsedStatuses = [
+    {name: "Chưa tải", value: 0},
+    {name: "Đã tải", value: 1},
   ];
   drugStorePaymentTypes = [
     {name: "Chưa thanh toán", value: 0},
     {name: "Thanh toán chưa đủ", value: 1},
     {name: "Đã thanh toán", value: 2}
-  ];
-  typeDates = [
-    {name: "Ngày tạo cơ sở", value: 1},
-    {name: "Ngày giao dịch", value: 2},
   ];
   filterTransactionType: any = 1;
   listSuperUser: any[] = [];
@@ -94,16 +112,13 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
       storeTypeId: [102],
       createdByUserId: [null],
       storeDeployTypeId: [null],
-      numDaysNoTrans: [0],
       hoatDong: [true],
-      tinhThanhId: [null],
-      idTypeBasic: [null],
       storePaymentTypeId: [null],
-      expiredType: [null],
       supporterId: [null],
-      typeZNS: [null],
-      outOfInvoice: [false],
       typeDate: [1],
+      storeClassifyId: [null],
+      storeEvaluateId: [null],
+      storeMobileAppUsedStatusId: [null],
       pickerTransactionFromDate: [null],
       pickerTransactionToDate: [null],
       transactionFromDate: [null],
@@ -114,6 +129,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
+    this.getColumns();
     this.initTransactionDateRanges();
     await this.searchPage();
   }
@@ -122,6 +138,82 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
 
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+
+  override async searchPage() {
+    let body = this.formData.value;
+    body.paggingReq = {
+      limit: this.pageSize,
+      page: this.page - 1
+    }
+    if(this.filterType == 1){
+      body.fromDate = this.fromDate;
+      body.toDate = this.toDate;
+    }
+    if(this.filterTransactionType == 0){
+      body.transactionFromDate = null;
+      body.transactionToDate = null;
+    }
+    let res = await this._service.searchPageNhaThuocTrienKhai(body);
+    if (res?.statusCode == STATUS_API.SUCCESS) {
+      let data = res.data;
+      this.dataTable = data.content;
+      this.totalRecord = data.totalElements;
+      this.totalPages = data.totalPages;
+
+    } else {
+      this.dataTable = [];
+      this.totalRecord = 0;
+    }
+  }
+
+  getColumns() {
+    const localColumns = this.storageService.get(this.columnsKey);
+    if(localColumns){
+      this.columns = localColumns.map((localCol: any) => {
+        const column = this.columns.find(col => col.value === localCol.value);
+        return column ? {...localCol, name: column.name} : localCol;
+      });
+    }
+    this.columnsControl = new FormControl(this.getDisplayedColumns());
+  }
+
+  getDisplayedColumns() {
+    let columns = this.columns.filter(col => col.display).map(col => col.value);
+    if(this.formData.get('storeTypeId')?.value == 101) {
+      columns = columns.filter(col => col != 'classify');
+    } else {
+      columns = columns.filter(col => col != 'connectivityCode');
+    }
+    return columns;
+  }
+
+  getDisplayedColumnsName(value: any) {
+    return this.columns.filter(col => col.value == value).map(col => col.name);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    this.storageService.set(this.columnsKey, this.columns);
+  }
+
+  onChangeDisplayedColumns(value: any) {
+    this.columns = this.columns.map(col => {
+      if (col.value == value) {
+        return {...col, display: !col.display};
+      }
+      return col;
+    });
+    this.storageService.set(this.columnsKey, this.columns);
+  }
+
+  refreshColumn() {
+    this.storageService.removeItem(this.columnsKey);
+    window.location.reload();
+  }
+
+  getCreatedByUserName(createdByUserId: any) {
+    return this.listSuperUser.find(x => x.id == createdByUserId)?.tenDayDu;
   }
 
   getDataFilter() {
@@ -146,20 +238,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
   }
 
   getTitle() {
-    switch (this.formData.get('storeTypeId')?.value) {
-      case 101:
-        return 'BÁO CÁO TRIỂN KHAI LIÊN THÔNG';
-      case 104:
-        return 'BÁO CÁO TRIỂN KHAI PHÒNG KHÁM';
-      case 102:
-        return 'BÁO CÁO TRIỂN KHAI QUẢN LÝ';
-      default:
-        return '';
-    }
-  }
-
-  onChangeDisplayedColumns(value: any) {
-    this.displayedColumns = this.columns.filter(col => !value.map((item: any) => item.value).includes(col));
+    return this.storeTypes.find(e => e.value == this.formData.get('storeTypeId')?.value)?.title ?? this.title;
   }
 
   onFilterTransactionTypeChange(filterTransactionType: number) {
@@ -214,9 +293,35 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
     });
   }
 
-  async onBusinessChanged($event: any, item: any) {
+  getBackgroundLastTransDate(value: any) {
+    if (!value) return '';
+    let lastTransDate = moment(value, 'DD/MM/YYYY HH:mm:ss').toDate();
+    let now = new Date();
+    let diff = now.getTime() - lastTransDate.getTime();
+    let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+    if (diffDays <= 3) {
+      return 'rgb(217, 211, 92)';
+    }
+    return '';
+  }
+
+  getBackgroundEvaluate(value: any) {
+    return this.storeEvaluates.find(e => e.value == value)?.backgroundColor ?? '';
+  }
+
+  async onClassifyChanged($event: any, item: any) {
     let body = item;
-    item.businessId = $event.id;
+    item.classify = $event?.value;
+    let res = await this.save(body);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
+      return res.data;
+    }
+  }
+
+  async onEvaluateChanged($event: any, item: any) {
+    let body = item;
+    item.evaluate = $event?.value;
     let res = await this.save(body);
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
@@ -226,21 +331,12 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
 
   async onSupporterChanged($event: any, item: any) {
     let body = item;
-    item.supporterId = $event.id;
+    item.supporterId = $event?.id;
     let res = await this.save(body);
     if (res && res.statusCode == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
-  }
-
-  async onUpdateNoteType(item: any) {
-    let res = await this.save(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
-      this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
-      return res.data;
-    }
-    item.isEditNoteType = false;
   }
 
   async onUpdateBusinessDescription(item: any) {
@@ -265,44 +361,6 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
     }
   }
 
-  async onCheckConnectivity(item: any) {
-    // check duocquocgia account
-  }
-
-  async onUpdateInfoCustomerPayment(item: any) {
-    let body = item;
-    body.paidDate = this.datePipe.transform(body.paidDate, 'dd/MM/yyyy HH:mm:ss') ?? '';
-    let res = await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
-      this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
-      return res.data;
-    }
-    item.isEditPaid = false;
-  }
-
-  async openRegionalDetailDialog(item: any) {
-    this.dialog.open(RegionInformationEditDialogComponent, {
-      data: {
-        id: item.id,
-        code: item.maNhaThuoc,
-        name: item.tenNhaThuoc,
-        address: item.diaChi,
-        cityId: item.tinhThanhId,
-        regionId: item.regionId,
-        wardId: item.wardId,
-        type: 'drug-store'
-      },
-      width: '600px',
-    });
-  }
-
-  async openGeneralStoreMappingDialog(item: any) {
-    this.dialog.open(DrugStoreGeneralMappingDialogComponent, {
-      data: item,
-      width: '600px',
-    });
-  }
-
   async openAddEditDialog(item: any) {
     const dialogRef = this.dialog.open(DrugStoreAddEditDialogComponent, {
       data: item,
@@ -312,48 +370,6 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
       if (result) {
         await this.searchPage();
       }
-    });
-  }
-
-  override async delete(message: string, item: any) {
-    this.modal.confirm({
-      closable: false,
-      title: 'Xác nhận',
-      content: !message ? 'Bạn có chắc chắn muốn xóa?' : message,
-      okText: 'Đồng ý',
-      cancelText: 'Không',
-      okDanger: true,
-      width: 310,
-      onOk: async () => {
-        let body = item;
-        item.hoatDong = false;
-        let res = await this.save(body);
-        if (res && res.statusCode == STATUS_API.SUCCESS) {
-          this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
-          return res.data;
-        }
-      },
-    });
-  }
-
-  override async restore(message: string, item: any) {
-    this.modal.confirm({
-      closable: false,
-      title: 'Xác nhận',
-      content: !message ? 'Bạn có chắc chắn muốn khôi phục ?' : message,
-      okText: 'Đồng ý',
-      cancelText: 'Không',
-      okDanger: true,
-      width: 310,
-      onOk: async () => {
-        let body = item;
-        item.hoatDong = true;
-        let res = await this.save(body);
-        if (res && res.statusCode == STATUS_API.SUCCESS) {
-          this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
-          return res.data;
-        }
-      },
     });
   }
 }

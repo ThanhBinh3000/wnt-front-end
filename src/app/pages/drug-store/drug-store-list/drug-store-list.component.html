@@ -181,7 +181,6 @@
           </fieldset>
           <fieldset class="mb-3">
             <label>Lựa chọn kiểu ngày lọc</label>
-            <!--chua lam: con kieu ngay giao dich-->
             <ng-select
               appendTo="body"
               appearance="outline"
@@ -199,7 +198,6 @@
           </fieldset>
           <fieldset class="mb-3" *ngIf="formData.get('typeDate')?.value === 2">
             <label>Trạng thái phiếu liên thông</label>
-            <!--chua lam: ngay giao dich-->
             <ng-select
               appendTo="body"
               appearance="outline"
@@ -234,27 +232,23 @@
 
     <div class="col-md-9">
       <div class="baocao-container box-group-white">
-        <div style="padding: 20px 0">
-          <div id="customCheckboxs">
-            <ng-select
-              appendTo="body"
-              appearance="outline"
-              [items]="hideColumnList"
-              [multiple]="true"
-              bindValue="value"
-              placeholder="Ẩn/Hiện thông tin"
-              notFoundText="Không tìm thấy mục nào"
-              [closeOnSelect]="false"
-              (change)="onChangeDisplayedColumns($event)">
-              <ng-template ng-multi-label-tmp>
-                <span style="display:block" class="ng-placeholder">Ẩn/Hiện thông tin</span>
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-                <input id="item-hide-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{ item.name }}
-              </ng-template>
-            </ng-select>
-          </div>
-          <h2 class="text-center"><b>DANH SÁCH NHÀ THUỐC</b></h2>
+        <h2 class="text-center"><b>DANH SÁCH NHÀ THUỐC</b></h2>
+        <div>
+          <mat-form-field>
+            <mat-label>Thông tin hiển thị</mat-label>
+            <mat-select [formControl]="columnsControl" multiple>
+              <div cdkDropList (cdkDropListDropped)="drop($event)">
+                  <span *ngFor="let col of columns" cdkDrag>
+                    <mat-option [value]="col.value" (click)="onChangeDisplayedColumns(col.value)" cdkDragHandle>
+                      {{ col.name }}
+                    </mat-option>
+                  </span>
+              </div>
+            </mat-select>
+          </mat-form-field>
+          <button class="btn btn-primary" (click)="refreshColumn()">
+            <i class="fa-regular fa-arrows-rotate"></i>
+          </button>
         </div>
         <div class="mat-table-container">
           <table mat-table
@@ -262,9 +256,9 @@
                  [dataSource]="getDataSource()" matSort>
 
             <ng-container matColumnDef="#">
-              <th mat-header-cell *matHeaderCellDef> #</th>
+              <th mat-header-cell *matHeaderCellDef>#</th>
               <td mat-cell *matCellDef="let data; index as i;">
-                <div class="text-right">
+                <div class="text-center">
                   <a (click)="openRegionalDetailDialog(data)">
                     {{ (page - 1) * pageSize + i + 1 }}
                   </a>
@@ -272,10 +266,10 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="maNhaThuoc" [sticky]="true">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã</th>
+            <ng-container matColumnDef="maNhaThuoc">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{getDisplayedColumnsName('maNhaThuoc')}}</th>
               <td mat-cell *matCellDef="let data"
-                  [ngClass]="data.isConnectivity ? 'row-item-connectivity' : 'bg-white'">
+                  [ngClass]="{'row-item-connectivity': data.isConnectivity}">
                 <div class="text-left">
                   <a (click)="openGeneralStoreMappingDialog(data)">
                     {{ data.maNhaThuoc }}
@@ -284,9 +278,9 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="tenNhaThuoc" [sticky]="true">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên</th>
-              <td mat-cell *matCellDef="let data" class="bg-white">
+            <ng-container matColumnDef="tenNhaThuoc">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('tenNhaThuoc')}}</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   <span class="label label-info pull-right" title="{{data.storeHatTile}}">
                        {{ data.storeHat }}
@@ -299,23 +293,23 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="diaChi" [sticky]="true">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Địa chỉ</th>
-              <td mat-cell *matCellDef="let data" class="bg-white">
+            <ng-container matColumnDef="diaChi">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('diaChi')}}</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.diaChi }}</div>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="tenTinhThanh">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tỉnh thành</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('tenTinhThanh')}}</th>
               <td mat-cell *matCellDef="let data">
-                <div class="text-left">{{ data.tenTinhThanh }}</div>
+                <div class="text-left">{{ getTenTinhThanh(data.tinhThanhId) }}</div>
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="dienThoai" [sticky]="true">
-              <th mat-header-cell *matHeaderCellDef> Điện thoại</th>
-              <td mat-cell *matCellDef="let data" class="bg-white">
+            <ng-container matColumnDef="dienThoai">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('dienThoai')}}</th>
+              <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   {{ data.mobile }}
                   <br>
@@ -325,21 +319,21 @@
             </ng-container>
 
             <ng-container matColumnDef="nguoiDaiDien">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Người đại diện</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('nguoiDaiDien')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">{{ data.nguoiDaiDien }}</div>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="createdByUserName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Người tạo</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('createdByUserName')}}</th>
               <td mat-cell *matCellDef="let data">
-                <div class="text-left">{{ data.createdByUserName }}</div>
+                <div class="text-left">{{ getCreatedByUserName(data.createdByUserId) }}</div>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="created">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo<br>Ngày hết hạn</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('created')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   {{ data.created | appDate }}
@@ -349,8 +343,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="ttGuiTinXNtaoTK">
-              <th mat-header-cell *matHeaderCellDef> TT gửi tin XN tạo TK</th>
+            <ng-container matColumnDef="znsstatusSendCreateAccount">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('znsstatusSendCreateAccount')}}</th>
               <!--Check không có quyền cập nhật trang thái thanh toán-->
               <td mat-cell *matCellDef="let data"
                   [ngClass]="{'row-item-connectivity': data.znsstatusSendCreateAccount && !false}">
@@ -361,7 +355,7 @@
             </ng-container>
 
             <ng-container matColumnDef="connectivityCode">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã QG</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('connectivityCode')}}</th>
               <td mat-cell *matCellDef="let data"
                   [ngClass]="data.isConnectivity ? (data.isNationalDBConnected ? 'row-item-connectivity' : 'row-item-connectivity-not-connected') : ''">
                 <div class="text-left">
@@ -376,7 +370,7 @@
             </ng-container>
 
             <ng-container matColumnDef="connectivityUserName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> TK LT</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('connectivityUserName')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   {{ data.connectivityUserName }}
@@ -387,16 +381,14 @@
             </ng-container>
 
             <ng-container matColumnDef="nameTypeBasis">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> C.S bán hàng</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('nameTypeBasis')}}</th>
               <td mat-cell *matCellDef="let data">
-                <div class="text-left">
-                  {{ data.nameTypeBasis }}
-                </div>
+                <div class="text-left">{{ getNameTypeBasis(data.idTypeBasic) }}</div>
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="nhanVienKinhDoanh">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhân viên kinh doanh</th>
+            <ng-container matColumnDef="businessId">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('businessId')}}</th>
               <td mat-cell *matCellDef="let data">
                 <ng-select
                   appendTo="body"
@@ -416,8 +408,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="chamSocSauBanHang">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Chăm sóc sau bán hàng</th>
+            <ng-container matColumnDef="supporterId">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('supporterId')}}</th>
               <td mat-cell *matCellDef="let data">
                 <ng-select
                   appendTo="body"
@@ -438,7 +430,7 @@
             </ng-container>
 
             <ng-container matColumnDef="ghiChu">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú kinh doanh</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('ghiChu')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div style="width: 150px">
                   <div *ngIf="!data.isEditNoteType">
@@ -457,7 +449,7 @@
             </ng-container>
 
             <ng-container matColumnDef="businessDescription">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú triển khai</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('businessDescription')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div style="width: 150px">
                   <div *ngIf="!data.isEditBusinessDescription">
@@ -476,8 +468,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="ketQuaTrienKhai">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Kết quả triển khai</th>
+            <ng-container matColumnDef="resultBusinessId">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('resultBusinessId')}}</th>
               <td mat-cell *matCellDef="let data">
                 <ng-select
                   appendTo="body"
@@ -498,7 +490,7 @@
             </ng-container>
 
             <ng-container matColumnDef="tienThanhToan">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiền thanh toán</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('tienThanhToan')}}</th>
               <td mat-cell *matCellDef="let data; index as i;">
                 <div style="width: 150px">
                   <div *ngIf="!data.isEditPaid">
@@ -530,7 +522,7 @@
             </ng-container>
 
             <ng-container matColumnDef="paidAmount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tổng tiền</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('paidAmount')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-right">
                   {{ data.paidAmount | number }}
@@ -538,8 +530,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="ttThuTien">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> TT thu tiền</th>
+            <ng-container matColumnDef="paidMoney">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('paidMoney')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   <input type="checkbox" class="form-check-input" [checked]="data.paidMoney > 0"
@@ -548,8 +540,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="ttGuiTinXNTT">
-              <th mat-header-cell *matHeaderCellDef> TT gửi tin XNTT</th>
+            <ng-container matColumnDef="znsstatusSendPayment">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('znsstatusSendPayment')}}</th>
               <td mat-cell *matCellDef="let data"
                   [ngClass]="{'row-item-connectivity': data.znsstatusSendPayment && !false}">
                 <div class="text-left">
@@ -558,8 +550,8 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="kqGuiTinXNTT">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> KQ gửi tin XNTT</th>
+            <ng-container matColumnDef="znsconfirmPaymentResult">
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('znsconfirmPaymentResult')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left" *ngIf="data.znsstatusSendPayment">
                   {{ data.znsconfirmPaymentResult }}
@@ -568,7 +560,7 @@
             </ng-container>
 
             <ng-container matColumnDef="paidDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày thu tiền</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('paidDate')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   {{ data.paidDate ? (data.paidDate | appDate) : '' }}
@@ -577,7 +569,7 @@
             </ng-container>
 
             <ng-container matColumnDef="tongNX">
-              <th mat-header-cell *matHeaderCellDef> Tổng (nhập/ xuất)</th>
+              <th mat-header-cell *matHeaderCellDef>{{getDisplayedColumnsName('tongNX')}}</th>
               <td mat-cell *matCellDef="let data">
                 <div class="text-left">
                   <!-- {{gridItem.TotalReceiptNote | number:0}}<br /> {{gridItem.TotalDeliveryNote | number:0}} -->
@@ -617,8 +609,8 @@
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
             <tr mat-footer-row *matFooterRowDef="['footer']; sticky: true"></tr>
 
           </table>
