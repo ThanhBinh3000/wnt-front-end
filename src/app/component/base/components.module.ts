@@ -24,6 +24,7 @@ import {MatRadioButton} from "@angular/material/radio";
 import {DateRangeFilterComponent} from "../date-range-filter/date-range-filter.component";
 import {CustomDateAdapter} from "../../utils/custom-date-adapter";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,10 @@ import {MatCheckbox} from "@angular/material/checkbox";
     MatNativeDateModule,
     ToastrModule.forRoot(),
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle
   ],
   exports: [
     CommonModule,
@@ -90,6 +94,9 @@ import {MatCheckbox} from "@angular/material/checkbox";
     SanitizeHtmlPipe,
     NgxMaskDirective,
     NgxMaskPipe,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle
   ],
   providers: [
     DatePipe,

@@ -18,6 +18,7 @@ export class AppDatePipe extends NgDatePipe implements PipeTransform {
   }
 
   convertDateFormat(input: any) {
+    if (!input) return null;
     const parts = input.match(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/);
     if (!parts) throw new Error('Invalid date format');
 
