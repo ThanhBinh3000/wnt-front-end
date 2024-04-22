@@ -19,4 +19,8 @@ export class ThuChiService extends BaseService {
     const url = `/api/wnt-thuchi/phieu-xuat/search-list`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+  getMaxNoteNumber(body: any) {
+    const url = `/api/wnt-thuchi/phieu-thu-chis/tao-so-phieu`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

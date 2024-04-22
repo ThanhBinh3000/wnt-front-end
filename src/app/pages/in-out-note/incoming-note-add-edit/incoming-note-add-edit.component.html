@@ -16,7 +16,7 @@
             </h2>
             <div class="text-center card-desc">
                 <div class="card-code">
-                    Mã số: <strong>1</strong>
+                    Mã số: <strong>{{noteNumber}}</strong>
                 </div>
                 Ngày: <div class="clickable-text daterange-picker text-link"><input type="text" name="noteDate" id="note-date-id" ng-change="onNoteDateChanged()" ng-model="noteDate"><span><strong></strong></span></div>
             </div>
@@ -76,7 +76,7 @@
                                 <label><b>Tiền nợ</b></label>
                             </td>
                             <td ng-disabled="editMode || deleteMode || viewMode">
-                                <input type="text" class="form-control mb-0" formControlName="tienNo" awnum="app-decimal-number">
+                                <input type="text" class="form-control mb-0" readonly = "readonly" formControlName="tienNo" awnum="app-decimal-number">
                             </td>
                         </tr>
                         <tr>

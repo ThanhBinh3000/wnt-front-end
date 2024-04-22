@@ -21,6 +21,7 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
   listObject : any[] = [];
   listPhieuNo : any[] = [];
   datePipe: any = new DatePipe('en-US');
+  noteNumber: number = 0;
   constructor(
     injector: Injector,
     private titleService: Title,
@@ -39,6 +40,9 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
 
   ngOnInit() {
     this.titleService.setTitle(this.title);
+    if(this.inComingNoteID == 0){
+      this.genNoteNumber(this.loaiPhieu);
+    }
   }
   
   expandForm() {
@@ -93,5 +97,14 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
   }
   async onPayFull(){
     this.formData.controls['tienThanhToan'].setValue(this.formData.get('tienNo')?.value);
+  }
+  //tao so phieu moi nhat
+  async genNoteNumber(type: Number){
+    let body = { loaiPhieu : type};
+    this._service.getMaxNoteNumber(body).then((res) => {
+      if (res?.statusCode == STATUS_API.SUCCESS) {
+        this.noteNumber = res.data;
+      }
+    });
   }
 }
