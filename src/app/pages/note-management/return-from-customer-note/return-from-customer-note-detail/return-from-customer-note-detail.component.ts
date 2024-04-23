@@ -6,6 +6,7 @@ import {NhaCungCapService} from "../../../../services/categories/nha-cung-cap.se
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
 import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
+import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
 
 @Component({
   selector: 'return-from-customer-note-detail',
@@ -23,7 +24,8 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
     private _service : PhieuNhapService,
     private nhaCungCapService : NhaCungCapService,
     private thuocService : ThuocService,
-    private donViTinhService : DonViTinhService
+    private donViTinhService : DonViTinhService,
+    private paymentTypeService : PaymentTypeService
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
@@ -46,21 +48,16 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
-    let body = {
-      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP_TU_KH,
-      id : null
+    this.getId();
+    console.log(this.idUrl);
+    if(this.idUrl){
+      let data = await this.detail(this.idUrl)
+      console.log(data);
+      this.formData.patchValue(data);
+      this.dataTable = data.chiTiets;
     }
-    this.service.init(body).then((res)=>{
-      if(res && res.data){
-        const data = res.data;
-        this.formData.patchValue({
-          ngayNhap : data.ngayNhap,
-          soPhieuNhap : data.soPhieuNhap
-        })
-      }
-    });
   }
 
   searchListNhaCungCap($event){
@@ -78,39 +75,6 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
         }
       })
     }
-  }
-
-  onChangePrice(rowTable?){
-    if(rowTable){
-      rowTable.rateRevenue = (rowTable.giaBanLe - rowTable.giaNhap) / rowTable.giaNhap * 100 ;
-    }else{
-      let rateRevenue = (this.rowItem.giaBanLe - this.rowItem.giaNhap) / this.rowItem.giaNhap * 100 ;
-      this.rowItem.rateRevenue = Math.round(rateRevenue * 100) / 100;
-    }
-    this.calendarTongTien();
-  }
-
-  onChangeSoLuong(rowTable?){
-    if(rowTable){
-      let giaNhap = rowTable.soLuong * rowTable.giaNhap;
-      if(rowTable.chietKhau > 0){
-        giaNhap = giaNhap * ( ( 100 - rowTable.chietKhau ) / 100 );
-      }
-      if(rowTable.vat > 0){
-        giaNhap = giaNhap + ( giaNhap * (rowTable.vat / 100));
-      }
-      rowTable.tongTien =  giaNhap
-    }else{
-      let giaNhap = this.rowItem.soLuong * this.rowItem.giaNhap;
-      if(this.rowItem.chietKhau > 0){
-        giaNhap = giaNhap * ( ( 100 - this.rowItem.chietKhau ) / 100 );
-      }
-      if(this.rowItem.vat > 0){
-        giaNhap = giaNhap + ( giaNhap * (this.rowItem.vat / 100));
-      }
-      this.rowItem.tongTien =  giaNhap
-    }
-    this.calendarTongTien();
   }
 
   calendarTongTien(){

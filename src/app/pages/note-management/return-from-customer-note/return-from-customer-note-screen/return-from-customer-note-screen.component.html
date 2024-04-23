@@ -253,19 +253,24 @@
                   </div>
                 </div>
                 <div class="msg_payment_header">Hình thức thanh toán <span>[+]</span></div>
-                <div id="paymentSlide" class="form-check" style="display: none;">
-                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
-                     ng-repeat="item in listPayType">
-                    <input type="radio" class="form-check-input"
-                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
-                           name="optradio" checked="checked">Tiền mặt
-                  </p>
-                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
-                     ng-repeat="item in listPayType">
-                    <input type="radio" class="form-check-input"
-                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
-                           name="optradio">Chuyển khoản
-                  </p>
+                <div id="paymentSlide" class="form-check" >
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    class="example-radio-group" formControlName="paymentType">
+                    <mat-radio-button *ngFor="let item of listPaymentType" class="example-radio-button" [value]="item.id">{{item.displayName}}</mat-radio-button>
+                  </mat-radio-group>
+<!--                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"-->
+<!--                     ng-repeat="item in listPayType">-->
+<!--                    <input type="radio" class="form-check-input"-->
+<!--                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"-->
+<!--                           name="optradio" checked="checked">Tiền mặt-->
+<!--                  </p>-->
+<!--                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"-->
+<!--                     ng-repeat="item in listPayType">-->
+<!--                    <input type="radio" class="form-check-input"-->
+<!--                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"-->
+<!--                           name="optradio">Chuyển khoản-->
+<!--                  </p>-->
                 </div>
               </td>
             </tr>
@@ -304,20 +309,6 @@
               <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
                      class="btn btn-primary btn btn-default"
                      (click)="createUpdate();">
-  <!--            <a class="btn btn-primary ng-scope"-->
-  <!--               ng-if="viewModel.TaskMode==2 &amp;&amp; deviceType==0 &amp;&amp; viewModel.NoteTypeId==3"-->
-  <!--               ng-click="onPrint(viewModel.NoteId, 3, 1)">-->
-  <!--              In-->
-  <!--            </a>-->
-
-  <!--            <span ng-if="viewModel.TaskMode==2" class="ng-scope">-->
-  <!--                  <span ng-if="viewModel.Editable" class="ng-scope">-->
-  <!--                      <a href="/PhieuNhaps/delete/3621741" class="btn btn-danger btn btn-danger">Xóa-->
-  <!--                          phiếu</a>-->
-  <!--                  </span>-->
-  <!--                  <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"-->
-  <!--                     title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>-->
-  <!--            </span>-->
             </div>
           </td>
         </tr>

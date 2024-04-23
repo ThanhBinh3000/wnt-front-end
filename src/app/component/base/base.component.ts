@@ -17,6 +17,7 @@ import {HelperService} from "../../services/helper.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../services/auth.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -57,6 +58,10 @@ export class BaseComponent {
   indeterminate = false;
 
   authService : AuthService;
+  router : Router
+  route: ActivatedRoute
+  idUrl: number = 0;
+
 
   constructor(
     injector: Injector,
@@ -76,11 +81,20 @@ export class BaseComponent {
     this.department = this.userInfo.department;
     this.dialog = this.injector.get(MatDialog);
     this.authService = this.injector.get(AuthService);
+    this.router = this.injector.get(Router);
+    this.route = this.injector.get(ActivatedRoute);
   }
 
   getDataSource(){
     this.dataSource.data = this.dataTable;
     return this.dataSource;
+  }
+
+  getId() {
+    let id = this.route.snapshot.paramMap.get('id');
+    if (id && +id > 0) {
+      this.idUrl = +id
+    }
   }
 
   // search page

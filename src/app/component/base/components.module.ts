@@ -20,7 +20,7 @@ import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/materi
 import {MatInput} from "@angular/material/input";
 import {NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask} from "ngx-mask";
 import {SanitizeHtmlPipe} from "../pipe/sanitize-html.pipe";
-import {MatRadioButton} from "@angular/material/radio";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {DateRangeFilterComponent} from "../date-range-filter/date-range-filter.component";
 import {CustomDateAdapter} from "../../utils/custom-date-adapter";
 import {MatCheckbox} from "@angular/material/checkbox";
@@ -63,7 +63,8 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
     NgxMaskPipe,
     CdkDropList,
     CdkDrag,
-    CdkDragHandle
+    CdkDragHandle,
+    MatRadioGroup
   ],
   exports: [
     CommonModule,
@@ -96,7 +97,8 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
     NgxMaskPipe,
     CdkDropList,
     CdkDrag,
-    CdkDragHandle
+    CdkDragHandle,
+    MatRadioGroup
   ],
   providers: [
     DatePipe,

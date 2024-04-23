@@ -7,6 +7,7 @@ import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
 import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
 import {DrugAddEditDialogComponent} from "../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component";
+import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
 
 @Component({
   selector: 'return-from-customer-note-screen',
@@ -17,6 +18,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
   title: string = "Phiếu trả lại từ khách hàng";
   listNhaCungCap : any[] = [];
   listThuoc : any[] = [];
+  listPaymentType : any[] = [];
   rowItem : any = {};
 
   constructor(
@@ -25,7 +27,8 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     private _service : PhieuNhapService,
     private nhaCungCapService : NhaCungCapService,
     private thuocService : ThuocService,
-    private donViTinhService : DonViTinhService
+    private donViTinhService : DonViTinhService,
+    private paymentTypeService : PaymentTypeService
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
@@ -37,7 +40,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
       idWarehouseLocation : '',
       invoiceNo : '',
       invoiceDate : '',
-      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
+      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP_TU_KH,
       tongTien : [0],
       vat : '',
       daTra : [0],
@@ -45,17 +48,18 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
       discountWithRatio : [],
       dienGiai : '',
       ngayNhap : [],
+      paymentType : [],
     });
   }
 
   ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.loadDataOpt();
     let body = {
       loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP_TU_KH,
       id : null
     }
     this.service.init(body).then((res)=>{
-      console.log(res)
       if(res && res.data){
         const data = res.data;
         this.formData.patchValue({
@@ -63,6 +67,12 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
           soPhieuNhap : data.soPhieuNhap
         })
       }
+    });
+  }
+
+  loadDataOpt(){
+    this.paymentTypeService.searchList({}).then((res)=>{
+      this.listPaymentType = res?.data;
     });
   }
 
@@ -118,7 +128,6 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     this.thuocService.getDetail($event).then((res)=>{
       if(res && res.data){
         const data = res.data;
-        console.log(data);
         this.rowItem.maThuoc = data.maThuoc;
         this.rowItem.tenThuoc = data.tenThuoc;
         this.rowItem.soLuong = 1;
@@ -188,11 +197,14 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
 
   createUpdate(){
     let body = this.formData.value;
-    body.children = this.dataTable;
-    console.log(body);
+    body.chiTiets = this.dataTable;
     this.save(body).then(res=>{
-      console.log(res)
+      if(res){
+        this.router.navigate(['/management/note-management/return-from-customer-note-detail', res.id]);
+      }
     });
   }
+
+
 
 }

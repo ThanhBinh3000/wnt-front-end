@@ -17,7 +17,6 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    private router: Router,
     private loadingService: SpinnerService, private nhaThuocsService: NhaThuocsService, public notificationService: NotificationService) {
     super(injector, nhaThuocsService);
   }

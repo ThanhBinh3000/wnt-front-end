@@ -5,17 +5,14 @@
         <div class="card-code">
             Mã số: <strong>{{formData.value.soPhieuNhap}}</strong>
         </div>
-        <span style="width: 10%">Ngày: <strong>16/03/2024 10:32</strong></span>
+        <span style="width: 10%">Ngày: <strong>{{formData.value.ngayNhap}}</strong></span>
     </div>
     <table class="table borderless table-condensed">
         <tbody>
             <tr>
                 <td style="text-align: left">
                     <label class="control-label">Khách hàng:</label>
-                    <ng-select formControlName="idWarehouseLocation" (keyup.enter)="searchListNhaCungCap($event)">
-                      <ng-option *ngFor="let item of listNhaCungCap"
-                                 [value]="item.id">{{item.tenNhaCungCap}}</ng-option>
-                    </ng-select>
+                    <label class="control-label" style="font-weight: normal">Mai1111</label>
                 </td>
             </tr>
         </tbody>
@@ -34,55 +31,81 @@
                 <th style="width: 150px; text-align: right">Thành tiền</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <a href=""
-                        ng-click="onDrugInfoDetails(10617545); $event.preventDefault(); $event.stopPropagation();">
-                        1
-                    </a>
-                    <input data-val="true" data-val-number="The field Thuốc must be a number."
-                        data-val-required="The Thuốc field is required." id="item_ThuocId" name="item.ThuocId"
-                        type="hidden" value="10617545">
-                </td>
-                <td>
-                    <span class="" id="dMaThuoc0"> TH466</span>
-                </td>
-                <td>
-                </td>
+      <tbody class="ng-scope">
+      <tr *ngFor="let data of dataTable; index as i;" style="border-bottom: 1px solid #ccc; font-size: 14px">
+        <!--Actions-->
+        <!--STT-->
+        <td class="ng-scope">
+          <a ng-click="onDrugInfoDetails(gridItem.DrugId);">
+            {{i + 1}}
+          </a>
+        </td>
+        <!--Hình ảnh-->
+        <td class="ng-scope">
 
-                <td>
-                    <span class="" id="PhieuNhapChiTiets_0__TenSp">test111</span>
-                    <p class="btn-link tooltip-content-drug"
-                        style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
-                        ng-click="onSearchPriceInOut({&quot;MaPhieuNhapCt&quot;:34691469,&quot;ThuocId&quot;:10617545,&quot;DrugId&quot;:10617545,&quot;MaThuoc&quot;:&quot;TH466&quot;,&quot;TenThuoc&quot;:&quot;test111&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;HeSo&quot;:10,&quot;MaPhieuNhap&quot;:3621741,&quot;MaNhaThuoc&quot;:null,&quot;MaDonViTinh&quot;:699963,&quot;MaDonViTinhLe&quot;:699963,&quot;MaDonViTinhThuNguyen&quot;:705283,&quot;TenDonViTinh&quot;:&quot;Bịch&quot;,&quot;ChietKhau&quot;:0.00,&quot;GiaNhap&quot;:70000.00,&quot;GiaBan&quot;:70000.00,&quot;SoLuong&quot;:5.00,&quot;SoLo&quot;:&quot;&quot;,&quot;HanDung&quot;:null,&quot;VAT&quot;:0.00,&quot;ItemOrder&quot;:1,&quot;ConnectivityStatusId&quot;:0,&quot;Amount&quot;:350000.00,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;GroupIdMapping&quot;:10617545,&quot;Flag&quot;:false,&quot;RateRevenue&quot;:0.0})"
-                        title="Tra cứu giá thị trường">
-                        <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
-                    </p>
-                </td>
-                <td>
-                    <span class="display-mode" id="PhieuNhapChiTiets_0__MaDonViTinhSp">Bịch</span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__SoLuongSp">5</span>
+        </td>
+        <td>
+          <div class="ng-scope">
+                <span class="ng-scope">
+                      <span style="color:seagreen; padding:0;" class="btn-link">
+                          <span class="btn-link ng-binding"
+                                style="background:lightgreen"
+                          >{{data.maThuoc}}</span>
+                      </span>
+                      <span>-</span>
+                      <span class="btn-link tooltip-content-drug ng-binding" style="background:lightgreen"
+                            title="Tra cứu giá thị trường">
+                          {{data.tenThuoc}}
+                      </span>
+                <p class="btn-link tooltip-content-drug"
+                   style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
+                   ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
+                  <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
+                </p>
+                </span>
+          </div>
+        </td>
+        <!--Đơn Vị-->
+        <td>
+          <div>
+            <div class="ng-scope">
+<!--              <ng-select [(ngModel)]="data.donViTinhMaDonViTinh">-->
+<!--                <ng-option *ngFor="let item of data.listDonViTinhs" [value]="item.id">{{item.tenDonViTinh}}</ng-option>-->
+<!--              </ng-select>-->
+            </div>
+          </div>
+        </td>
+        <!--Số Lượng-->
+        <td>
+          <div class="ng-scope">
+<!--            <input type="text" [(ngModel)]="data.soLuong" (ngModelChange)="onChangeSoLuong(data)"-->
+<!--                   class="form-control mb-0  mousetrap row-item-quantiy"-->
+<!--                   style="width: 100%; text-align:right; font-size:14px;">-->
+          </div>
+        </td>
 
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__GiaNhapSp">70,000</span>
-                </td>
+        <!--Giá Bán Lẻ-->
 
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__ChietKhauSp">
-                        0
-                    </span>
-
-                </td>
-
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_0__ThanhTien">350,000</span>
-                </td>
-            </tr>
-        </tbody>
+        <td class="ng-scope">
+          <div class="input-group mb-3 ">
+<!--            <input type="text" [(ngModel)]="data.giaBanLe" (ngModelChange)="onChangeSoLuong(data)"-->
+<!--                   class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope">-->
+<!--            <input type="text" [(ngModel)]="data.rateRevenue"-->
+<!--                   class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;">-->
+          </div>
+        </td>
+        <td class="ng-scope">
+<!--          <input id="tbxDiscountId1" type="text"-->
+<!--                 class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"-->
+<!--                 style="width: 100%; text-align:right;" [(ngModel)]="data.chietKhau" (ngModelChange)="onChangeSoLuong(data)">-->
+        </td>
+        <!--Thành Tiền-->
+        <td>
+          <div class="number-value"><strong  class="ng-binding ng-scope">{{data.tongTien}}</strong>
+          </div>
+        </td>
+      </tr>
+      </tbody>
     </table>
     <br>
 
@@ -90,16 +113,9 @@
         <div class="col-md-3">
             <b>Tổng số tiền : &nbsp;<span id="spanSumAll"></span></b>350,000
         </div>
-        <div class="col-md-3 ng-hide" ng-show="model.MaLoaiXuatNhap == 1">
-            <b style="margin-left:20px;">Chiết khấu : &nbsp;<span id="spanSumAll"></span></b> 0
-
-        </div>
         <div class="col-md-2">
         </div>
         <div class="col-md-2">
-            <span style="font-weight: bold" id="spSumfinal">
-            </span>
-
         </div>
         <div class="col-md-5">
             <table style="padding: 5px">
