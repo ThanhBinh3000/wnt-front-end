@@ -1,92 +1,70 @@
-<div class="modal fade" id="service-detail-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title">Thông tin dịch vụ
-                </h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered table-userpicker">
-                    <tbody>
-                        <tr ng-show="viewModel.TypeService == 1" class="">
-                            <td><b>Nhóm dịch vụ:</b></td>
-                            <td class="ng-binding">Khám bệnh</td>
-                        </tr>
-                        <tr class="">
-                            <td><b ng-show="viewModel.TypeService == 0" class="ng-hide">Mã thuốc:</b><b ng-show="viewModel.TypeService == 1" class="">Mã dịch vụ:</b></td>
-                            <td class="ng-binding">DV034</td>
-                        </tr>
-                        <tr>
-                            <td><b ng-show="viewModel.TypeService == 0" class="ng-hide">Tên thuốc:</b> <b ng-show="viewModel.TypeService == 1" class="">Tên dịch vụ :</b></td>
-                            <td class="ng-binding">
-                                Khám mới
-                            </td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0 &amp;&amp; viewModel.WarehouseLocationName != null" class="ng-hide">
-                            <td><b>Vị trí tủ/ kho:</b></td>
-                            <td class="ng-binding">
-                                
-                            </td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 1" class="">
-                            <td><b>Phòng thực hiện:</b></td>
-                            <td class="ng-binding"></td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0" class="ng-hide">
-                            <td><b>Mã vạch:</b></td>
-                            <td class="ng-binding"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 1" class="">
-                            <td><b>Liệu trình:</b></td>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 1 &amp;&amp; viewModel.IdTypeService == 1" class="ng-hide">
-                            <td><b>Số buổi thực hiện:</b></td>
-                            <td class="ng-binding">1</td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 0" class="ng-hide">
-                            <td><b>Quy cách:</b></td>
-                            <td class="ng-binding"></td>
-                        </tr>
-                        
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain" class="ng-scope">
-                            <td><b>Giá nhập lẻ:</b></td>
-                            <td ng-if="viewModel.ViewInPricePermission" class="ng-binding ng-scope">100,000</td>
-                        </tr>
-                        <tr>
-                            <td><b>Giá bán lẻ:</b></td>
-                            <td style="text-align:left" class="ng-binding">0
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 1" class="">
-                            <td><b>Chiết khấu(%):</b></td>
-                            <td style="text-align:left" class="ng-binding">0</td>
-                        </tr>
-                        <tr ng-show="viewModel.TypeService == 1" class="">
-                            <td><b>Tích điểm:</b></td>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr class="" style="display: none">
-                            <td><b>Ngày cập nhật:</b></td>
-                            <td style="text-align:left" class="ng-binding"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-            </div>
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title">Thông tin dịch vụ
+            </h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered table-userpicker">
+                <tbody>
+                    <tr>
+                        <td><b>Nhóm dịch vụ:</b></td>
+                        <td>{{formData.get('tenNhomThuoc')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Mã dịch vụ:</b></td>
+                        <td>{{formData.get('maThuoc')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Tên dịch vụ :</b></td>
+                        <td>
+                            {{formData.get('tenThuoc')?.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Phòng thực hiện:</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><b>Liệu trình:</b></td>
+                        <td>
+                            <span *ngIf="formData.get('idTypeService')?.value == 1">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="formData.get('idTypeService')?.value == 1">
+                        <td><b>Số buổi thực hiện:</b></td>
+                        <td>{{formData.get('countNumbers')?.value}}</td>
+                    </tr>                   
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain">
+                        <td><b>Giá nhập:</b></td>
+                        <td>{{formData.get('giaNhap')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Giá bán:</b></td>
+                        <td>{{formData.get('giaBanLe')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Chiết khấu(%):</b></td>
+                        <td style="text-align:left">{{formData.get('discount')?.value}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Tích điểm:</b></td>
+                        <td>
+                            <i *ngIf="formData.get('scorable')?.value" class="fa-regular fa-check text-success"></i>
+                            <i *ngIf="!formData.get('scorable')?.value" class="fa-regular fa-xmark text-danger"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@ import { ServiceRoutingModule } from "./service.routing";
 import { ServiceAddEditDialogComponent } from './service-add-edit-dialog/service-add-edit-dialog.component';
 import { ServiceListComponent } from './service-list/service-list.component';
 import { ServiceDetailDialogComponent } from './service-detail-dialog/service-detail-dialog.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,12 @@ import { ServiceDetailDialogComponent } from './service-detail-dialog/service-de
     ServiceAddEditDialogComponent,
     ServiceDetailDialogComponent
   ],
-  imports: [CommonModule, RouterOutlet, ServiceRoutingModule],
+  imports: [
+    ComponentsModule,
+    CommonModule, 
+    RouterOutlet, 
+    ServiceRoutingModule
+  ],
   exports: [
     ServiceAddEditDialogComponent,
     ServiceDetailDialogComponent

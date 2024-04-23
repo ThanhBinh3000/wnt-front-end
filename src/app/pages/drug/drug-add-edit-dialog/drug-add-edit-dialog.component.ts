@@ -13,6 +13,7 @@ import {
 } from "../../drug-group/drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
 import { Validators } from '@angular/forms';
 import { dateValidator } from '../../../validators/date.validator';
+import { LOAI_SAN_PHAM } from '../../../constants/config';
 
 @Component({
   selector: 'drug-add-edit-dialog',
@@ -85,7 +86,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       groupIdMapping: [0],
       flag: [false],
       tenDonViTinhXuatLe: [],
-      tenDonViTinhThuNguyen: []
+      tenDonViTinhThuNguyen: [],
     });
   }
 
@@ -110,7 +111,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
 
   getDataFilter() {
     // Nhóm thuốc
-    this.nhomThuocService.searchList({}).then((res) => {
+    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.THUOC}).then((res) => {
       if (res?.statusCode == STATUS_API.SUCCESS) {
         this.listNhomThuoc = res.data
       }

@@ -1,19 +1,16 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../component/base/base.component";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
-import {MatDialog} from "@angular/material/dialog";
 import {ThuocService} from "../../../services/products/thuoc.service";
-import {RECORD_STATUS} from "../../../constants/config";
 import {STATUS_API} from "../../../constants/message";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";
 import {WarehouseLocationService} from "../../../services/products/warehouse-location-service";
 import {ProductTypesService} from "../../../services/products/product-types-service";
-import {
-  CustomerGroupAddEditDialogComponent
-} from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-dialog.component";
 import { DrugDetailDialogComponent } from '../drug-detail-dialog/drug-detail-dialog.component';
+import { MatSort } from '@angular/material/sort';
+import { LOAI_SAN_PHAM } from '../../../constants/config';
 
 @Component({
   selector: 'drug-list',
@@ -38,7 +35,6 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     private donViTinhService : DonViTinhService,
     private warehouseLocationService : WarehouseLocationService,
     private productTypesService : ProductTypesService,
-    // private dialog: MatDialog
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -47,7 +43,8 @@ export class DrugListComponent extends BaseComponent implements OnInit {
       typeId : [],
       donViXuatLeMaDonViTinh: [],
       idWarehouseLocation : [],
-      dataDelete : [false]
+      dataDelete : [false],
+      typeService: [LOAI_SAN_PHAM.THUOC]
     });
   }
 
@@ -56,6 +53,10 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     this.getDataFilter();
     this.searchPage();
   }
+  async ngAfterViewInit() {
+    this.dataSource.sort = this.sort!;
+  }
+  @ViewChild(MatSort) sort?: MatSort;
 
   goToPage($event:any){
     let pageIndex = $event.target.value;
@@ -65,8 +66,8 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   getDataFilter(){
-    // Nhosm thuốc
-    this.nhomThuocService.searchList({}).then((res)=>{
+    // Nhóm thuốc
+    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.THUOC}).then((res)=>{
       if(res?.statusCode == STATUS_API.SUCCESS){
         this.listNhomThuoc = res.data
       }
@@ -83,7 +84,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
         this.listWarehouse = res.data
       }
     });
-    // Vị trí kho
+    // Loại thuốc
     this.productTypesService.searchList({}).then((res)=>{
       if(res?.statusCode == STATUS_API.SUCCESS){
         this.listProductTypes = res.data
