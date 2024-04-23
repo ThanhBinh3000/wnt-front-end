@@ -32,4 +32,9 @@ export const ORDER_STORE_MAPPING = {
   SET_DEFAULT : 2
 }
 
+export const LOAI_SAN_PHAM = {
+  THUOC: 0,
+  DICH_VU: 1
+}
+
 export const PAGE_SIZE_DEFAULT = 10;

@@ -5,6 +5,7 @@ import { RouterOutlet } from "@angular/router";
 import { ServiceGroupRoutingModule } from "./service-group.routing";
 import { ServiceGroupAddEditDialogComponent } from './service-group-add-edit-dialog/service-group-add-edit-dialog.component';
 import { ServiceGroupListComponent } from './service-group-list/service-group-list.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { ServiceGroupListComponent } from './service-group-list/service-group-li
     ServiceGroupListComponent,
     ServiceGroupAddEditDialogComponent,
   ],
-  imports: [CommonModule, RouterOutlet, ServiceGroupRoutingModule],
+  imports: [ComponentsModule, CommonModule, RouterOutlet, ServiceGroupRoutingModule],
   exports: [
     ServiceGroupAddEditDialogComponent
   ],

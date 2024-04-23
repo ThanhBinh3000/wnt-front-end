@@ -8,6 +8,7 @@ import {BaseComponent} from "../../../component/base/base.component";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { LOAI_SAN_PHAM } from '../../../constants/config';
 
 @Component({
   selector: 'drug-group-add-edit-dialog',
@@ -27,11 +28,10 @@ export class DrugGroupAddEditDialogComponent extends BaseComponent implements On
       id : [],
       tenNhomThuoc: ['', Validators.required],
       kyHieuNhomThuoc: [''],
-      maNhaThuoc: [1],
-      maNhomThuoc: [1],
-      referenceId: [1],
-      typeGroupProduct: [1],
-      storeId: [1]
+      maNhaThuoc: [],
+      referenceId: [0],
+      storeId: [0],
+      typeGroupProduct: [LOAI_SAN_PHAM.THUOC],
     });
   }
 

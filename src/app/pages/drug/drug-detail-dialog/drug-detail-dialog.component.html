@@ -8,7 +8,7 @@
         <div class="modal-body">
             <table class="table table-bordered table-userpicker">
                 <tbody>
-                    <tr class="">
+                    <tr>
                         <td><b>Mã thuốc:</b></td>
                         <td>{{formData.get('maThuoc')?.value}}</td>
                     </tr>
@@ -71,10 +71,6 @@
                         <td style="text-align:left">
                             {{formData.get('giaBanLe')?.value | number}}/{{formData.get('tenDonViTinhXuatLe')?.value}}
                         </td>
-                    </tr>
-                    <tr class="" style="display: none">
-                        <td><b>Ngày cập nhật:</b></td>
-                        <td style="text-align:left"></td>
                     </tr>
                     <tr ng-if="!viewModel.IsSlaveInGenaralPharmacyChain ">
                         <td><b>Giá bán sỉ:</b></td>

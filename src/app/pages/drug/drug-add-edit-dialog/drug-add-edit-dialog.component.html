@@ -118,9 +118,9 @@
                   <label class="col-sm-4 control-label">Giá nhập lẻ</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaNhap" id="GiaNhap"
-                        class="form-control mb-0 ng-pristine ng-valid ng-isolate-scope ng-touched" tabindex="13"
-                        formControlName="giaNhap" placeholder="Giá nhập theo đơn vị xuất lẻ">
+                      <input type="text" name="GiaNhap" id="GiaNhap" mask="separator" thousandSeparator=","
+                        class="form-control mb-0" tabindex="13" formControlName="giaNhap"
+                        placeholder="Giá nhập theo đơn vị xuất lẻ">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                       <!-- <div class="input-group-btn">
@@ -167,9 +167,8 @@
                   <label class="col-sm-4 control-label">Giá bán lẻ</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaBanLe" id="GiaBanLe"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="14"
-                        formControlName="giaBanLe" awnum="app-decimal-number"
+                      <input type="text" name="GiaBanLe" id="GiaBanLe" class="form-control mb-0" tabindex="14"
+                        mask="separator" thousandSeparator="," formControlName="giaBanLe" awnum="app-decimal-number"
                         placeholder="Giá bán lẻ theo đơn vị xuất lẻ">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -238,12 +237,13 @@
                   <label class="col-sm-4 control-label">Quy cách</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="HeSo" id="HeSo"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="16"
-                        formControlName="heSo" awnum="app-decimal-number">
+                      <input type="text" name="HeSo" id="HeSo" mask="separator" thousandSeparator=","
+                        class="form-control mb-0 ng-pristine" tabindex="16" formControlName="heSo"
+                        awnum="app-decimal-number">
                       <span class="input-group-addon flex-grow-width-25 ng-scope">
-                        {{formData.get('tenDonViTinhThuNguyen')?.value != '' 
-                        ? formData.get('tenDonViTinhThuNguyen')?.value + ' ' + formData.get('heSo')?.value + ' ' + formData.get('tenDonViTinhXuatLe')?.value 
+                        {{formData.get('tenDonViTinhThuNguyen')?.value != ''
+                        ? formData.get('tenDonViTinhThuNguyen')?.value + ' ' + formData.get('heSo')?.value + ' ' +
+                        formData.get('tenDonViTinhXuatLe')?.value
                         : formData.get('tenDonViTinhXuatLe')?.value}}
                       </span>
                     </div>
@@ -268,8 +268,7 @@
                 <div class="row">
                   <label class="col-sm-8 control-label">Hàng tư vấn</label>
                   <div class="col-sm-4">
-                    <input type="checkbox" name="HangTuVan" id="HangTuVan"
-                      class="form-checkbox check-box ng-pristine ng-untouched ng-valid" tabindex="6"
+                    <input type="checkbox" name="HangTuVan" id="HangTuVan" class="form-checkbox check-box " tabindex="6"
                       formControlName="hangTuVan">
                   </div>
                 </div>
@@ -290,9 +289,9 @@
                   <label class="col-sm-4 control-label">Giá bán sỉ</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaBanBuon" id="GiaBanBuon"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="17"
-                        formControlName="giaBanBuon" awnum="app-decimal-number">
+                      <input type="text" name="GiaBanBuon" id="GiaBanBuon" mask="separator" thousandSeparator=","
+                        class="form-control mb-0 ng-pristine" tabindex="17" formControlName="giaBanBuon"
+                        awnum="app-decimal-number">
                       <span *ngIf="formData.get('donViThuNguyenMaDonViTinh')?.value > 0"
                         class="input-group-addon flex-grow-width-25 ng-binding ng-scope">/{{formData.get('tenDonViTinhThuNguyen')?.value}}
                       </span>
@@ -312,8 +311,8 @@
                   <label class="col-sm-4 control-label">Hạn dùng</label>
                   <div class="col-sm-8">
                     <input type="text" name="HanDung" id="HanDung"
-                      class="input-datetime form-control mb-0 text-box single-line ng-pristine ng-untouched ng-valid"
-                      tabindex="7" formControlName="hanDung" placeholder="Nhập 010122 => 01/01/2022"
+                      class="input-datetime form-control mb-0 text-box single-line " tabindex="7"
+                      formControlName="hanDung" placeholder="Nhập 010122 => 01/01/2022"
                       (ngModelChange)="onExpiredDateChange()">
                     <span *ngIf="formData.get('hanDung')?.invalid && formData.get('hanDung')?.touched">
                       <span class="text-danger field-validation-error"
@@ -330,9 +329,9 @@
                   <label class="col-sm-4 control-label">Số tồn ban đầu</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="SoDuDauKy" id="SoDuDauKy"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" tabindex="18"
-                        formControlName="soDuDauKy" formControlName="soDuDauKy" awnum="app-decimal-number"
+                      <input type="text" name="SoDuDauKy" id="SoDuDauKy" mask="separator" thousandSeparator=","
+                        class="form-control mb-0  " tabindex="18" formControlName="soDuDauKy"
+                        formControlName="soDuDauKy" awnum="app-decimal-number"
                         placeholder="Số tồn ban đầu theo đơn vị xuất lẻ">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -349,9 +348,8 @@
                   <label class="col-sm-4 control-label">Số lượng cảnh báo</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GioiHan" id="GioiHan"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" value="0"
-                        tabindex="8" formControlName="gioiHan">
+                      <input type="text" name="GioiHan" id="GioiHan" mask="separator" thousandSeparator=","
+                        class="form-control mb-0  " value="0" tabindex="8" formControlName="gioiHan">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                     </div>
@@ -363,9 +361,8 @@
                   <label class="col-sm-4 control-label">Giá nhập ban đầu</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaDauKy" id="GiaDauKy"
-                        class="form-control mb-0 ng-valid ng-isolate-scope ng-dirty ng-valid-parse ng-touched"
-                        tabindex="19" formControlName="giaDauKy" awnum="app-decimal-number"
+                      <input type="text" name="GiaDauKy" id="GiaDauKy" mask="separator" thousandSeparator=","
+                        class="form-control mb-0" tabindex="19" formControlName="giaDauKy" awnum="app-decimal-number"
                         placeholder="Giá nhập ban đầu cho số tồn b.đầu">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -382,8 +379,7 @@
                   <label class="col-sm-4 control-label">Chiết khấu</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="Discount" id="Discount"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid" value="0" tabindex="9"
+                      <input type="text" name="Discount" id="Discount" class="form-control mb-0 " value="0" tabindex="9"
                         formControlName="discount">
                       <span class="input-group-addon flex-grow-width-25">%</span>
                     </div>
@@ -395,8 +391,7 @@
                   <label class="col-sm-4 control-label">Chiết khấu theo lợi nhuận</label>
                   <div class="col-sm-8">
                     <input type="checkbox" name="DiscountByRevenue" id="DiscountByRevenue"
-                      class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid" tabindex="20"
-                      formControlName="discountByRevenue">
+                      class="mt-0 form-checkbox check-box " tabindex="20" formControlName="discountByRevenue">
                   </div>
                 </div>
               </div>
@@ -408,9 +403,8 @@
                 <div class="row">
                   <label class="col-sm-8 control-label">Công khai giá bán</label>
                   <div class="col-sm-4">
-                    <input type="checkbox" name="Presentation" id="Presentation"
-                      class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid" tabindex="10"
-                      formControlName="presentation">
+                    <input type="checkbox" name="Presentation" id="Presentation" class="mt-0 form-checkbox check-box "
+                      tabindex="10" formControlName="presentation">
                   </div>
                 </div>
               </div>
@@ -418,9 +412,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Tích điểm</label>
                   <div class="col-sm-8">
-                    <input type="checkbox" name="Scorable" id="Scorable"
-                      class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid" tabindex="11"
-                      formControlName="scorable">
+                    <input type="checkbox" name="Scorable" id="Scorable" class="mt-0 form-checkbox check-box "
+                      tabindex="11" formControlName="scorable">
                   </div>
                 </div>
               </div>
@@ -429,9 +422,9 @@
                   <label class="col-sm-4 control-label">Quy đổi số tiền ra 1 điểm</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="MoneyToOneScoreRate" id="MoneyToOneScoreRate"
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" value="0"
-                        tabindex="21" formControlName="moneyToOneScoreRate" awnum="app-decimal-number">
+                      <input type="text" name="MoneyToOneScoreRate" id="MoneyToOneScoreRate" class="form-control mb-0  "
+                        value="0" mask="separator" thousandSeparator="," tabindex="21"
+                        formControlName="moneyToOneScoreRate" awnum="app-decimal-number">
                       <span class="input-group-addon flex-grow-width-25">/điểm</span>
                     </div>
                   </div>
@@ -465,8 +458,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Quy cách đóng gói</label>
                   <div class="col-sm-8">
-                    <input type="text" name="QuyCachDongGoi" id="QuyCachDongGoi"
-                      class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="2"
+                    <input type="text" name="QuyCachDongGoi" id="QuyCachDongGoi" class="form-control mb-0 " tabindex="2"
                       formControlName="quyCachDongGoi" placeholder="Quy cách đóng gói">
                     <span *ngIf="formData.get('quyCachDongGoi')?.invalid && formData.get('quyCachDongGoi')?.touched">
                       <span class="text-danger field-validation-error"
@@ -485,8 +477,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Nhà sản xuất</label>
                   <div class="col-sm-8">
-                    <input type="text" name="NhaSanXuat" id="NhaSanXuat"
-                      class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="3"
+                    <input type="text" name="NhaSanXuat" id="NhaSanXuat" class="form-control mb-0 " tabindex="3"
                       formControlName="nhaSanXuat" placeholder="Nhà sản xuất">
                     <span *ngIf="formData.get('nhaSanXuat')?.invalid && formData.get('nhaSanXuat')?.touched">
                       <span class="text-danger field-validation-error"
@@ -501,9 +492,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Xuất xứ thương hiệu</label>
                   <div class="col-sm-8">
-                    <input type="text" name="XuatXu" id="XuatXu"
-                      class="form-control mb-0 ng-pristine ng-untouched ng-valid" tabindex="4" formControlName="xuatXu"
-                      placeholder="Xuất xứ thương hiệu">
+                    <input type="text" name="XuatXu" id="XuatXu" class="form-control mb-0 " tabindex="4"
+                      formControlName="xuatXu" placeholder="Xuất xứ thương hiệu">
                   </div>
                 </div>
               </div>
@@ -515,8 +505,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Công dụng</label>
                   <div class="col-sm-8">
-                    <textarea name="CongDung" id="CongDung" class="form-control ng-pristine ng-untouched ng-valid"
-                      tabindex="5" formControlName="advantages" placeholder="Công dụng"></textarea>
+                    <textarea name="CongDung" id="CongDung" class="form-control " tabindex="5"
+                      formControlName="advantages" placeholder="Công dụng"></textarea>
                     <span *ngIf="formData.get('advantages')?.invalid && formData.get('advantages')?.touched">
                       <span class="text-danger field-validation-error"
                         *ngIf="formData.get('advantages')?.errors?.['maxlength']">
@@ -530,9 +520,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Tác dụng phụ</label>
                   <div class="col-sm-8">
-                    <textarea type="text" name="TacDungPhu" id="TacDungPhu"
-                      class="form-control ng-pristine ng-untouched ng-valid" tabindex="6" formControlName="userObject"
-                      placeholder="Tác dụng phụ">
+                    <textarea type="text" name="TacDungPhu" id="TacDungPhu" class="form-control " tabindex="6"
+                      formControlName="userObject" placeholder="Tác dụng phụ">
                     </textarea>
                     <span *ngIf="formData.get('userObject')?.invalid && formData.get('userObject')?.touched">
                       <span class="text-danger field-validation-error"
@@ -551,9 +540,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Dược động học - Dược lực học</label>
                   <div class="col-sm-8">
-                    <textarea name="DuocDongHoc" id="DuocDongHoc" class="form-control ng-pristine ng-untouched ng-valid"
-                      tabindex="7" formControlName="pharmacokinetics"
-                      placeholder="Dược động học - Dược lực học"></textarea>
+                    <textarea name="DuocDongHoc" id="DuocDongHoc" class="form-control " tabindex="7"
+                      formControlName="pharmacokinetics" placeholder="Dược động học - Dược lực học"></textarea>
                     <span
                       *ngIf="formData.get('pharmacokinetics')?.invalid && formData.get('pharmacokinetics')?.touched">
                       <span class="text-danger field-validation-error"
@@ -568,8 +556,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Hướng dẫn sử dụng</label>
                   <div class="col-sm-8">
-                    <textarea type="text" name="HDSD" id="HDSD" class="form-control ng-pristine ng-untouched ng-valid"
-                      tabindex="8" formControlName="userManual" placeholder="Hướng dẫn sử dụng"></textarea>
+                    <textarea type="text" name="HDSD" id="HDSD" class="form-control " tabindex="8"
+                      formControlName="userManual" placeholder="Hướng dẫn sử dụng"></textarea>
                     <span *ngIf="formData.get('userManual')?.invalid && formData.get('userManual')?.touched">
                       <span class="text-danger field-validation-error"
                         *ngIf="formData.get('userManual')?.errors?.['maxlength']">
@@ -587,8 +575,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Điều kiện bảo quản</label>
                   <div class="col-sm-8">
-                    <textarea name="DieuKienBaoQuan" id="DieuKienBaoQuan"
-                      class="form-control ng-pristine ng-untouched ng-valid" tabindex="9"
+                    <textarea name="DieuKienBaoQuan" id="DieuKienBaoQuan" class="form-control " tabindex="9"
                       formControlName="storageConditions" placeholder="Điều kiện bảo quản"></textarea>
                   </div>
                 </div>
@@ -597,8 +584,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Vị trí bảo quản</label>
                   <div class="col-sm-8">
-                    <textarea type="text" name="ViTriBaoQuan" id="ViTriBaoQuan"
-                      class="form-control ng-pristine ng-untouched ng-valid" tabindex="10"
+                    <textarea type="text" name="ViTriBaoQuan" id="ViTriBaoQuan" class="form-control " tabindex="10"
                       formControlName="storageLocation" placeholder="Vị trí bảo quản"></textarea>
                   </div>
                 </div>
@@ -620,8 +606,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Chống chỉ định</label>
                   <div class="col-sm-8">
-                    <textarea type="text" name="ChongChiDinh" id="ChongChiDinh"
-                      class="form-control ng-pristine ng-untouched ng-valid" tabindex="12"
+                    <textarea type="text" name="ChongChiDinh" id="ChongChiDinh" class="form-control " tabindex="12"
                       formControlName="chongChiDinh" placeholder="Chống chỉ định"></textarea>
                   </div>
                 </div>
@@ -634,8 +619,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Số đăng ký</label>
                   <div class="col-sm-8">
-                    <textarea name="SoDangKy" id="SoDangKy" class="form-control ng-pristine ng-untouched ng-valid"
-                      tabindex="13" formControlName="registeredNo" placeholder="Số đăng ký"></textarea>
+                    <textarea name="SoDangKy" id="SoDangKy" class="form-control " tabindex="13"
+                      formControlName="registeredNo" placeholder="Số đăng ký"></textarea>
                   </div>
                 </div>
               </div>
@@ -643,8 +628,8 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Lưu ý</label>
                   <div class="col-sm-8">
-                    <textarea type="text" name="LuuY" id="LuuY" class="form-control ng-pristine ng-untouched ng-valid"
-                      tabindex="14" formControlName="noted" placeholder="Lưu ý"></textarea>
+                    <textarea type="text" name="LuuY" id="LuuY" class="form-control " tabindex="14"
+                      formControlName="noted" placeholder="Lưu ý"></textarea>
                   </div>
                 </div>
               </div>
@@ -670,8 +655,7 @@
                   <label class="col-sm-4 control-label">Áp dụng chiết khấu khuyến mại</label>
                   <div class="col-sm-8">
                     <input type="checkbox" name="EnablePromotionalDiscounts" id="EnablePromotionalDiscounts"
-                      class="mt-0 form-checkbox check-box ng-pristine ng-untouched ng-valid" tabindex="20"
-                      formControlName="enablePromotionalDiscounts">
+                      class="mt-0 form-checkbox check-box " tabindex="20" formControlName="enablePromotionalDiscounts">
                   </div>
                 </div>
               </div>
@@ -685,8 +669,7 @@
                   <div class="col-sm-8">
                     <div class="input-group">
                       <textarea name="DescriptionOnWebsite" id="DescriptionOnWebsite"
-                        placeholder="Mô tả thông tin thuốc..."
-                        class="form-control mb-0 ng-pristine ng-untouched ng-valid"
+                        placeholder="Mô tả thông tin thuốc..." class="form-control mb-0 "
                         formControlName="descriptionOnWebsite"></textarea>
                     </div>
                   </div>
@@ -707,8 +690,7 @@
               <div item-search-filter="" mousetrap="" select-changed-callback="onReplaceDrugSelectChanged"
                 clear-after-selected="true" only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
                 cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId"
-                class="ng-isolate-scope">
+                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId" class="">
                 <div ng-if="!showCamBarcodeScanner" class="">
                   <div class="w-100">
                     <div
@@ -767,8 +749,7 @@
               <div item-search-filter="" mousetrap="" select-changed-callback="onBundledDrugSelectChanged"
                 clear-after-selected="true" only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
                 cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId"
-                class="ng-isolate-scope">
+                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId" class="">
                 <div ng-if="!showCamBarcodeScanner" class="">
                   <div class="w-100">
                     <div
@@ -832,7 +813,8 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-      <button type="button" class="btn btn-primary" (click)="createUpdate()">{{drugId > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
+      <button type="button" class="btn btn-primary" (click)="createUpdate()">{{drugId > 0 ? 'Cập nhật' : 'Thêm
+        mới'}}</button>
     </div>
   </div>
 </div>
