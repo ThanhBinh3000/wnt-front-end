@@ -23,7 +23,10 @@ export const RECORD_STATUS = {
 export const LOAI_PHIEU = {
   PHIEU_NHAP : 1,
   PHIEU_XUAT : 2,
-  PHIEU_NHAP_TU_KH : 3
+  PHIEU_NHAP_TU_KH : 3,
+  PHIEU_XUAT_VE_NCC: 4,
+  PHIEU_CHUYEN_KHO: 8,
+  PHIEU_XUAT_HUY: 9,
 }
 
 export const ORDER_STORE_MAPPING = {
