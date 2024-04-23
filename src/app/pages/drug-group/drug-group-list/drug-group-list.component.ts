@@ -3,11 +3,8 @@ import {Title} from '@angular/platform-browser';
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {DrugGroupAddEditDialogComponent} from "../drug-group-add-edit-dialog/drug-group-add-edit-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {
-  CustomerGroupAddEditDialogComponent
-} from "../../customer-group/customer-group-add-edit-dialog/customer-group-add-edit-dialog.component";
 import { MatSort } from '@angular/material/sort';
+import { LOAI_SAN_PHAM } from '../../../constants/config';
 
 @Component({
   selector: 'drug-group-list',
@@ -16,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class DrugGroupListComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách nhóm thuốc";
+  displayedColumns = ['#', 'tenNhomThuoc', 'kyHieuNhomThuoc', 'action'];
 
   constructor(
     injector: Injector,
@@ -26,12 +24,16 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     super(injector, _service);
     this.formData = this.fb.group({
       tenNhomThuoc: [],
+      typeGroupProduct: [LOAI_SAN_PHAM.THUOC]
     });
   }
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     await this.searchPage();
+  }
+  async ngAfterViewInit() {
+    this.dataSource.sort = this.sort!;
   }
   @ViewChild(MatSort) sort?: MatSort;
   async openAddEditDialog(drugGroupID: any) {

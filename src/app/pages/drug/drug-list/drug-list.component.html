@@ -3,12 +3,11 @@
     <div class="sidebar-bg">
       <form class="mb-3" [formGroup]="formData">
         <label>Tìm theo</label>
-        <input class="form-control" type="text" id="searchTen" name="searchTen"
-          placeholder="Tìm nhóm thuốc theo tên..." />
+        <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
 
         <div class="control-group d-flex gap-5 align-items-center">
           <input type="checkbox" formControlName="dataDelete" (ngModelChange)="searchPage()"
-            class="form-checkbox mb-0 mt-0 ng-pristine ng-untouched ng-valid">
+            class="form-checkbox mb-0 mt-0">
           <label class="mb-0">Thuốc bị xóa</label>
         </div>
         <label>Nhóm hàng</label>
@@ -35,7 +34,7 @@
         </div>
         <hr style="margin-top:10px" />
       </fieldset>
-      <fieldset ng-if="deviceType==0" class="ng-scope">
+      <fieldset ng-if="deviceType==0">
         <label>Nhập/Xuất dữ liệu từ Excel</label>
         <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
           method="post">
@@ -55,7 +54,7 @@
     <div class="baocao-container box-group-white">
       <div class="d-flex baocao-header">
         <h2 style="margin-bottom: 0px;">
-          <b ng-if="typeItem == 0 || typeItem == null" class="ng-scope">
+          <b ng-if="typeItem == 0 || typeItem == null">
             <span class="text-uppercase">{{title}} </span>
             <span class="form-inline" style="font-size: 14px" ng-show="filterModel.DrugStoreId == '0012'">
               <i class="fas fa-sign-out-alt" style="color: green"></i> Đi tới trang
@@ -81,17 +80,17 @@
 
         <ng-container matColumnDef="checkbox">
           <th mat-header-cell *matHeaderCellDef> <input type="checkbox" [(ngModel)]="allChecked"
-              (ngModelChange)="updateAllChecked()" title="select row" class="ng-pristine ng-untouched ng-valid">
+              (ngModelChange)="updateAllChecked()" title="select row">
           </th>
           <td mat-cell *matCellDef="let data; index as i;">
-            <input type="checkbox" [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked()" title="select row"
-              class="ng-pristine ng-untouched ng-valid">
+            <input type="checkbox" [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked()"
+              title="select row">
           </td>
         </ng-container>
 
         <ng-container matColumnDef="#">
           <th mat-header-cell *matHeaderCellDef> #</th>
-          <td mat-cell *matCellDef="let data; index as i;"> 
+          <td mat-cell *matCellDef="let data; index as i;">
             <a (click)="openDetailDialog(data.id)">
               {{ (page - 1) * pageSize + i + 1 }}
             </a>
@@ -99,10 +98,10 @@
         </ng-container>
 
         <ng-container matColumnDef="upload">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Upload</th>
+          <th mat-header-cell *matHeaderCellDef> Upload</th>
           <td mat-cell *matCellDef="let data">
             <div class="tr-ng-cell text-left">
-              <div ng-switch-when="true" class="ng-scope">
+              <div ng-switch-when="true">
                 <div ng-transclude="">
                   <div class="text-center ng-scope">
                     <!--                              <a ng-show="displayImage &amp;&amp; gridItem.ImageThumbUrl"-->
@@ -134,20 +133,20 @@
         </ng-container>
 
         <ng-container matColumnDef="tenThuoc">
-          <th mat-header-cell *matHeaderCellDef> Mặt hàng[Mã-Tên]</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Mặt hàng[Mã-Tên]</th>
           <td mat-cell *matCellDef="let data">
-            <div ng-switch="isCustomized" tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
-              <div ng-switch-when="true" class="ng-scope">
+            <div tr-ng-grid-body-cell-template="" class="tr-ng-cell text-left">
+              <div ng-switch-when="true">
                 <div ng-transclude="">
-                  <div class="input-group ng-scope">
+                  <div class="input-group">
                     <span>
-                      <span ng-if="deviceType==0" class="ng-scope">
+                      <span>
                         <a href="javascript:void(0)" (click)="openDetailDialog(data.id)">
-                          <span style="color:seagreen" class="ng-binding">
+                          <span style="color:seagreen">
                             {{ data.maThuoc }}-
-                          </span><span ng-mouseover="onShowTitle(gridItem)" class="tooltip-content-drug ng-binding">
+                          </span><span ng-mouseover="onShowTitle(gridItem)" class="tooltip-content-drug">
                             {{ data.tenThuoc }}
-                            <span class="show-tooltip-content-drug ng-binding" style="width: 150px; z-index: 1000;" 
+                            <span class="show-tooltip-content-drug" style="width: 150px; z-index: 1000;"
                               ng-bind-html="gridItem.TitleDrug"><b>Ưu điểm:</b>
                               <br><b>Đối tượng sử dụng:</b> <br><b>Hàng thay
                                 thế:</b><br><b>Hàng bán kèm:</b><br>
@@ -157,7 +156,7 @@
                       </span>
                     </span>
                   </div>
-                  <div ng-if="typeItem == 0" class="ng-scope">
+                  <div ng-if="typeItem == 0">
                     <p class="btn-link tooltip-content-drug"
                       style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
                       ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
@@ -171,7 +170,7 @@
         </ng-container>
 
         <ng-container matColumnDef="tenNhomThuoc">
-          <th mat-header-cell *matHeaderCellDef> Nhóm thuốc</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhóm thuốc</th>
           <td mat-cell *matCellDef="let data"> {{ data.tenNhomThuoc }}</td>
         </ng-container>
 
