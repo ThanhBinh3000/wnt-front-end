@@ -18,6 +18,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 
 @Component({
@@ -32,6 +33,7 @@ export class BaseComponent {
   formData: FormGroup;
   dataSource = new MatTableDataSource();
   dataTable: any[] = [];
+  dataDetail: any;
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
   filterType: number = 0;
@@ -62,6 +64,7 @@ export class BaseComponent {
   route: ActivatedRoute
   idUrl: number = 0;
 
+  location : Location
 
   constructor(
     injector: Injector,
@@ -83,6 +86,7 @@ export class BaseComponent {
     this.authService = this.injector.get(AuthService);
     this.router = this.injector.get(Router);
     this.route = this.injector.get(ActivatedRoute);
+    this.location = this.injector.get(Location);
   }
 
   getDataSource(){
@@ -483,5 +487,14 @@ export class BaseComponent {
       this.indeterminate = true;
     }
   }
+
+  goBack(){
+    this.location.back();
+  }
+
+  goToUrl(url,id?){
+    this.router.navigate([url,id]);
+  }
+
 }
 

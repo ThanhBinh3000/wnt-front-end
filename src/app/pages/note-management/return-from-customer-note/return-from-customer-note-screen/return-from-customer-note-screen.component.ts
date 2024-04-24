@@ -48,7 +48,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
       discountWithRatio : [],
       dienGiai : '',
       ngayNhap : [],
-      paymentType : [],
+      paymentType : [0],
     });
   }
 
@@ -74,6 +74,11 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     this.paymentTypeService.searchList({}).then((res)=>{
       this.listPaymentType = res?.data;
     });
+  }
+
+  isShow = true;
+  showOption(){
+    this.isShow = !this.isShow;
   }
 
   searchListNhaCungCap($event){

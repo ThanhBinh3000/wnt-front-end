@@ -7,6 +7,7 @@ import {NhaCungCapService} from "../../../../services/categories/nha-cung-cap.se
 import {DrugAddEditDialogComponent} from "../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component";
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
+import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
 
 @Component({
   selector: 'receipt-note-screen',
@@ -19,7 +20,10 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   listNhaCungCap : any[] = [];
   listThuoc : any[] = [];
 
-  rowItem : any = {};
+  rowItem : any = {
+  };
+
+  listPaymentType : any[] = [];
 
   constructor(
     injector: Injector,
@@ -27,16 +31,15 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     private _service : PhieuNhapService,
     private nhaCungCapService : NhaCungCapService,
     private thuocService : ThuocService,
-    private donViTinhService : DonViTinhService
+    private donViTinhService : DonViTinhService,
+    private paymentTypeService : PaymentTypeService
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
       id : null,
       soPhieuNhap : [],
-      noteNumber : '',
-      noteDate : [],
+      ngayNhap : [],
       nhaCungCapMaNhaCungCap : '',
-      idWarehouseLocation : '',
       invoiceNo : '',
       invoiceDate : '',
       loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
@@ -46,25 +49,34 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       discount : [0],
       discountWithRatio : [],
       dienGiai : '',
-      ngayNhap : [],
+      paymentTypeId : [0],
+      tenNguoiTao : [],
     })
   }
 
   ngOnInit() {
+    console.log(this.authService.getUser());
     this.titleService.setTitle(this.title);
+    this.loadDataOpt();
     let body = {
       loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
       id : null
     }
     this.service.init(body).then((res)=>{
-      console.log(res)
       if(res && res.data){
         const data = res.data;
         this.formData.patchValue({
           ngayNhap : data.ngayNhap,
-          soPhieuNhap : data.soPhieuNhap
+          soPhieuNhap : data.soPhieuNhap,
+          tenNguoiTao : this.authService.getUser().fullName,
         })
       }
+    });
+  }
+
+  loadDataOpt(){
+    this.paymentTypeService.searchList({}).then((res)=>{
+      this.listPaymentType = res?.data;
     });
   }
 
@@ -121,23 +133,29 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   }
 
   onChangeThuoc($event){
-    this.thuocService.getDetail($event).then((res)=>{
-      if(res && res.data){
-        const data = res.data;
-        console.log(data);
-        this.rowItem.maThuoc = data.maThuoc;
-        this.rowItem.tenThuoc = data.tenThuoc;
-        this.rowItem.soLuong = 0;
-        this.rowItem.giaNhap = data.giaNhap;
-        this.rowItem.giaBanLe = data.giaBanLe;
-        this.rowItem.chietKhau = data.chietKhau;
-        let rateRevenue = (data.giaBanLe - data.giaNhap) / data.giaNhap * 100 ;
-        this.rowItem.rateRevenue = Math.round(rateRevenue * 100) / 100;
-        this.rowItem.vat = data.vat;
-        this.rowItem.donViTinhMaDonViTinh = data.listDonViTinhs[0].id;
-        this.rowItem.listDonViTinhs = data.listDonViTinhs;
-      }
-    })
+    if($event){
+      this.thuocService.getDetail($event).then((res)=>{
+        if(res && res.data){
+          const data = res.data;
+          console.log(data);
+          this.rowItem.thuocThuocId = data.id,
+            this.rowItem.maThuoc = data.maThuoc;
+          this.rowItem.tenThuoc = data.tenThuoc;
+          this.rowItem.soLuong = 1;
+          this.rowItem.giaNhap = data.giaNhap;
+          this.rowItem.giaBanLe = data.giaBanLe;
+          this.rowItem.chietKhau = data.chietKhau;
+          let rateRevenue = (data.giaBanLe - data.giaNhap) / data.giaNhap * 100 ;
+          this.rowItem.rateRevenue = Math.round(rateRevenue * 100) / 100;
+          this.rowItem.vat = data.vat ? data.vat : 0;
+          this.rowItem.chietKhau = 0;
+          this.rowItem.donViTinhMaDonViTinh = data.listDonViTinhs[0].id;
+          this.rowItem.listDonViTinhs = data.listDonViTinhs;
+          this.rowItem.tongTien = this.rowItem.soLuong * this.rowItem.giaNhap;
+          this.rowItem.tonKho = data.inventory?.lastValue;
+        }
+      })
+    }
   }
 
   onChangeDviTinh(idDviTinh,rowTable?){
@@ -196,9 +214,11 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   createUpdate(){
     let body = this.formData.value;
-    body.children = this.dataTable;
+    body.chiTiets = this.dataTable;
     this.save(body).then(res=>{
-      console.log(res)
+      if(res){
+        this.router.navigate(['/management/note-management/receipt-note-detail', res.id]);
+      }
     });
   }
 
@@ -212,7 +232,8 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       tongTien += item.tongTien
     })
     this.formData.patchValue({
-      tongTien : tongTien
+      tongTien : tongTien,
+      daTra : tongTien
     })
     return tongTien;
   }
@@ -236,6 +257,11 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
         });
       }
     }
+  }
+
+  isShow = true;
+  showOption(){
+    this.isShow = !this.isShow;
   }
 
 }

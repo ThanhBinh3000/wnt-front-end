@@ -252,25 +252,11 @@
                            (click)="onPayFull();">
                   </div>
                 </div>
-                <div class="msg_payment_header">Hình thức thanh toán <span>[+]</span></div>
-                <div id="paymentSlide" class="form-check" >
-                  <mat-radio-group
-                    aria-labelledby="example-radio-group-label"
-                    class="example-radio-group" formControlName="paymentType">
-                    <mat-radio-button *ngFor="let item of listPaymentType" class="example-radio-button" [value]="item.id">{{item.displayName}}</mat-radio-button>
-                  </mat-radio-group>
-<!--                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"-->
-<!--                     ng-repeat="item in listPayType">-->
-<!--                    <input type="radio" class="form-check-input"-->
-<!--                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"-->
-<!--                           name="optradio" checked="checked">Tiền mặt-->
-<!--                  </p>-->
-<!--                  <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"-->
-<!--                     ng-repeat="item in listPayType">-->
-<!--                    <input type="radio" class="form-check-input"-->
-<!--                           ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"-->
-<!--                           name="optradio">Chuyển khoản-->
-<!--                  </p>-->
+                <div class="msg_payment_header">Hình thức thanh toán <span (click)="showOption()">[+]</span></div>
+                <div id="paymentSlide" class="form-check" style="{{ isShow ? 'display: none;' : ''}}">
+                    <mat-radio-group formControlName="paymentType" class="example-radio-group">
+                        <mat-radio-button *ngFor="let item of listPaymentType" class="example-radio-button" [value]="item.id">{{item.displayName}}</mat-radio-button>
+                    </mat-radio-group>
                 </div>
               </td>
             </tr>
