@@ -105,6 +105,9 @@
                                             notFoundText="Không tìm thấy mục nào"
                                             (search)="searchPageDrug($event)"
                                             (change)="onDrugChange($event)">
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <span >{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                                            </ng-template>
                                             <ng-template ng-option-tmp let-item="item" let-index="index"
                                                 let-search="searchTerm">
                                                 <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
@@ -138,7 +141,8 @@
                 <ng-container matColumnDef="donGia">
                     <th mat-header-cell *matHeaderCellDef width="10%">Đơn giá</th>
                     <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
-                        <input type="text" [(ngModel)]="data.giaBan" (change)="getItemAmount(data)" class="form-control text-right" />
+                        <input type="text"
+                        [(ngModel)]="data.giaBan" (change)="getItemAmount(data)" class="form-control text-right" />
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="ck">
@@ -217,22 +221,15 @@
                                 <div class="d-flex gap-10">
                                     <div>
                                         <div class="msg_payment_header msg_payment_expanded">Hình thức thanh toán
-                                            <span>[-]</span>
+                                            <span style="cursor: pointer;" (click)="expandForm()">{{expandLabel}}</span>
                                         </div>
-                                        <div id="paymentSlide" class="form-check">
-                                            <p style="margin: 5px 0 5px;" class="form-check-label ng-binding ng-scope"
-                                              *ngFor="let item of listPaymentType">
-                                                <input type="radio" class="form-check-input" formControlName="paymentTypeId"
-                                                    ng-checked="viewModel.OptionPay == item.Id" ng-click="changePay(item)"
-                                                    name="optradio">{{item.displayName}}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <span class="text-danger ng-binding ng-scope"
-                                                ng-if="viewModel.NoteTypeId==2 || permittedFields.Drug_ViewInputPrice"><strong
-                                                    class="ng-binding">Còn nợ:
-                                                </strong>0</span>
-    
+                                        <div id="paymentSlide" *ngIf="showMoreForm" class="form-check">
+                                            <mat-radio-group class = "tp-radio-group" formControlName="paymentTypeId">  
+                                                <mat-radio-button class = "tp-radio-button"  
+                                                   *ngFor = "let item of listPaymentType" [value] = "item.id">  
+                                                   {{item.displayName}}  
+                                                </mat-radio-button>
+                                             </mat-radio-group>  
                                         </div>
                                     </div>
     

@@ -38,6 +38,8 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     'ton',
     'thanhTien'
   ];
+  expandLabel: string = "[-]";
+  showMoreForm: boolean = true;
   constructor(
     injector: Injector,
     private titleService: Title,
@@ -59,12 +61,17 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       dienGiai:[''],
       id:[0],
       daTra:[0],
-      paymentTypeId : [1]
+      paymentTypeId : [1],
+      backPaymentAmount: [0],
+      connectivityStatusID : [0],
+      discount : [0],
+      isModified: [false]
     });
   }
   @ViewChildren('pickerNgayXuat') pickerNgayXuat!: Date;
   ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.loadDataOpt();
     if (this.maPhieuXuat == 0) {
       this.dataTable.push({ isEditingItem: true });
       let body = {
@@ -80,6 +87,12 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       });
     }
   }
+
+  expandForm() {
+    this.showMoreForm = !this.showMoreForm;
+    this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
+  };
+
   loadDataOpt(){
     this.paymentTypeService.searchList({}).then((res)=>{
       this.listPaymentType = res?.data;
@@ -137,6 +150,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
           item.chietKhau = 0;
           item.tonHT = item.inventory ? item.inventory.lastValue : 0;
           item.ton = item.tonHT;
+          item.sModified = false;
           if (item.heSo > 1) {
             item.donViTinhs.push({ maDonViTinh: item.donViThuNguyenMaDonViTinh, tenDonViTinh: item.tenDonViTinhThuNguyen });
             item.tonHT = item.ton / item.heSo;
@@ -236,7 +250,8 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       return;
     }
     let body = this.formData.value;
-    body.chiTiets = this.dataTable;
+    body.chiTiets = this.dataTable.filter(x=>x.thuocThuocId > 0);
+    console.log(body);
     this.save(body).then(res=>{
       if(res){
         this.router.navigate(['/management/note-management/return-to-supplier-note-detail', res.id]);
