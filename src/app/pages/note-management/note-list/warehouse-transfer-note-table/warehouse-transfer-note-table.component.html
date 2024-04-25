@@ -1,0 +1,137 @@
+<div class="mat-table-container">
+  <table mat-table
+         class="table table-striped table-bordered table-hover tr-ng-grid"
+         [dataSource]="getDataSource()" matSort>
+    <ng-container matColumnDef="checkBox">
+      <th mat-header-cell *matHeaderCellDef>
+        <input type="checkbox"
+               [(ngModel)]="allChecked"
+               (ngModelChange)="updateAllChecked()"
+               title="select row">
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-center">
+          <input type="checkbox"
+                 [(ngModel)]="data.checked"
+                 (ngModelChange)="updateSingleChecked()"
+                 title="select row">
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stt">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          STT
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-right">
+          {{ (page - 1) * pageSize + i + 1 }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="soPhieuXuat">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-right">
+          <a *ngIf="transWarehouseRead" href="/management/note-management/warehouse-transfer-note-detail/{{data.id}}">{{data.soPhieuXuat}}</a>
+          <p *ngIf="transWarehouseRead"></p>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ngayXuat">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.ngayXuat | appDateTime }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nhanVien">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.nhanVien }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nhaThuoc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhà thuốc</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.nhaThuoc }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dienGiai">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          Diễn giải
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.dienGiai }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tongTien">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <div class="text-left">
+          Tổng tiền<br>Σ = {{ drugViewInputPrice ? (getTotalAmount() | number) : '***' }}
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data">
+        <div *ngIf="!drugViewInputPrice" class="text-right">
+          ***
+        </div>
+        <div *ngIf="drugViewInputPrice" class="number-value text-right">
+          {{ data.tongTien | number }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          Thao tác
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data">
+        <div *ngIf="data.recordStatusId === RECORD_STATUS.ACTIVE" class="baocao-actions baocao-actions-row">
+          <div class="baocao-actions-item">
+            <a *ngIf="transWarehouseWrite" class="btn btn-primary btn-edit btn-sm" href="/management/note-management/warehouse-transfer-note-screen/{{data.id}}">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+            <button *ngIf="transWarehouseDelete" type="button" class="btn btn-danger btn-del btn-sm" (click)="onDelete(data)"><i class="fa-regular fa-trash"></i></button>
+          </div>
+          <div class="baocao-actions-item">
+            <span *ngIf="isSuperUser() || isAdmin()">
+                <button type="button" class="btn btn-sm" [ngClass]="data.locked ? 'btn-danger' : 'btn-primary'" (click)="onLockNote(data);" title="Mở/Khóa phiếu">
+                  <i [ngClass]="data.locked ? 'fa-regular fa-lock' : 'fa-regular fa-lock-open'"></i>
+                </button>
+            </span>
+          </div>
+        </div>
+        <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
+          <div class="baocao-actions-item">
+            <button *ngIf="transWarehouseRestore" type="button" class="btn btn-primary btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
+            <button *ngIf="transWarehouseDelete" type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="footer">
+      <td mat-footer-cell *matFooterCellDef colspan="100">
+        <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                        (pageChange)="changePageIndex($event)"
+                        (pageSizeChange)="changePageSize($event)"></app-pagination>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+    <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+  </table>
+</div>

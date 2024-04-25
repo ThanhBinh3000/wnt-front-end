@@ -13,7 +13,7 @@ const routes: Routes = [
     component: InventoryComponent,
     children: [
       {
-        path: 'inventory-list',
+        path: 'list',
         component: InventoryListComponent,
         // canActivate: [AuthGuard],
       },
@@ -23,12 +23,17 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'inventory-add-edit',
+        path: 'add',
         component: InventoryAddEditComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'inventory-detail',
+        path: 'edit/:id',
+        component: InventoryAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'detail/:id',
         component: InventoryDetailComponent,
         // canActivate: [AuthGuard],
       }

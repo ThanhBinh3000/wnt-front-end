@@ -1,0 +1,101 @@
+<div class="mat-table-container">
+  <table mat-table
+         class="table table-striped table-bordered table-hover tr-ng-grid"
+         [dataSource]="getDataSource()" matSort>
+    <ng-container matColumnDef="checkBox">
+      <th mat-header-cell *matHeaderCellDef>
+        <input type="checkbox"
+               [(ngModel)]="allChecked"
+               (ngModelChange)="updateAllChecked()"
+               title="select row">
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-center">
+          <input type="checkbox"
+                 [(ngModel)]="data.checked"
+                 (ngModelChange)="updateSingleChecked()"
+                 title="select row">
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stt">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          STT
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-right">
+          {{ (page - 1) * pageSize + i + 1 }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="noteNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-right">
+          <p>{{data.noteNumber}}</p>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.created | appDateTime }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nguoiTiepNhan">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Người tiếp nhận</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.nguoiTiepNhan }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="benhNhan">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bệnh nhân</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.benhNhan }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="bacSi">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bác sĩ</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.bacSi }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          Thao tác
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data">
+        <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
+          <div class="baocao-actions-item">
+            <button type="button" class="btn btn-primary btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
+            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="footer">
+      <td mat-footer-cell *matFooterCellDef colspan="100">
+        <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                        (pageChange)="changePageIndex($event)"
+                        (pageSizeChange)="changePageSize($event)"></app-pagination>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+    <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+  </table>
+</div>

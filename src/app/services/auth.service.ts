@@ -65,18 +65,23 @@ export class AuthService extends BaseService {
   }
 
   isSuperUser() {
-    var roles = this.getUser()?.roles;
-    return roles.some((item: any) => item.roleName === "Super User");
+    return this.getUser()?.roles?.some((item: any) => item.roleName === "Super User");
   }
 
   isAdmin() {
-    var roles = this.getUser()?.roles;
-    return roles.some((item: any) => item.roleName === "Admin");
+    return this.getUser()?.roles?.some((item: any) => item.roleName === "Admin");
   }
 
   isUser() {
-    var roles = this.getUser()?.roles;
-    return roles.some((item: any) => item.roleName === "User");
+    return this.getUser()?.roles?.some((item: any) => item.roleName === "User");
+  }
+
+  getSettingValue(key: string) {
+    return this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.settingValue;
+  }
+
+  getSettingActivated(key: string) {
+    return this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.activated;
   }
 
   logout() {

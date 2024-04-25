@@ -8,7 +8,7 @@ import {BaseService} from "../base.service";
 export class PhieuXuatService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-inventory','phieu-xuat');
+    super(httpClient, 'wnt-inventory','phieu-xuats');
   }
 
 

@@ -4,7 +4,6 @@ import { NoteManagementComponent } from './note-management.component';
 import { RouterOutlet } from "@angular/router";
 import { NoteManagementRoutingModule } from "./note-management.routing";
 import { NoteListComponent } from './note-list/note-list.component';
-import { DeletedNoteListComponent } from './deleted-note-list/deleted-note-list.component';
 import { CancelDeliveryNoteScreenComponent } from './cancel-delivery-note/cancel-delivery-note-screen/cancel-delivery-note-screen.component';
 import { CancelDeliveryNoteDetailComponent } from './cancel-delivery-note/cancel-delivery-note-detail/cancel-delivery-note-detail.component';
 import { DeliveryNoteScreenComponent } from './delivery-note/delivery-note-screen/delivery-note-screen.component';
@@ -21,16 +20,36 @@ import { WarehouseTransferNoteScreenComponent } from './warehouse-transfer-note/
 import { WarehouseTransferNoteDetailComponent } from './warehouse-transfer-note/warehouse-transfer-note-detail/warehouse-transfer-note-detail.component';
 import { DrugModule } from '../drug/drug.module';
 import { SupplierModule } from '../supplier/supplier.module';
-import { CustomerModule } from '../customer/customer.module';
 import { InventoryModule } from '../inventory/inventory.module';
 import { TransactionModule } from '../transaction/transaction.module';
 import {ComponentsModule} from "../../component/base/components.module";
+import {ReceiptNoteTableComponent} from "./note-list/receipt-note-table/receipt-note-table.component";
+import {DeliveryNoteTableComponent} from "./note-list/delivery-note-table/delivery-note-table.component";
+import {
+  CancelDeliveryNoteTableComponent
+} from "./note-list/cancel-delivery-note-table/cancel-delivery-note-table.component";
+import {InventoryNoteTableComponent} from "./note-list/inventory-note-table/inventory-note-table.component";
+import {MedicalNoteTableComponent} from "./note-list/medical-note-table/medical-note-table.component";
+import {
+  ReceiptMedicalFeeNoteTableComponent
+} from "./note-list/receipt-medical-fee-note-table/receipt-medical-fee-note-table.component";
+import {ReserveNoteTableComponent} from "./note-list/reserve-note-table/reserve-note-table.component";
+import {
+  ReturnFromCustomerNoteTableComponent
+} from "./note-list/return-from-customer-note-table/return-from-customer-note-table.component";
+import {
+  ReturnToSupplierNoteTableComponent
+} from "./note-list/return-to-supplier-note-table/return-to-supplier-note-table.component";
+import {ServiceNoteTableComponent} from "./note-list/service-note-table/service-note-table.component";
+import {WaitNoteTableComponent} from "./note-list/wait-note-table/wait-note-table.component";
+import {
+  WarehouseTransferNoteTableComponent
+} from "./note-list/warehouse-transfer-note-table/warehouse-transfer-note-table.component";
 
 @NgModule({
   declarations: [
     NoteManagementComponent,
     NoteListComponent,
-    DeletedNoteListComponent,
     DeliveryNoteScreenComponent,
     DeliveryNoteBarcodeScreenComponent,
     DeliveryNoteESScreenComponent,
@@ -44,7 +63,19 @@ import {ComponentsModule} from "../../component/base/components.module";
     CancelDeliveryNoteScreenComponent,
     CancelDeliveryNoteDetailComponent,
     WarehouseTransferNoteScreenComponent,
-    WarehouseTransferNoteDetailComponent
+    WarehouseTransferNoteDetailComponent,
+    ReceiptNoteTableComponent,
+    DeliveryNoteTableComponent,
+    CancelDeliveryNoteTableComponent,
+    InventoryNoteTableComponent,
+    MedicalNoteTableComponent,
+    ReceiptMedicalFeeNoteTableComponent,
+    ReserveNoteTableComponent,
+    ReturnFromCustomerNoteTableComponent,
+    ReturnToSupplierNoteTableComponent,
+    ServiceNoteTableComponent,
+    WaitNoteTableComponent,
+    WarehouseTransferNoteTableComponent
   ],
   imports: [
     CommonModule,

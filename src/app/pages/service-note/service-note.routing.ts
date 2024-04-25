@@ -4,6 +4,7 @@ import { AuthGuard } from "../../guard/auth.guard";
 import { ServiceNoteComponent } from './service-note.component';
 import { ServiceNoteListComponent } from './service-note-list/service-note-list.component';
 import { ServiceNoteAddEditComponent } from './service-note-add-edit/service-note-add-edit.component';
+import {ServiceNoteDetailComponent} from "./service-note-detail/service-note-detail.component";
 const routes: Routes = [
   {
     path: '',
@@ -11,17 +12,27 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'service-note-list',
+        redirectTo: 'list',
         pathMatch: 'full',
       },
       {
-        path: 'service-note-list',
+        path: 'list',
         component: ServiceNoteListComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'service-note-add-edit',
+        path: 'add',
         component: ServiceNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit/:id',
+        component: ServiceNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'detail/:id',
+        component: ServiceNoteDetailComponent,
         // canActivate: [AuthGuard],
       },
     ],
