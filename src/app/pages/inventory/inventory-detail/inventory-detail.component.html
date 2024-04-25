@@ -46,7 +46,7 @@
                 <a class="btn btn-default flex-grow-1" href="/Inventory/Index">Quay lại</a>
                 <a class="btn btn-default flex-grow-1" href="/Inventory/In/" target="_blank">In</a>
                 <div ng-if="!InventoryModel.DaCanKho">
-                    <a class="btn btn-primary flex-grow-1" (click)="noteId=1" href="management/inventory/inventory-add-edit">Sửa/Cân kho</a>
+                    <a class="btn btn-primary flex-grow-1" (click)="noteId=1" href="management/inventory/add-edit">Sửa/Cân kho</a>
                 </div>
                 <a class="btn flex-grow-1 btn-danger" href="/Inventory/Delete/">Xóa</a>
                 <button class="btn btn-primary flex-grow-1" ng-show="InventoryModel.NhaThuoc_MaNhaThuoc == '7892'" ng-click="onExportExcel()">Xuất Excel</button>
@@ -141,7 +141,7 @@
                         <!-- Ô cập nhật giá/lô/hạn dùng-->
                         <td>
                             <div ng-show="canAction" style="text-align:center">
-                                <a href="#" id="" class="btn btn-sm btn-primary" 
+                                <a href="#" id="" class="btn btn-sm btn-primary"
                                 (click)="drugId=1" data-toggle="modal" data-target="#inventory-item-update-dialog"  title="Cập nhật giá/lô/hạn dùng"><i class="fa-regular fa-calendar-days"></i></a>
                             </div>
                             <div ng-show="!canAction" style="text-align:center">

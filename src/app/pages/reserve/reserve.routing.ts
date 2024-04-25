@@ -12,20 +12,20 @@ const routes: Routes = [
     component: ReserveComponent,
     children: [
       {
-        path: 'note-reserve-add-edit',
+        path: 'add',
         component: NoteReserveAddEditComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'note-reserve-detail',
-        component: NoteReserveDetailComponent,
+        path: 'edit/:id',
+        component: NoteReserveAddEditComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'note-reserve-delete',
-        component: NoteReserveDeleteComponent,
+        path: 'detail/:id',
+        component: NoteReserveDetailComponent,
         // canActivate: [AuthGuard],
-      },
+      }
     ],
   }
 ];

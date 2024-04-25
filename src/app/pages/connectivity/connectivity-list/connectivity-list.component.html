@@ -71,13 +71,13 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li ng-if="hasViewReceiptNotePrivilage"
-                                    [ngClass]="{'active' : checkTab == 'receipt-note-list'}" class="ng-scope active"><a
-                                        data-toggle="tab" (click)="checkTab = 'receipt-note-list'">Phiếu
+                                    [ngClass]="{'active' : checkTab == 'receipt-note-table'}" class="ng-scope active"><a
+                                        data-toggle="tab" (click)="checkTab = 'receipt-note-table'">Phiếu
                                         Nhập&nbsp;<span class="label label-info pull-right ng-binding">230</span></a>
                                 </li>
                                 <li ng-if="hasViewDeliveryNotePrivilage"
-                                    [ngClass]="{'active' : checkTab == 'delivery-note-list'}" class="ng-scope"><a
-                                        data-toggle="tab" (click)="checkTab = 'delivery-note-list'">Phiếu
+                                    [ngClass]="{'active' : checkTab == 'delivery-note-table'}" class="ng-scope"><a
+                                        data-toggle="tab" (click)="checkTab = 'delivery-note-table'">Phiếu
                                         Xuất&nbsp;<span class="label label-info pull-right ng-binding">535</span></a>
                                 </li>
                                 <li [ngClass]="{'active' : checkTab == 'drug-list'}"><a data-toggle="tab"
@@ -87,7 +87,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div ng-if="hasViewReceiptNotePrivilage" id="#ActivePage=0"
-                                [ngClass]="checkTab == 'receipt-note-list' ? 'tab-pane active' : 'tab-pane'"
+                                [ngClass]="checkTab == 'receipt-note-table' ? 'tab-pane active' : 'tab-pane'"
                                 class="ng-scope tab-pane">
                                     <div class="panel-body">
                                         <div class="ibox float-e-margins ng-scope"
@@ -1890,8 +1890,8 @@
                                     </div>
                                 </div>
                                 <div ng-if="hasViewDeliveryNotePrivilage" id="#ActivePage=1"
-                                [ngClass]="checkTab == 'delivery-note-list' ? 'tab-pane active' : 'tab-pane'"
-                                    [hidden]="checkTab != 'delivery-note-list'"
+                                [ngClass]="checkTab == 'delivery-note-table' ? 'tab-pane active' : 'tab-pane'"
+                                    [hidden]="checkTab != 'delivery-note-table'"
                                     ng-class="isShow(1)?'tab-pane active':'tab-pane'" class="ng-scope tab-pane">
                                     <div class="panel-body">
                                         <div class="ibox float-e-margins ng-scope"

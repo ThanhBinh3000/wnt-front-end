@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class ConnectivityListComponent implements OnInit {
   title: string = "Quản lý liên thông";
-  checkTab: string = 'receipt-note-list';
+  checkTab: string = 'receipt-note-table';
 
   constructor(
     private titleService: Title

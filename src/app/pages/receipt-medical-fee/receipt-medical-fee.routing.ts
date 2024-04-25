@@ -4,6 +4,7 @@ import { AuthGuard } from "../../guard/auth.guard";
 import { ReceiptMedicalFeeComponent } from './receipt-medical-fee.component';
 import { ReceiptMedicalFeeListComponent } from './receipt-medical-fee-list/receipt-medical-fee-list.component';
 import { ReceiptMedicalFeeAddEditComponent } from './receipt-medical-fee-add-edit/receipt-medical-fee-add-edit.component';
+import {ReceiptMedicalFeeDetailComponent} from "./receipt-medical-fee-detail/receipt-medical-fee-detail.component";
 const routes: Routes = [
   {
     path: '',
@@ -11,17 +12,27 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'receipt-medical-fee-list',
+        redirectTo: 'list',
         pathMatch: 'full',
       },
       {
-        path: 'receipt-medical-fee-list',
+        path: 'list',
         component: ReceiptMedicalFeeListComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'receipt-medical-fee-add-edit',
+        path: 'add',
         component: ReceiptMedicalFeeAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit/:id',
+        component: ReceiptMedicalFeeAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'detail/:id',
+        component: ReceiptMedicalFeeDetailComponent,
         // canActivate: [AuthGuard],
       },
     ],

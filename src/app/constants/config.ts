@@ -18,6 +18,8 @@ export const RECORD_STATUS = {
   ARCHIVED: 1,
   DELETED: 2,
   DELETED_DATABASE: 3,
+  TEMPORARY: 4,
+  ACCEPTANCE_PENDING: 101
 };
 
 export const LOAI_PHIEU = {
@@ -46,6 +48,14 @@ export const ORDER_STORE_MAPPING = {
 export const LOAI_SAN_PHAM = {
   THUOC: 0,
   DICH_VU: 1
+}
+
+export const TRANG_THAI_PHIEU_KHAM = {
+  CHO_KHAM: 0,
+  DANG_KHAM: 1,
+  DA_KHAM: 2,
+  DA_HUY: 3,
+  LIEU_TRINH: 4
 }
 
 export const PAGE_SIZE_DEFAULT = 10;

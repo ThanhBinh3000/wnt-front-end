@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from "../../guard/auth.guard";
 import { NoteManagementComponent } from './note-management.component';
 import { NoteListComponent } from './note-list/note-list.component';
-import { DeletedNoteListComponent } from './deleted-note-list/deleted-note-list.component';
 import { CancelDeliveryNoteScreenComponent } from './cancel-delivery-note/cancel-delivery-note-screen/cancel-delivery-note-screen.component';
 import { DeliveryNoteScreenComponent } from './delivery-note/delivery-note-screen/delivery-note-screen.component';
 import { DeliveryNoteBarcodeScreenComponent } from './delivery-note/delivery-note-barcode-screen/delivery-note-barcode-screen.component';
@@ -30,11 +29,13 @@ const routes: Routes = [
       {
         path: 'list',
         component: NoteListComponent,
+        data: { isDeleted: false },
         // canActivate: [AuthGuard],
       },
       {
         path: 'deleted-list',
-        component: DeletedNoteListComponent,
+        component: NoteListComponent,
+        data: { isDeleted: true },
         // canActivate: [AuthGuard],
       },
       {
@@ -50,6 +51,18 @@ const routes: Routes = [
       {
         path: 'delivery-note-screen/:id',
         component: DeliveryNoteScreenComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'connectivity-delivery-note-screen/:id',
+        component: DeliveryNoteScreenComponent,
+        data: { isConnectivity: true },
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'management-delivery-note-screen/:id',
+        component: DeliveryNoteScreenComponent,
+        data: { isManagement: true },
         // canActivate: [AuthGuard],
       },
       {
@@ -85,6 +98,18 @@ const routes: Routes = [
       {
         path: 'receipt-note-screen/:id',
         component: ReceiptNoteScreenComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'connectivity-receipt-note-screen/:id',
+        component: ReceiptNoteScreenComponent,
+        data: { isConnectivity: true },
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'management-receipt-note-screen/:id',
+        component: ReceiptNoteScreenComponent,
+        data: { isManagement: true },
         // canActivate: [AuthGuard],
       },
       {

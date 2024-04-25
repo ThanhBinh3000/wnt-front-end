@@ -7,13 +7,15 @@ import { CustomerModule } from '../customer/customer.module';
 import { ServiceNoteComponent } from './service-note.component';
 import { ServiceNoteListComponent } from './service-note-list/service-note-list.component';
 import { ServiceNoteAddEditComponent } from './service-note-add-edit/service-note-add-edit.component';
+import {ServiceNoteDetailComponent} from "./service-note-detail/service-note-detail.component";
 
 
 @NgModule({
   declarations: [
     ServiceNoteComponent,
     ServiceNoteListComponent,
-    ServiceNoteAddEditComponent
+    ServiceNoteAddEditComponent,
+    ServiceNoteDetailComponent
   ],
   imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule],
   exports: [],
