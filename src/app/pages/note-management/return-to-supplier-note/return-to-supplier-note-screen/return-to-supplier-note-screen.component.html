@@ -68,7 +68,7 @@
                     <th mat-header-cell *matHeaderCellDef style="width:3%"> #</th>
                     <td mat-cell *matCellDef="let data; index as i;" class="text-center">
                         <a *ngIf="data.isEditingItem" class="btn btn-primary" title="Thêm mới"
-                        (click)="onAddNew()"><i
+                        (click)="onAddNew(data)"><i
                             class="fa-regular fa-plus"></i></a>
                             <a *ngIf="!data.isEditingItem" class="btn btn-danger" title="Xóa"
                             (click)="onDelete(data)"><i
@@ -78,7 +78,7 @@
                 <ng-container matColumnDef="stt">
                     <th mat-header-cell *matHeaderCellDef style="width:3%"> STT</th>
                     <td mat-cell *matCellDef="let data; index as i;" class="text-center" style="vertical-align: middle;">
-                        <span *ngIf="!data.isEditingItem" (click)="openDetailDialog(data.thuocThuocId)" class="btn-link">{{data.order}}</span>
+                        <span *ngIf="!data.isEditingItem" (click)="openDetailDialog(data.thuocThuocId)" class="btn-link">{{data.itemOrder}}</span>
                     </td>
                 </ng-container>
     
@@ -111,7 +111,7 @@
                                             <ng-template ng-option-tmp let-item="item" let-index="index"
                                                 let-search="searchTerm">
                                                 <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
-                                                    {{item.tenDonViTinhXuatLe}} - Gián bán : {{item.giaBanLe
+                                                    {{item.tenDonViTinhXuatLe}} - Gián bán : {{item.giaNhap
                                                     |number}}</span>
                                             </ng-template>
                                         </ng-select>
@@ -135,14 +135,14 @@
                 <ng-container matColumnDef="soLuong">
                     <th mat-header-cell *matHeaderCellDef> Số lượng</th>
                     <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
-                        <input type="text" [(ngModel)]="data.soLuong" (change)="getItemAmount(data)" (keyup.enter)="onAddNew()" class="form-control text-right">
+                        <input type="text" #inputSoLuong [(ngModel)]="data.soLuong" (change)="getItemAmount(data)" (keyup.enter)="onAddNew(data)" class="form-control text-right">
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="donGia">
                     <th mat-header-cell *matHeaderCellDef width="10%">Đơn giá</th>
                     <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
                         <input type="text"
-                        [(ngModel)]="data.giaBan" (change)="getItemAmount(data)" class="form-control text-right" />
+                        [(ngModel)]="data.giaXuat" (change)="getItemAmount(data)" class="form-control text-right" />
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="ck">
