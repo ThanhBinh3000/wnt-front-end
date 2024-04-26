@@ -1,9 +1,8 @@
 <div class="card-bg">
     <h2 class="card-title text-center mt-0 mb-0">
-        <b class="ng-binding">PHIẾU XUẤT HỦY</b>
-        <span ng-if="deviceType==0" style="padding-bottom: 12px; padding-left: 8px"
-            class="btn tooltip-content-drug ng-scope">
-            <span ng-click="">
+        <b>{{title}}</b>
+        <span style="padding-bottom: 12px; padding-left: 8px" class="btn tooltip-content-drug ng-scope">
+            <span>
                 <i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i>
             </span>
             <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
@@ -17,1123 +16,156 @@
             </span>
         </span>
     </h2>
-    <div class="text-center card-desc">
-        <div class="card-code">
-            Mã số: <strong class="ng-binding">626</strong>
+    <form [formGroup]="formData">
+        <div class="text-center card-desc">
+            <div class="card-code">
+                Mã số: <strong>{{formData.value?.soPhieuXuat}}</strong>
+            </div>
+            Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1" 
+                formControlName="noteDate"
+                type="text" class="form-control" (dateChange)="onDateChange($event.value)" [matDatepicker]="pickerNgayXuat"
+                (click)="pickerNgayXuat.open()">
+                    <mat-datepicker #pickerNgayXuat="matDatepicker" disabled="false"></mat-datepicker><span
+                    class="text-link" (click)="pickerNgayXuat.open()">{{formData.value.ngayXuat | appDate}}</span></div>
         </div>
-        Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input type="text" name="noteDate"
-                id="note-date-id" ng-model="noteDate" class="ng-pristine ng-untouched ng-valid"><span
-                class="text-link ng-binding">16/03/2024</span> <span
-                ng-if="viewModel.NoteId > 0"
-                class="ng-binding ng-scope">10:47</span></div>
-    </div>
-    
+    </form>
+
     <div class="mt-3">
-        <table class="table borderless table-condensed" style="margin-bottom:0px;" ng-show="deviceType!=1">
-            <tbody>
-                <tr>
-                    <td class="w-50">
-                        <div class="form-inline-flex">
-                            <label>
-                                
-                            </label>
-                            
-                        </div>
-                    </td>
-                    <td class="w-50 ng-hide" ng-show="deviceType!=1 &amp;&amp; viewModel.NoteTypeId==2">
-                        <div class="d-flex gap-10 align-items-center">
-                            <div class="form-inline-flex w-25">
-                                <label>
-                                    Liều:
-                                </label>
-                                <div class="input-group">
-                                    <input type="text"
-                                        class="number-input form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope ng-valid-number ng-valid-min ng-valid-max ng-valid-step ng-valid-external"
-                                        refresh-delay="500" id="factors" style="width: 40%;"
-                                        ng-model="viewModel.Factors" min="1" max="30" step="0.5"
-                                        awnum="app-decimal-number">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary"
-                                            ng-click="onDoseCalculation($event)"><i
-                                                class="fa-regular fa-calculator"></i></button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-inline-flex w-50">
-                                <label>Bác sỹ:</label>
-                                <div class="input-group align-items-start">
-                                    <div report-group-type-filter="" group-filter-title="" group-filter-type="2"
-                                        show-group-filter-type="false" single-mode="true" filter-item-type="9"
-                                        selected-item-id="viewModel.DoctorId" selected-item="doctorSelectedItem"
-                                        item-changed-callback="onDoctorItemChanged" filter-by-name-for-drug="false"
-                                        raise-event-on-first-selected-by-default="true"
-                                        additional-item-name="'--Mặc định--'" disabled-mode="!isEditing"
-                                        id="doctorSearchBoxId" class="flex-grow-1 w-100 ng-isolate-scope">
-                                        <div ng-show="!singleMode &amp;&amp; !singleModeWithTitle" class="ng-hide">
-                                            <fieldset>
-                                                <label><b ng-show="!titleFontNormal" class="ng-binding"></b><span
-                                                        ng-show="titleFontNormal"
-                                                        class="ng-binding ng-hide"></span></label>
-                                                <div>
-                                                    <div>
-                                                        <div id="groupTypeContainerId" ng-show="showGroupFilterType"
-                                                            class="ng-hide">
-                                                            <select id="ddlGroupType"
-                                                                class="form-control mb-2 ng-pristine ng-untouched ng-valid"
-                                                                ng-model="groupFilterType"
-                                                                ng-disabled="disableGroupFilterType"
-                                                                ng-options="item.groupTypeId as item.groupTypeName for item in groupTypes"
-                                                                ng-change="onGroupTypeChanged()">
-                                                                <option label="--Tất cả--" value="number:0">--Tất cả--
-                                                                </option>
-                                                                <option label="Theo nhóm" value="number:1">Theo nhóm
-                                                                </option>
-                                                                <option label="Theo tên" value="number:2"
-                                                                    selected="selected">Theo tên</option>
-                                                            </select>
-                                                        </div>
-                                                        <div ng-show="groupFilterType==1" id="filterByGroupId"
-                                                            class="ng-hide">
-                                                            <div class="ui-select-container selectize-control single ng-valid"
-                                                                ng-class="{'open': $select.open}"
-                                                                ng-model="selectedItem" theme="selectize">
-                                                                <div class="selectize-input"
-                                                                    ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
-                                                                    ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
-                                                                    <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
-                                                                        class="ui-select-match"
-                                                                        placeholder="Chọn hoặc gõ vào để tìm..."><span
-                                                                            ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
-                                                                            class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
-                                                                            hoặc gõ vào để tìm...</span> <span
-                                                                            ng-hide="$select.isEmpty() || $select.open"
-                                                                            ng-transclude="" class=""><span
-                                                                                class="ng-binding ng-scope">--Mặc
-                                                                                định--</span></span></div><input
-                                                                        type="search" autocomplete="off" tabindex="-1"
-                                                                        class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid ng-hide"
-                                                                        ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
-                                                                        ng-click="$select.toggle($event)"
-                                                                        placeholder="Chọn hoặc gõ vào để tìm..."
-                                                                        ng-model="$select.search"
-                                                                        ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
-                                                                        ng-disabled="$select.disabled"
-                                                                        aria-label="Select box">
-                                                                </div>
-                                                                <div ng-show="$select.open"
-                                                                    class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
-                                                                    ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
-                                                                    repeat="item in filterByGroupItems | filter: $select.search"
-                                                                    refresh="refreshResults($select)" refresh-delay="0">
-                                                                    <div
-                                                                        class="ui-select-choices-content selectize-dropdown-content">
-                                                                        <div class="ui-select-choices-group optgroup">
-                                                                            <div ng-show="$select.isGrouped"
-                                                                                class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
-                                                                                ng-bind="$group.name"></div>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ui-select-no-choice"></div>
-                                                                <input ng-disabled="$select.disabled"
-                                                                    class="ui-select-focusser ui-select-offscreen ng-scope"
-                                                                    type="text" id="focusser-16"
-                                                                    aria-label="Select box focus" aria-haspopup="true"
-                                                                    role="button">
-                                                            </div>
-                                                        </div>
-                                                        <div ng-show="groupFilterType==2 &amp;&amp; !filterByNameForDrug &amp;&amp; !filterByNameForCustomer 
-                              &amp;&amp; !filterByNameForSupplier &amp;&amp; !filterByNameForDrugCommon">
-                                                            <div class="ui-select-container selectize-control single ng-valid"
-                                                                ng-class="{'open': $select.open}"
-                                                                ng-model="selectedItem" theme="selectize">
-                                                                <div class="selectize-input"
-                                                                    ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
-                                                                    ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
-                                                                    <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
-                                                                        class="ui-select-match"
-                                                                        placeholder="Chọn hoặc gõ vào để tìm..."><span
-                                                                            ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
-                                                                            class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
-                                                                            hoặc gõ vào để tìm...</span> <span
-                                                                            ng-hide="$select.isEmpty() || $select.open"
-                                                                            ng-transclude="" class=""><span
-                                                                                class="ng-binding ng-scope">--Mặc
-                                                                                định--</span></span></div><input
-                                                                        type="search" autocomplete="off" tabindex="-1"
-                                                                        class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid ng-hide"
-                                                                        ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
-                                                                        ng-click="$select.toggle($event)"
-                                                                        placeholder="Chọn hoặc gõ vào để tìm..."
-                                                                        ng-model="$select.search"
-                                                                        ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
-                                                                        ng-disabled="$select.disabled"
-                                                                        aria-label="Select box">
-                                                                </div>
-                                                                <div ng-show="$select.open"
-                                                                    class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
-                                                                    ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
-                                                                    repeat="item in filterByNameItems | filter: $select.search"
-                                                                    refresh="refreshResults($select)" refresh-delay="0">
-                                                                    <div
-                                                                        class="ui-select-choices-content selectize-dropdown-content">
-                                                                        <div class="ui-select-choices-group optgroup">
-                                                                            <div ng-show="$select.isGrouped"
-                                                                                class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
-                                                                                ng-bind="$group.name"></div>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ui-select-no-choice"></div>
-                                                                <input ng-disabled="$select.disabled"
-                                                                    class="ui-select-focusser ui-select-offscreen ng-scope"
-                                                                    type="text" id="focusser-17"
-                                                                    aria-label="Select box focus" aria-haspopup="true"
-                                                                    role="button">
-                                                            </div>
-                                                        </div>
+        <table mat-table class="table table-striped table-hover tr-ng-grid"
+            [dataSource]="getDataSource()" matSort>
 
-                                                        <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForDrug"
-                                                            id="drugSearchControlId" class="ng-hide">
+            <ng-container matColumnDef="#">
+                <th style="width: 3%;" mat-header-cell *matHeaderCellDef> #</th>
+                <td mat-cell *matCellDef="let data; index as i;">
+                    <div *ngIf="!data.isEditing">
+                        <a class="delete-drug btn btn-danger" title="Xóa" (click)="onDelete(data)"><i
+                                class="fa-regular fa-trash"></i></a>
+                    </div>
+                    <div *ngIf="data.isEditing">
+                        <a class="btn btn-primary" title="Thêm mới" (click)="onAddNew(data)"><i
+                                class="fa-regular fa-plus"></i></a>
+                    </div>
+                </td>
+            </ng-container>
 
-                                                            <div item-search-filter=""
-                                                                only-single-item="onlySingleDrugItem"
-                                                                default-selected-item="defaultSelectedDrugItem"
-                                                                default-selected-ids="defaultSelectedItemIds"
-                                                                handle-broadcast="true"
-                                                                select-changed-callback="onDrugSelectChanged"
-                                                                show-cam-barcode-scanner="deviceType != 0"
-                                                                enable-scan-barcode="true" class="ng-isolate-scope">
-                                                                
-                                                                <div ng-if="!showCamBarcodeScanner" class="">
-                                                                    <div class="w-100">
-                                                                        <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                                            ng-class="{open: $select.open}"
-                                                                            ng-model="data.selected" theme="bootstrap"
-                                                                            id="itemSearchId"
-                                                                            reset-search-input="clearAfterSelected"
-                                                                            forward-enter-key="forwardEnterKey"
-                                                                            ng-disabled="disabledMode">
-                                                                            <div><span
-                                                                                    class=" ui-select-match ui-select-match"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    id="itemSearchUISelectID"></span><input
-                                                                                    type="search" autocomplete="off"
-                                                                                    autocorrect="off"
-                                                                                    autocapitalize="off"
-                                                                                    spellcheck="false"
-                                                                                    class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    ng-disabled="$select.disabled"
-                                                                                    ng-click="$select.activate()"
-                                                                                    ng-model="$select.search"
-                                                                                    role="combobox"
-                                                                                    aria-expanded="false"
-                                                                                    aria-label="Select box"
-                                                                                    ng-class="{'spinner': $select.refreshing}"
-                                                                                    ondrop="return false;"
-                                                                                    style="width: 10px;"></div>
-                                                                            <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                                                ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                                                refresh="fetch($select)"
-                                                                                refresh-delay="500"
-                                                                                repeat="item in items"
-                                                                                id="selectChoiceId">
-                                                                                <li class="ui-select-choices-group"
-                                                                                    id="ui-select-choices-42">
-                                                                                    <div class="divider ng-hide"
-                                                                                        ng-show="$select.isGrouped &amp;&amp; $index > 0">
-                                                                                    </div>
-                                                                                    <div ng-show="$select.isGrouped"
-                                                                                        class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                                                        ng-bind="$group.name"></div>
-                                                                                    
-                                                                                </li>
-                                                                            </ul>
-                                                                            <div class="ui-select-no-choice"></div>
+            <ng-container matColumnDef="stt">
+                <th style="width: 3%;" mat-header-cell *matHeaderCellDef> STT</th>
+                <td style="text-align: center; vertical-align: middle;" mat-cell *matCellDef="let data; index as i;">
+                    <a *ngIf="!data.isEditing" (click)="openDetailDialog(data.thuocThuocId)">
+                        {{ (page - 1) * pageSize + i }}
+                    </a>
+                </td>
+            </ng-container>
 
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <span id="Logo" style="display:none;"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForDrugCommon"
-                                                            id="drugSearchControlId" class="ng-hide">
+            <ng-container matColumnDef="image">
+                <th style="width: 6%;" mat-header-cell *matHeaderCellDef> Ảnh</th>
+                <td mat-cell *matCellDef="let data">
 
-                                                            <div item-search-filter=""
-                                                                only-single-item="onlySingleDrugItem"
-                                                                default-selected-item="defaultSelectedDrugItem"
-                                                                default-selected-ids="defaultSelectedItemIds"
-                                                                handle-broadcast="true"
-                                                                select-changed-callback="onDrugSelectChanged"
-                                                                show-cam-barcode-scanner="deviceType != 0"
-                                                                enable-scan-barcode="true" search-type="12"
-                                                                class="ng-isolate-scope">
-                                                                
-                                                                <div ng-if="!showCamBarcodeScanner" class="">
-                                                                    <div class="w-100">
-                                                                        <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                                            ng-class="{open: $select.open}"
-                                                                            ng-model="data.selected" theme="bootstrap"
-                                                                            id="itemSearchId"
-                                                                            reset-search-input="clearAfterSelected"
-                                                                            forward-enter-key="forwardEnterKey"
-                                                                            ng-disabled="disabledMode">
-                                                                            <div><span
-                                                                                    class=" ui-select-match ui-select-match"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    id="itemSearchUISelectID"></span><input
-                                                                                    type="search" autocomplete="off"
-                                                                                    autocorrect="off"
-                                                                                    autocapitalize="off"
-                                                                                    spellcheck="false"
-                                                                                    class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    ng-disabled="$select.disabled"
-                                                                                    ng-click="$select.activate()"
-                                                                                    ng-model="$select.search"
-                                                                                    role="combobox"
-                                                                                    aria-expanded="false"
-                                                                                    aria-label="Select box"
-                                                                                    ng-class="{'spinner': $select.refreshing}"
-                                                                                    ondrop="return false;"
-                                                                                    style="width: 10px;"></div>
-                                                                            <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                                                ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                                                refresh="fetch($select)"
-                                                                                refresh-delay="500"
-                                                                                repeat="item in items"
-                                                                                id="selectChoiceId">
-                                                                                <li class="ui-select-choices-group"
-                                                                                    id="ui-select-choices-43">
-                                                                                    <div class="divider ng-hide"
-                                                                                        ng-show="$select.isGrouped &amp;&amp; $index > 0">
-                                                                                    </div>
-                                                                                    <div ng-show="$select.isGrouped"
-                                                                                        class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                                                        ng-bind="$group.name"></div>
-                                                                                    
-                                                                                </li>
-                                                                            </ul>
-                                                                            <div class="ui-select-no-choice"></div>
+                </td>
+            </ng-container>
 
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <span id="Logo" style="display:none;"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForCustomer"
-                                                            id="customerSearchControlId" class="ng-hide">
+            <ng-container matColumnDef="ten">
+                <th style="width: 27%;" mat-header-cell *matHeaderCellDef> Mặt Hàng [Mã-Tên]</th>
+                <td style="vertical-align: middle;" mat-cell *matCellDef="let data">
+                    <div *ngIf="data.isEditing" class="w-100">
+                        <ng-select #selectDrug appendTo="body" [(ngModel)]="data.thuocThuocId" (keyup.enter)="searchListThuoc($event)"
+                            (ngModelChange)="onChangeThuoc($event)">
+                            <ng-option *ngFor="let item of listThuoc" [value]="item.id">{{item.tenThuoc}}</ng-option>
+                        </ng-select>
+                    </div>
+                    <div *ngIf="!data.isEditing">
+                        <span style="color:seagreen">
+                            <span>{{data.maThuocText}}-</span>
+                        </span>
+                        <span class="btn-link tooltip-content-drug">
+                            <span (click)="openDetailDialog(data.thuocThuocId)"
+                                title="xem thông tin chi tiết">{{data.tenThuocText}}</span>
+                        </span>
+                    </div>
+                </td>
+            </ng-container>
 
-                                                            <div item-search-filter=""
-                                                                only-single-item="onlySingleDrugItem"
-                                                                default-selected-item="defaultSelectedDrugItem"
-                                                                default-selected-ids="defaultSelectedItemIds"
-                                                                handle-broadcast="true"
-                                                                select-changed-callback="onCustomerSelectChanged"
-                                                                show-cam-barcode-scanner="deviceType != 0"
-                                                                enable-scan-barcode="true" search-type="3"
-                                                                class="ng-isolate-scope">
-                                                                
-                                                                <div ng-if="!showCamBarcodeScanner" class="">
-                                                                    <div class="w-100">
-                                                                        <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                                            ng-class="{open: $select.open}"
-                                                                            ng-model="data.selected" theme="bootstrap"
-                                                                            id="itemSearchId"
-                                                                            reset-search-input="clearAfterSelected"
-                                                                            forward-enter-key="forwardEnterKey"
-                                                                            ng-disabled="disabledMode">
-                                                                            <div><span
-                                                                                    class=" ui-select-match ui-select-match"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    id="itemSearchUISelectID"></span><input
-                                                                                    type="search" autocomplete="off"
-                                                                                    autocorrect="off"
-                                                                                    autocapitalize="off"
-                                                                                    spellcheck="false"
-                                                                                    class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    ng-disabled="$select.disabled"
-                                                                                    ng-click="$select.activate()"
-                                                                                    ng-model="$select.search"
-                                                                                    role="combobox"
-                                                                                    aria-expanded="false"
-                                                                                    aria-label="Select box"
-                                                                                    ng-class="{'spinner': $select.refreshing}"
-                                                                                    ondrop="return false;"
-                                                                                    style="width: 10px;"></div>
-                                                                            <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                                                ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                                                refresh="fetch($select)"
-                                                                                refresh-delay="500"
-                                                                                repeat="item in items"
-                                                                                id="selectChoiceId">
-                                                                                <li class="ui-select-choices-group"
-                                                                                    id="ui-select-choices-44">
-                                                                                    <div class="divider ng-hide"
-                                                                                        ng-show="$select.isGrouped &amp;&amp; $index > 0">
-                                                                                    </div>
-                                                                                    <div ng-show="$select.isGrouped"
-                                                                                        class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                                                        ng-bind="$group.name"></div>
-                                                                                    
-                                                                                </li>
-                                                                            </ul>
-                                                                            <div class="ui-select-no-choice"></div>
+            <ng-container matColumnDef="donVi">
+                <th style="width: 9%;" mat-header-cell *matHeaderCellDef> Đơn vị</th>
+                <td mat-cell *matCellDef="let data">
+                    <ng-select appendTo="body" [(ngModel)]="data.donViTinhMaDonViTinh"
+                        (ngModelChange)="onChangeUnit(data)" [clearable]="false">
+                        <ng-option *ngFor="let item of data.listDonViTinhs"
+                            [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+                    </ng-select>
+                </td>
+            </ng-container>
 
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <span id="Logo" style="display:none;"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div ng-show="groupFilterType==2 &amp;&amp; filterByNameForSupplier"
-                                                            id="supplierSearchControlId" class="ng-hide">
+            <ng-container matColumnDef="soLuong">
+                <th style="width: 7%;" mat-header-cell *matHeaderCellDef> Số lượng</th>
+                <td mat-cell *matCellDef="let data">
+                    <input #inputSoLuong type="text" id="tbxQuantityId" mask="separator" [(ngModel)]="data.soLuong" (ngModelChange)="getItemAmount(data)"
+                        class="form-control mb-0  mousetrap row-item-quantiy" (keyup.enter)="onAddNew(data)"
+                        style="text-align:right;">
+                </td>
+            </ng-container>
 
-                                                            <div item-search-filter=""
-                                                                only-single-item="onlySingleDrugItem"
-                                                                default-selected-item="defaultSelectedDrugItem"
-                                                                default-selected-ids="defaultSelectedItemIds"
-                                                                handle-broadcast="true"
-                                                                select-changed-callback="onSupplierSelectChanged"
-                                                                show-cam-barcode-scanner="deviceType != 0"
-                                                                enable-scan-barcode="true" search-type="4"
-                                                                class="ng-isolate-scope">
-                                                                
-                                                                <div ng-if="!showCamBarcodeScanner" class="">
-                                                                    <div class="w-100">
-                                                                        <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                                            ng-class="{open: $select.open}"
-                                                                            ng-model="data.selected" theme="bootstrap"
-                                                                            id="itemSearchId"
-                                                                            reset-search-input="clearAfterSelected"
-                                                                            forward-enter-key="forwardEnterKey"
-                                                                            ng-disabled="disabledMode">
-                                                                            <div><span
-                                                                                    class=" ui-select-match ui-select-match"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    id="itemSearchUISelectID"></span><input
-                                                                                    type="search" autocomplete="off"
-                                                                                    autocorrect="off"
-                                                                                    autocapitalize="off"
-                                                                                    spellcheck="false"
-                                                                                    class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                                                    ng-disabled="$select.disabled"
-                                                                                    ng-click="$select.activate()"
-                                                                                    ng-model="$select.search"
-                                                                                    role="combobox"
-                                                                                    aria-expanded="false"
-                                                                                    aria-label="Select box"
-                                                                                    ng-class="{'spinner': $select.refreshing}"
-                                                                                    ondrop="return false;"
-                                                                                    style="width: 10px;"></div>
-                                                                            <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                                                ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                                                refresh="fetch($select)"
-                                                                                refresh-delay="500"
-                                                                                repeat="item in items"
-                                                                                id="selectChoiceId">
-                                                                                <li class="ui-select-choices-group"
-                                                                                    id="ui-select-choices-45">
-                                                                                    <div class="divider ng-hide"
-                                                                                        ng-show="$select.isGrouped &amp;&amp; $index > 0">
-                                                                                    </div>
-                                                                                    <div ng-show="$select.isGrouped"
-                                                                                        class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                                                        ng-bind="$group.name"></div>
-                                                                                    
-                                                                                </li>
-                                                                            </ul>
-                                                                            <div class="ui-select-no-choice"></div>
+            <ng-container matColumnDef="gia">
+                <th style="width: 10%;" mat-header-cell *matHeaderCellDef> Đơn giá</th>
+                <td mat-cell *matCellDef="let data">
+                    <input type="text" [(ngModel)]="data.giaXuat" mask="separator" (ngModelChange)="getItemAmount(data)"
+                        (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap inline"
+                        style="text-align:right;">
+                </td>
+            </ng-container>
 
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                <span id="Logo" style="display:none;"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div ng-show="singleModeWithTitle" class="ng-hide">
-                                            <fieldset>
-                                                <label><b ng-show="!titleFontNormal" class="ng-binding"></b><span
-                                                        ng-show="titleFontNormal"
-                                                        class="ng-binding ng-hide"></span></label>
-                                                <div>
-                                                    <div>
-                                                        <div class="ui-select-container selectize-control single ng-valid"
-                                                            ng-class="{'open': $select.open}" ng-model="selectedItem"
-                                                            theme="selectize" ng-disabled="disabledMode">
-                                                            <div class="selectize-input"
-                                                                ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
-                                                                ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
-                                                                <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
-                                                                    class="ui-select-match"
-                                                                    placeholder="Chọn hoặc gõ vào để tìm..."><span
-                                                                        ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
-                                                                        class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
-                                                                        hoặc gõ vào để tìm...</span> <span
-                                                                        ng-hide="$select.isEmpty() || $select.open"
-                                                                        ng-transclude="" class=""><span
-                                                                            class="ng-binding ng-scope">--Mặc
-                                                                            định--</span></span></div><input
-                                                                    type="search" autocomplete="off" tabindex="-1"
-                                                                    class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid ng-hide"
-                                                                    ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
-                                                                    ng-click="$select.toggle($event)"
-                                                                    placeholder="Chọn hoặc gõ vào để tìm..."
-                                                                    ng-model="$select.search"
-                                                                    ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
-                                                                    ng-disabled="$select.disabled"
-                                                                    aria-label="Select box">
-                                                            </div>
-                                                            <div ng-show="$select.open"
-                                                                class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
-                                                                ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
-                                                                repeat="item in filterByNameItems | filter: $select.search"
-                                                                refresh="refreshResults($select)" refresh-delay="0">
-                                                                <div
-                                                                    class="ui-select-choices-content selectize-dropdown-content">
-                                                                    <div class="ui-select-choices-group optgroup">
-                                                                        <div ng-show="$select.isGrouped"
-                                                                            class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
-                                                                            ng-bind="$group.name"></div>
-                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ui-select-no-choice"></div>
-                                                            <input ng-disabled="$select.disabled"
-                                                                class="ui-select-focusser ui-select-offscreen ng-scope"
-                                                                type="text" id="focusser-18"
-                                                                aria-label="Select box focus" aria-haspopup="true"
-                                                                role="button">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div class="ui-select-container selectize-control single ng-valid"
-                                            ng-class="{'open': $select.open}" ng-model="selectedItem" theme="selectize"
-                                            ng-show="singleMode" ng-disabled="disabledMode">
-                                            <div class="selectize-input"
-                                                ng-class="{'focus': $select.open, 'disabled': $select.disabled, 'selectize-focus' : $select.focus}"
-                                                ng-click="$select.open &amp;&amp; !$select.searchEnabled ? $select.toggle($event) : $select.activate()">
-                                                <div ng-hide="$select.searchEnabled &amp;&amp; ($select.open || $select.isEmpty())"
-                                                    class="ui-select-match" placeholder="Chọn hoặc gõ vào để tìm...">
-                                                    <span
-                                                        ng-show="!$select.searchEnabled &amp;&amp; ($select.isEmpty() || $select.open)"
-                                                        class="ui-select-placeholder text-muted ng-binding ng-hide">Chọn
-                                                        hoặc gõ vào để tìm...</span> <span
-                                                        ng-hide="$select.isEmpty() || $select.open" ng-transclude=""
-                                                        class=""><span class="ng-binding ng-scope">--Mặc
-                                                            định--</span></span>
-                                                </div><input type="search" autocomplete="off" tabindex="-1"
-                                                    class="ui-select-search ui-select-toggle ng-pristine ng-untouched ng-valid ng-hide"
-                                                    ng-class="{'ui-select-search-hidden':!$select.searchEnabled}"
-                                                    ng-click="$select.toggle($event)"
-                                                    placeholder="Chọn hoặc gõ vào để tìm..." ng-model="$select.search"
-                                                    ng-hide="!$select.isEmpty() &amp;&amp; !$select.open"
-                                                    ng-disabled="$select.disabled" aria-label="Select box">
-                                            </div>
-                                            <div ng-show="$select.open"
-                                                class="ui-select-choices ui-select-dropdown selectize-dropdown single ng-hide"
-                                                ng-class="{'single': !$select.multiple, 'multi': $select.multiple}"
-                                                repeat="item in getItems() | filter: $select.search"
-                                                refresh="refreshResults($select)" refresh-delay="0">
-                                                <div class="ui-select-choices-content selectize-dropdown-content">
-                                                    <div class="ui-select-choices-group optgroup">
-                                                        <div ng-show="$select.isGrouped"
-                                                            class="ui-select-choices-group-label optgroup-header ng-binding ng-hide"
-                                                            ng-bind="$group.name"></div>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ui-select-no-choice"></div>
-                                            <input ng-disabled="$select.disabled"
-                                                class="ui-select-focusser ui-select-offscreen ng-scope" type="text"
-                                                id="focusser-19" aria-label="Select box focus" aria-haspopup="true"
-                                                role="button">
-                                        </div>
-                                        <span id="Logo" style="display:none;"></span>
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary"
-                                            ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
-                                            title="Thêm bác sỹ mới nếu chưa có">
-                                            <i class="fa-regular fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <label>Tổng điểm: <span class="text-danger ng-binding">0.00</span></label>
-                                <label
-                                    ng-if="receiverSelectedItem.TypeId != 1" class="ng-scope">Tổng nợ: <span
-                                        class="text-danger ng-binding"></span></label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-show="viewModel.NoteTypeId==2 &amp;&amp; viewModel.EnableElectronicInvoice &amp;&amp; deviceType != 1"
-                    class="ng-hide">
-                    <td class="w-50">
-                        <div class="d-flex gap-10 align-items-center justify-content-between">
-                            <div class="form-inline-flex">
-                                <label>Số hóa đơn:</label>
-                                <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                                    ng-model="viewModel.InvoiceNo" placeholder="Số hóa đơn">
-                            </div>
-                            <div class="form-inline-flex">
-                                <label>Ngày hóa đơn:</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                                        name="invoiceDate" id="invoice-date-id" placeholder="Ngày hóa đơn"
-                                        ng-model="invoiceDate">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary"
-                                            ng-click="onInvoiceDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
-                                                class="fa-regular fa-calendar-days"></i></button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="w-50">
-                        <div class="form-inline-flex">
-                            <label>Mã cơ sở bán:</label>
-                            <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid"
-                                ng-readonly="true" ng-model="receiverSelectedItem.NationalFacilityCode"
-                                readonly="readonly">
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <table class="table-condensed table-responsive display dataTable no-footer mb-3">
-            <thead>
-                <tr>
-                    <th style="width: 3%">#</th>
-                    
-                    
-                    <th ng-if="viewModel.NoteTypeId == 9" style="width: 3%" class="ng-scope">STT</th>
-                    
-                    
-                    <th ng-if="1 == 1 &amp;&amp; deviceType != 1" style="width: 6%" class="ng-scope">Ảnh</th>
-                    
-                    <th style="width: 27%;">Mặt Hàng <span ng-if="deviceType!=1"
-                            class="ng-scope"> [Mã-Tên]</span></th>
-                    <th style="width: 9%;"><span ng-if="deviceType!=1" class="ng-scope">Đơn
-                            vị</span></th>
-                    <th style="width: 	7%;"><span ng-if="deviceType!=1" class="ng-scope">Số
-                            lượng</span></th>
-                    <th style="width: 10%;"><span ng-if="deviceType!=1" class="ng-scope">Đơn
-                            giá</span></th>
-                    
-                    
-                    
-                    
-                    
-                    
-                    <th style="text-align:right"><span ng-if="deviceType!=1"
-                            class="ng-scope">Thành
-                            tiền</span></th>
-                    
-                    <th style="width: 10%" ng-if="viewModel.NoteTypeId == 9" class="ng-scope">Lý do</th>
-                    
-                    
-                    <th style="width: 20%;" ng-if="viewModel.NoteTypeId == 9" class="ng-scope">B.pháp xử lý</th>
-                    
-                </tr>
-            </thead>
-            
-            <tbody ng-repeat="gridItem in viewModel.NoteItems" class="ng-scope">
-                <tr class="" style="border-bottom: 1px solid #ccc;" ng-show="deviceType==0 || !gridItem.IsEditingItem">
-                    
-                    <td>
-                        
-                        
-                        <div ng-if="gridItem.IsEditingItem" class="ng-scope">
-                            <a class="btn btn-primary" title="Thêm mới"
-                                ng-click="onAddNewItem(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
-                                    class="fa-regular fa-plus"></i></a>
-                        </div>
-                    </td>
+            <ng-container matColumnDef="thanhTien">
+                <th mat-header-cell *matHeaderCellDef> Thành tiền</th>
+                <td style="text-align: right; vertical-align: middle;" mat-cell *matCellDef="let data">
+                    <div>
+                        <strong>{{data.tongTien | number}}</strong>
+                    </div>
+                </td>
+            </ng-container>
 
-                    
-                    
-                    <td ng-if="deviceType==0" class="ng-scope">
+            <ng-container matColumnDef="lyDo">
+                <th style="width: 10%;" mat-header-cell *matHeaderCellDef> Lý do</th>
+                <td mat-cell *matCellDef="let data">
+                    <input type="text" [(ngModel)]="data.reason" (keyup.enter)="onAddNew(data)"
+                        class="form-control mb-0">
+                </td>
+            </ng-container>
 
-                        
-                        
-                    </td>
-                    
-                    
-                    <td ng-if="1 == 1 &amp;&amp; deviceType != 1" class="ng-scope">
-                        
-                    </td>
+            <ng-container matColumnDef="bienPhapXuLy">
+                <th style="width: 20%;" mat-header-cell *matHeaderCellDef> B.pháp xử lý</th>
+                <td mat-cell *matCellDef="let data">
+                    <input type="text" [(ngModel)]="data.solution" (keyup.enter)="onAddNew(data)"
+                        class="form-control mb-0">
+                </td>
+            </ng-container>
 
-                    
-                    <td>
-                        
-                        
-                        <div ng-if="gridItem.IsEditingItem" item-search-filter="" mousetrap=""
-                            select-changed-callback="onDrugSelectChanged"
-                            default-selected-changed-callback="onDefaultSelectedChanged" clear-after-selected="true"
-                            only-single-item="true" default-selected-item="selectedDrugItem"
-                            show-cam-barcode-scanner="false" cam-barcode-scanned-callback="onCamBarcodeScanned"
-                            func-calls="drugSearchFuncCalls" record-status-id="0"
-                            inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId"
-                            class="ip-position "
-                            addable="(viewModel.RefStoreId != '' || enableAddDrugDeliveryNote) &amp;&amp; viewModel.NoteTypeId==2 &amp;&amp; permittedFields.Drug_Create"
-                            addable-callback="onAddNewDrug">
-                            
-                            
-                            <div ng-if="!showCamBarcodeScanner" class="">
-                                <div class="w-100">
-                                    <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                        ng-class="{open: $select.open}" ng-model="data.selected" theme="bootstrap"
-                                        id="itemSearchId" reset-search-input="clearAfterSelected"
-                                        forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                                        <div><span class="text-truncate-line ui-select-match ui-select-match"
-                                                placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                id="itemSearchUISelectID"></span><input
-                                                type="search" autocomplete="off" autocorrect="off" autocapitalize="off"
-                                                spellcheck="false"
-                                                class="ui-select-search input-xs ng-pristine ng-valid ng-touched"
-                                                placeholder="Nhập mã, mã vạch hoặc tên..."
-                                                ng-disabled="$select.disabled" ng-click="$select.activate()"
-                                                ng-model="$select.search" role="combobox" aria-expanded="false"
-                                                aria-label="Select box" ng-class="{'spinner': $select.refreshing}"
-                                                ondrop="return false;" style="width: 679px;"></div>
-                                        <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                            ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                            refresh="fetch($select)" refresh-delay="500" repeat="item in items"
-                                            id="selectChoiceId">
-                                            <li class="ui-select-choices-group" id="ui-select-choices-58">
-                                                <div class="divider ng-hide"
-                                                    ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                                                <div ng-show="$select.isGrouped"
-                                                    class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                    ng-bind="$group.name"></div>
-                                            </li>
-                                        </ul>
-                                        <div class="ui-select-no-choice"></div>
-                                    </div>
-                                </div>
-                                
-                                
-                            </div>
-                            <span id="Logo" style="display:none;"></span>
-                        </div>
-                    </td>
-
-                    
-                    <td>
-                        <div>
-                            
-                            <div ng-if="isEditing" class="ng-scope">
-                                <select class="form-control mb-0 " ng-model="gridItem.SelectedUnitId"
-                                    ng-options="item.UnitId as item.UnitName for item in gridItem.Units"
-                                    ng-change="onUnitChanged(gridItem)" style="width:100%">
-                                    <option value="?" selected="selected"></option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-
-                    
-                    <td>
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" id="tbxQuantityId" class="form-control mb-0  mousetrap row-item-quantiy"
-                                style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Quantity"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-                    
-                    <td>
-
-                        
-                        <div ng-if="viewModel.NoteTypeId==4 || viewModel.NoteTypeId==8 || viewModel.NoteTypeId==9"
-                            class="ng-scope">
-                            
-                            <div ng-if="permittedFields.Drug_ViewInputPrice" class="ng-scope">
-                                
-                                <div ng-if="isEditing" class="ng-scope">
-                                    <input type="text" class="form-control mb-0  mousetrap"
-                                        style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Price"
-                                        awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </td>
-                    
-                    
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-                    
-                    
-                    <td>
-                        <div class="number-value">
-                            
-                            
-                            <div ng-if="viewModel.NoteTypeId==4 || viewModel.NoteTypeId==8 || viewModel.NoteTypeId==9"
-                                class="ng-scope">
-                                <strong
-                                    ng-if="permittedFields.Drug_ViewInputPrice"
-                                    class="ng-binding ng-scope">0</strong>
-                                
-                            </div>
-                            
-                        </div>
-                    </td>
-
-                    
-                    
-                    <td ng-if="viewModel.NoteTypeId == 9" class="ng-scope">
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid"
-                                style="width: 100%; text-align:left;" ng-model="gridItem.Reason">
-                        </div>
-                    </td>
-
-                    
-                    
-                    <td ng-if="viewModel.NoteTypeId == 9" class="ng-scope">
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid"
-                                style="width: 100%; text-align:left;" ng-model="gridItem.Solution">
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody ng-repeat="gridItem in viewModel.NoteItems" class="ng-scope">
-                <tr class="" style="border-bottom: 1px solid #ccc;" ng-show="deviceType==0 || !gridItem.IsEditingItem">
-                    
-                    <td>
-                        
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                            <a class="delete-drug btn btn-danger" title="Xóa"
-                                ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();"
-                                ng-show="isEditing"><i class="fa-regular fa-trash"></i></a>
-                        </div>
-                        
-                    </td>
-
-                    
-                    
-                    <td ng-if="deviceType==0" class="ng-scope">
-
-                        
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                            <a href=""
-                                ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                                class="ng-binding">
-                                1
-                            </a>
-                        </div>
-                        
-                    </td>
-                    
-                    
-                    <td ng-if="1 == 1 &amp;&amp; deviceType != 1" class="ng-scope">
-                        
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                            
-                        </div>
-                    </td>
-
-                    
-                    <td>
-                        
-                        <div ng-if="!gridItem.IsEditingItem" class="ng-scope">
-                            
-                            <span
-                                ng-if="(deviceType==0 &amp;&amp; !enableTraining) || viewModel.NoteTypeId !=2"
-                                class="ng-scope">
-
-                                <span style="color:seagreen">
-                                    
-                                    <span ng-if="viewModel.NoteTypeId!=2"
-                                        class="ng-binding ng-scope">TH466-</span>
-                                </span>
-                                <span class="btn-link tooltip-content-drug">
-                                    <span
-                                        ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                                        title="xem thông tin chi tiết" class="ng-binding">test111</span>
-                                </span>
-                                
-                                
-                            </span>
-                            
-                        </div>
-                        
-                    </td>
-
-                    
-                    <td>
-                        <div>
-                            
-                            <div ng-if="isEditing" class="ng-scope">
-                                <select class="form-control mb-0 " ng-model="gridItem.SelectedUnitId"
-                                    ng-options="item.UnitId as item.UnitName for item in gridItem.Units"
-                                    ng-change="onUnitChanged(gridItem)" style="width:100%">
-                                    <option label="Bịch" value="number:699963" selected="selected">Bịch</option>
-                                    <option label="hộp" value="number:705283">hộp</option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-
-                    
-                    <td>
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" id="tbxQuantityId1" class="form-control mb-0  mousetrap row-item-quantiy"
-                                style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Quantity"
-                                awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                        </div>
-                    </td>
-
-                    
-                    <td>
-
-                        
-                        <div ng-if="viewModel.NoteTypeId==4 || viewModel.NoteTypeId==8 || viewModel.NoteTypeId==9"
-                            class="ng-scope">
-                            
-                            <div ng-if="permittedFields.Drug_ViewInputPrice" class="ng-scope">
-                                
-                                <div ng-if="isEditing" class="ng-scope">
-                                    <input type="text" class="form-control mb-0  mousetrap"
-                                        style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Price"
-                                        awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </td>
-                    
-                    
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-                    
-                    
-                    <td>
-                        <div class="number-value">
-                            
-                            
-                            <div ng-if="viewModel.NoteTypeId==4 || viewModel.NoteTypeId==8 || viewModel.NoteTypeId==9"
-                                class="ng-scope">
-                                <strong
-                                    ng-if="permittedFields.Drug_ViewInputPrice"
-                                    class="ng-binding ng-scope">1,200,000</strong>
-                                
-                            </div>
-                            
-                        </div>
-                    </td>
-
-                    
-                    
-                    <td ng-if="viewModel.NoteTypeId == 9" class="ng-scope">
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid"
-                                style="width: 100%; text-align:left;" ng-model="gridItem.Reason">
-                        </div>
-                    </td>
-
-                    
-                    
-                    <td ng-if="viewModel.NoteTypeId == 9" class="ng-scope">
-                        
-                        <div ng-if="isEditing" class="ng-scope">
-                            <input type="text" class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid"
-                                style="width: 100%; text-align:left;" ng-model="gridItem.Solution">
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <form class="form-inline ng-pristine ng-valid">
-            <table class="borderless table-condensed">
+        <div class="row mt-3 mb-3">
+            <div class="col-sm-3">
+                <b>
+                  Tổng tiền:
+                  <span class="ng-binding ng-scope">{{formData.value?.tongTien | number}}</span>
+                </b>
+              </div>
+          </div>
+        <form [formGroup]="formData">
+            <table class="table borderless table-condensed" style="padding: 5px">
                 <tbody>
                     <tr>
-                        <td class="w-50">
-                            <div class="d-flex gap-10 align-items-center justify-content-between">
-                                <div class="form-inline-flex flex-grow-1">
-                                    <label>Tổng tiền:</label>
-                                    <div class="flex-grow-1">
-                                        
-                                        <span
-                                            ng-if="viewModel.NoteTypeId==2 || permittedFields.Drug_ViewInputPrice"
-                                            class="ng-scope">
-                                            
-                                            <input id="txbTotalAmountId" type="text"
-                                                class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                                refresh-delay="500" ng-model="viewModel.TotalAmount"
-                                                awnum="app-int-number" ng-show="viewModel.AllowToChangeTotalAmount"
-                                                ng-keypress="onTotalAmountChanged($event)">
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-inline-flex flex-grow-1 ng-hide"
-                                    ng-show="viewModel.NoteTypeId==2 &amp;&amp; viewModel.DiscountTotalByValue">
-                                    <label>C.K.Đơn</label>
-                                    <div class="input-group">
-                                        <input type="text"
-                                            class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                            ng-model="viewModel.Discount" awnum="app-decimal-number"
-                                            ng-change="onDiscountChanged(1)">
-                                        <span style="padding: 5px 5px 5px 5px"
-                                            class="input-group-addon flex-grow-width-auto">VNĐ</span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input style="max-width: 70px" type="text"
-                                            class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                                            ng-model="discountWithRatio" awnum="app-decimal-number"
-                                            ng-change="onDiscountChanged(2)">
-                                        <span style="padding: 5px 5px 5px 5px"
-                                            class="input-group-addon flex-grow-width-auto">%</span>
-                                    </div>
-                                </div>
+                        <td>
+                            <div class="d-flex gap-10 text-left">
+                                <label>Diễn giải:</label>
+                                <textarea formControlName="dienGiai" class="form-control mb-0" style="width: 100%"></textarea>
                             </div>
-                        </td>
-                        <td class="w-50">
-                            <div class="d-flex gap-10 align-items-center justify-content-between">
-                                
-                                
-                            </div>
-
                         </td>
                     </tr>
-                    
                 </tbody>
             </table>
         </form>
-
-        <table class="table borderless table-condensed" style="padding: 5px">
-            <tbody>
-                <tr ng-show="viewModel.DoctorId > 0" class="ng-hide">
-                    <td>
-                        <div class="d-flex gap-10 text-left">
-                            <label>Bệnh theo chuẩn bộ y tế</label>
-                            <div style="width: 100%">
-                                <div item-search-filter="" select-changed-callback="onDiagnosticItemChanged"
-                                    clear-after-selected="true" only-single-item="true"
-                                    default-selected-item="diagnosticSelectedItem" show-cam-barcode-scanner="false"
-                                    handle-broadcast="true" search-type="9" class="ng-isolate-scope">
-                                    
-                                    
-                                    <div ng-if="!showCamBarcodeScanner" class="">
-                                        <div class="w-100">
-                                            <div class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid"
-                                                ng-class="{open: $select.open}" ng-model="data.selected"
-                                                theme="bootstrap" id="itemSearchId"
-                                                reset-search-input="clearAfterSelected"
-                                                forward-enter-key="forwardEnterKey" ng-disabled="disabledMode">
-                                                <div><span class="text-truncate-line ui-select-match ui-select-match"
-                                                        placeholder="Nhập mã hoặc tên bệnh..."
-                                                        id="itemSearchUISelectID"></span><input
-                                                        type="search" autocomplete="off" autocorrect="off"
-                                                        autocapitalize="off" spellcheck="false"
-                                                        class="ui-select-search input-xs ng-pristine ng-untouched ng-valid"
-                                                        placeholder="Nhập mã hoặc tên bệnh..."
-                                                        ng-disabled="$select.disabled" ng-click="$select.activate()"
-                                                        ng-model="$select.search" role="combobox" aria-expanded="false"
-                                                        aria-label="Select box"
-                                                        ng-class="{'spinner': $select.refreshing}"
-                                                        ondrop="return false;" style="width: 10px;"></div>
-                                                <ul class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                                                    ng-show="$select.open &amp;&amp; $select.items.length > 0"
-                                                    refresh="fetch($select)" refresh-delay="500" repeat="item in items"
-                                                    id="selectChoiceId">
-                                                    <li class="ui-select-choices-group" id="ui-select-choices-46">
-                                                        <div class="divider ng-hide"
-                                                            ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                                                        <div ng-show="$select.isGrouped"
-                                                            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                                                            ng-bind="$group.name"></div>
-                                                        
-                                                    </li>
-                                                </ul>
-                                                <div class="ui-select-no-choice"></div>
-
-                                            </div>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    <span id="Logo" style="display:none;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-show="viewModel.DoctorId > 0" class="ng-hide">
-                    <td>
-                        <div class="d-flex gap-10 text-left">
-                            <label>Chẩn đoán của B.S</label>
-                            <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
-                                ng-model="viewModel.DoctorComments"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-10 text-left">
-                            <label>Diễn giải:</label>
-                            <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
-                                ng-model="viewModel.Description"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-show="enableNotifyNextPurchase &amp;&amp; viewModel.NoteTypeId==2" class="ng-hide">
-                    <td>
-                        <div class="d-flex gap-10 text-left">
-                            <label>Ngày mua thuốc tiếp theo</label>
-                            <input
-                                class="input-datetime form-control mb-0 text-box single-line ng-pristine ng-untouched ng-valid"
-                                style="text-align:left" type="text" placeholder="dd/mm/yyyy"
-                                ng-model="viewModel.NextPurchaseDate" ng-change="onNextPurchaseDateChanged()">
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        
         <table class="table borderless table-condensed">
             <tbody>
                 <tr>
@@ -1142,12 +174,9 @@
                             <input type="button" value="Quay lại" class="btn btn-default"
                                 ng-click="onReturnNotesListing(); $event.preventDefault(); $event.stopPropagation();">
                             <input type="submit" value="Ghi Phiếu - F9" id="save-note-btn-id" title="F9-Ghi phiếu"
-                                class="btn btn-primary" ng-click="saveDeliveryNote()">
-                            
-                            
-                            
+                                class="btn btn-primary" (click)="createUpdate()">
 
-                            <span ng-if="viewModel.TaskMode==2" class="ng-scope">
+                            <span *ngIf="formData.value?.id > 0">
                                 <span>&nbsp;</span>
                                 <a href="/PhieuXuats/delete/35155539" class="btn btn-danger btn btn-danger">Xóa
                                     phiếu</a>
@@ -1155,16 +184,14 @@
                                 <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"
                                     title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>
                             </span>
-                            
-
                         </div>
                     </td>
                 </tr>
-                
-                <tr ng-if="viewModel.TaskMode==2" class="ng-scope">
+
+                <tr *ngIf="formData.value?.id > 0">
                     <td colspan="2" class="text-center">
                         <div class="d-flex justify-content-center align-items-center gap-10">
-                            <span class="ng-binding">[Người lập: Đỗ Thanh Mai] - [Ngày lập: 16/03/2024]</span>
+                            <span>[Người lập: Đỗ Thanh Mai] - [Ngày lập: 16/03/2024]</span>
                         </div>
                     </td>
                 </tr>
