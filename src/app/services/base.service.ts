@@ -5,7 +5,7 @@ import {RECORD_STATUS} from "../constants/config";
 
 export abstract class BaseService {
 
-  protected constructor(protected httpClient: HttpClient, private gateway: string, private controller: string) {
+  protected constructor(protected httpClient: HttpClient, protected gateway: string, protected controller: string) {
   }
 
   init(body: any) {

@@ -8,6 +8,7 @@ import {DonViTinhService} from "../../../../services/products/don-vi-tinh.servic
 import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
 import {DrugAddEditDialogComponent} from "../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
+import {KhachHangService} from "../../../../services/customer/khach-hang.service";
 
 @Component({
   selector: 'return-from-customer-note-screen',
@@ -16,7 +17,7 @@ import {PaymentTypeService} from "../../../../services/categories/payment-type.s
 })
 export class ReturnFromCustomerNoteScreenComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu trả lại từ khách hàng";
-  listNhaCungCap : any[] = [];
+  listKhachHang : any[] = [];
   listThuoc : any[] = [];
   listPaymentType : any[] = [];
   rowItem : any = {};
@@ -25,7 +26,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     private titleService: Title,
     injector: Injector,
     private _service : PhieuNhapService,
-    private nhaCungCapService : NhaCungCapService,
+    private khachHangService : KhachHangService,
     private thuocService : ThuocService,
     private donViTinhService : DonViTinhService,
     private paymentTypeService : PaymentTypeService
@@ -36,7 +37,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
       soPhieuNhap : [],
       noteNumber : '',
       noteDate : [],
-      nhaCungCapMaNhaCungCap : '',
+      khachHangMaKhachHang : '',
       idWarehouseLocation : '',
       invoiceNo : '',
       invoiceDate : '',
@@ -81,18 +82,18 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     this.isShow = !this.isShow;
   }
 
-  searchListNhaCungCap($event){
-    this.listNhaCungCap = [];
+  searchListKhachHang($event){
+    this.listKhachHang = [];
     if($event.target.value){
       let body = {
-        tenNhaCungCap : $event.target.value,
+        tenKhachHang : $event.target.value,
         maNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc,
         recordStatusId : RECORD_STATUS.ACTIVE
       };
-      this.nhaCungCapService.searchList(body).then((res)=>{
+      this.khachHangService.searchList(body).then((res)=>{
         console.log(res)
         if(res && res.data){
-          this.listNhaCungCap = res.data;
+          // this.listNhaCungCap = res.data;
         }
       })
     }
@@ -100,7 +101,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
 
   addDrugToTable(){
     this.dataTable.push(this.rowItem);
-    this.calendarTongTien();
+    this.calendarTongTien();``
   }
 
   calendarTongTien(){
@@ -205,11 +206,9 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     body.chiTiets = this.dataTable;
     this.save(body).then(res=>{
       if(res){
-        this.router.navigate(['/management/note-management/return-from-customer-note-detail', res.id]);
+        this.goToUrl('/management/note-management/return-from-customer-note-detail',res.id)
       }
     });
   }
-
-
 
 }

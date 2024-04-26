@@ -1,0 +1,7 @@
+<div>
+  <input type="file" (change)="onFileSelected($event)">
+</div>
+<div *ngIf="this.formData.value.file">
+<!--  <img [src]="imageUrl" alt="Preview">-->
+</div>
+<button (click)="onSubmit()">Upload</button>
