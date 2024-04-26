@@ -16,6 +16,7 @@ import { ReceiptNoteDetailComponent } from './receipt-note/receipt-note-detail/r
 import { ReturnFromCustomerNoteDetailComponent } from './return-from-customer-note/return-from-customer-note-detail/return-from-customer-note-detail.component';
 import { ReturnToSupplierNoteDetailComponent } from './return-to-supplier-note/return-to-supplier-note-detail/return-to-supplier-note-detail.component';
 import { WarehouseTransferNoteDetailComponent } from './warehouse-transfer-note/warehouse-transfer-note-detail/warehouse-transfer-note-detail.component';
+import { CancelDeliveryNoteDetailComponent } from './cancel-delivery-note/cancel-delivery-note-detail/cancel-delivery-note-detail.component';
 const routes: Routes = [
   {
     path: '',
@@ -165,6 +166,11 @@ const routes: Routes = [
       {
         path: 'cancel-delivery-note-screen/:id',
         component: CancelDeliveryNoteScreenComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'cancel-delivery-note-detail/:id',
+        component: CancelDeliveryNoteDetailComponent,
         // canActivate: [AuthGuard],
       },
     ],

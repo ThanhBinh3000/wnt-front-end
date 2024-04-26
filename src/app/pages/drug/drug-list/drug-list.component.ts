@@ -39,6 +39,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
+      tenThuoc: [],
       nhaThuocMaNhaThuoc: [],
       nhomThuocMaNhomThuoc: [],
       typeId : [],

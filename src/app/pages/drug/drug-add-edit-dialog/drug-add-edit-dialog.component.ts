@@ -96,11 +96,11 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       const data = await this.detail(this.drugId);
       this.formData.patchValue(data);
     }
-    else{
+    else {
       // Generate mã thuốc
       this._service.generateDrugCode({}).then((res) => {
         if (res?.statusCode == STATUS_API.SUCCESS) {
-          this.formData.patchValue({maThuoc: res.data});
+          this.formData.patchValue({ maThuoc: res.data });
         }
       });
       // Generate mã vạch thuốc
@@ -108,10 +108,9 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     }
   }
 
-
   getDataFilter() {
     // Nhóm thuốc
-    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.THUOC}).then((res) => {
+    this.nhomThuocService.searchList({ typeGroupProduct: LOAI_SAN_PHAM.THUOC }).then((res) => {
       if (res?.statusCode == STATUS_API.SUCCESS) {
         this.listNhomThuoc = res.data
       }
@@ -145,17 +144,32 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     }
   }
 
-  genBarcode(){
+  genBarcode() {
     this._service.generateBarCode({}).then((res) => {
       if (res?.statusCode == STATUS_API.SUCCESS) {
-        this.formData.patchValue({barCode: res.data});
+        this.formData.patchValue({ barCode: res.data });
       }
     });
   }
 
-  onExpiredDateChange(){
+  onExpiredDateChange() {
     var value = this.formData.get('hanDung')?.value;
     this.formData.get('hanDung')?.setValue(value.replace(/^([\d]{2})([\d]{2})([\d]{2})$/, "$1/$2/20$3"));
+  }
+
+  onChangeDonVi(type: any) {
+    if (type == 0) {
+      if (this.formData.value?.donViXuatLeMaDonViTinh > 0)
+        this.formData.patchValue({ tenDonViTinhXuatLe: this.listDonViTinh.find(i => i.id == this.formData.value?.donViXuatLeMaDonViTinh).tenDonViTinh });
+      else
+        this.formData.patchValue({ tenDonViTinhXuatLe: '' });
+    }
+    else {
+      if (this.formData.value?.donViThuNguyenMaDonViTinh > 0)
+        this.formData.patchValue({ tenDonViTinhThuNguyen: this.listDonViTinh.find(i => i.id == this.formData.value?.donViThuNguyenMaDonViTinh).tenDonViTinh });
+      else
+        this.formData.patchValue({ tenDonViTinhThuNguyen: '' });
+    }
   }
 
   closeModal() {

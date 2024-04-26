@@ -3,7 +3,7 @@
     <div class="sidebar-bg">
       <form class="mb-3" [formGroup]="formData">
         <label>Tìm theo</label>
-        <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
+        <input formControlName="tenThuoc" (keyup.enter)="searchPage()" class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
 
         <div class="control-group d-flex gap-5 align-items-center">
           <input type="checkbox" formControlName="dataDelete" (ngModelChange)="searchPage()"
