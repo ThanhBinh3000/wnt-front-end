@@ -94,5 +94,8 @@
   },
   "cli": {
     "analytics": false
-  }
+  },
+  "scripts": [
+    "node_modules/apexcharts/dist/apexcharts.min.js"
+  ]
 }

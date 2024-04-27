@@ -1,9 +1,29 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, ViewChild} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {BaseComponent} from "../../../component/base/base.component";
 import {DatePipe} from "@angular/common";
-import {InOutCommingDetailsByDayService} from "../../../services/report/InOut-Comming-Details-ByDay.service";
 
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexStroke,
+  ApexGrid
+} from "ng-apexcharts";
+import {ReportDetailsBydayService} from "../../../services/report/Report-Details-Byday.service";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'InOutCommingDetailsByDay',
@@ -13,120 +33,87 @@ import {InOutCommingDetailsByDayService} from "../../../services/report/InOut-Co
 export class InOutCommingDetailsByDayComponent extends BaseComponent implements OnInit {
   title: string = "Báo cáo thu-chi hằng ngày";
   filterTransactionType: any = 1;
+  @ViewChild("chart") chart?: ChartComponent;
+  public chartOptions: Partial<ChartOptions> | any;
+
   constructor(
     injector: Injector,
     private titleService: Title,
     private datePipe: DatePipe,
-    private _service: InOutCommingDetailsByDayService,
+    private _service: ReportDetailsBydayService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
       nhaThuocMaNhaThuoc: [],
-      // tongKhachNo: [374166],
-      // tongThu: [],
-      // tongChi: [],
-      // thuTruChi: [],
-      // pickerTransactionFromDate: [],
-      // pickerTransactionToDate: [],
+      ngayXuat: ['09/11/2023 09:36:32'],
     });
+    this.chartOptions = {
+      title: {
+        text: "Tháng 05/2024",
+        align: "left"
+      },
+      series: [
+        {
+          name: "Thu",
+          data: [10, 20, 30, 40, 50, 10, 60, 70, 30, 80, 90, 100, 110, 120, 130],
+          color: "#008000"
+        },
+        {
+          name: "chi",
+          data: [5, 25, 25, 45, 40, 8, 55, 75, 20, 11, 17, 150, 200, 111, 40],
+          color: "#FF0000"
+        }
+      ],
+      chart: {
+        height: 700,
+        type: "line",
+        zoom: {
+          enabled: false
+        }
+      },
+      markers: {
+        size: 6,
+        hover: {
+          size: 10
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: "straight"
+      },
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "transparent"],
+          opacity: 0.5
+        }
+      },
+      xaxis: {
+        categories: [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+        ]
+      }
+    };
   }
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    this.formData.patchValue({
-      nhaThuocMaNhaThuoc: this.authService.getNhaThuoc().maNhaThuoc,
-    })
-    // await this.searchList();
-    this.dataTable = [
-      {
-        loai: 'Bán hàng',
-        thuTienMat: 10488095,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Tổng doanh số: 10,862,261'
-      },
-      {
-        loai: 'Mua hàng',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 22076247,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Tổng phí mua hàng: 22,076,247'
-      },
-      {
-        loai: 'Thu nợ khách hàng',
-        thuTienMat: 331000,
-        thuChuyenKhoan: 38000,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Đã thu nợ số khách hàng: 2'
-      },
-      {
-        loai: 'Trả nợ nhà cung cấp',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Đã trả nợ số nhà cung cấp: 0'
-      },
-      {
-        loai: 'Khách hàng trả lại',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 41643,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Số khách trả lại hàng: 2'
-      },
-      {
-        loai: 'Trả lại nhà cung cấp',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Trả lại hàng số nhà cung cấp: 0'
-      },
-      {
-        loai: 'Thu khác',
-        thuTienMat: 230000,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: ''
-      },
-      {
-        loai: 'Chi khác',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 300000,
-        chiChuyenKhoan: 0,
-        ghiChu: ''
-      },
-      {
-        loai: 'Chi phí kinh doanh',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: ''
-      },
-      {
-        loai: 'Chi trả lại khách hàng',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Chi trả lại cho số khách hàng: 0'
-      },
-      {
-        loai: 'Thu lại nhà cung cấp',
-        thuTienMat: 0,
-        thuChuyenKhoan: 0,
-        chiTienMat: 0,
-        chiChuyenKhoan: 0,
-        ghiChu: 'Chi trả lại cho số khách hàng: 0'
-      },
-    ]
+    await this.searchList();
     this.calculatorTable();
   }
 
@@ -192,5 +179,15 @@ export class InOutCommingDetailsByDayComponent extends BaseComponent implements 
       tongChi,
       thuTruChi: tongThu - tongChi
     });
+  }
+
+  showChart: boolean = false;
+
+  toggleChart() {
+    this.showChart = !this.showChart;
+  }
+
+  closeChart() {
+    this.showChart = false;
   }
 }

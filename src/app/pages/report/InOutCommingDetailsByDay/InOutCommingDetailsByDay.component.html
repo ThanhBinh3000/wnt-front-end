@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!showChart">
   <div class="col-md-3 baocao-filter">
     <div class="sidebar-bg">
       <fieldset class="mb-3">
@@ -28,14 +28,17 @@
               <label for="rdFilterAll">Tất cả</label>
             </div>
             <div>
-              <input type="radio" id="rdFilterByRange" name="dateRangeFilterType" [checked]="filterTransactionType === 1"
+              <input type="radio" id="rdFilterByRange" name="dateRangeFilterType"
+                     [checked]="filterTransactionType === 1"
                      (change)="onFilterTransactionTypeChange(1)">
               <label for="rdFilterByRange">Theo ngày</label>
             </div>
             <div class="input-daterange input-group" id="datepicker" *ngIf="filterTransactionType === 1">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Từ ngày.." [matDatepicker]="pickerTransactionFromDate"
-                       formControlName="pickerTransactionFromDate" (dateChange)="onTransactionFromDateChange($event.value)"
+                <input type="text" class="form-control" placeholder="Từ ngày.."
+                       [matDatepicker]="pickerTransactionFromDate"
+                       formControlName="pickerTransactionFromDate"
+                       (dateChange)="onTransactionFromDateChange($event.value)"
                        (click)="pickerTransactionFromDate.open()">
                 <mat-datepicker #pickerTransactionFromDate></mat-datepicker>
                 <span class="input-group-btn">
@@ -45,7 +48,8 @@
             </span>
               </div>
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Đến ngày.." [matDatepicker]="pickerTransactionToDate"
+                <input type="text" class="form-control" placeholder="Đến ngày.."
+                       [matDatepicker]="pickerTransactionToDate"
                        formControlName="pickerTransactionToDate" (dateChange)="onTransactionToDateChange($event.value)"
                        (click)="pickerTransactionToDate.open()">
                 <mat-datepicker #pickerTransactionToDate></mat-datepicker>
@@ -71,7 +75,7 @@
       </fieldset>
       <fieldset>
         <div class="btn-group-flex gap-10 mt-3">
-          <a class="btn btn-primary w-100" href=""> Xem dưới dạng biểu đồ</a>
+          <a class="btn btn-primary w-100" (click)="toggleChart()">Xem dưới dạng biểu đồ</a>
         </div>
       </fieldset>
     </div>
@@ -80,13 +84,13 @@
     <div class="box-group-white">
       <h2 class="report-title"><b>{{ title }}</b></h2>
       <div class="baocao-container">
-        <form nzLayout="vertical" [formGroup]="formData">
+        <form nzLayout="vertical">
           <div class="pull-right mb-2">
             <div class="d-flex gap-10 align-items-center">
-<!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
-<!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
-<!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
-<!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
+              <!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
+              <!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
+              <!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
+              <!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
             </div>
           </div>
         </form>
@@ -112,14 +116,14 @@
               <td class="text-center">{{ (page - 1) * pageSize + i + 1 }}</td>
               <td class="text-left">
                 <a class="ng-binding">
-                 {{ data.loai }}
+                  {{ data.loai }}
                 </a>
               </td>
-              <td class="text-left"> {{ data.thuTienMat | number }} </td>
-              <td class="text-left"> {{ data.thuChuyenKhoan | number }} </td>
-              <td class="text-left"> {{ data.chiTienMat | number }} </td>
-              <td class="text-left"> {{ data.chiChuyenKhoan | number }} </td>
-              <td class="text-left"> {{ data.ghiChu}}</td>
+              <td class="text-left"> {{ data.thuTienMat | number }}</td>
+              <td class="text-left"> {{ data.thuChuyenKhoan | number }}</td>
+              <td class="text-left"> {{ data.chiTienMat | number }}</td>
+              <td class="text-left"> {{ data.chiChuyenKhoan | number }}</td>
+              <td class="text-left"> {{ data.ghiChu }}</td>
             </tr>
           </ng-container>
           </tbody>
@@ -129,25 +133,25 @@
               <th class="text-center">12</th>
               <th class="text-left">
                 <a class="ng-binding">
-                 Tổng
+                  Tổng
                 </a>
               </th>
-              <td class="text-left">{{ calcTong('thuTienMat') | number}}</td>
-              <td class="text-left">{{ calcTong('thuChuyenKhoan') | number}}</td>
-              <td class="text-left">{{ calcTong('chiTienMat') | number}}</td>
-              <td class="text-left">{{ calcTong('chiChuyenKhoan') | number}}</td>
+              <td class="text-left">{{ calcTong('thuTienMat') | number }}</td>
+              <td class="text-left">{{ calcTong('thuChuyenKhoan') | number }}</td>
+              <td class="text-left">{{ calcTong('chiTienMat') | number }}</td>
+              <td class="text-left">{{ calcTong('chiChuyenKhoan') | number }}</td>
               <td class="text-left"></td>
             </tr>
             </tfoot>
           </ng-container>
         </table>
-        <form nzLayout="vertical" [formGroup]="formData">
+        <form nzLayout="vertical" >
           <div class="pull-right mt-2">
             <div class="d-flex gap-10 align-items-center">
-<!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
-<!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
-<!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
-<!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
+              <!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
+              <!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
+              <!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
+              <!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
             </div>
           </div>
         </form>
@@ -155,3 +159,28 @@
     </div>
   </div>
 </div>
+<!--<nz-modal class="scroll-nz-modal" [(nzVisible)]="showChart" (nzOnCancel)="closeChart()">-->
+<!--  <ng-container *nzModalContent class="modal__content custom-scroll-modal">-->
+
+
+<div class="modal-content" *ngIf="showChart">
+  <apx-chart
+    [title]="chartOptions.title"
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [grid]="chartOptions.grid"
+    [markers]="chartOptions.markers"
+    [stroke]="chartOptions.stroke">
+  </apx-chart>
+  <div class="modal-footer d-flex align-items-center gap-10 justify-content-end">
+    <button type="button" class="btn btn-default" (click)="closeChart()">Đóng</button>
+  </div>
+</div>
+<!--  </ng-container>-->
+<!--</nz-modal>-->
+
+
+
+
