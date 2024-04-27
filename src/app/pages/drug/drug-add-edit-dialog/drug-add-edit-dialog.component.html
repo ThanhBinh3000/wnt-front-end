@@ -77,7 +77,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Đơn vị xuất lẻ<span class="text-danger">*</span></label>
                   <div class="col-sm-8">
-                    <ng-select appendTo="body" formControlName="donViXuatLeMaDonViTinh">
+                    <ng-select (ngModelChange)="onChangeDonVi(0)" appendTo="body" formControlName="donViXuatLeMaDonViTinh">
                       <ng-option [value]="0">Hãy chọn đơn vị xuất lẻ</ng-option>
                       <ng-option *ngFor="let item of listDonViTinh" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
                     </ng-select>
@@ -118,11 +118,10 @@
                   <label class="col-sm-4 control-label">Giá nhập lẻ</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaNhap" id="GiaNhap" mask="separator" thousandSeparator=","
-                        class="form-control mb-0" tabindex="13" formControlName="giaNhap"
-                        placeholder="Giá nhập theo đơn vị xuất lẻ">
+                      <input type="text" name="GiaNhap" id="GiaNhap" mask="separator" class="form-control mb-0"
+                        tabindex="13" formControlName="giaNhap" placeholder="Giá nhập theo đơn vị xuất lẻ">
                       <span
-                        class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
+                        class="input-group-addon flex-grow-width-25 ng-binding">/{{(formData.get('tenDonViTinhXuatLe')?.value)}}</span>
                       <!-- <div class="input-group-btn">
                         <span ng-show="false" class="btn btn-primary ng-hide"
                           ng-click="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();"
@@ -168,7 +167,7 @@
                   <div class="col-sm-8">
                     <div class="input-group">
                       <input type="text" name="GiaBanLe" id="GiaBanLe" class="form-control mb-0" tabindex="14"
-                        mask="separator" thousandSeparator="," formControlName="giaBanLe" awnum="app-decimal-number"
+                        mask="separator" formControlName="giaBanLe" awnum="app-decimal-number"
                         placeholder="Giá bán lẻ theo đơn vị xuất lẻ">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -200,7 +199,7 @@
                 <div class="row">
                   <label class="col-sm-4 control-label">Đơn vị nhập</label>
                   <div class="col-sm-8">
-                    <ng-select appendTo="body" formControlName="donViThuNguyenMaDonViTinh">
+                    <ng-select (ngModelChange)="onChangeDonVi(1)" appendTo="body" formControlName="donViThuNguyenMaDonViTinh">
                       <ng-option [value]="0">none</ng-option>
                       <ng-option *ngFor="let item of listDonViTinh" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
                     </ng-select>
@@ -237,11 +236,10 @@
                   <label class="col-sm-4 control-label">Quy cách</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="HeSo" id="HeSo" mask="separator" thousandSeparator=","
-                        class="form-control mb-0 ng-pristine" tabindex="16" formControlName="heSo"
-                        awnum="app-decimal-number">
+                      <input type="text" name="HeSo" id="HeSo" mask="separator" class="form-control mb-0 ng-pristine"
+                        tabindex="16" formControlName="heSo" awnum="app-decimal-number">
                       <span class="input-group-addon flex-grow-width-25 ng-scope">
-                        {{formData.get('tenDonViTinhThuNguyen')?.value != ''
+                        {{formData.get('donViThuNguyenMaDonViTinh')?.value > 0
                         ? formData.get('tenDonViTinhThuNguyen')?.value + ' ' + formData.get('heSo')?.value + ' ' +
                         formData.get('tenDonViTinhXuatLe')?.value
                         : formData.get('tenDonViTinhXuatLe')?.value}}
@@ -289,7 +287,7 @@
                   <label class="col-sm-4 control-label">Giá bán sỉ</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaBanBuon" id="GiaBanBuon" mask="separator" thousandSeparator=","
+                      <input type="text" name="GiaBanBuon" id="GiaBanBuon" mask="separator"
                         class="form-control mb-0 ng-pristine" tabindex="17" formControlName="giaBanBuon"
                         awnum="app-decimal-number">
                       <span *ngIf="formData.get('donViThuNguyenMaDonViTinh')?.value > 0"
@@ -329,9 +327,8 @@
                   <label class="col-sm-4 control-label">Số tồn ban đầu</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="SoDuDauKy" id="SoDuDauKy" mask="separator" thousandSeparator=","
-                        class="form-control mb-0  " tabindex="18" formControlName="soDuDauKy"
-                        formControlName="soDuDauKy" awnum="app-decimal-number"
+                      <input type="text" name="SoDuDauKy" id="SoDuDauKy" mask="separator" class="form-control mb-0  "
+                        tabindex="18" formControlName="soDuDauKy" formControlName="soDuDauKy" awnum="app-decimal-number"
                         placeholder="Số tồn ban đầu theo đơn vị xuất lẻ">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -348,8 +345,8 @@
                   <label class="col-sm-4 control-label">Số lượng cảnh báo</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GioiHan" id="GioiHan" mask="separator" thousandSeparator=","
-                        class="form-control mb-0  " value="0" tabindex="8" formControlName="gioiHan">
+                      <input type="text" name="GioiHan" id="GioiHan" mask="separator" class="form-control mb-0  "
+                        value="0" tabindex="8" formControlName="gioiHan">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
                     </div>
@@ -361,8 +358,8 @@
                   <label class="col-sm-4 control-label">Giá nhập ban đầu</label>
                   <div class="col-sm-8">
                     <div class="input-group">
-                      <input type="text" name="GiaDauKy" id="GiaDauKy" mask="separator" thousandSeparator=","
-                        class="form-control mb-0" tabindex="19" formControlName="giaDauKy" awnum="app-decimal-number"
+                      <input type="text" name="GiaDauKy" id="GiaDauKy" mask="separator" class="form-control mb-0"
+                        tabindex="19" formControlName="giaDauKy" awnum="app-decimal-number"
                         placeholder="Giá nhập ban đầu cho số tồn b.đầu">
                       <span
                         class="input-group-addon flex-grow-width-25 ng-binding">/{{formData.get('tenDonViTinhXuatLe')?.value}}</span>
@@ -423,8 +420,8 @@
                   <div class="col-sm-8">
                     <div class="input-group">
                       <input type="text" name="MoneyToOneScoreRate" id="MoneyToOneScoreRate" class="form-control mb-0  "
-                        value="0" mask="separator" thousandSeparator="," tabindex="21"
-                        formControlName="moneyToOneScoreRate" awnum="app-decimal-number">
+                        value="0" mask="separator" tabindex="21" formControlName="moneyToOneScoreRate"
+                        awnum="app-decimal-number">
                       <span class="input-group-addon flex-grow-width-25">/điểm</span>
                     </div>
                   </div>

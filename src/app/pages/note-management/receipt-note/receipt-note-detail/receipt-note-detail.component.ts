@@ -22,7 +22,6 @@ export class ReceiptNoteDetailComponent extends BaseComponent implements OnInit 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getId();
-    console.log(this.idUrl);
     if(this.idUrl){
       this.dataDetail = await this.detail(this.idUrl);
       console.log(this.dataDetail)

@@ -3,7 +3,7 @@
     <div class="sidebar-bg">
       <form class="mb-3" [formGroup]="formData">
         <label>Tìm theo</label>
-        <input class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
+        <input formControlName="tenThuoc" (keyup.enter)="searchPage()" class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
 
         <div class="control-group d-flex gap-5 align-items-center">
           <input type="checkbox" formControlName="dataDelete" (ngModelChange)="searchPage()"
@@ -116,7 +116,7 @@
                   <div class="d-flex gap-5 mt-3 ng-scope">
                     <div onclick="event.preventDefault();" class="flex-grow-1">
                       <button class="btn btn-primary btn-sm "
-                        ng-click="onUploadImageDialog(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
+                        (click)="onUploadImageDialog(data);"><i
                           class="fa-regular fa-folder-arrow-up"></i></button>
                     </div>
                     <div class="flex-grow-1" onclick="event.preventDefault();" title="">
