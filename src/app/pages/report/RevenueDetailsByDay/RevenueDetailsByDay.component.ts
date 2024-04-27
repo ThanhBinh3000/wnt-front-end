@@ -4,6 +4,7 @@ import {BaseComponent} from "../../../component/base/base.component";
 import {MatSort} from "@angular/material/sort";
 import {ReportDetailsBydayService} from "../../../services/report/Report-Details-Byday.service";
 import {DatePipe} from "@angular/common";
+import {MESSAGE, STATUS_API} from "../../../constants/message";
 
 @Component({
   selector: 'RevenueDetailsByDay',
@@ -24,8 +25,8 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
     super(injector, _service);
     this.formData = this.fb.group({
       nhaThuocMaNhaThuoc: [],
-      ngayXuat: ['09/11/2023 09:36:32'],
-      soPhieuXuat: [],
+      ngayXuat: [],
+      soPhieuXuat: [123],
       deliveryTotal: [],
       totalDiscount: [],
       totalPaymentScoreAmount: [],
@@ -39,11 +40,35 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    this.formData.patchValue({
-      nhaThuocMaNhaThuoc: this.authService.getNhaThuoc().maNhaThuoc,
-    })
-    await this.searchPage();
+    await this.searchDetailsByDay();
     await this.calculatorTable();
+  }
+
+  async searchDetailsByDay() {
+    try {
+      let body = this.formData.value
+      body.paggingReq = {
+        limit: this.pageSize,
+        page: this.page - 1
+      }
+      if(this.filterType == 1){
+        body.fromDate = this.fromDate;
+        body.toDate = this.toDate;
+      }
+      let res = await this._service.DetailsByDay(body);
+      if (res?.statusCode == STATUS_API.SUCCESS) {
+        let data = res.data;
+        this.dataTable = data;
+        this.totalRecord = data.totalElements;
+        this.totalPages = data.totalPages;
+      } else {
+        this.dataTable = [];
+        this.totalRecord = 0;
+      }
+    } catch (e) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    } finally {
+    }
   }
 
   @ViewChild(MatSort) sort?: MatSort;
@@ -102,7 +127,7 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
 
   handleSelectChange() {
     if (this.formData.value.checkOption === '1'){
-      this.searchPage()
+      this.searchDetailsByDay()
     }
   }
 }
