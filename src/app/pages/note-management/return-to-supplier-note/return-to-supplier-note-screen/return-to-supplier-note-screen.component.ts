@@ -70,14 +70,40 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       orderId: [0],
       paymentScore: [0],
       storeId: [0],
-      vat: [0]
+      vat: [0],
+      createdByUserText : [''],
+      created : [],
+      recordStatusId : [0]
     });
   }
   @ViewChildren('pickerNgayXuat') pickerNgayXuat!: Date;
-  ngOnInit() {
+
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.loadDataOpt();
-    if (this.maPhieuXuat == 0) {
+    this.getId();
+    if (this.idUrl) {
+      let data = await this.detail(this.idUrl);
+      console.log(data);
+      this.formData.patchValue(data);
+      this.listNhaCungCaps = [{ id: data.nhaCungCapMaNhaCungCap, tenNhaCungCap: data.nhaCungCapMaNhaCungCapText }];
+      this.dataTable =data.chiTiets;
+      this.dataTable.unshift({ isEditingItem: true });
+      this.dataTable.filter(x=>x.id > 0).forEach(x=>{
+        x.donViTinhs = x.thuocs.listDonViTinhs;
+        x.tonHT = x.thuocs.inventory ? x.thuocs.inventory.lastValue : 0;
+        x.ton = x.tonHT;
+        x.heSo = x.thuocs.heSo;
+        x.donViXuatLeMaDonViTinh = x.thuocs.donViXuatLeMaDonViTinh;
+        x.donViThuNguyenMaDonViTinh = x.thuocs.donViThuNguyenMaDonViTinh;
+        x.giaNhap = x.thuocs.giaNhap;
+        if (x.heSo > 1) {
+          x.tonHT = x.ton / x.heSo;
+        }
+        this.getItemAmount(x);
+      });
+    }
+    else {
       this.dataTable.push({ isEditingItem: true });
       let body = {
         maLoaiXuatNhap: 4,
@@ -91,6 +117,10 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
         }
       });
     }
+  }
+
+  ngAfterViewInit() {
+    this.focusSearchDrug();
   }
 
   expandForm() {
@@ -139,7 +169,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       });
     }
   }
-  
+
   async onDrugChange(data: any) {
     if (data && data.id > 0) {
       this.thuocService.getDetail(data.id).then((res) => {
@@ -150,7 +180,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
           this.dataTable[0].giaXuat = item.heSo > 1 ? item.giaNhap * item.heSo : item.giaNhap;
           this.dataTable[0].soLuong = 1;
           this.dataTable[0].donViTinhMaDonViTinh = item.heSo > 1 ? item.donViThuNguyenMaDonViTinh : item.donViXuatLeMaDonViTinh;
-          this.dataTable[0].donViTinhs = [{ maDonViTinh: item.donViXuatLeMaDonViTinh, tenDonViTinh: item.tenDonViTinhXuatLe }];
+          this.dataTable[0].donViTinhs = item.listDonViTinhs;
           this.dataTable[0].vat = 0;
           this.dataTable[0].chietKhau = 0;
           this.dataTable[0].retailPrice = item.giaNhap;
@@ -161,12 +191,15 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
           this.dataTable[0].id = 0;
           this.dataTable[0].giaNhap = item.giaNhap;
           this.dataTable[0].heSo = item.heSo;
-          this.dataTable[0].maThuoc = item.maThuoc;
-          this.dataTable[0].tenThuoc = item.tenThuoc;
+          this.dataTable[0].maThuocText = item.maThuoc;
+          this.dataTable[0].tenThuocText = item.tenThuoc;
           this.dataTable[0].donViThuNguyenMaDonViTinh = item.donViThuNguyenMaDonViTinh;
           this.dataTable[0].donViXuatLeMaDonViTinh = item.donViXuatLeMaDonViTinh;
+          this.dataTable[0].connectivityStatusId = 0;
+          this.dataTable[0].referenceId = 0;
+          this.dataTable[0].storeId = 0;
+          this.dataTable[0].recordStatusId = 0;
           if (item.heSo > 1) {
-            this.dataTable[0].donViTinhs.push({ maDonViTinh: item.donViThuNguyenMaDonViTinh, tenDonViTinh: item.tenDonViTinhThuNguyen });
             this.dataTable[0].tonHT = this.dataTable[0].ton / item.heSo;
           }
           this.getItemAmount(this.dataTable[0]);
@@ -178,11 +211,11 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
 
   async onAddNew(item : any) {
     //kiểm tra hàng âm kho
-    //kiểm tra đã có thuốc chưa
     if (item.ton <= 0) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
       return;
     }
+    //kiểm tra phiếu có thuốc chưa
     if (!item.thuocThuocId) {
       this.notification.error(MESSAGE.ERROR, "Hãy chọn thuốc thêm vào phiếu");
       return;
@@ -205,6 +238,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       this.updateTotal();
       ;
     }
+    setTimeout(()=> this.focusSearchDrug(), 100);
   }
 
   async onChangeUnit(item: any) {
@@ -231,19 +265,18 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     this.updateTotal();
   }
 
-  async updateTotal() {
+  updateTotal() {
     this.formData.controls['tongTien'].setValue(this.dataTable.filter(x => !x.isEditingItem)
       .reduce((acc, val) => acc += (val.tongTien), 0));
     this.formData.controls['daTra'].setValue(this.dataTable.filter(x => !x.isEditingItem)
       .reduce((acc, val) => acc += (val.tongTien), 0));
   }
-  
+
   async getItemAmount(item: any) {
-    var discount = (item.giaXuat > 0.05 ? (item.chietKhau / item.giaXuat) : 0) * 100;
-    console.log(item);
+    let discount = (item.giaXuat > 0.05 ? (item.chietKhau / item.giaXuat) : 0) * 100;
     discount = discount < 0.5 ? 0 : discount;
-    var vat = item.vat < 0.5 ? 0 : item.vat;
-    var price = item.giaXuat * (1 - (discount / 100)) * (1 + (vat / 100));
+    let vat = item.vat < 0.5 ? 0 : item.vat;
+    let price = item.giaXuat * (1 - (discount / 100)) * (1 + (vat / 100));
     item.tongTien = price * item.soLuong;
     item.retailQuantity = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.soLuong : item.soLuong * item.heSo;
     item.retailPrice = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.giaXuat : item.giaXuat / item.heSo;
@@ -268,8 +301,10 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       return;
     }
     let body = this.formData.value;
+    if(this.dataTable.length == 1 && this.dataTable[0].isEditingItem){
+      this.onAddNew(this.dataTable[0])
+    }
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
-    console.log(body);
     this.save(body).then(res => {
       if (res) {
         this.router.navigate(['/management/note-management/return-to-supplier-note-detail', res.id]);
@@ -280,7 +315,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
   async onPaymentFull() {
     this.formData.controls['daTra'].setValue(this.formData.get('tongTien')?.value);
   }
-   
+
   @ViewChildren('inputSoLuong') inputSoLuongs!: QueryList<ElementRef>;
   async focusInputSoLuong() {
     if (this.inputSoLuongs.last) {
@@ -291,7 +326,11 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
   async focusSearchDrug() {
     this.selectDrug?.focus();
   }
-  
+
+  async onLockNote(){
+
+  }
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     switch (event.key) {

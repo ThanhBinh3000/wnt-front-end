@@ -22,7 +22,7 @@
             <div class="card-code">
                 Mã số: <strong class="ng-binding">{{formData.value.soPhieuXuat}}</strong>
             </div>
-            Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1" 
+            Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1"
                 formControlName="noteDate"
                 type="text" class="form-control" (dateChange)="onDateChange($event.value)" [matDatepicker]="pickerNgayXuat"
                 (click)="pickerNgayXuat.open()">
@@ -48,6 +48,9 @@
                                                 bindValue="id" placeholder="Tra cứu theo tên..."
                                                 notFoundText="Không tìm thấy mục nào" refresh-delay="500"
                                                 (search)="searchPageNhaCungCap($event)">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                  <span >{{item.tenNhaCungCap}}</span>
+                                                </ng-template>
                                                 <ng-template ng-option-tmp let-item="item" let-index="index"
                                                     let-search="searchTerm">
                                                     <span
@@ -81,14 +84,14 @@
                         <span *ngIf="!data.isEditingItem" (click)="openDetailDialog(data.thuocThuocId)" class="btn-link">{{data.itemOrder}}</span>
                     </td>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="anh">
                     <th mat-header-cell *matHeaderCellDef> Ảnh </th>
                     <td mat-cell *matCellDef="let data" class="text-right">
-    
+
                     </td>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="matHang">
                     <th mat-header-cell *matHeaderCellDef style="width:30%">Mặt Hàng [Mã-Tên]</th>
                     <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
@@ -96,8 +99,8 @@
                             <div>
                                 <div class="w-100">
                                     <div class="control-group">
-                                        <ng-select 
-                                            #drugSearchBoxId
+                                        <ng-select
+                                            #selectDrug
                                             appendTo="body"
                                             [(ngModel)]="data.thuocThuocId"
                                             appearance="outline" [items]="listThuocs" bindLabel="tenThuoc" bindValue="id"
@@ -119,14 +122,14 @@
                                 </div>
                             </div>
                         </div>
-                        <span *ngIf="!data.isEditingItem">{{data.maThuoc}} - {{data.tenThuoc}}</span>
+                        <span *ngIf="!data.isEditingItem">{{data.maThuocText}} - {{data.tenThuocText}}</span>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="donVi">
                     <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Đơn vị</th>
                     <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
                         <select class="form-control" [(ngModel)]="data.donViTinhMaDonViTinh" (change)="onChangeUnit(data)">
-                            <option  *ngFor="let i of data.donViTinhs" value="{{i.maDonViTinh}}">
+                            <option  *ngFor="let i of data.donViTinhs" value="{{i.id}}">
                                   {{i.tenDonViTinh}}
                             </option>
                         </select>
@@ -147,7 +150,7 @@
                 </ng-container>
                 <ng-container matColumnDef="ck">
                     <th mat-header-cell *matHeaderCellDef> C.K(%)</th>
-                    <td mat-cell *matCellDef="let data" style="vertical-align: middle;"> 
+                    <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
                         <input type="text" [(ngModel)]="data.chietKhau" (change)="getItemAmount(data)" class="form-control text-right"/>
                         </td>
                 </ng-container>
@@ -159,7 +162,7 @@
                 </ng-container>
                 <ng-container matColumnDef="ton">
                     <th mat-header-cell *matHeaderCellDef>Tồn</th>
-                    <td mat-cell *matCellDef="let data" class="text-center" style="vertical-align: middle;"> 
+                    <td mat-cell *matCellDef="let data" class="text-center" style="vertical-align: middle;">
                         {{data.tonHT | number}}
                     </td>
                 </ng-container>
@@ -169,10 +172,10 @@
                         {{ data.tongTien | number}}
                     </td>
                 </ng-container>
-    
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
+
             </table>
             <form [formGroup]="formData">
                 <table class="borderless table-condensed">
@@ -183,10 +186,10 @@
                                     <div class="form-inline-flex flex-grow-1">
                                         <label>Tổng tiền:</label>
                                         <div class="flex-grow-1">
-    
+
                                             <span ng-if="viewModel.NoteTypeId==2 || permittedFields.Drug_ViewInputPrice"
                                                 class="ng-scope">
-    
+
                                                 <input id="txbTotalAmountId" type="text"
                                                     class="form-control mb-0" formControlName="tongTien"
                                                     ng-keypress="onTotalAmountChanged($event)">
@@ -211,10 +214,10 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                             </td>
                         </tr>
-    
+
                         <tr class="ng-scope">
                             <td class="w-50"></td>
                             <td>
@@ -224,15 +227,15 @@
                                             <span style="cursor: pointer;" (click)="expandForm()">{{expandLabel}}</span>
                                         </div>
                                         <div id="paymentSlide" *ngIf="showMoreForm" class="form-check">
-                                            <mat-radio-group class = "tp-radio-group" formControlName="paymentTypeId">  
-                                                <mat-radio-button class = "tp-radio-button"  
-                                                   *ngFor = "let item of listPaymentType" [value] = "item.id">  
-                                                   {{item.displayName}}  
+                                            <mat-radio-group class = "tp-radio-group" formControlName="paymentTypeId">
+                                                <mat-radio-button class = "tp-radio-button"
+                                                   *ngFor = "let item of listPaymentType" [value] = "item.id">
+                                                   {{item.displayName}}
                                                 </mat-radio-button>
-                                             </mat-radio-group>  
+                                             </mat-radio-group>
                                         </div>
                                     </div>
-    
+
                                 </div>
                             </td>
                         </tr>
@@ -251,7 +254,7 @@
                     </tbody>
                 </table>
             </form>
-            
+
             <table class="table borderless table-condensed">
                 <tbody>
                     <tr>
@@ -261,35 +264,35 @@
                                     ng-click="onReturnNotesListing(); $event.preventDefault(); $event.stopPropagation();">
                                 <input type="submit" value="Ghi Phiếu - F9" id="save-note-btn-id" title="F9-Ghi phiếu"
                                     class="btn btn-primary" (click)="onSave()">
-    
-    
+
+
                                 <a class="btn btn-default ng-scope"
                                     *ngIf="formData.value?.id > 0"
                                     href="#" ng-click="onPrint(0)" target="_blank">
                                     In
                                 </a>
-    
+
                                 <span *ngIf="formData.value?.id > 0" class="ng-scope">
                                     <span>&nbsp;</span>
-                                    <a href="/PhieuXuats/delete/35155501" class="btn btn-danger btn btn-danger">Xóa
-                                        phiếu</a>
+                                    <a class="btn btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa phiếu trả lại của nhà cung cung cấp có số phiếu \'' + formData.value?.soPhieuXuat + '\' ?', formData.value?.id)">
+                                        Xóa</a>
                                     <span>&nbsp;</span>
-                                    <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"
+                                    <a (click)="onLockNote()"
                                         title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>
                                 </span>
                             </div>
                         </td>
                     </tr>
-    
+
                     <tr *ngIf="formData.value?.id > 0" class="ng-scope">
                         <td colspan="2" class="text-center">
                             <div class="d-flex justify-content-center align-items-center gap-10">
-                                <span class="ng-binding">[Người lập: Đỗ Thanh Mai] - [Ngày lập: 16/03/2024]</span>
+                                <span class="ng-binding">[Người lập: {{formData.value?.createdByUserText}}] - [Ngày lập: {{formData.value?.created | appDate}}]</span>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    
+
 </div>
