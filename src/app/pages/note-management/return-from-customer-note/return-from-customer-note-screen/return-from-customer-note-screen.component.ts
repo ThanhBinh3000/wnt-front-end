@@ -115,7 +115,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     return tongTien;
   }
 
-  searchListThuoc($event){
+  searchListThuoc($event : any){
     if($event.target.value){
       let body = {
         tenThuoc : $event.target.value,
@@ -130,7 +130,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     }
   }
 
-  onChangeThuoc($event){
+  onChangeThuoc($event : any){
     this.thuocService.getDetail($event).then((res)=>{
       if(res && res.data){
         const data = res.data;
@@ -147,14 +147,14 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     })
   }
 
-  onChangeDviTinh(idDviTinh,rowTable?){
+  onChangeDviTinh(idDviTinh : any,rowTable? : any){
     if(rowTable){
-      let dviTinh = this.rowItem.listDonViTinhs.find(item => item.id == idDviTinh);
+      let dviTinh = this.rowItem.listDonViTinhs.find((item: { id: any; }) => item.id == idDviTinh);
       this.rowItem.giaBanLe = dviTinh.giaBan;
       this.rowItem.giaNhap = dviTinh.giaNhap;
       this.onChangeSoLuong(rowTable);
     }else{
-      let dviTinh = this.rowItem.listDonViTinhs.find(item => item.id == idDviTinh);
+      let dviTinh = this.rowItem.listDonViTinhs.find((item: { id: any; }) => item.id == idDviTinh);
       this.rowItem.giaBanLe = dviTinh.giaBan;
       this.rowItem.giaNhap = dviTinh.giaNhap;
       this.onChangeSoLuong();
@@ -173,7 +173,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     });
   }
 
-  onChangeSoLuong(rowTable?){
+  onChangeSoLuong(rowTable? : any){
     if(rowTable){
       let giaBanLe = rowTable.soLuong * rowTable.giaBanLe;
       if(rowTable.chietKhau > 0){
@@ -190,7 +190,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
     this.calendarTongTien();
   }
 
-  onDelete(data){
+  onDelete(data : any){
     console.log(data);
   }
 

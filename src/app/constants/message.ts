@@ -13,7 +13,8 @@ export const MESSAGE = {
   RESTORE_SUCCESS: 'Khôi phục thành công',
   DELETE_CONFIRM: 'Bạn có chắc chắn muốn xóa',
   COPY_SUCCESS: 'Sao chép thành công',
-  DATA_EMPTY: 'Dữ liệu trống!'
+  DATA_EMPTY: 'Dữ liệu trống!',
+  ALLOW_DELIVERY_OVER_QUANTITY: 'Số lượng xuất ra vượt quá số lượng tồn kho hiện tại'
 };
 
 export const STATUS_API = {

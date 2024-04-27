@@ -72,12 +72,13 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       }
     });
   }
-  async danhSachNguoiQuanTamOA() {
+  async danhSachNguoiQuanTamOA(term : any = null) {
     let body: any = {
       paggingReq: {
         limit: this.count * 10,
         page: 0
-      }
+      },
+      textSearch : term
     };
 
     this._service.searchPageNguoiQuanTamOA(body).then((res) => {
@@ -104,12 +105,13 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       }
     });
   }
-  async danhSachNhaThuocDonghBoPhieu() {
+  async danhSachNhaThuocDonghBoPhieu(term : any = null) {
     let body: any = {
       paggingReq: {
         limit: this.count * 10,
         page: 0
-      }
+      },
+      textSearch : term
     };
 
     this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res) => {
@@ -171,5 +173,17 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
         await this.searchPage();
       }
     });
+  }
+  //tìm kiếm người quan tâm oa
+  async searchFlowerOA($event: any){
+    if($event.term.length >= 2){
+      this.danhSachNguoiQuanTamOA($event.term);
+    }
+  }
+
+  async searchStoreMapping($event: any){
+    if($event.term.length >= 2){
+      this.danhSachNhaThuocDonghBoPhieu($event.term);
+    }
   }
 }

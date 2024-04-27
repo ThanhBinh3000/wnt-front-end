@@ -23,4 +23,8 @@ export class KhachHangService extends BaseService {
     const url = `/api/wnt-customer/khach-hangs/update-mapping-store`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+  searchFilterPageKhachHang(body : any){
+    const url = `/api/wnt-customer/khach-hangs/search-page`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

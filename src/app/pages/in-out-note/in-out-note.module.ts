@@ -7,6 +7,7 @@ import { InOutNoteListComponent } from './in-out-note-list/in-out-note-list.comp
 import { InComingNoteAddEditComponent } from './incoming-note-add-edit/incoming-note-add-edit.component';
 import { OutComingNoteAddEditComponent } from './outcoming-note-add-edit/outcoming-note-add-edit.component';
 import { OtherInOutNoteAddEditComponent } from './other-in-out-note-add-edit/other-in-out-note-add-edit.component';
+import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { OtherInOutNoteAddEditComponent } from './other-in-out-note-add-edit/oth
     OutComingNoteAddEditComponent,
     OtherInOutNoteAddEditComponent
   ],
-  imports: [CommonModule, RouterOutlet, InOutNoteRoutingModule],
+  imports: [CommonModule, RouterOutlet, InOutNoteRoutingModule, ComponentsModule],
   exports: [],
 })
 export class InOutNoteModule {

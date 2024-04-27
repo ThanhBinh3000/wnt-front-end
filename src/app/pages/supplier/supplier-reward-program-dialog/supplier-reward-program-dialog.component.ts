@@ -2,7 +2,7 @@ import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../component/base/base.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MESSAGE, STATUS_API } from '../../../constants/message';
-import { ChuongTrinhTraThuongService } from '../../../services/categories/chuong-trinh-tra-thuongservice';
+import { ChuongTrinhTraThuongService } from '../../../services/categories/chuong-trinh-tra-thuong.service';
 import { SupplierRewardProgramAddEditDialogComponent } from '../supplier-reward-program-add-edit-dialog/supplier-reward-program-add-edit-dialog.component';
 
 @Component({
