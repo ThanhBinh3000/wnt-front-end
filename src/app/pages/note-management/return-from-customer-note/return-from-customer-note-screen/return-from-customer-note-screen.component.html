@@ -34,8 +34,8 @@
               <div class="input-group ng-scope">
                 <div class="ip-position ip-min-width ng-isolate-scope" id="customerSearchBoxId">
                   <div class="w-100">
-                    <ng-select formControlName="idWarehouseLocation" (keyup.enter)="searchListNhaCungCap($event)">
-                      <ng-option *ngFor="let item of listNhaCungCap"
+                    <ng-select formControlName="khachHangMaKhachHang" (keyup.enter)="searchListKhachHang($event)">
+                      <ng-option *ngFor="let item of listKhachHang"
                                  [value]="item.id">{{item.tenNhaCungCap}}</ng-option>
                     </ng-select>
                   </div>

@@ -5,7 +5,7 @@ import {RECORD_STATUS} from "../constants/config";
 
 export abstract class BaseService {
 
-  protected constructor(protected httpClient: HttpClient, private gateway: string, private controller: string) {
+  protected constructor(protected httpClient: HttpClient, protected gateway: string, protected controller: string) {
   }
 
   init(body: any) {
@@ -58,19 +58,19 @@ export abstract class BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  deleteMultiple(body) {
+  deleteMultiple(body: any) {
     body.recordStatusId = RECORD_STATUS.DELETED
     const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  restoreMultiple(body) {
+  restoreMultiple(body: any) {
     body.recordStatusId = RECORD_STATUS.ACTIVE
     const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  deleteMultipleDatabase(body) {
+  deleteMultipleDatabase(body: any) {
     body.recordStatusId = RECORD_STATUS.DELETED_DATABASE
     const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();

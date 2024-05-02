@@ -8,6 +8,7 @@ import {DrugAddEditDialogComponent} from "../../../drug/drug-add-edit-dialog/dru
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'receipt-note-screen',
@@ -48,30 +49,49 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       daTra : [0],
       discount : [0],
       discountWithRatio : [],
+
       dienGiai : '',
       paymentTypeId : [0],
       tenNguoiTao : [],
     })
   }
-
-  ngOnInit() {
+  async ngOnInit() {
     console.log(this.authService.getUser());
     this.titleService.setTitle(this.title);
     this.loadDataOpt();
-    let body = {
-      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
-      id : null
-    }
-    this.service.init(body).then((res)=>{
-      if(res && res.data){
-        const data = res.data;
-        this.formData.patchValue({
-          ngayNhap : data.ngayNhap,
-          soPhieuNhap : data.soPhieuNhap,
-          tenNguoiTao : this.authService.getUser().fullName,
-        })
+    this.getId();
+    if(this.idUrl){
+      const data = await this.detail(this.idUrl);
+      this.formData.patchValue(data);
+      this.dataTable = data.chiTiets;
+      this.dataTable.forEach(item => {
+        console.log(item);
+        this.listThuoc.push({
+          id : item.thuocThuocId,
+          tenThuoc : item.thuocs.tenThuoc
+        });
+        item.listDonViTinhs = item.thuocs.listDonViTinhs;
+        item.tenThuoc = item.thuocs.tenThuoc;
+        item.maThuoc = item.thuocs.maThuoc;
+        item.tonKho = item.thuocs.inventory?.lastValue;
+        this.onChangeSoLuong(item);
+      })
+    }else{
+      let body = {
+        loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
+        id : null
       }
-    });
+      this.service.init(body).then((res)=>{
+        if(res && res.data){
+          const data = res.data;
+          this.formData.patchValue({
+            ngayNhap : data.ngayNhap,
+            soPhieuNhap : data.soPhieuNhap,
+            tenNguoiTao : this.authService.getUser().fullName,
+          })
+        }
+      });
+    }
   }
 
   loadDataOpt(){
@@ -89,7 +109,6 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
         recordStatusId : RECORD_STATUS.ACTIVE
       };
       this.nhaCungCapService.searchList(body).then((res)=>{
-        console.log(res)
         if(res && res.data){
           this.listNhaCungCap = res.data;
         }
@@ -117,7 +136,9 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   }
 
   addDrugToTable(){
-    this.dataTable.push(this.rowItem);
+    let data = cloneDeep(this.rowItem);
+    this.dataTable.push(data);
+    this.rowItem = {};
     this.calendarTongTien();
   }
 
@@ -138,8 +159,8 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
         if(res && res.data){
           const data = res.data;
           console.log(data);
-          this.rowItem.thuocThuocId = data.id,
-            this.rowItem.maThuoc = data.maThuoc;
+          this.rowItem.thuocThuocId = data.id;
+          this.rowItem.maThuoc = data.maThuoc;
           this.rowItem.tenThuoc = data.tenThuoc;
           this.rowItem.soLuong = 1;
           this.rowItem.giaNhap = data.giaNhap;
@@ -161,22 +182,17 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   onChangeDviTinh(idDviTinh,rowTable?){
     console.log(idDviTinh);
     if(rowTable){
-
+      let dviTinh = rowTable.listDonViTinhs.find(item => item.id == idDviTinh);
+      rowTable.giaNhap = dviTinh.giaNhap;
+      rowTable.giaBanLe = dviTinh.giaBan;
+      this.onChangeSoLuong(rowTable);
     }else{
       let dviTinh = this.rowItem.listDonViTinhs.find(item => item.id == idDviTinh);
-      console.log(dviTinh);
       this.rowItem.giaNhap = dviTinh.giaNhap;
-      this.rowItem.giaBan = dviTinh.giaBan;
-      // if(this.rowItem.listDonViTinhs.indexOf(dviTinh) == 0 && this.rowItem.listDonViTinhs.length > 1){
-      //    = Math.round(this.rowItem.giaNhap / this.rowItem.listDonViTinhs[1].factor * 100)/100;
-      // }else{
-      //   this.rowItem.giaNhap = Math.round(this.rowItem.giaNhap * dviTinh.factor * 100) / 100;
-      // }
-      // if(this.rowItem.listDonViTinhs.indexOf(dviTinh) == 0){
-      //   this.rowItem.giaBanLe =
-      // }
+      this.rowItem.giaBanLe = dviTinh.giaBan;
+      this.onChangeSoLuong();
     }
-    this.calendarTongTien();
+    // this.calendarTongTien();
   }
 
   onChangePrice(rowTable?){

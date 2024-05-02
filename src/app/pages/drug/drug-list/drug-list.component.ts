@@ -11,6 +11,7 @@ import {DrugAddEditDialogComponent} from "../drug-add-edit-dialog/drug-add-edit-
 import { DrugDetailDialogComponent } from '../drug-detail-dialog/drug-detail-dialog.component';
 import { MatSort } from '@angular/material/sort';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
+import {UploadImageComponent} from "../../../component/upload-image/upload-image.component";
 
 @Component({
   selector: 'drug-list',
@@ -38,6 +39,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
+      tenThuoc: [],
       nhaThuocMaNhaThuoc: [],
       nhomThuocMaNhomThuoc: [],
       typeId : [],
@@ -63,6 +65,19 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     if(pageIndex > 0 && pageIndex <= this.totalPages){
       this.changePageIndex(pageIndex)
     }
+  }
+
+  onUploadImageDialog(data){
+    console.log('ádasd')
+    const dialogRef = this.dialog.open(UploadImageComponent, {
+      width: '50%',
+      height : '600px'
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        // await this.searchPage();
+      }
+    });
   }
 
   getDataFilter(){
