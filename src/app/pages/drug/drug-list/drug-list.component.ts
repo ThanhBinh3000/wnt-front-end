@@ -12,6 +12,7 @@ import { DrugDetailDialogComponent } from '../drug-detail-dialog/drug-detail-dia
 import { MatSort } from '@angular/material/sort';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import {UploadImageComponent} from "../../../component/upload-image/upload-image.component";
+import {UploadFileService} from "../../../services/file/upload-file.service";
 
 @Component({
   selector: 'drug-list',
@@ -36,6 +37,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     private donViTinhService : DonViTinhService,
     private warehouseLocationService : WarehouseLocationService,
     private productTypesService : ProductTypesService,
+    private uploadFileService : UploadFileService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -53,7 +55,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
-    this.searchPage();
+    await this.searchPage();
   }
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
@@ -68,14 +70,21 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   onUploadImageDialog(data){
-    console.log('ádasd')
     const dialogRef = this.dialog.open(UploadImageComponent, {
       width: '50%',
-      height : '600px'
+      height : '300px'
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-        // await this.searchPage();
+        let body = {
+          dataId : data.id,
+          dataType : 'thuocs'
+        }
+        this._service.uploadImage(result[0],body).then((res)=>{
+          if(res){
+            this.searchPage();
+          }
+        })
       }
     });
   }
@@ -125,6 +134,36 @@ export class DrugListComponent extends BaseComponent implements OnInit {
       data: drugId,
       width: '600px',
     });
+  }
+
+  // loadFileImg(){
+  //   this.dataTable.forEach(item => {
+  //     if(item.imagePreviewUrl){
+  //       this.uploadFileService.getUrl(item.imagePreviewUrl).subscribe( response => {
+  //         const blob = new Blob([response], { type: 'image/jpeg' });
+  //         const reader = new FileReader();
+  //         reader.onload = () => {
+  //           item.imageData = reader.result as string;
+  //         };
+  //         reader.readAsDataURL(blob);
+  //       });
+  //       console.log(item)
+  //     }
+  //   })
+  // }
+
+  async getUrl(path){
+    if(path){
+      console.log(path);
+      console.log(this.uploadFileService.getUrl(path));
+      // this.uploadFileService.getUrl(path).subscribe((then)=>{
+      //   console.log(then);
+      //   return then;
+      // });
+      return null;
+    }else{
+      return null;
+    }
   }
 
 }

@@ -104,14 +104,7 @@
               <div ng-switch-when="true">
                 <div ng-transclude="">
                   <div class="text-center ng-scope">
-                    <!--                              <a ng-show="displayImage &amp;&amp; gridItem.ImageThumbUrl"-->
-                    <!--                                 data-fancybox="10693846"-->
-                    <!--                                 href="https://s.webnhathuoc.com/Uploads/0279/Images/Products/7031845/1_12132021071645_preview.png"-->
-                    <!--                                 data-caption="Ảnh sản phẩm">-->
-                    <!--                                <img ng-src="s.webnhathuoc.com\Uploads\0279\Images\Products\7031845\1_12132021071645_thumb.png"-->
-                    <!--                                     alt="" style="width: 50px; height:50px;"-->
-                    <!--                                     src="https://s.webnhathuoc.com\Uploads\0279\Images\Products\7031845\1_12132021071645_thumb.png">-->
-                    <!--                              </a>-->
+                    <app-preview-image [heigh]="'50px'" [width]="'50px'" [pathImage]="data.imagePreviewUrl" ></app-preview-image>
                   </div>
                   <div class="d-flex gap-5 mt-3 ng-scope">
                     <div onclick="event.preventDefault();" class="flex-grow-1">
