@@ -136,22 +136,6 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     });
   }
 
-  // loadFileImg(){
-  //   this.dataTable.forEach(item => {
-  //     if(item.imagePreviewUrl){
-  //       this.uploadFileService.getUrl(item.imagePreviewUrl).subscribe( response => {
-  //         const blob = new Blob([response], { type: 'image/jpeg' });
-  //         const reader = new FileReader();
-  //         reader.onload = () => {
-  //           item.imageData = reader.result as string;
-  //         };
-  //         reader.readAsDataURL(blob);
-  //       });
-  //       console.log(item)
-  //     }
-  //   })
-  // }
-
   async getUrl(path){
     if(path){
       console.log(path);
