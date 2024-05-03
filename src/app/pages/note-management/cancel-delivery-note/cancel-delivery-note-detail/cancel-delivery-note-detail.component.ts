@@ -4,6 +4,7 @@ import { BaseComponent } from '../../../../component/base/base.component';
 import { LOAI_PHIEU } from '../../../../constants/config';
 import { PhieuXuatService } from '../../../../services/inventory/phieu-xuat.service';
 import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
+import { SETTING } from '../../../../constants/setting';
 
 @Component({
   selector: 'cancel-delivery-note-detail',
@@ -12,7 +13,13 @@ import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug
 })
 export class CancelDeliveryNoteDetailComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu xuất huỷ";
-  displayedColumns = ['#', 'maThuoc', 'image', 'tenThuoc', 'donVi', 'soLuong', 'gia', 'thanhTien', 'reason', 'solution'];
+
+  // Settings
+  displayImage = {
+    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS),
+  };
+
+  displayedColumns = this.getDisplayedColumns();
 
   constructor(
     injector: Injector,
@@ -32,6 +39,14 @@ export class CancelDeliveryNoteDetailComponent extends BaseComponent implements 
       created: [],
       createdByUserText: []
     })
+  }
+
+  getDisplayedColumns() {
+    var val = ['#', 'maThuoc', 'image', 'tenThuoc', 'donVi', 'soLuong', 'gia', 'thanhTien', 'reason', 'solution'];
+    if (!this.displayImage.activated) {
+      val = val.filter(e => e !== 'image');
+    }
+    return val;
   }
 
   async ngOnInit() {
