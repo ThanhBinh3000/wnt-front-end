@@ -82,12 +82,4 @@ export class ReceiptMedicalFeeNoteTableComponent extends BaseComponent implement
   async onDeleteForever(item: any){
 
   }
-
-  async onApprove(item: any){
-
-  }
-
-  async onCancel(item: any){
-
-  }
 }
