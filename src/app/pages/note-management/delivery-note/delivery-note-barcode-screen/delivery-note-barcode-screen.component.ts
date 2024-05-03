@@ -5,7 +5,7 @@ import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.servic
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DatePipe} from "@angular/common";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
-import {LOAI_KHACH_HANG, LOAI_PHIEU, LOAI_SAN_PHAM} from "../../../../constants/config";
+import {LOAI_PHIEU, LOAI_SAN_PHAM} from "../../../../constants/config";
 import {MESSAGE, STATUS_API} from "../../../../constants/message";
 import {DrugDetailDialogComponent} from "../../../drug/drug-detail-dialog/drug-detail-dialog.component";
 import {NgSelectComponent} from "@ng-select/ng-select";
@@ -104,7 +104,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
         this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
         this.formData.controls['khachHangMaKhachHang'].setValue(this.maKhachHangLe);
-        this.listKhachHangs = [{id: this.maKhachHangLe, tenKhachHang: 'Khách lẻ'}];
+        this.listKhachHangs = [{id: data.khachHangMaKhachHang, tenKhachHang: 'Khách lẻ', diaChi : '', soDienThoai : ''}];
       }
     });
     await this.searchListBacSy();
@@ -419,7 +419,8 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
       //nợ khách hàng
       let bodyPX = {
         khachHangMaKhachHang: $event.id,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc()
+        nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
+        ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
       this.pxService.getTotalDebtAmountCustomer(bodyPX).then(res => {
         if(res && res.statusCode == STATUS_API.SUCCESS){
