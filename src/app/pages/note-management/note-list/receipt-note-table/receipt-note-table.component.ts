@@ -4,6 +4,7 @@ import {PhieuNhapService} from "../../../../services/inventory/phieu-nhap.servic
 import {MatSort} from "@angular/material/sort";
 import {RECORD_STATUS} from "../../../../constants/config";
 import {SETTING} from "../../../../constants/setting";
+import {MESSAGE, STATUS_API} from "../../../../constants/message";
 
 @Component({
   selector: 'receipt-note-table',
@@ -13,7 +14,7 @@ import {SETTING} from "../../../../constants/setting";
 export class ReceiptNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Input() override formData = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'soPhieuNhap', 'ngayNhap', 'nhanVien', 'nhaCungCap', 'dienGiai', 'tongTien', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'soPhieuNhap', 'ngayNhap', 'tenNguoiTao', 'tenNhaCungCap', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   storeCodeForConnectivity = {
@@ -77,11 +78,15 @@ export class ReceiptNoteTableComponent extends BaseComponent implements OnInit, 
   }
 
   async onDelete(item: any){
-
+    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
   }
 
   async onLockNote(item: any){
-
+    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      item.locked = res.data.locked;
+      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   async onRestore(item: any){

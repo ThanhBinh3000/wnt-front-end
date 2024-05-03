@@ -1,4 +1,4 @@
-// Trong file login.module.ts hoặc một module khác chứa AppComponent
+// Trong file tra-cuu-don-thuoc-dien-tu.module.ts hoặc một module khác chứa AppComponent
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';

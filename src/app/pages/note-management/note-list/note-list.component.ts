@@ -54,11 +54,13 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
   isDeleted: boolean = false;
   noteTypes: Array<any> = [];
   listNhaThuoc: any[] = [];
-  listStaff: any[] = [];
-  listDoctor: any[] = [];
   listThuoc$ = new Observable<any[]>;
+  listNhanVien$ = new Observable<any[]>;
+  listBacSy$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
   listNCC$ = new Observable<any[]>;
+  searchNhanVienTerm$ = new Subject<string>();
+  searchBacSyTerm$ = new Subject<string>();
   searchThuocTerm$ = new Subject<string>();
   searchKhachHangTerm$ = new Subject<string>();
   searchNCCTerm$ = new Subject<string>();
@@ -132,7 +134,15 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
 
   ngOnInit() {
     this.titleService.setTitle(this.isDeleted ? "Khôi phục các chứng từ bị xóa" : "Tra cứu phiếu Nhập/Xuất");
-    this.getDataFilter();
+    this.route.queryParams.subscribe(params => {
+      const noteTypeId = params['noteTypeId'];
+      if(noteTypeId) {
+        this.formData.patchValue({
+          noteTypeId: Number(noteTypeId)
+        });
+      }
+    });
+    this.getDataFilter(this.getMaNhaThuoc());
   }
 
   async ngAfterViewInit() {
@@ -285,32 +295,69 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     await this.searchPage();
   }
 
-  getDataFilter() {
+  getDataFilter(maNhaThuoc: any) {
     // Danh sách nhà thuốc quản lý
     if(this.viewMultipleWarehousesFromReports.activated){
       this.nhaThuocsService.searchList({
-        tenNhaThuoc: 'QT Thủy Tiên CL',// test
         maNhaThuocCha: this.getMaNhaThuoc(),
         isConnectivity: false,
         hoatDong: true
       }).then((res) => {
         if (res?.statusCode == STATUS_API.SUCCESS) {
           this.listNhaThuoc = res.data;
+          if(!this.listNhaThuoc.some((i: any) => i.maNhaThuoc == this.getMaNhaThuoc())) {
+            this.listNhaThuoc.unshift(this.authService.getNhaThuoc());
+          }
         }
       });
     }
     // Danh sách nhân viên
-    this.userProfileService.searchList({maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
-        this.listStaff = res.data;
-      }
-    });
+    this.listNhanVien$ = this.searchNhanVienTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: maNhaThuoc,
+          };
+          console.log(body)
+          return from(this.userProfileService.searchPage(body).then((res) => {
+            if (res?.statusCode == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
     // Danh sách bác sĩ
-    this.bacSiesService.searchList({maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
-        this.listDoctor = res.data;
-      }
-    });
+    this.listBacSy$ = this.searchBacSyTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: maNhaThuoc,
+          };
+          return from(this.bacSiesService.searchPage(body).then((res) => {
+            if (res?.statusCode == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
     // Search thuốc
     this.listThuoc$ = this.searchThuocTerm$.pipe(
       debounceTime(500),
@@ -321,7 +368,8 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), typeService: LOAI_SAN_PHAM.THUOC
+            nhaThuocMaNhaThuoc: maNhaThuoc,
+            typeService: LOAI_SAN_PHAM.THUOC
           };
           return from(this.thuocsService.searchPage(body).then((res) => {
             if (res?.statusCode == STATUS_API.SUCCESS) {
@@ -344,7 +392,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: this.getMaNhaThuoc(),
+            maNhaThuoc: maNhaThuoc
           };
           return from(this.khachHangService.searchPage(body).then((res) => {
             if (res?.statusCode == STATUS_API.SUCCESS) {
@@ -367,7 +415,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: this.getMaNhaThuoc(),
+            maNhaThuoc: maNhaThuoc
           };
           return from(this.nhaCungCapService.searchPage(body).then((res) => {
             if (res?.statusCode == STATUS_API.SUCCESS) {
@@ -450,6 +498,22 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     await this.searchPage();
   }
 
+  async onImport() {
+
+  }
+
+  async onImportInvoice() {
+
+  }
+
+  async onExport() {
+
+  }
+
+  async onSync() {
+
+  }
+
   async onAcceptancePendingCheckedChanged($event: any){
     const checked = $event.target.checked;
     if(checked) {
@@ -460,30 +524,18 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     await this.searchPage();
   }
 
-  async resetSynchronizeSelectedItems() {
+  async onResetSyncMultiple() {
 
   }
 
-  async onExportInvoice() {
+  async onExportMultipleInvoice() {
 
   }
 
-  async deleteAllSelectedItems() {
+  async onDeleteMultiple() {
     const viewChild = this.noteTypes.find((item: any) => item.id == this.getNoteType())?.viewChild;
     if(viewChild){
       await viewChild.deleteMulti('Bạn thực sự muốn xóa các phiếu được chọn?');
     }
-  }
-
-  async onSelectXmlInvoiceFilesToImport() {
-
-  }
-
-  async onSynchoronizeNotes() {
-
-  }
-
-  async onExport() {
-
   }
 }

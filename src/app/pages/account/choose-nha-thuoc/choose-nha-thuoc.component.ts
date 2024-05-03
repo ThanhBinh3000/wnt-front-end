@@ -30,14 +30,12 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
 
   async chooseNhaThuoc() {
     if (this.nhaThuoc) {
-      this.loadingService.show();
       let res = await this.authService.chooseNhaThuoc({id: this.nhaThuoc.id});
       if (res && res.statusCode == 0) {
         this.authService.saveNhaThuoc(this.nhaThuoc);
         this.authService.saveUser(res.data);
         this.router.navigate(['management/home']).then(r => {
         });
-        this.loadingService.hide();
       }
     } else {
       this.notificationService.error(MESSAGE.ERROR, "Chưa chọn cơ sở!");

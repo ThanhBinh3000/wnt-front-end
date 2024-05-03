@@ -48,17 +48,17 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nhanVien">
+    <ng-container matColumnDef="tenNguoiTao">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên</th>
       <td mat-cell *matCellDef="let data">
-        <div class="text-left">{{ data.nhanVien }}</div>
+        <div class="text-left">{{ data.tenNguoiTao }}</div>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nhaCungCap">
+    <ng-container matColumnDef="tenNhaCungCap">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhà cung cấp</th>
       <td mat-cell *matCellDef="let data">
-        <div class="text-left">{{ data.nhaCungCap }}</div>
+        <div class="text-left">{{ data.tenNhaCungCap }}</div>
       </td>
     </ng-container>
 
@@ -126,7 +126,7 @@
         </div>
         <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
           <div class="baocao-actions-item">
-            <button *ngIf="receiptNoteRestore" type="button" class="btn btn-primary btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
+            <button *ngIf="receiptNoteRestore" type="button" class="btn btn-warning btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
             <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
           </div>
         </div>

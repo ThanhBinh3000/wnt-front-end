@@ -2,7 +2,12 @@
   <div class="card-bg">
     <form class="mb-3" [formGroup]="formData">
       <div class="input-group">
-        <input formControlName="textSearch" type="text" id="searchTen" name="searchTen"
+        <input class="form-control"
+               formControlName="textSearch"
+               type="text"
+               id="searchTen"
+               name="searchTen"
+               (keyup.enter)="searchPage()"
                placeholder="Tìm theo mã/tên/địa chỉ...">
         <div class="input-group-btn">
           <button class="btn btn-primary" (click)="searchPage()">

@@ -24,10 +24,9 @@ export class PaginationComponent implements OnInit {
 
   onPageSizeChange($event: any) {
     this.pageSizeChange.emit($event.value);
-    console.log(this.pageSizeChange);
   }
 
-  getPages(): number[] {
+  getPages(): { pages: number[], moreLeft: boolean, moreRight: boolean } {
     const totalPagesToShow = 9; // Số trang hiển thị tối đa
     const pages: number[] = [];
     const half = Math.floor(totalPagesToShow / 2);
@@ -51,8 +50,11 @@ export class PaginationComponent implements OnInit {
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    return pages;
-  }
 
+    let moreLeft = start > 1;
+    let moreRight = end < this.totalPages;
+
+    return { pages, moreLeft, moreRight };
+  }
 
 }
