@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BaseService} from "../base.service";
 import {ResponseData} from "../../models/response-data";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,10 @@ export class UploadFileService extends BaseService {
     super(httpClient, 'wnt-file','file');
   }
 
-  upload(body: any) {
-    const url = `/api/${this.gateway}/${this.controller}/upload`;
-    return this.httpClient.post<ResponseData>(url, body).toPromise();
+
+  getUrl(urlFile: string) : Observable<ArrayBuffer>  {
+    const url = `/api/${this.gateway}/${this.controller}/${urlFile}`;
+    return this.httpClient.get(url, { responseType: 'arraybuffer' });
   }
 
 }

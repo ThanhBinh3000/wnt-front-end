@@ -25,6 +25,9 @@ import {DateRangeFilterComponent} from "../date-range-filter/date-range-filter.c
 import {CustomDateAdapter} from "../../utils/custom-date-adapter";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
+import {NgxDropzoneModule} from "ngx-dropzone";
+import {UploadImageComponent} from "../upload-image/upload-image.component";
+import {PreviewImageComponent} from "../preview-image/preview-image.component";
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
     PaginationComponent,
     ModalComponent,
     DateRangeFilterComponent,
+    UploadImageComponent,
+    PreviewImageComponent,
     //pipes
     AppDatePipe,
     AppDateTimePipe,
@@ -64,7 +69,8 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
-    MatRadioGroup
+    MatRadioGroup,
+    NgxDropzoneModule
   ],
   exports: [
     CommonModule,
@@ -90,6 +96,8 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
     PaginationComponent,
     ModalComponent,
     DateRangeFilterComponent,
+    UploadImageComponent,
+    PreviewImageComponent,
     AppDatePipe,
     AppDateTimePipe,
     SanitizeHtmlPipe,

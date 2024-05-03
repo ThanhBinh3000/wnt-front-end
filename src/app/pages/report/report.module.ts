@@ -24,6 +24,8 @@ import {
 } from "@angular/material/table";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOutCommingDetailsByDay.component";
+import {NgApexchartsModule} from "ng-apexcharts";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,30 @@ import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOu
     RevenueDetailsByDayComponent,
     InOutCommingDetailsByDayComponent,
   ],
-  imports: [CommonModule, RouterOutlet, ReportRoutingModule, ComponentsModule, FormsModule, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatSort, MatSortHeader, MatTable, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    ReportRoutingModule,
+    ComponentsModule,
+    FormsModule,
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatFooterCell,
+    MatFooterRow,
+    MatFooterRowDef,
+    MatHeaderCell,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatRow,
+    MatRowDef,
+    MatSort,
+    MatSortHeader,
+    MatTable,
+    ReactiveFormsModule,
+    NgApexchartsModule,
+    NzModalModule,
+  ],
   exports: [],
 })
 export class ReportModule {
