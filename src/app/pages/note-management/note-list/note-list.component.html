@@ -19,7 +19,7 @@
                 placeholder="Chọn hoặc gõ vào để tìm..."
                 notFoundText="Không tìm thấy mục nào"
                 [clearable]="false"
-                (change)="searchPage()"
+                (change)="searchPage();getDataFilter($event.maNhaThuoc);getSearchType()"
               >
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span [ngOptionHighlight]="search">{{ item.tenNhaThuoc }}</span>
@@ -108,14 +108,19 @@
               <!--2: Nhan vien, Nguoi tiep nhan, Nguoi thuc hien-->
               <ng-select
                 *ngIf="formData.get('searchType')?.value == 2"
+                [items]="listNhanVien$ | async"
+                [typeahead]="searchNhanVienTerm$"
+                [minTermLength]="2"
+                [trackByFn]="trackByFn"
+                formControlName="createdByUserId"
                 appendTo="body"
                 appearance="outline"
-                [items]="listStaff"
-                formControlName="createdByUserId"
                 bindLabel="tenDayDu"
                 bindValue="id"
                 placeholder="Chọn hoặc gõ vào để tìm..."
                 notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchNhanVienTerm$.next('')"
               >
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
@@ -134,14 +139,19 @@
               <!--8: Bac si-->
               <ng-select
                 *ngIf="formData.get('searchType')?.value == 8"
+                [items]="listBacSy$ | async"
+                [typeahead]="searchBacSyTerm$"
+                [minTermLength]="2"
+                [trackByFn]="trackByFn"
+                formControlName="idDoctor"
                 appendTo="body"
                 appearance="outline"
-                [items]="listDoctor"
-                formControlName="idDoctor"
                 bindLabel="tenBacSy"
                 bindValue="id"
                 placeholder="Chọn hoặc gõ vào để tìm..."
                 notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchBacSyTerm$.next('')"
               >
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
@@ -175,13 +185,33 @@
           </div>
         </fieldset>
         <fieldset class="mb-3"
-                  *ngIf="[LOAI_PHIEU.PHIEU_NHAP,LOAI_PHIEU.PHIEU_TRA_LAI_NCC,LOAI_PHIEU.PHIEU_DU_TRU].includes(getNoteType()) && !enableCustomerToSupplier">
+                  *ngIf="[LOAI_PHIEU.PHIEU_NHAP,LOAI_PHIEU.PHIEU_TRA_LAI_NCC,LOAI_PHIEU.PHIEU_DU_TRU].includes(getNoteType())">
           <div class="row">
             <div class="col-md-3">
               <label>Nhà cung cấp</label>
             </div>
             <div class="col-md-9">
               <ng-select
+                *ngIf="enableCustomerToSupplier.activated"
+                [items]="listKhachHang$ | async"
+                [typeahead]="searchKhachHangTerm$"
+                [minTermLength]="2"
+                [trackByFn]="trackByFn"
+                formControlName="nhaCungCapMaNhaCungCap"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenKhachHang"
+                placeholder="Nhập mã, mã vạch hoặc tên..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchKhachHangTerm$.next('')"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                </ng-template>
+              </ng-select>
+              <ng-select
+                *ngIf="!enableCustomerToSupplier.activated"
                 [items]="listNCC$ | async"
                 [typeahead]="searchNCCTerm$"
                 [minTermLength]="2"
@@ -203,8 +233,7 @@
           </div>
         </fieldset>
         <fieldset class="mb-3"
-                  *ngIf="([LOAI_PHIEU.PHIEU_NHAP,LOAI_PHIEU.PHIEU_TRA_LAI_NCC,LOAI_PHIEU.PHIEU_DU_TRU].includes(getNoteType()) && enableCustomerToSupplier)
-                  || [LOAI_PHIEU.PHIEU_XUAT,LOAI_PHIEU.PHIEU_NHAP_TU_KH,LOAI_PHIEU.PHIEU_KHAM_BENH,LOAI_PHIEU.PHIEU_DICH_VU,LOAI_PHIEU.PHIEU_CHO_KHAM,LOAI_PHIEU.PHIEU_THU_TIEN].includes(getNoteType())">
+                  *ngIf="[LOAI_PHIEU.PHIEU_XUAT,LOAI_PHIEU.PHIEU_NHAP_TU_KH,LOAI_PHIEU.PHIEU_KHAM_BENH,LOAI_PHIEU.PHIEU_DICH_VU,LOAI_PHIEU.PHIEU_CHO_KHAM,LOAI_PHIEU.PHIEU_THU_TIEN].includes(getNoteType())">
           <div class="row">
             <div class="col-md-3">
               <label>Khách hàng</label>
@@ -292,19 +321,19 @@
                   || ((getNoteType() == LOAI_PHIEU.PHIEU_XUAT || getNoteType() == LOAI_PHIEU.PHIEU_TRA_LAI_NCC) && deliveryNoteImportExcel)
                   || (getNoteType() == LOAI_PHIEU.PHIEU_CHUYEN_KHO && transWarehouseImportExcel)">
                 <input type="button" value="Tải file" class="btn btn-default w-50"
-                       (click)="onSelectXmlInvoiceFilesToImport()"/>
-                <input type="button" value="Xuất file" title="Tải file" (click)="onExport()"
+                       (click)="onImport()"/>
+                <input type="button" value="Xuất file" (click)="onExport()"
                        class="btn btn-default w-50"/>
             </span>
             <div class="control-group d-flex justify-content-between gap-10 btn-group-flex" style="margin-top: 5px;">
               <span class="btn-outline flex-grow-1"
                     *ngIf="(getNoteType() == LOAI_PHIEU.PHIEU_NHAP || getNoteType() == LOAI_PHIEU.PHIEU_XUAT) && enableElectronicInvoice.activated">
                 <input type="button" value="Tải HĐ" class="btn btn-warning w-100"
-                       (click)="onSelectXmlInvoiceFilesToImport()"/>
+                       (click)="onImportInvoice()"/>
               </span>
               <span class="btn-outline flex-grow-1"
                     *ngIf="getNoteType() == LOAI_PHIEU.PHIEU_XUAT && autoSynchronizeDeliveryNote.activated">
-                <button (click)="onSynchoronizeNotes();" class="btn btn-primary w-100">Đồng bộ HĐ</button>
+                <button (click)="onSync()" class="btn btn-primary w-100">Đồng bộ HĐ</button>
               </span>
             </div>
           </div>
@@ -319,14 +348,14 @@
         <div *ngIf="formData.get('maNhaThuoc')?.value == getMaNhaThuoc()" class="baocao-actions">
           <button
             *ngIf="(isSuperUser() || isAdmin()) && getNoteType() == LOAI_PHIEU.PHIEU_XUAT && autoSynchronizeDeliveryNote.activated"
-            type="button" (click)="resetSynchronizeSelectedItems()" class="btn btn-primary btn-sm pull-right">Resync
+            type="button" (click)="onResetSyncMultiple()" class="btn btn-primary btn-sm pull-right">Resync
           </button>
           <button
             *ngIf="(getMaNhaThuoc() == '4479' || isSuperUser()) && getNoteType() == LOAI_PHIEU.PHIEU_XUAT"
-            type="button" (click)="onExportInvoice()" class="btn btn-sm pull-right">Xuất HĐ
+            type="button" (click)="onExportMultipleInvoice()" class="btn btn-sm pull-right">Xuất HĐ
           </button>
           <button *ngIf="isSuperUser() || isAdmin()"
-                  type="button" (click)="deleteAllSelectedItems()" class="btn btn-sm pull-right btn-danger">Xóa
+                  type="button" (click)="onDeleteMultiple()" class="btn btn-sm pull-right btn-danger">Xóa
           </button>
         </div>
       </div>

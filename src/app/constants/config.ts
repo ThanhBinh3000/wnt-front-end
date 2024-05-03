@@ -58,4 +58,11 @@ export const TRANG_THAI_PHIEU_KHAM = {
   LIEU_TRINH: 4
 }
 
+export const TRANG_THAI_DONG_BO = {
+  IGNORE: 0,
+  NOT_SYNC: 1,
+  FAILED: 2,
+  SYNCHRONIZED: 3,
+};
+
 export const PAGE_SIZE_DEFAULT = 10;

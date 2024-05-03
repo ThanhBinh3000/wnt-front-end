@@ -8,6 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   DrugStoreAddEditDialogComponent
 } from "../../pages/drug-store/drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
+import {SETTING} from "../../constants/setting";
 
 
 @Component({
@@ -66,7 +67,33 @@ export class HeaderComponent implements OnInit {
   }
 
   getMaNhaThuoc(){
-    return this.authService.getNhaThuoc().maNhaThuoc;
+    return this.authService.getNhaThuoc()?.maNhaThuoc;
+  }
+
+  getTenNhaThuoc(){
+    return this.authService.getNhaThuoc()?.tenNhaThuoc;
+  }
+
+  getMuNhaThuoc(){
+    let muNhaThuoc = '';
+    const nhaThuoc = this.authService.getNhaThuoc();
+    const enableConnectivityStoreToManageStore = this.authService.getSettingActivated(SETTING.ENABLE_CONNECTIVITY_STORE_TO_MANAGE_STORE);
+    const useClinicIntegration = this.authService.getSettingActivated(SETTING.USE_CLINIC_INTEGRATION);
+    if(nhaThuoc){
+      if(nhaThuoc.isConnectivity){
+        if(nhaThuoc.upgradeToPlus) muNhaThuoc = "LT+";
+        else if (enableConnectivityStoreToManageStore) muNhaThuoc = "QL + LT";
+        else muNhaThuoc = "LT";
+      } else if (nhaThuoc.isGeneralPharmacy){
+        if(useClinicIntegration) muNhaThuoc = "PK";
+        else muNhaThuoc = "CTY";
+      } else {
+        if(useClinicIntegration)muNhaThuoc = "PK";
+        else muNhaThuoc = "QL";
+      }
+      if (nhaThuoc.expiredDate) muNhaThuoc = "PLUS";
+    }
+    return muNhaThuoc;
   }
 
   async openChangePasswordDialog() {
