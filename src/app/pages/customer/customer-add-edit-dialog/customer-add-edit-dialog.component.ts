@@ -95,7 +95,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   getDataFilter() {
     // Nhóm khách hàng
     this.nhomKhachHangService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomKhachHang = res.data;
         this.listNhomKhachHang.unshift({ id: '', tenNhomKhachHang: 'Chọn nhóm khách hàng' });
       }

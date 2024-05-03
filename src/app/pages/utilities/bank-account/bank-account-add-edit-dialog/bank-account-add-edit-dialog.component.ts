@@ -43,7 +43,7 @@ export class BankAccountAddEditDialogComponent extends BaseComponent implements 
   getDataFilter(){
     // Danh sách ngân hàng
     this.banksService.searchList({}).then((res)=>{
-      if(res?.statusCode == STATUS_API.SUCCESS){
+      if(res?.status == STATUS_API.SUCCESS){
         this.listBank = res.data;
         this.listBank.forEach(i => {
           i['searchTerm'] = `${i.name} (${i.shortName})`;

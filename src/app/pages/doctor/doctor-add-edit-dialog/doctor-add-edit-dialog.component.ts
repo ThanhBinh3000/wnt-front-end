@@ -52,7 +52,7 @@ export class DoctorAddEditDialogComponent extends BaseComponent implements OnIni
   getDataGroup(){
     // Nhóm bác sỹ
     this.nhomBacSiService.searchList({}).then((res)=>{
-      if(res?.statusCode == STATUS_API.SUCCESS){
+      if(res?.status == STATUS_API.SUCCESS){
         this.listNhomBacSy = res.data
       }
     });

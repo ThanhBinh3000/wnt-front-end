@@ -37,7 +37,7 @@ export class SupplierRewardProgramDialogComponent extends BaseComponent implemen
 
   async ngOnInit() {
     if (this.object.id) {
-      this.getData();     
+      this.getData();
     }
   }
   async getData(){
@@ -46,7 +46,7 @@ export class SupplierRewardProgramDialogComponent extends BaseComponent implemen
     };
     this._service.searchList(body).then((res) => {
       this._service.searchList(body).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.dataTable = res.data;
         }
       });

@@ -124,7 +124,7 @@ export class WarehouseTransferNoteScreenComponent extends BaseComponent implemen
       maNhaThuocCha: this.authService.getNhaThuoc().maNhaThuoc,
       hoatDong: true
     }).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhaThuoc = res.data;
         this.formData.patchValue({targetStoreId: this.listNhaThuoc[0].id});
       }

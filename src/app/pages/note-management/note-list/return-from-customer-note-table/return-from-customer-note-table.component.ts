@@ -75,7 +75,7 @@ export class ReturnFromCustomerNoteTableComponent extends BaseComponent implemen
 
   async onLockNote(item: any){
     const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       item.locked = res.data.locked;
       this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
     }

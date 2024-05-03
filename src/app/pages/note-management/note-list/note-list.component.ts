@@ -303,7 +303,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
         isConnectivity: false,
         hoatDong: true
       }).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.listNhaThuoc = res.data;
           if(!this.listNhaThuoc.some((i: any) => i.maNhaThuoc == this.getMaNhaThuoc())) {
             this.listNhaThuoc.unshift(this.authService.getNhaThuoc());
@@ -325,7 +325,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
           };
           console.log(body)
           return from(this.userProfileService.searchPage(body).then((res) => {
-            if (res?.statusCode == STATUS_API.SUCCESS) {
+            if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }
           }));
@@ -348,7 +348,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             maNhaThuoc: maNhaThuoc,
           };
           return from(this.bacSiesService.searchPage(body).then((res) => {
-            if (res?.statusCode == STATUS_API.SUCCESS) {
+            if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }
           }));
@@ -372,7 +372,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             typeService: LOAI_SAN_PHAM.THUOC
           };
           return from(this.thuocsService.searchPage(body).then((res) => {
-            if (res?.statusCode == STATUS_API.SUCCESS) {
+            if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }
           }));
@@ -395,7 +395,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             maNhaThuoc: maNhaThuoc
           };
           return from(this.khachHangService.searchPage(body).then((res) => {
-            if (res?.statusCode == STATUS_API.SUCCESS) {
+            if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }
           }));
@@ -418,7 +418,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             maNhaThuoc: maNhaThuoc
           };
           return from(this.nhaCungCapService.searchPage(body).then((res) => {
-            if (res?.statusCode == STATUS_API.SUCCESS) {
+            if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }
           }));

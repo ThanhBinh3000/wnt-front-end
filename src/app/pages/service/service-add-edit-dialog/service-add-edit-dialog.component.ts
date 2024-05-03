@@ -67,13 +67,13 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
   getDataFilter() {
     // Nhóm thuốc
     this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.THUOC}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomDichVu = res.data
       }
     });
     // Phòng khám
     this.phongKhamService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listPhongKham = res.data
       }
     });

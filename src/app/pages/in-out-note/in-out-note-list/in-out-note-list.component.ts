@@ -92,7 +92,7 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
   getDataFilter() {
     // Nhóm khách hàng
     this.nhanVienService.searchListStaffManagement({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhanVien = res.data;
         this.listNhanVien.unshift({ id: '', tenDayDu: 'Tất cả' });
       }
@@ -109,13 +109,13 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
       }
       if(this.formData.get('loaiPhieu')?.value == 1 || this.formData.get('loaiPhieu')?.value == 7){
         this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
-          if (res?.statusCode == STATUS_API.SUCCESS) {
+          if (res?.status == STATUS_API.SUCCESS) {
             this.listKhachHang = res.data.content;
           }
         });
       }else{
         this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-          if (res?.statusCode == STATUS_API.SUCCESS) {
+          if (res?.status == STATUS_API.SUCCESS) {
             this.listNhaCungCap = res.data.content;
           }
         });

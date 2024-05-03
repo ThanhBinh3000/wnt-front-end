@@ -45,7 +45,7 @@ export class RegionInformationEditDialogComponent extends BaseComponent implemen
   //danh sách tỉnh thành
   async getRegionData() {
     this.utilitiesService.searchListTinhThanh({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTinhThanh = res.data;
         console.log(res.data);
       }
@@ -57,7 +57,7 @@ export class RegionInformationEditDialogComponent extends BaseComponent implemen
       regionId: regionId
     }
     this.utilitiesService.searchListQuanHuyen(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listQuanHuyen = res.data;
       }
     });
@@ -68,7 +68,7 @@ export class RegionInformationEditDialogComponent extends BaseComponent implemen
       cityId: cityId
     }
     this.utilitiesService.searchListPhuongXa(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listPhuongXa = res.data;
       }
     });
@@ -83,7 +83,7 @@ export class RegionInformationEditDialogComponent extends BaseComponent implemen
   async updateThongTinKhuVuc() {
     let body = this.formData.value;
     this.utilitiesService.updateThongTinKhuVuc(body, this.object.type).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS && res.data > 0) {
+      if (res?.status == STATUS_API.SUCCESS && res.data > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.SUCCESS);
       } else {
         this.notification.error(MESSAGE.ERROR, MESSAGE.ERROR);
