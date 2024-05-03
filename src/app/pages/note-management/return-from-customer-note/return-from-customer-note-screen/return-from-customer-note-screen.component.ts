@@ -93,7 +93,7 @@ export class ReturnFromCustomerNoteScreenComponent extends BaseComponent impleme
       this.khachHangService.searchList(body).then((res)=>{
         console.log(res)
         if(res && res.data){
-          // this.listNhaCungCap = res.data;
+          this.listKhachHang = res.data;
         }
       })
     }

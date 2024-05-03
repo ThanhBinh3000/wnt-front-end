@@ -28,6 +28,7 @@ import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {UploadImageComponent} from "../upload-image/upload-image.component";
 import {PreviewImageComponent} from "../preview-image/preview-image.component";
+import {ModalPreviewImageComponent} from "../preview-image/modal-preview-image/modal-preview-image.component";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {PreviewImageComponent} from "../preview-image/preview-image.component";
     DateRangeFilterComponent,
     UploadImageComponent,
     PreviewImageComponent,
+    ModalPreviewImageComponent,
     //pipes
     AppDatePipe,
     AppDateTimePipe,
@@ -98,6 +100,7 @@ import {PreviewImageComponent} from "../preview-image/preview-image.component";
     DateRangeFilterComponent,
     UploadImageComponent,
     PreviewImageComponent,
+    ModalPreviewImageComponent,
     AppDatePipe,
     AppDateTimePipe,
     SanitizeHtmlPipe,
