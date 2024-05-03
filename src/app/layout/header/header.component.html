@@ -378,28 +378,20 @@
             class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
           <div class="navbar-header-wnt-brand">
             <div id="header-wnt-brand" class="mb-0" title="Quản lý">
-              <a class="" href="/" id="loggedInStoreNameId" style="padding-right: 8px">Chi nhánh công ty TNHH Web Nhà
-                Thuốc</a>
+              <a href="/" style="padding-right: 8px">{{ getTenNhaThuoc() ?? 'Chưa chọn cơ sở' }}</a>
             </div>
           </div>
           <div class="navbar-header-hotline">
             <ul class="nav">
               <li class="dropdown menu">
-                <a id="on-open-form-how-to-use" style="color: black">
-                  <b>Hướng dẫn sử dụng</b>
-                  <i style="color: #35a6ca" class="fa-solid fa-hand-holding-medical"></i>
-                </a>
-              </li>
-              <li class="dropdown menu">
                 <a id="on-open-form-link-mobile" style="color: black">
-                  <b>Link tải app</b>
+                  <b>Link tải App</b>
                   <i style="color: #35a6ca" class="fa-solid fa-mobile-screen-button"></i>
                 </a>
               </li>
               <li class="dropdown menu">
                 <a style="color: black" href="/Community">
-                  <span style="position: absolute; left: 90px; top: -5px; z-index: 10000; background-color: red"
-                        class="label pull-right blink">NEW</span><b>Cộng đồng&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                  <b>Cộng đồng</b>
                   <i class="fas fa-video" style="color: #029eff;"></i>
                 </a>
               </li>
@@ -452,9 +444,11 @@
           <div style="padding-left: 0px" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav nav-wnt">
               <li>
-                <a href="/management/home"><strong style="color:#fff">WEB</strong> <strong id="middle-name"
-                                                                                      style="color:orange">NHÀ</strong>
-                  <strong id="last-name" style="color:#28CC28">THUỐC</strong> <strong style="color:#fff">QL</strong></a>
+                <a href="/management/home">
+                  <strong style="color:#fff">WEB </strong>
+                  <strong id="middle-name" style="color:orange">NHÀ </strong>
+                  <strong id="last-name" style="color:#28CC28">THUỐC </strong>
+                  <strong style="color:#fff">{{getMuNhaThuoc()}}</strong></a>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('system', 'block') "
                   (mouseleave)="mouseLeave('system','none')">
@@ -738,15 +732,7 @@
                 </ul>
               </li>
             </ul>
-            <div onclick="" class="feedback-cus" title="Tiếp nhận yêu cầu hỗ trợ"></div>
-            <div onclick="" class="feedback-cus-desc">
-              <div class="talk-bubble tri-right round btm-left-in">
-                <div class="talktext">
-                  <p class="mb-0 mt-0">Tiếp nhận yêu cầu hỗ trợ</p>
-                  <p class="mb-0 mt-0">(Hỗ trợ từ 8h-22h các ngày trong tuần)</p>
-                </div>
-              </div>
-            </div>
+            <div title="Tiếp nhận yêu cầu hỗ trợ" id="on-open-form-feedback-cus"></div>
           </div>
         </div>
       </div>

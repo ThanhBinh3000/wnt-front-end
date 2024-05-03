@@ -2,9 +2,10 @@ import {AfterViewInit, Component, EventEmitter, Injector, Input, OnInit, ViewChi
 import {BaseComponent} from "../../../../component/base/base.component";
 import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {MatSort} from "@angular/material/sort";
-import { RECORD_STATUS } from '../../../../constants/config';
+import {RECORD_STATUS, TRANG_THAI_DONG_BO} from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.service";
+import {MESSAGE, STATUS_API} from "../../../../constants/message";
 
 @Component({
   selector: 'delivery-note-table',
@@ -77,12 +78,23 @@ export class DeliveryNoteTableComponent extends BaseComponent implements OnInit,
     return this.dataSource.data.map((i: any) => i.tongTien).reduce((acc, value) => acc + value, 0);
   }
 
-  async onDelete(item: any){
+  getSyncStatusColor(item: any) {
+    if (item.SynStatusId == TRANG_THAI_DONG_BO.SYNCHRONIZED) return '#00B8C7';
+    if (item.SynStatusId == TRANG_THAI_DONG_BO.FAILED) return '#FC0F0F';
+    if (item.SynStatusId == TRANG_THAI_DONG_BO.NOT_SYNC) return '#C98209';
+    return '';
+  }
 
+  async onDelete(item: any){
+    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
   }
 
   async onLockNote(item: any){
-
+    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      item.locked = res.data.locked;
+      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   async onRestore(item: any){
@@ -90,6 +102,14 @@ export class DeliveryNoteTableComponent extends BaseComponent implements OnInit,
   }
 
   async onDeleteForever(item: any){
+
+  }
+
+  async onApprove(item: any){
+
+  }
+
+  async onCancel(item: any){
 
   }
 }

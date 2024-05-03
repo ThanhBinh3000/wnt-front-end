@@ -5,6 +5,7 @@ import {MatSort} from "@angular/material/sort";
 import { RECORD_STATUS } from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.service";
+import {MESSAGE, STATUS_API} from "../../../../constants/message";
 
 @Component({
   selector: 'return-to-supplier-note-table',
@@ -70,11 +71,15 @@ export class ReturnToSupplierNoteTableComponent extends BaseComponent implements
   }
 
   async onDelete(item: any){
-
+    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
   }
 
   async onLockNote(item: any){
-
+    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
+    if (res && res.statusCode == STATUS_API.SUCCESS) {
+      item.locked = res.data.locked;
+      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   async onRestore(item: any){

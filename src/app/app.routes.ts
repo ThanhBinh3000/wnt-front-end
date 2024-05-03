@@ -16,6 +16,16 @@ export const routes: Routes = [
       import('./pages/login/login.module').then((m) => m.LoginModule)
   },
   {
+    path: 'tiep-nhan',
+    loadChildren: () =>
+      import('./pages/tiep-nhan/tiep-nhan.module').then((m) => m.TiepNhanModule)
+  },
+  {
+    path: 'tra-cuu-don-thuoc-dien-tu',
+    loadChildren: () =>
+      import('./pages/tra-cuu-don-thuoc-dien-tu/tra-cuu-don-thuoc-dien-tu.module').then((m) => m.TraCuuDonThuocDienTuModule)
+  },
+  {
     path: '401',
     component: NotAuthenComponent
   },

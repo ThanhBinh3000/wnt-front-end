@@ -492,7 +492,7 @@ export class BaseComponent {
     this.location.back();
   }
 
-  goToUrl(url,id?){
+  goToUrl(url: any, id?: any){
     this.router.navigate([url,id]);
   }
 }

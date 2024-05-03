@@ -83,7 +83,7 @@
         </div>
         <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
           <div class="baocao-actions-item">
-            <button type="button" class="btn btn-primary btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
+            <button type="button" class="btn btn-warning btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
             <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
           </div>
         </div>
