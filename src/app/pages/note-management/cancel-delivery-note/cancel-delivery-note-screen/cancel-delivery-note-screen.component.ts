@@ -9,6 +9,7 @@ import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug
 import { DatePipe } from '@angular/common';
 import { MESSAGE } from '../../../../constants/message';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { SETTING } from '../../../../constants/setting';
 
 @Component({
   selector: 'cancel-delivery-note-screen',
@@ -17,8 +18,14 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 })
 export class CancelDeliveryNoteScreenComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu xuất huỷ";
-  displayedColumns = ['#', 'stt', 'image', 'ten', 'donVi', 'soLuong', 'gia', 'thanhTien', 'lyDo', 'bienPhapXuLy'];
   listThuoc: any[] = [];
+
+  // Settings
+  displayImage = {
+    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS),
+  };
+
+  displayedColumns = this.getDisplayedColumns();
 
   constructor(
     injector: Injector,
@@ -26,7 +33,7 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
     private _service: PhieuXuatService,
     private thuocService: ThuocService,
     private donViTinhService: DonViTinhService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -38,6 +45,8 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
       dienGiai: '',
       noteDate: [],
       storeId: [0],
+      createdByUserText: [],
+      created: [],
       //trường không dùng
       backPaymentAmount: [0],
       connectivityStatusID: [0],
@@ -46,6 +55,14 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
       paymentScore: [0],
       vat: [0],
     })
+  }
+
+  getDisplayedColumns() {
+    var val = ['#', 'stt', 'image', 'ten', 'donVi', 'soLuong', 'gia', 'thanhTien', 'lyDo', 'bienPhapXuLy'];
+    if (!this.displayImage.activated) {
+      val = val.filter(e => e !== 'image');
+    }
+    return val;
   }
 
   async ngOnInit() {
@@ -57,7 +74,12 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
       let data = await this.detail(this.idUrl)
       console.log(data);
       this.formData.patchValue(data);
-      data.chiTiets.forEach(item => item.isEditing = false);
+      data.chiTiets.forEach(item => {
+        item.isEditing = false;
+        item.listDonViTinhs = item.thuocs.listDonViTinhs;
+        item.tenThuoc = item.thuocs.tenThuoc;
+        item.maThuoc = item.thuocs.maThuoc;
+      });
       this.dataTable.push(...data.chiTiets);
     }
     else {
@@ -106,15 +128,15 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
     this.thuocService.getDetail($event).then((res) => {
       if (res && res.data) {
         const data = res.data;
-        console.log(data);
         this.dataTable[0].thuocThuocId = data.id;
-        this.dataTable[0].maThuocText = data.maThuoc;
-        this.dataTable[0].tenThuocText = data.tenThuoc;
+        this.dataTable[0].maThuoc = data.maThuoc;
+        this.dataTable[0].tenThuoc = data.tenThuoc;
         this.dataTable[0].soLuong = 1;
         this.dataTable[0].giaNhap = data.giaNhap;
         this.dataTable[0].giaXuat = data.giaNhap;
         this.dataTable[0].donViTinhMaDonViTinh = data.listDonViTinhs[0].id;
         this.dataTable[0].listDonViTinhs = data.listDonViTinhs;
+        this.dataTable[0].imagePreviewUrl = data.imagePreviewUrl;
         this.dataTable[0].reason = '';
         this.dataTable[0].solution = '';
         this.dataTable[0].heSo = data.heSo;
@@ -138,7 +160,7 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
   async onAddNew(item: any) {
     //kiểm tra hàng âm kho
     if (item.ton <= 0) {
-      this.notification.error(MESSAGE.ERROR, 'MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY');
+      this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
       return;
     }
     //kiểm tra đã có thuốc chưa
@@ -196,7 +218,6 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
   }
 
   async getItemAmount(item: any) {
-    console.log(item);
     item.tongTien = item.giaXuat * item.soLuong;
     item.retailQuantity = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.soLuong : item.soLuong * item.heSo;
     item.retailPrice = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.giaXuat : item.giaXuat / item.heSo;
@@ -227,6 +248,7 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
       this.notification.error(MESSAGE.ERROR, MESSAGE.DATA_EMPTY);
       return;
     }
+    this.updateTotal();
     let body = this.formData.value;
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
     this.save(body).then(res => {
@@ -234,6 +256,10 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
         this.router.navigate(['/management/note-management/cancel-delivery-note-detail', res.id]);
       }
     });
+  }
+
+  async onLockNote(){
+
   }
 
   @HostListener('document:keydown', ['$event'])

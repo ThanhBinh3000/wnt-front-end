@@ -1,57 +1,56 @@
-<div class="modal fade" id="drug-update-batch-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title"> Cập nhật lô/hạn dùng cho thuốc <b class="ng-binding">Klacid 60ml</b></h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title"> Cập nhật lô/hạn dùng cho thuốc <b>{{drug.tenThuoc}}</b></h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <form [formGroup]="formData">
                     <div class="col-md-12">
                         <table class="table table table-bordered table-userpicker">
                             <tbody>
                                 <tr>
                                     <td><b>Mã-Tên:</b></td>
                                     <td>
-                                        <span style="color:seagreen" class="ng-binding">
-                                            TH0482-
-                                        </span><span class="ng-binding">Klacid 60ml</span>
+                                        <span style="color:seagreen">
+                                            {{drug.maThuoc}}-
+                                        </span><span>{{drug.tenThuoc}}</span>
                                     </td>
                                 </tr>
-                                <tr ng-show="type" class="ng-hide">
+                                <tr *ngIf="drug.isShowUsage">
                                     <td><b>Chọn lô/hạn dùng:</b></td>
                                     <td>
-                                        <select class="form-control ng-pristine ng-untouched ng-valid" ng-change="onBatchChange()" ng-model="batchModel">
+                                        <select class="form-control ng-pristine" ng-change="onBatchChange()" ng-model="batchModel">
                                             <option value="" selected="selected">Chọn lô hạn dùng</option>
-                                            <!-- ngRepeat: i in batchs -->
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Số lô:</b></td>
-                                    <td><input type="text" id="txtBatchNumber" class="form-control mb-0 ng-pristine ng-valid ng-touched" ng-model="drug.drugBatch" enter-key-capture="updateDrugBatch()"></td>
+                                    <td><input #batchInput type="text" id="txtBatchNumber" class="form-control mb-0" formControlName="batchNumber" (keydown.enter)="updateDrugBatch()"></td>
                                 </tr>
                                 <tr>
                                     <td><b>Hạn dùng:</b></td>
                                     <td>
-                                        <input class="input-datetime form-control mb-0 text-box single-line ng-pristine ng-untouched ng-valid" type="text" ng-model="drug.drugDate" placeholder="Nhập 010122 => 01/01/2022" ng-change="onExpiredDateChange()" enter-key-capture="updateDrugBatch()">
+                                        <input class="input-datetime form-control mb-0 text-box single-line" type="text" formControlName="expiredDate" placeholder="Nhập 010122 => 01/01/2022" (ngModelChange)="onExpiredDateChange()" (keydown.enter)="updateDrugBatch()">
                                     </td>
                                 </tr>
-                                <tr ng-show="type" class="ng-hide">
+                                <tr *ngIf="drug.isShowUsage">
                                     <td><b>Cách dùng:</b></td>
                                     <td>
-                                        <input class="form-control mb-0 ng-pristine ng-untouched ng-valid" type="text" ng-model="drug.usage" enter-key-capture="updateDrugBatch()">
+                                        <input class="form-control mb-0" type="text" formControlName="usage" (keydown.enter)="updateDrugBatch()">
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </form>  
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">Cập nhật</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="updateDrugBatch()">Cập nhật</button>
         </div>
     </div>
 </div>

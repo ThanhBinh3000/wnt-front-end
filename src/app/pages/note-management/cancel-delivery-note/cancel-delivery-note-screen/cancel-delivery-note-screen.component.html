@@ -57,10 +57,10 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="image">
+            <ng-container *ngIf="displayImage.activated" matColumnDef="image">
                 <th style="width: 6%;" mat-header-cell *matHeaderCellDef> Ảnh</th>
                 <td mat-cell *matCellDef="let data">
-
+                    <app-preview-image [heigh]="'50px'" [width]="'50px'" [pathImage]="data.imagePreviewUrl" ></app-preview-image>
                 </td>
             </ng-container>
 
@@ -75,11 +75,11 @@
                     </div>
                     <div *ngIf="!data.isEditing">
                         <span style="color:seagreen">
-                            <span>{{data.maThuocText}}-</span>
+                            <span>{{data.maThuoc}}-</span>
                         </span>
                         <span class="btn-link tooltip-content-drug">
                             <span (click)="openDetailDialog(data.thuocThuocId)"
-                                title="xem thông tin chi tiết">{{data.tenThuocText}}</span>
+                                title="xem thông tin chi tiết">{{data.tenThuoc}}</span>
                         </span>
                     </div>
                 </td>
@@ -171,17 +171,16 @@
                 <tr>
                     <td colspan="2">
                         <div class="d-flex justify-content-center align-items-center gap-10">
-                            <input type="button" value="Quay lại" class="btn btn-default"
-                                ng-click="onReturnNotesListing(); $event.preventDefault(); $event.stopPropagation();">
+                            <a href="/management/note-management/list" type="button" value="Quay lại" class="btn btn-default">Quay lại</a>
                             <input type="submit" value="Ghi Phiếu - F9" id="save-note-btn-id" title="F9-Ghi phiếu"
                                 class="btn btn-primary" (click)="createUpdate()">
 
                             <span *ngIf="formData.value?.id > 0">
                                 <span>&nbsp;</span>
-                                <a href="/PhieuXuats/delete/35155539" class="btn btn-danger btn btn-danger">Xóa
-                                    phiếu</a>
+                                <a class="btn btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất huỷ có số phiếu \'' + formData.value?.soPhieuXuat + '\' ?', formData.value?.id)">
+                                    Xóa</a>
                                 <span>&nbsp;</span>
-                                <a ng-click="onLockNote(); $event.preventDefault(); $event.stopPropagation();"
+                                <a (click)="onLockNote()"
                                     title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>
                             </span>
                         </div>
@@ -191,7 +190,7 @@
                 <tr *ngIf="formData.value?.id > 0">
                     <td colspan="2" class="text-center">
                         <div class="d-flex justify-content-center align-items-center gap-10">
-                            <span>[Người lập: Đỗ Thanh Mai] - [Ngày lập: 16/03/2024]</span>
+                            <span>[Người lập: {{formData.value?.createdByUserText}}] - [Ngày lập: {{formData.value?.created | appDate}}]</span>
                         </div>
                     </td>
                 </tr>
