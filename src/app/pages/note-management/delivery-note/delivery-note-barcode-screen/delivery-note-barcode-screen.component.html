@@ -220,7 +220,8 @@
                                  appearance="outline" [items]="listKhachHangs" bindLabel="tenKhachHang"
                                  bindValue="id" placeholder="Tra cứu theo tên..."
                                  notFoundText="Không tìm thấy mục nào"
-                                 (search)="searchPageKhachHang($event)">
+                                 (search)="searchPageKhachHang($event)"
+                                 (change)="onCustomerChange($event)">
                         <ng-template ng-label-tmp let-item="item">
                           <span >{{item.tenKhachHang}}</span>
                         </ng-template>
@@ -247,7 +248,7 @@
               <tr ng-show="selectedCustomer.TypeId != 1" class="ng-hide">
                 <td style="text-align: left;width:100px"><label>Tổng nợ:</label></td>
                 <td style="text-align: left; color: red">
-                  <label class="ng-binding">0</label>
+                  <label class="ng-binding">{{totalDebtAmount | number}}</label>
                 </td>
               </tr>
               <tr>
@@ -260,7 +261,7 @@
                            refresh-delay="500" (change)="onPaymentScoreChange()" placeholder="Điểm trả"
                            id="paymentScore">
                     <label class="mb-0 d-flex align-items-center gap-5"><span>&nbsp;/</span><span
-                      class="text-danger ng-binding">0.00</span> (điểm)</label>
+                      class="text-danger ng-binding">{{totalScore | number}}</span> (điểm)</label>
 
                   </div>
                 </td>
@@ -323,11 +324,11 @@
                 <td style="text-align: left;"><label>Tổng tiền:</label></td>
                 <td style="text-align: left;">
                   <label class="control-label ng-binding"
-                         *ngIf="!allowChangeTotalAmountInDeliveryNote.activate">{{formData.value?.tongTien | number}}</label>
+                         *ngIf="!allowChangeTotalAmountInDeliveryNote">{{formData.value?.tongTien | number}}</label>
                   <input type="text"
                          class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
                          style="width: 100%" formControlName="tongTien"
-                         awnum="app-int-number" *ngIf="allowChangeTotalAmountInDeliveryNote.activate"
+                         awnum="app-int-number" *ngIf="allowChangeTotalAmountInDeliveryNote"
                          ng-keypress="onTotalAmountChanged($event)">
                 </td>
               </tr>

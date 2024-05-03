@@ -5,7 +5,7 @@ import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.servic
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DatePipe} from "@angular/common";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
-import {LOAI_PHIEU, LOAI_SAN_PHAM} from "../../../../constants/config";
+import {LOAI_KHACH_HANG, LOAI_PHIEU, LOAI_SAN_PHAM} from "../../../../constants/config";
 import {MESSAGE, STATUS_API} from "../../../../constants/message";
 import {DrugDetailDialogComponent} from "../../../drug/drug-detail-dialog/drug-detail-dialog.component";
 import {NgSelectComponent} from "@ng-select/ng-select";
@@ -28,7 +28,8 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   expandLabel: string = "[-]";
   showMoreForm: boolean = true;
   maKhachHangLe : number = 0;
-  toTalScore: number = 0;
+  totalScore: number = 0;
+  totalDebtAmount: number = 0;
   debtValue: number = 0;
   debtLabel: string = 'Còn nợ';
 
@@ -54,7 +55,8 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     private thuocService: ThuocService,
     private bacsyService : BacSiesService,
     private datePipe: DatePipe,
-    private paymentTypeService: PaymentTypeService
+    private paymentTypeService: PaymentTypeService,
+    private pxService: PhieuXuatService
   ) {
 
     super(injector, _service);
@@ -135,7 +137,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         limit: 25,
         page: 0
       }
-      this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
+      this.khachHangService.searchPage(body).then((res) => {
         if (res?.statusCode == STATUS_API.SUCCESS) {
           this.listKhachHangs = res.data.content;
           this.listKhachHangs.push({id: this.maKhachHangLe, tenKhachHang: 'Khách lẻ'});
@@ -363,7 +365,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   //điểm khach hang
   async onPaymentScoreChange(){
     let paymentScore = this.formData.get('paymentScore')?.value;
-    if(paymentScore > this.toTalScore){
+    if(paymentScore > this.totalScore){
       this.formData.controls['paymentScore'].setValue(0);
     }
     await this.onPaymentFull();
@@ -397,6 +399,35 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
       displayedColumns = displayedColumns.filter(x => x !== 'anh');
     }
     return displayedColumns;
+  }
+
+  //lấy thông tin điểm, nợ khách hàng
+  onCustomerChange($event : any){
+    console.log($event);
+    if($event.id > 0){
+      //điểm tích luỹ
+      let bodyKH = {
+        id: $event.id,
+        maNhaThuoc: this.getMaNhaThuoc()
+      }
+      this.khachHangService.getPaymentScore(bodyKH).then(res => {
+        if(res && res.statusCode == STATUS_API.SUCCESS){
+          console.log(res.data);
+          this.totalScore = res.data;
+        }
+      });
+      //nợ khách hàng
+      let bodyPX = {
+        khachHangMaKhachHang: $event.id,
+        nhaThuocMaNhaThuoc: this.getMaNhaThuoc()
+      }
+      this.pxService.getTotalDebtAmountCustomer(bodyPX).then(res => {
+        if(res && res.statusCode == STATUS_API.SUCCESS){
+          this.totalDebtAmount = res.data;
+          console.log(res.data);
+        }
+      });
+    }
   }
 
   @HostListener('window:keyup', ['$event'])

@@ -27,4 +27,8 @@ export class KhachHangService extends BaseService {
     const url = `/api/wnt-customer/khach-hangs/search-page`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+  getPaymentScore(body : any){
+    const url = `/api/wnt-customer/khach-hangs/get-payment-score`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

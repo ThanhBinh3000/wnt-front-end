@@ -1,10 +1,10 @@
-<div class="card-bg ng-scope" ng-controller="DeliveryNoteController">
+<div class="card-bg" >
     <h2 class="card-title text-center mt-0"><b>PHIẾU BÁN HÀNG</b></h2>
     <div class="text-center card-desc">
         <div class="card-code">
-            Mã số: <strong>641</strong>
+            Mã số: <strong>{{formData.value?.soPhieuXuat}}</strong>
         </div>
-        <span id="" style="width: 10%">Ngày: <strong>23/03/2024 18:11</strong></span>
+        <span id="" style="width: 10%">Ngày: <strong>{{formData.value?.ngayXuat | appDateTime}}</strong></span>
     </div>
 
     <input value="25/03/2024 15:44" data-val="true" data-val-date="The field NoteDate must be a date."
@@ -20,7 +20,7 @@
         <tbody>
             <tr>
                 <td style="text-align: left" class="w-50">
-                    <span class="control-label"><b>Khách hàng:</b> Khách hàng lẻ</span>
+                    <span class="control-label"><b>Khách hàng:</b> {{formData.value?.khachHangMaKhachHangText}}</span>
                     <span class="field-validation-valid text-danger" data-valmsg-for="Customer"
                         data-valmsg-replace="true"></span>
                     <span ng-show="model.IsZaloOA">
@@ -29,7 +29,7 @@
                         </span>
                     </span>
                 </td>
-                <td style="text-align: left"><span class="control-label"><b>Bác sỹ:</b> Không có</span></td>
+                <td style="text-align: left"><span class="control-label"><b>Bác sỹ:</b> {{formData.value?.bacSyMaBacSyTxt}}</span></td>
                 <td style="text-align: right" ng-show="model.Score > 0"><span class="control-label ng-binding"><b>Tổng
                             điểm tích lũy:</b>14,530.40</span></td>
                 <td style="text-align: right">
@@ -59,7 +59,7 @@
             </tr>
         </thead>
         <tbody>
-            
+
             <tr ng-repeat="i in model.NoteItems" class="ng-scope">
                 <td>
                     <a href=""
@@ -85,7 +85,7 @@
                         id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:109617822,&quot;NoteTypeId&quot;:2,&quot;DrugId&quot;:10753216,&quot;DrugCode&quot;:&quot;TH511&quot;,&quot;DrugName&quot;:&quot;Test xóa&quot;,&quot;RetailPrice&quot;:0,&quot;Price&quot;:0,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:1,&quot;TotalAmount&quot;:0,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:0,&quot;TotalAmountWithDiscount&quot;:0,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:-1,&quot;RemainQuantity&quot;:-1,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:null,&quot;ExpiredDate&quot;:null,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:815778,&quot;SelectedUnitName&quot;:&quot;test xóa 2&quot;,&quot;UnitId&quot;:815778,&quot;RetailUnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;RetailUnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;test xóa 2&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
                         <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
                             Test xóa
-                            <span class="show-tooltip-content-drug ng-binding" 
+                            <span class="show-tooltip-content-drug ng-binding"
                                 ng-bind-html="i.TitleDrug"></span>
                         </span>
                     </span>
@@ -107,7 +107,7 @@
                         id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:109617822,&quot;NoteTypeId&quot;:2,&quot;DrugId&quot;:10753216,&quot;DrugCode&quot;:&quot;TH511&quot;,&quot;DrugName&quot;:&quot;Test xóa&quot;,&quot;RetailPrice&quot;:0,&quot;Price&quot;:0,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:1,&quot;TotalAmount&quot;:0,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:0,&quot;TotalAmountWithDiscount&quot;:0,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:-1,&quot;RemainQuantity&quot;:-1,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:null,&quot;ExpiredDate&quot;:null,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:815778,&quot;SelectedUnitName&quot;:&quot;test xóa 2&quot;,&quot;UnitId&quot;:815778,&quot;RetailUnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;RetailUnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;test xóa 2&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
                         <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
                             Test xóa
-                            <span class="show-tooltip-content-drug ng-binding" 
+                            <span class="show-tooltip-content-drug ng-binding"
                                 ng-bind-html="i.TitleDrug"></span>
                         </span>
                     </span>
@@ -129,7 +129,7 @@
                         id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:109617822,&quot;NoteTypeId&quot;:2,&quot;DrugId&quot;:10753216,&quot;DrugCode&quot;:&quot;TH511&quot;,&quot;DrugName&quot;:&quot;Test xóa&quot;,&quot;RetailPrice&quot;:0,&quot;Price&quot;:0,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:1,&quot;TotalAmount&quot;:0,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:0,&quot;TotalAmountWithDiscount&quot;:0,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:-1,&quot;RemainQuantity&quot;:-1,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:null,&quot;ExpiredDate&quot;:null,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:815778,&quot;SelectedUnitName&quot;:&quot;test xóa 2&quot;,&quot;UnitId&quot;:815778,&quot;RetailUnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;RetailUnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:815778,&quot;UnitName&quot;:&quot;test xóa 2&quot;,&quot;Factors&quot;:1}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;test xóa 2&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
                         <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
                             Test xóa
-                            <span class="show-tooltip-content-drug ng-binding" 
+                            <span class="show-tooltip-content-drug ng-binding"
                                 ng-bind-html="i.TitleDrug"></span>
                         </span>
                     </span>
@@ -200,26 +200,26 @@
             <tr>
                 <td style="text-align: left" class="w-50">
                     <span class="control-label">
-                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>0</span>
+                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>{{formData.value?.tongTien | number}}</span>
                     </span>
                 </td>
                 <td style="text-align: left">
                     <span class="control-label">
-                        <b>C.K (VNĐ): &nbsp;</b><span>0</span>
+                        <b>C.K (VNĐ): &nbsp;</b><span>{{formData.value?.discount | number}}</span>
                     </span>
                 </td>
                 <td style="text-align: right">
                     <span class="control-label">
-                        <b>Điểm trả: &nbsp;</b><span>0</span>
+                        <b>Điểm trả: &nbsp;</b><span>{{formData.value?.daTra | number}}</span>
                     </span>
                 </td>
                 <td style="text-align: right">
                     <span class="control-label">
                         <b>Đã trả: </b><span>0</span>
                     </span>
-                    <span class="d-block mt-2 mb-2"><b>Hình thức thanh toán:</b> Tiền mặt</span>
+                    <span class="d-block mt-2 mb-2"><b>Hình thức thanh toán:</b> {{formData.value?.paymentTypeId == 0 ? 'Tiền mặt' : 'Chuyển khoản'}}</span>
                     <span id="spDebt" class="text-danger">
-                        <strong>Trả lại:</strong> 0
+                        <strong>Trả lại:</strong> {{formData.value?.backPaymentAmount | number}}
                     </span>
                 </td>
             </tr>
@@ -231,17 +231,17 @@
             <tr>
                 <td class="text-left">
                     <span class="control-label"><b>Diễn giải: </b></span>
-                    <span class="control-label"></span>
+                    <span class="control-label">{{formData.value?.dienGiai}}</span>
                 </td>
 
-                <td class="text-right">
-                    <span class="control-label">[<b>Người lập:</b> </span>
-                    <span class="control-label ng-binding">Thu Hằng</span>
-                </td>
-                <td class="text-right">
-                    <span class="control-label">[<b>Ngày lập:</b> </span>
-                    <span class="control-label">23/03/2024]</span>
-                </td>
+              <td class="text-right">
+                <span class="control-label">[<b>Người lập: </b> </span>
+                <span class="control-label ng-binding">{{formData.value?.createdByUserText}}]</span>
+              </td>
+              <td class="text-right">
+                <span class="control-label">[<b>Ngày lập: </b> </span>
+                <span class="control-label">{{formData.value?.created | appDate}}]</span>
+              </td>
             </tr>
         </tbody>
     </table>
