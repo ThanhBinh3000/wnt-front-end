@@ -21,4 +21,9 @@ export class PhieuXuatService extends BaseService {
     const url = `/api/wnt-inventory/phieu-xuats/unlock`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  getTotalDebtAmountCustomer(body: any) {
+    const url = `/api/wnt-inventory/phieu-xuats/get-total-debt-amount-customer`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }
