@@ -44,7 +44,7 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
       this.genNoteNumber(this.loaiPhieu);
     }
   }
-  
+
   expandForm() {
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
@@ -60,13 +60,13 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
       }
       if(this.loaiPhieu == 1 || this.loaiPhieu == 7){
         this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
-          if (res?.statusCode == STATUS_API.SUCCESS) {
+          if (res?.status == STATUS_API.SUCCESS) {
             this.listObject = res.data.content;
           }
         });
       }else{
         this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-          if (res?.statusCode == STATUS_API.SUCCESS) {
+          if (res?.status == STATUS_API.SUCCESS) {
             this.listObject = res.data.content;
           }
         });
@@ -78,9 +78,9 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
     if(!id) return;
     let body = { khachHangMaKhachHang : id, maLoaiXuatNhap : 2};
     this._service.searchListPhieuXuat(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listPhieuNo = res.data;
-        
+
         this.listPhieuNo = this.listPhieuNo
                          .filter(x => x.tongTien - x.daTra - x.paymentScoreAmount - x.discount - x.debtPaymentAmount > 0);
         this.listPhieuNo.forEach(x=>{
@@ -102,7 +102,7 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
   async genNoteNumber(type: Number){
     let body = { loaiPhieu : type};
     this._service.getMaxNoteNumber(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.noteNumber = res.data;
       }
     });

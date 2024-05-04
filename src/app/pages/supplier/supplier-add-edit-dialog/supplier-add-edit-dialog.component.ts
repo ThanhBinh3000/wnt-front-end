@@ -58,7 +58,7 @@ export class SupplierAddEditDialogComponent extends BaseComponent implements OnI
   getDataFilter() {
     // Nhóm khách hàng
     this.nhomNhaCungCapService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomNhaCungCap = res.data;
         console.log(res.data);
         this.listNhomNhaCungCap.unshift({ id: '', tenNhomNhaCungCap: 'Chọn nhóm nhà cung cấp' });

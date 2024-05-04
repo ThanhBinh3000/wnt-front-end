@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   async login() {
     if (this.formGroup.valid) {
       let res = await this.authService.login(this.formGroup.value);
-      if (res && res.statusCode == 0) {
+      if (res && res.status == 0) {
         this.authService.saveToken(res.data.token);
         let profile = await this.authService.profile();
-        if (profile && profile.statusCode == 0) {
+        if (profile && profile.status == 0) {
           this.authService.saveUser(profile.data);
           if(profile.data.nhaThuoc){
             this.authService.saveNhaThuoc(profile.data.nhaThuoc);

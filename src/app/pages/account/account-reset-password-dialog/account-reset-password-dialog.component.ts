@@ -38,7 +38,7 @@ export class AccountResetPasswordDialogComponent extends BaseComponent implement
   async resetPassword() {
     let body = this.formData.value;
     let res = await this.userProfileService.resetPassword(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
     }
   }

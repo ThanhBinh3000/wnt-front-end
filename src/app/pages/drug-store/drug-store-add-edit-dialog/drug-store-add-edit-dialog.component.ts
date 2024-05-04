@@ -156,13 +156,13 @@ export class DrugStoreAddEditDialogComponent extends BaseComponent implements On
   getDataFilter() {
     // Tỉnh thành
     this.tinhThanhsService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTinhThanh = res.data;
       }
     });
     // Chính sách bán hàng
     this.typeBasisService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTypeBasis = res.data;
       }
     });

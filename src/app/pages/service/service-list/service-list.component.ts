@@ -70,7 +70,7 @@ export class ServiceListComponent extends BaseComponent implements OnInit {
   getDataFilter(){
     // Nhóm dịch vụ
     this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.DICH_VU}).then((res)=>{
-      if(res?.statusCode == STATUS_API.SUCCESS){
+      if(res?.status == STATUS_API.SUCCESS){
         this.listNhomDichVu = res.data
       }
     });

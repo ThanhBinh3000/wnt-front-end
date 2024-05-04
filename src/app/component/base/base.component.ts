@@ -114,7 +114,7 @@ export class BaseComponent {
         body.toDate = this.toDate;
       }
       let res = await this.service.searchPage(body);
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;
@@ -134,7 +134,7 @@ export class BaseComponent {
     try {
       let body = this.formData.value
       let res = await this.service.searchList(body);
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.dataTable = res.data;
         if (this.dataTable && this.dataTable.length > 0) {
           this.dataTable.forEach((item) => {
@@ -421,7 +421,7 @@ export class BaseComponent {
   async detail(id:number) {
     if(id){
       let res = await this.service.getDetail(id);
-      if(res?.statusCode == STATUS_API.SUCCESS){
+      if(res?.status == STATUS_API.SUCCESS){
         const data = res.data;
         return data;
       } else {

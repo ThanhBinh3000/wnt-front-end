@@ -56,7 +56,7 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
         body.toDate = this.toDate;
       }
       let res = await this._service.DetailsByDay(body);
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data;
         this.totalRecord = data.totalElements;

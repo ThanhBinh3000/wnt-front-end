@@ -44,7 +44,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
   async changePassword() {
     let body = this.formData.value
     let res = await this.userProfileService.changePassword(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
     }
   }

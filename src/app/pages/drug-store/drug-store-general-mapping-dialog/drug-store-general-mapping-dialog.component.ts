@@ -48,7 +48,7 @@ export class DrugStoreGeneralMappingDialogComponent extends BaseComponent implem
       page: this.page - 1
     }
     let res = await this._service.searchPageNhaThuocTong(body);
-    if (res?.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       let data = res.data;
       this.dataTable = data.content;
       this.totalRecord = data.totalElements;
@@ -70,7 +70,7 @@ export class DrugStoreGeneralMappingDialogComponent extends BaseComponent implem
       body.updateValue = true;
     }
     let res = await this.orderStoreMappingService.create(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       let msg = updateValue ? "Kích hoạt nhà tổng đặt hàng thành công." : "Tắt kích hoạt nhà tổng đặt hàng thành công.";
       if (updateTypeId == ORDER_STORE_MAPPING.SET_DEFAULT) {
         msg = "Thiết lập nhà tổng mặc định thành công";

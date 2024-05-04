@@ -155,7 +155,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
       body.transactionToDate = null;
     }
     let res = await this._service.searchPageNhaThuocTrienKhai(body);
-    if (res?.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       let data = res.data;
       this.dataTable = data.content;
       this.totalRecord = data.totalElements;
@@ -219,13 +219,13 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
   getDataFilter() {
     // Danh sách tài khoản quyền hệ thống
     this.userProfileService.searchListUserManagement({roleName: 'SuperUser'}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listSuperUser = res.data;
       }
     });
     // Tiêu chí triển khai
     this.tieuChiTrienKhaiService.searchList({type: 0}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTieuChiTrienKhai = res.data;
         this.listTieuChiTrienKhai.unshift({id: 0, name: "Chưa triển khai"});
       }
@@ -355,7 +355,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
       active: true
     }
     let res = await this.trienKhaiService.create(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }

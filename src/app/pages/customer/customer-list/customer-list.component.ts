@@ -66,7 +66,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
   getDataFilter() {
     // Nhóm khách hàng
     this.nhomKhachHangService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomKhachHang = res.data;
         this.listNhomKhachHang.unshift({ id: '', tenNhomKhachHang: 'Tất cả' });
       }
@@ -82,7 +82,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     };
 
     this._service.searchPageNguoiQuanTamOA(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNguoiQuanTamOA = res.data.content;
         if (res.data.totalElements > res.data.size) {
           this.listNguoiQuanTamOA.push({ id: '', userName: 'Tải thêm' });
@@ -98,7 +98,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       zaloId: $event.userId
     };
     this._service.updateMappingZaloOA(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS && res.data > 0) {
+      if (res?.status == STATUS_API.SUCCESS && res.data > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.SUCCESS);
       } else {
         this.notification.error(MESSAGE.ERROR, MESSAGE.ERROR);
@@ -115,7 +115,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     };
 
     this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhaThuocDongBo = res.data.content;
         if (res.data.totalElements > res.data.size) {
           this.listNhaThuocDongBo.push({ id: '', tenNhaThuoc: 'Tải thêm' });
@@ -131,7 +131,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       mappingStoreId: $event.id
     };
     this._service.updateMappingMappingStore(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS && res.data > 0) {
+      if (res?.status == STATUS_API.SUCCESS && res.data > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.SUCCESS);
       } else {
         this.notification.error(MESSAGE.ERROR, MESSAGE.ERROR);

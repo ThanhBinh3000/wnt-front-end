@@ -99,7 +99,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     else {
       // Generate mã thuốc
       this._service.generateDrugCode({}).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.formData.patchValue({ maThuoc: res.data });
         }
       });
@@ -111,25 +111,25 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
   getDataFilter() {
     // Nhóm thuốc
     this.nhomThuocService.searchList({ typeGroupProduct: LOAI_SAN_PHAM.THUOC }).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomThuoc = res.data
       }
     });
     // Đơn vị tính
     this.donViTinhService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listDonViTinh = res.data
       }
     });
     // Vị trí kho
     this.warehouseLocationService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listWarehouse = res.data
       }
     });
     // Loại thuốc
     this.productTypesService.searchList({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listProductTypes = res.data;
       }
     });
@@ -146,7 +146,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
 
   genBarcode() {
     this._service.generateBarCode({}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.formData.patchValue({ barCode: res.data });
       }
     });
@@ -183,7 +183,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
         this.nhomThuocService.searchList({}).then((res) => {
-          if (res?.statusCode == STATUS_API.SUCCESS) {
+          if (res?.status == STATUS_API.SUCCESS) {
             this.listNhomThuoc = res.data
           }
         });

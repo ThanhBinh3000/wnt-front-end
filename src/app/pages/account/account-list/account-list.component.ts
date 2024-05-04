@@ -76,7 +76,7 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
       page: this.page - 1
     }
     let res = await this._service.searchPageUserManagement(body);
-    if (res?.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       let data = res.data;
       this.dataTable = data.content;
       this.totalRecord = data.totalElements;

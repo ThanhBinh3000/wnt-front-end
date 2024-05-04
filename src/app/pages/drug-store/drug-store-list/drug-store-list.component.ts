@@ -200,13 +200,13 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
   getDataFilter() {
     // Danh sách tài khoản quyền hệ thống
     this.userProfileService.searchListUserManagement({roleName: 'SuperUser'}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listSuperUser = res.data;
       }
     });
     // Tiêu chí triển khai
     this.tieuChiTrienKhaiService.searchList({type: 0}).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTieuChiTrienKhai = res.data;
         this.listTieuChiTrienKhai.unshift({id: 0, name: "Chưa triển khai"});
       }
@@ -275,7 +275,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
       active: true
     }
     let res = await this.trienKhaiService.create(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }

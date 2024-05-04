@@ -31,7 +31,7 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
   async chooseNhaThuoc() {
     if (this.nhaThuoc) {
       let res = await this.authService.chooseNhaThuoc({id: this.nhaThuoc.id});
-      if (res && res.statusCode == 0) {
+      if (res && res.status == 0) {
         this.authService.saveNhaThuoc(this.nhaThuoc);
         this.authService.saveUser(res.data);
         this.router.navigate(['management/home']).then(r => {
@@ -56,7 +56,7 @@ export class ChooseNhaThuocComponent extends BaseComponent implements OnInit {
         page: this.page - 1
       }
       let res = await this.nhaThuocsService.searchPageNhaThuoc(body);
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data.content;
         this.totalRecord = data.totalElements;

@@ -145,7 +145,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
         page: 0
       }
       this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.listNhaCungCaps = res.data.content;
         }
       });
@@ -163,7 +163,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
         page: 0
       }
       this.thuocService.searchPage(body).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.listThuocs = res.data.content;
         }
       });
@@ -173,7 +173,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
   async onDrugChange(data: any) {
     if (data && data.id > 0) {
       this.thuocService.getDetail(data.id).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           var item = res.data;
           this.dataTable[0].isEditingItem = true;
           this.dataTable[0].thuocThuocId = item.id;
