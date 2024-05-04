@@ -7,12 +7,14 @@ import { DoctorAddEditDialogComponent } from './doctor-add-edit-dialog/doctor-ad
 import { DoctorListComponent } from './doctor-list/doctor-list.component';
 import { ComponentsModule } from '../../component/base/components.module';
 import { FormsModule } from '@angular/forms';
+import { DoctorDetailDialogComponent } from './doctor-detail-dialog/doctor-detail-dialog.component';
 
 @NgModule({
   declarations: [
     DoctorComponent,
     DoctorListComponent,
     DoctorAddEditDialogComponent,
+    DoctorDetailDialogComponent,
   ],
   imports: [
     ComponentsModule,
@@ -21,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     DoctorRoutingModule,
     FormsModule],
   exports: [
-    DoctorAddEditDialogComponent
+    DoctorAddEditDialogComponent,
+    DoctorDetailDialogComponent,
   ],
 })
 export class DoctorModule {
