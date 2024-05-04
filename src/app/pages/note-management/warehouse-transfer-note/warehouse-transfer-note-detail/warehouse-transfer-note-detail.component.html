@@ -1,192 +1,98 @@
-<div class="card-bg ng-scope" ng-controller="DeliveryNoteController">
-    <h2 class="card-title text-center mt-0"><b>PHIẾU CHUYỂN KHO</b></h2>
+<div class="card-bg">
+    <h2 class="card-title text-center mt-0"><b>{{title}}</b></h2>
     <div class="text-center card-desc">
         <div class="card-code">
-            Mã số: <strong>630</strong>
+            Mã số: <strong>{{formData.value?.soPhieuXuat}}</strong>
         </div>
-        <span id="" style="width: 10%">Ngày: <strong>16/03/2024 14:10</strong></span>
+        <span id="" style="width: 10%">Ngày: <strong>{{formData.value?.ngayXuat}}</strong></span>
     </div>
-
-    <input value="25/03/2024 15:45" data-val="true" data-val-date="The field NoteDate must be a date."
-        data-val-required="The NoteDate field is required." id="NoteDate" name="NoteDate" type="hidden">
-
-
-    <input value="0" data-val="true" data-val-number="The field NoteId must be a number."
-        data-val-required="The NoteId field is required." id="NoteId" name="NoteId" type="hidden">
-
-    <input value="8" data-val="true" data-val-number="The field NoteTypeId must be a number."
-        data-val-required="The NoteTypeId field is required." id="NoteTypeId" name="NoteTypeId" type="hidden">
+    <!-- <hr> -->
     <table class="table borderless table-condensed">
-        <tbody>
-            <tr>
-                <td style="text-align: left">
-                    <span class="control-label"><b>Nhà thuốc:</b> Chi nhánh công ty TNHH Web Nhà Thuốc</span>
-                </td>
-
-            </tr>
-        </tbody>
+        <tr>
+            <td style="text-align: left">
+                <span class="control-label"><b>Nhà thuốc:</b> {{formData.value?.targetStoreText}}</span>
+            </td>
+        </tr>
     </table>
-    <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width:100%">
-        <thead>
-            <tr>
-                <th style="width: 10px">STT</th>
-                <th style="width: 70px">Mã</th>
-                <th style="width: 100px">Hình ảnh</th>
-                <th>Tên hàng</th>
-                <th style="width: 100px;">Đơn vị</th>
-                <th style="width: 100px; text-align: right">Số lượng</th>
-                <th style="width: 150px; text-align: right">Đơn giá</th>
-                <th style="width: 80px; text-align: right">C.K</th>
-                <th style="width: 100px; text-align: right">
-                    <span>Hạn dùng</span>
-                    <p>(Số lô)</p>
-                </th>
-                <th style="width: 150px; text-align: right">Thành tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            <tr ng-repeat="i in model.NoteItems" class="ng-scope">
-                <td>
-                    <a href=""
-                        ng-click="onDrugInfoDetails(i.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                        class="ng-binding">
-                        1
-                    </a>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <span ng-click="onFormTranHistoryProduct(i.DrugId)" style="background:#ff6666;" title="Hàng kê đơn"
-                        id="dDrugCode{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}"
-                        class="ng-binding"> TH466</span>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <a ng-show="i.ImageThumbUrl != null" data-fancybox="" href="/" data-caption="Ảnh sản phẩm"
-                        class="ng-hide">
-                        <img ng-src="/" alt="" style="width: 40px; height:40px;" src="/">
-                    </a>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <span ng-click="onDrugInfoDetails(i.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                        style="background-color:lightgreen; color:black;cursor : pointer" title="Đã LT"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
-                        <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
-                            test111
-                            <span class="show-tooltip-content-drug ng-binding"
-                                ng-bind-html="i.TitleDrug"></span>
-                        </span>
-                    </span>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId <= 0" class="ng-hide">
-                    <span ng-click="onFormTranHistoryProduct(i.DrugId)" title="Hàng KĐ"
-                        id="dDrugCode{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}"
-                        class="ng-binding"> TH466</span>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId <= 0" class="ng-hide">
-                    <a ng-show="i.ImageThumbUrl != null" data-fancybox="" href="/" data-caption="Ảnh sản phẩm"
-                        class="ng-hide">
-                        <img ng-src="/" alt="" style="width: 40px; height:40px;" src="/">
-                    </a>
-                </td>
-                <td ng-show="i.TypeId == 2 &amp;&amp; i.ConnectivityStatusId <= 0" class="ng-hide">
-                    <span ng-click="onDrugInfoDetails(i.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                        style="background-color:#ff6666; color:black; cursor : pointer" title="Chưa LT"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
-                        <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
-                            test111
-                            <span class="show-tooltip-content-drug ng-binding"
-                                ng-bind-html="i.TitleDrug"></span>
-                        </span>
-                    </span>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <span ng-click="onFormTranHistoryProduct(i.DrugId)" class="ng-binding" title="Đã LT"
-                        id="dDrugCode{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}">
-                        TH466</span>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <a ng-show="i.ImageThumbUrl != null" data-fancybox="" href="/" data-caption="Ảnh sản phẩm"
-                        class="ng-hide">
-                        <img ng-src="/" alt="" style="width: 40px; height:40px;" src="/">
-                    </a>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId > 0" class="ng-hide">
-                    <span ng-click="onDrugInfoDetails(i.DrugId); $event.preventDefault(); $event.stopPropagation();"
-                        title="Đã LT" style="background-color:lightgreen ; color:black ;cursor : pointer"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__TenSp">
-                        <span ng-mouseover="onShowTitle(i)" class="tooltip-content-drug ng-binding">
-                            test111
-                            <span class="show-tooltip-content-drug ng-binding"
-                                ng-bind-html="i.TitleDrug"></span>
-                        </span>
-                    </span>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId <= 0">
-                    <span ng-click="onFormTranHistoryProduct(i.DrugId)" style="cursor: pointer;color:#337ab7;"
-                        title="Chưa LT"
-                        id="dDrugCode{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}"
-                        class="ng-binding"> TH466</span>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId <= 0">
-                    <a ng-show="i.ImageThumbUrl != null" data-fancybox="" href="/" data-caption="Ảnh sản phẩm"
-                        class="ng-hide">
-                        <img ng-src="/" alt="" style="width: 40px; height:40px;" src="/">
-                    </a>
-                </td>
-                <td ng-show="i.TypeId != 2 &amp;&amp; i.ConnectivityStatusId <= 0">
-                    <span ng-mouseover="onShowTitle(i)" class="btn-danger btn-link tooltip-content-drug ng-binding"
-                        ng-click="onDrugInfoDetails(i.DrugId); $event.preventDefault(); $event.stopPropagation();">
-                        test111
-                        <span class="show-tooltip-content-drug ng-binding" ng-bind-html="i.TitleDrug"></span>
-                    </span>
-                </td>
-                <td>
-                    <span class="display-mode ng-binding"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__MaDonViTinhSp">hộp</span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber ng-binding"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__SoLuongSp">1.00</span>
+    <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid" [dataSource]="getDataSource()"
+        matSort>
 
-                </td>
-                <td>
-                    <span class="display-mode pNumber ng-binding"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__GiaXuatSp">600,000</span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__ChietKhauSp">
-                        <span class="ng-binding">0</span>
-                    </span>
+        <ng-container matColumnDef="#">
+            <th style="width: 10px" mat-header-cell *matHeaderCellDef> STT</th>
+            <td mat-cell *matCellDef="let data; index as i;">
+                <a (click)="openDetailDialog(data.thuocThuocId)">
+                    {{ (page - 1) * pageSize + i + 1 }}
+                </a>
+            </td>
+        </ng-container>
 
-                </td>
-                <td style="text-align: right">
-                    <span class="ng-binding"
-                        id="PhieuXuatChiTietss_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__HanDung">01/02/2026</span>
-                    <p class="ng-binding" ng-show="i.BatchNumber != null"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__SoLo">
-                        (2468)</p>
-                </td>
-                <td>
-                    <span class="display-mode pNumber ng-binding"
-                        id="PhieuXuatChiTiets_{&quot;NoteNumber&quot;:0,&quot;QuantityPerOneDose&quot;:1,&quot;PriceFactors&quot;:0,&quot;DoctorAddress&quot;:null,&quot;CustomerAddress&quot;:null,&quot;GroupId&quot;:0,&quot;Information&quot;:null,&quot;GroupName&quot;:null,&quot;RefConnectivityCode&quot;:null,&quot;ConnectivityStatusId&quot;:0,&quot;DrugToBuyId&quot;:0,&quot;NoteId&quot;:0,&quot;NoteItemId&quot;:108833527,&quot;NoteTypeId&quot;:8,&quot;DrugId&quot;:10617545,&quot;DrugCode&quot;:&quot;TH466&quot;,&quot;DrugName&quot;:&quot;test111&quot;,&quot;RetailPrice&quot;:60000,&quot;Price&quot;:600000,&quot;InPrice&quot;:0,&quot;OutPrice&quot;:0,&quot;RetailOutPrice&quot;:0,&quot;Quantity&quot;:1,&quot;PreRetailQuantity&quot;:10,&quot;TotalAmount&quot;:600000,&quot;TotalPreAmount&quot;:0,&quot;TotalAmountWithoutDiscount&quot;:600000,&quot;TotalAmountWithDiscount&quot;:600000,&quot;TotalAmountWithDiscountReturnFromCustomer&quot;:0,&quot;LastInventoryQuantity&quot;:80,&quot;RemainQuantity&quot;:80,&quot;Discount&quot;:0,&quot;BatchNumber&quot;:&quot;2468&quot;,&quot;ExpiredDate&quot;:&quot;2026-02-01T00:00:00&quot;,&quot;IsModified&quot;:false,&quot;EditMode&quot;:false,&quot;IsEditingItem&quot;:false,&quot;ConnectivityResult&quot;:null,&quot;HasConnectivityErrors&quot;:false,&quot;IsConnectivity&quot;:false,&quot;ConnectivityProdId&quot;:0,&quot;DiscountByValue&quot;:false,&quot;VAT&quot;:0,&quot;Reason&quot;:null,&quot;Solution&quot;:null,&quot;Notes&quot;:null,&quot;Score&quot;:0,&quot;Scorable&quot;:false,&quot;MoneyToOneScoreRate&quot;:0,&quot;IsProdRef&quot;:false,&quot;RefPrice&quot;:0,&quot;Usage&quot;:null,&quot;StorageConditions&quot;:null,&quot;DescriptionDrug&quot;:null,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;Packing&quot;:null,&quot;Manufacturer&quot;:null,&quot;OutOwnerPriceChild&quot;:0,&quot;StoreCode&quot;:null,&quot;Order&quot;:1,&quot;ItemDate&quot;:null,&quot;ItemNumber&quot;:null,&quot;ItemId&quot;:0,&quot;ItemName&quot;:null,&quot;ItemCode&quot;:null,&quot;SelectedUnitId&quot;:705283,&quot;SelectedUnitName&quot;:&quot;hộp&quot;,&quot;UnitId&quot;:705283,&quot;RetailUnitId&quot;:699963,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;RetailUnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:10,&quot;Description&quot;:null,&quot;Units&quot;:[{&quot;UnitId&quot;:699963,&quot;UnitName&quot;:&quot;Bịch&quot;,&quot;Factors&quot;:1},{&quot;UnitId&quot;:705283,&quot;UnitName&quot;:&quot;hộp&quot;,&quot;Factors&quot;:10}],&quot;TypeId&quot;:1,&quot;RecordStatusId&quot;:0,&quot;DoctorComments&quot;:null,&quot;ItemPhone&quot;:null,&quot;Specification&quot;:&quot;hộp 10 Bịch&quot;,&quot;CustomerId&quot;:null,&quot;CustomerName&quot;:null,&quot;PartnerAddress&quot;:null,&quot;PartnerPhones&quot;:null,&quot;PartnerEmail&quot;:null,&quot;StaffId&quot;:null,&quot;StaffName&quot;:null,&quot;DoctorId&quot;:null,&quot;DoctorName&quot;:null,&quot;SupplyerId&quot;:null,&quot;SupplyerName&quot;:null,&quot;SuppAddress&quot;:null,&quot;SuppPhone&quot;:null,&quot;TargetStoreId&quot;:0,&quot;TargetStoreName&quot;:null,&quot;RegisteredNo&quot;:null,&quot;SourceId&quot;:0,&quot;ConnectivityDrugId&quot;:0,&quot;ConnectivityDrugCode&quot;:null,&quot;IsMedical&quot;:false}__GiaXuatSp">600,000</span>
-                </td>
-            </tr>
-        </tbody>
+        <ng-container matColumnDef="maThuoc">
+            <th style="width: 70px" mat-header-cell *matHeaderCellDef> Mã</th>
+            <td mat-cell *matCellDef="let data">
+                {{ data.maThuocText }}
+            </td>
+        </ng-container>
+
+        <ng-container *ngIf="displayImage.activated" matColumnDef="image">
+            <th style="width: 100px" mat-header-cell *matHeaderCellDef> Hình ảnh</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="tr-ng-cell">
+
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tenThuoc">
+            <th mat-header-cell *matHeaderCellDef> Tên hàng</th>
+            <td mat-cell *matCellDef="let data">
+                {{ data.tenThuocText }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="donVi">
+            <th style="width: 100px;" mat-header-cell *matHeaderCellDef> Đơn vị</th>
+            <td mat-cell *matCellDef="let data"> {{ data.donViTinhMaDonViTinhText }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="soLuong">
+            <th style="width: 100px;" mat-header-cell *matHeaderCellDef> Số lượng</th>
+            <td class="text-right" mat-cell *matCellDef="let data"> {{ data.soLuong | number }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="gia">
+            <th style="width: 150px;" mat-header-cell *matHeaderCellDef> Đơn giá</th>
+            <td class="text-right" mat-cell *matCellDef="let data"> {{ data.giaXuat | number }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="ck">
+            <th style="width: 80px; text-align: right" mat-header-cell *matHeaderCellDef> C.K</th>
+            <td mat-cell *matCellDef="let data"> {{ data.chietKhau }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="loHan">
+            <th style="width: 100px; text-align: right" mat-header-cell *matHeaderCellDef> <span>Hạn dùng</span>
+                <p>(Số lô)</p>
+            </th>
+            <td mat-cell *matCellDef="let data"> <span>{{ data.expiredDate | appDate }}</span>
+                <p>({{ data.batchNumber }})</p>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="thanhTien">
+            <th mat-header-cell *matHeaderCellDef> Thành tiền</th>
+            <td class="text-right" mat-cell *matCellDef="let data"> {{ data.soLuong * data.giaXuat | number }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <table class="table borderless table-condensed">
         <tbody>
             <tr>
                 <td style="text-align: left" class="w-50">
                     <span class="control-label">
-                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>600,000</span>
-                    </span>
-                </td>
-                <td style="text-align: left">
-                    <span class="control-label">
-                    </span>
-                </td>
-                <td style="text-align: right">
-                    <span class="control-label">
+                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>{{formData.value?.tongTien |
+                            number}}</span>
                     </span>
                 </td>
             </tr>
@@ -198,45 +104,29 @@
             <tr>
                 <td class="text-left">
                     <span class="control-label"><b>Diễn giải: </b></span>
-                    <span class="control-label"></span>
+                    <span class="control-label">{{formData.value?.dienGiai}}</span>
                 </td>
 
                 <td class="text-right">
-                    <span class="control-label">[<b>Người lập:</b> </span>
-                    <span class="control-label ng-binding">Đỗ Thanh Mai</span>
+                    <span class="control-label">[<b>Người lập: </b> </span>
+                    <span class="control-label ng-binding">{{formData.value?.createdByUserText}}]</span>
                 </td>
                 <td class="text-right">
-                    <span class="control-label">[<b>Ngày lập:</b> </span>
-                    <span class="control-label">16/03/2024]</span>
+                    <span class="control-label">[<b>Ngày lập: </b> </span>
+                    <span class="control-label">{{formData.value?.created | appDate}}]</span>
                 </td>
             </tr>
         </tbody>
     </table>
-    <input value="2" data-val="true" data-val-number="The field RecordStatusId must be a number."
-        data-val-required="The RecordStatusId field is required." id="RecordStatusId" name="RecordStatusId"
-        type="hidden">
     <div class="form-group mt-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-center align-items-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
-                <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        In <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" ng-click="onPrint(35160645, 8, 0)">Phiếu chuyển kho - A4</a></li>
-                        <li class="divider"></li>
-                        <li><a href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=35160645&amp;LoaiPhieu=8')">In mã
-                                vạch thuốc</a></li>
-                    </ul>
-                </div>
-                <a class="btn btn-default"
-                    href="/DeliveryNote/WarehouseTransferNoteScreen?taskMode=2&amp;noteId=35160645">Sửa</a><a
-                    class="btn btn-default"
-                    href="/DeliveryNote/ManagementDeliveryNoteScreen?noteId=35160645&amp;isManagement=1">QL</a><a
-                    class="btn btn-danger" href="/PhieuXuats/delete/35160645">Xóa</a>
+                <a class="btn btn-primary"
+                    (click)="goToUrl('/management/note-management/warehouse-transfer-note-screen',this.formData.value?.id)">Sửa</a>
+                <a class="btn btn-danger"
+                    (click)="delete('Bạn có muốn xóa phiếu xuất huỷ ?',this.formData.value?.id)">Xóa</a>
             </div>
         </div>
     </div>
