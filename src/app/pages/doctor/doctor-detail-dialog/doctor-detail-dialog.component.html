@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()">&times;</button>
+            <h4 class="modal-title">Thông tin bác sỹ</h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">Họ và tên</td>
+                        <td class="col-md-9">{{formData.value?.tenBacSy}}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3 ">Số điện thoại</td>
+                        <td class="col-md-9">{{formData.value?.dienThoai}}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3 ">Địa chỉ</td>
+                        <td class="col-md-9">{{formData.value?.diaChi}}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-3 ">Email</td>
+                        <td class="col-md-9">{{formData.value?.email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <a class="btn btn-primary" (click)="openAddEditDialog(formData.value?.id)">Sửa</a>
+        </div>
+    </div>
+</div>

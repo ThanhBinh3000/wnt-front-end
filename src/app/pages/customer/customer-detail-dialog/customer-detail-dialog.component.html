@@ -1,0 +1,69 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()">&times;</button>
+            <h4 class="modal-title">Thông tin khách hàng</h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td >Họ và tên</td>
+                        <td>{{formData.value?.tenKhachHang}}</td>
+                    </tr>
+                    <tr>
+                        <td >Ngày sinh</td>
+                        <td>{{formData.value?.birthDate | appDate}}</td>
+                    </tr>
+                    <tr>
+                        <td >Tuổi</td>
+                        <td>{{formData.value?.age}}</td>
+                    </tr>
+                    <tr>
+                        <td >Giới tính</td>
+                        <td>{{formData.value?.sexId == 1 ? 'Nữ' : 'Nam'}}</td>
+                    </tr>
+                    <tr>
+                        <td >Số điện thoại</td>
+                        <td>{{formData.value?.soDienThoai}}</td>
+                    </tr>
+                    <tr>
+                        <td >Địa chỉ</td>
+                        <td>{{formData.value?.diaChi}}</td>
+                    </tr>
+                    <tr>
+                        <td >Email</td>
+                        <td>{{formData.value?.email}}</td>
+                    </tr>
+                    <tr>
+                        <td >Nghề nghiệp</td>
+                        <td>{{formData.value?.job}}</td>
+                    </tr>
+                    <tr>
+                        <td >Khả năng chi trả</td>
+                        <td>{{formData.value?.abilityToPay}}</td>
+                    </tr>
+                    <tr>
+                        <td (click)="expandForm()">Người liên hệ {{expandLabel}}</td>
+                    </tr>
+                    <tr *ngIf="showMoreForm">
+                        <td>Họ và tên</td>
+                        <td>{{formData.value?.nameContacter}}</td>
+                    </tr>
+                    <tr *ngIf="showMoreForm">
+                        <td>Số điện thoại</td>
+                        <td>{{formData.value?.phoneContacter}}</td>
+                    </tr>
+                    <tr *ngIf="showMoreForm">
+                        <td>Quan hệ</td>
+                        <td>{{formData.value?.refCus}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <a class="btn btn-primary" (click)="openAddEditDialog(formData.value?.id)">Sửa</a>
+        </div>
+    </div>
+</div>

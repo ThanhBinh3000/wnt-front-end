@@ -7,6 +7,7 @@ import { SampleNoteListComponent } from './sample-note-list/sample-note-list.com
 import { SampleNoteAddEditComponent } from './sample-note-add-edit/sample-note-add-edit.component';
 import { CustomerModule } from '../customer/customer.module';
 import { DoctorModule } from '../doctor/doctor.module';
+import { ComponentsModule } from '../../component/base/components.module';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { DoctorModule } from '../doctor/doctor.module';
     SampleNoteListComponent,
     SampleNoteAddEditComponent,
   ],
-  imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule],
+  imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule, ComponentsModule],
   exports: [],
 })
 export class SampleNoteModule {
