@@ -138,7 +138,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         page: 0
       }
       this.khachHangService.searchPage(body).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.listKhachHangs = res.data.content;
           this.listKhachHangs.push({id: this.maKhachHangLe, tenKhachHang: 'Khách lẻ'});
         }
@@ -149,7 +149,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   async searchListBacSy() {
     let body = {dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()};
     this.bacsyService.searchList(body).then((res) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listBacSys = res.data;
       }
     });
@@ -167,7 +167,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         page: 0
       }
       this.thuocService.searchPage(body).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.listThuocs = res.data.content;
         }
       });
@@ -180,7 +180,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   async onDrugChange(data: any) {
     if (data && data.id > 0) {
       this.thuocService.getDetail(data.id).then((res) => {
-        if (res?.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           let item = res.data;
           item.isEditingItem = true;
           item.thuocThuocId = item.id;
@@ -403,16 +403,14 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
 
   //lấy thông tin điểm, nợ khách hàng
   onCustomerChange($event : any){
-    console.log($event);
-    if($event.id > 0){
+    if($event && $event.id > 0){
       //điểm tích luỹ
       let bodyKH = {
         id: $event.id,
         maNhaThuoc: this.getMaNhaThuoc()
       }
       this.khachHangService.getPaymentScore(bodyKH).then(res => {
-        if(res && res.statusCode == STATUS_API.SUCCESS){
-          console.log(res.data);
+        if(res && res.status == STATUS_API.SUCCESS){
           this.totalScore = res.data;
         }
       });
@@ -423,7 +421,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
       this.pxService.getTotalDebtAmountCustomer(bodyPX).then(res => {
-        if(res && res.statusCode == STATUS_API.SUCCESS){
+        if(res && res.status == STATUS_API.SUCCESS){
           this.totalDebtAmount = res.data;
           console.log(res.data);
         }

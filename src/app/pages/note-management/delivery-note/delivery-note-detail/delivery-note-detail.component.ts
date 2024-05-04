@@ -45,7 +45,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       chiTiets : [],
       created : [],
       createdByUserText: [],
-      bacSyMaBacSyTxt: [],
+      bacSyMaBacSyText: [],
       paymentTypeId : [0],
       backPaymentAmount: [0],
       invoiceNo: [''],
@@ -86,7 +86,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
 
   async onLockNote(item: any){
     const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       item.locked = res.data.locked;
       this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
     }
@@ -105,7 +105,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
         maNhaThuoc: this.getMaNhaThuoc()
       }
       this.khService.getPaymentScore(bodyKH).then(res => {
-        if(res && res.statusCode == STATUS_API.SUCCESS){
+        if(res && res.status == STATUS_API.SUCCESS){
           this.totalScore = res.data;
         }
       });
@@ -116,7 +116,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
         ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
       this._service.getTotalDebtAmountCustomer(bodyPX).then(res => {
-        if(res && res.statusCode == STATUS_API.SUCCESS){
+        if(res && res.status == STATUS_API.SUCCESS){
           this.totalDebtAmount = res.data;
         }
       });
