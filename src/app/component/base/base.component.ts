@@ -123,6 +123,7 @@ export class BaseComponent {
         this.dataTable = [];
         this.totalRecord = 0;
       }
+      console.log(this.dataTable)
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     } finally {
@@ -407,7 +408,7 @@ export class BaseComponent {
       res = await this.service.create(body);
     }
     console.log(res);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res && res.status == STATUS_API.SUCCESS) {
       if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
         return res.data;
@@ -430,9 +431,52 @@ export class BaseComponent {
     }
   }
 
-  // Approve
-  async approve(id: number, status: string, msg: string,) {
+  async approve(code: string, item: any) {
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: `Phiếu có mã số '${code}' sẽ được phê duyệt để đưa vào hệ thống. Bạn thực sự muốn tiếp tục?`,
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        this.service.approve({ id: item.id}).then(async (res) => {
+          if(res && res.data){
+            this.notification.success(MESSAGE.SUCCESS, `Phiếu có mã số '${code}' đã được phê duyệt và đưa vào hệ thống.`);
+            await this.searchPage();
+          }
+        });
+      },
+    });
+  }
 
+  async cancel(code: string, item: any) {
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: `Phiếu có mã số '${code}' sẽ bị hủy. Bạn thực sự muốn tiếp tục?`,
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        this.service.cancel({ id: item.id}).then(async (res) => {
+          if(res && res.data){
+            this.notification.success(MESSAGE.SUCCESS, `Phiếu có mã số '${code}' đã bị hủy.`);
+            await this.searchPage();
+          }
+        });
+      },
+    });
+  }
+
+  async lockUnlock(item: any){
+    const res = item.locked ? await this.service.unlock(item) : await this.service.lock(item);
+    if (res && res.status == STATUS_API.SUCCESS) {
+      item.locked = res.data.locked;
+      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   async markFormGroupTouched(formGroup: FormGroup, ignoreFields: Array<string> = []) {

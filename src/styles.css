@@ -140,9 +140,9 @@
   margin-right: 3px;
 }
 
-.ng-dropdown-panel{
-  width: auto!important;
-}
+/*.ng-dropdown-panel{*/
+/*  width: auto!important;*/
+/*}*/
 
 .mat-table-container{
   max-height: 1000px;

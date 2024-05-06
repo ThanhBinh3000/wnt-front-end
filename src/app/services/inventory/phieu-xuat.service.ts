@@ -12,13 +12,13 @@ export class PhieuXuatService extends BaseService {
     super(httpClient, 'wnt-inventory','phieu-xuats');
   }
 
-  lock(body: any) {
-    const url = `/api/wnt-inventory/phieu-xuats/lock`;
+  sync(body: any) {
+    const url = `/api/wnt-inventory/phieu-xuats/sync`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  unlock(body: any) {
-    const url = `/api/wnt-inventory/phieu-xuats/unlock`;
+  resetSync(body: any) {
+    const url = `/api/wnt-inventory/phieu-xuats/reset-sync`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 

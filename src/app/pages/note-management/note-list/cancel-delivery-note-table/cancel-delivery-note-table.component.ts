@@ -4,6 +4,7 @@ import { RECORD_STATUS } from '../../../../constants/config';
 import {MatSort} from "@angular/material/sort";
 import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.service";
 import {MESSAGE, STATUS_API} from "../../../../constants/message";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'cancel-delivery-note-table',
@@ -11,7 +12,7 @@ import {MESSAGE, STATUS_API} from "../../../../constants/message";
   styleUrls: ['./cancel-delivery-note-table.component.css'],
 })
 export class CancelDeliveryNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
   displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'nhanVien', 'nhaThuoc', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
@@ -66,25 +67,5 @@ export class CancelDeliveryNoteTableComponent extends BaseComponent implements O
 
   getTotalAmount() {
     return this.dataSource.data.map((i: any) => i.tongTien).reduce((acc, value) => acc + value, 0);
-  }
-
-  async onDelete(item: any){
-    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
-  }
-
-  async onLockNote(item: any){
-    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.status == STATUS_API.SUCCESS) {
-      item.locked = res.data.locked;
-      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
-    }
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

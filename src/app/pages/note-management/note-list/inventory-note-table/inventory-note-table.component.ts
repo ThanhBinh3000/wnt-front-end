@@ -3,6 +3,7 @@ import {BaseComponent} from "../../../../component/base/base.component";
 import { RECORD_STATUS } from '../../../../constants/config';
 import {MatSort} from "@angular/material/sort";
 import {PhieuKiemKeService} from "../../../../services/products/phieu-kiem-ke.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'inventory-note-table',
@@ -10,9 +11,9 @@ import {PhieuKiemKeService} from "../../../../services/products/phieu-kiem-ke.se
   styleUrls: ['./inventory-note-table.component.css'],
 })
 export class InventoryNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'id', 'created', 'nhanVien', 'daCanKho', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'id', 'created', 'createdByUseText', 'daCanKho', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -58,17 +59,5 @@ export class InventoryNoteTableComponent extends BaseComponent implements OnInit
 
   isAdmin() {
     return this.authService.isAdmin();
-  }
-
-  async onDelete(item: any){
-
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

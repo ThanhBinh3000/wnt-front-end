@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../component/base/base.component';
-import { NhanVienNhaThuocsService } from '../../../services/system/nhan-vien-nha-thuocs.service';
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
 import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
 import { MatSort } from '@angular/material/sort';
@@ -63,9 +62,6 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
       nguoiNhan: [null]
     });
   }
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort!;
-  }
 
   @ViewChild(MatSort) sort?: MatSort;
 
@@ -74,6 +70,11 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
     this.fetchData();
     this.getDataFilter();
   }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort!;
+  }
+
   //tính tổng tiền
   async sumTotalAmount() {
     if (this.dataTable) {
@@ -88,7 +89,6 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
     this.sumTotalAmount();
   }
 
-  //get data
   getDataFilter() {
     // Nhóm khách hàng
     this.nhanVienService.searchListStaffManagement({}).then((res) => {
@@ -98,9 +98,9 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
       }
     });
   }
+
   //tìm kiếm data
   async searchObject($event: any) {
-    console.log($event.term);
     if ($event.term.length >= 2) {
       let body = { textSearch : $event.term,  paggingReq: {}, dataDelete : false};
         body.paggingReq = {

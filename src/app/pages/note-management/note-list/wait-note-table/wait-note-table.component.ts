@@ -5,6 +5,7 @@ import {RECORD_STATUS, TRANG_THAI_PHIEU_KHAM} from '../../../../constants/config
 import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";
 import {PhieuKhamService} from "../../../../services/medical/phieu-kham.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'wait-note-table',
@@ -12,9 +13,9 @@ import {PhieuKhamService} from "../../../../services/medical/phieu-kham.service"
   styleUrls: ['./wait-note-table.component.css'],
 })
 export class WaitNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'created', 'nguoiTiepNhan', 'benhNhan', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'created', 'createdByUseText', 'patientName', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -61,17 +62,5 @@ export class WaitNoteTableComponent extends BaseComponent implements OnInit, Aft
 
   isAdmin() {
     return this.authService.isAdmin();
-  }
-
-  async onDelete(item: any){
-
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

@@ -1,12 +1,9 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   Injector,
   OnInit,
-  QueryList,
   ViewChild,
-  ViewChildren
 } from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {UserProfileService} from "../../../services/system/user-profile.service";
@@ -18,16 +15,10 @@ import {TieuChiTrienKhaiService} from "../../../services/categories/tieu-chi-tri
 import {DrugStoreAddEditDialogComponent} from "../drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
 import {TinhThanhsService} from "../../../services/categories/tinh-thanhs.service";
 import {DatePipe} from "@angular/common";
-import {
-  DrugStoreGeneralMappingDialogComponent
-} from "../drug-store-general-mapping-dialog/drug-store-general-mapping-dialog.component";
 import {TrienKhaiService} from "../../../services/categories/trien-khai.service";
 import {TypeBasisService} from "../../../services/categories/type-basis.service";
-import {
-  RegionInformationEditDialogComponent
-} from "../../utilities/region-information-edit-dialog/region-information-edit-dialog.component";
 import moment from "moment/moment";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
@@ -313,7 +304,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
     let body = item;
     item.classify = $event?.value;
     let res = await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -323,7 +314,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
     let body = item;
     item.evaluate = $event?.value;
     let res = await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -333,7 +324,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
     let body = item;
     item.supporterId = $event?.id;
     let res = await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -341,7 +332,7 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
 
   async onUpdateBusinessDescription(item: any) {
     let res = await this.save(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }

@@ -6,6 +6,7 @@ import {FormGroup, Validators} from "@angular/forms";
 import {passwordValidator} from "../../../validators/password.validator";
 import {phoneNumberValidator} from "../../../validators/phone-number.validator";
 import {MESSAGE, STATUS_API} from "../../../constants/message";
+import {SETTING} from "../../../constants/setting";
 
 @Component({
   selector: 'account-add-edit-dialog',
@@ -13,6 +14,9 @@ import {MESSAGE, STATUS_API} from "../../../constants/message";
   styleUrl: './account-add-edit-dialog.component.css'
 })
 export class AccountAddEditDialogComponent extends BaseComponent implements OnInit {
+  // Settings
+  // Authorities
+  updateUserMobileDeviceId = true;
 
   constructor(
     injector: Injector,
@@ -57,6 +61,18 @@ export class AccountAddEditDialogComponent extends BaseComponent implements OnIn
     }
   }
 
+  isCreateView() {
+    return !this.userProfile;
+  }
+
+  isUpdateView() {
+    return this.userProfile;
+  }
+
+  isTechnicalSupport() {
+    return true;
+  }
+
   override async save() {
     let body = this.formData.value;
     let res;
@@ -65,7 +81,7 @@ export class AccountAddEditDialogComponent extends BaseComponent implements OnIn
     } else {
       res = await this.userProfileService.createUser(body);
     }
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       } else {

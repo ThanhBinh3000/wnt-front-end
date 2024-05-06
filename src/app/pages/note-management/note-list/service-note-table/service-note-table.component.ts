@@ -5,6 +5,7 @@ import { RECORD_STATUS } from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";
 import {PhieuDichVuService} from "../../../../services/medical/phieu-dich-vu.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'service-note-table',
@@ -12,9 +13,9 @@ import {PhieuDichVuService} from "../../../../services/medical/phieu-dich-vu.ser
   styleUrls: ['./service-note-table.component.css'],
 })
 export class ServiceNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'created', 'nguoiThucHien', 'benhNhan', 'bacSi', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'created', 'createdByUseText', 'customerName', 'doctorName', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -60,13 +61,5 @@ export class ServiceNoteTableComponent extends BaseComponent implements OnInit, 
 
   isAdmin() {
     return this.authService.isAdmin();
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

@@ -4,7 +4,8 @@ import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import { RECORD_STATUS } from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";
-import {PhieuThuTienService} from "../../../../services/medical/phieu-thu-tien.service";
+import {MedicalFeeReceiptsService} from "../../../../services/medical/medical-fee-receipts.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'receipt-medical-fee-note-table',
@@ -12,9 +13,9 @@ import {PhieuThuTienService} from "../../../../services/medical/phieu-thu-tien.s
   styleUrls: ['./receipt-medical-fee-note-table.component.css'],
 })
 export class ReceiptMedicalFeeNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'noteDate', 'benhNhan', 'dienGiai', 'totalMoney', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'noteDate', 'customerName', 'description', 'totalMoney', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -22,7 +23,7 @@ export class ReceiptMedicalFeeNoteTableComponent extends BaseComponent implement
 
   constructor(
     injector: Injector,
-    private _service : PhieuThuTienService,
+    private _service : MedicalFeeReceiptsService,
   ) {
     super(injector,_service);
   }
@@ -65,21 +66,5 @@ export class ReceiptMedicalFeeNoteTableComponent extends BaseComponent implement
 
   getTotalAmount() {
     return this.dataSource.data.map((i: any) => i.totalMoney).reduce((acc, value) => acc + value, 0);
-  }
-
-  async onDelete(item: any){
-
-  }
-
-  async onLockNote(item: any){
-
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

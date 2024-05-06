@@ -38,6 +38,11 @@ export abstract class BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
+  cancel(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/cancel`
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
   getDetail(id: number) {
     const url = `/api/${this.gateway}/${this.controller}/detail/${id}`;
     return this.httpClient.get<ResponseData>(url).toPromise();
@@ -73,6 +78,16 @@ export abstract class BaseService {
   deleteMultipleDatabase(body: any) {
     body.recordStatusId = RECORD_STATUS.DELETED_DATABASE
     const url = `/api/${this.gateway}/${this.controller}/update/multiple`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  lock(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/lock`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  unlock(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/unlock`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
