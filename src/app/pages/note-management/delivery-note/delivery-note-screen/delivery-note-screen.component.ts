@@ -19,7 +19,8 @@ import moment from 'moment';
 import { RegionInformationEditDialogComponent } from '../../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
 import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, of, switchMap } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, observeOn, of, startWith, switchMap } from 'rxjs';
+import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component';
 
 @Component({
   selector: 'delivery-note-screen',
@@ -166,7 +167,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
           this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
           this.formData.controls['khachHangMaKhachHang'].setValue(this.maKhachHangLe);
-          this.listKhachHang$ = of([{id: this.maKhachHangLe, tenKhachHang: 'Khách hàng lẻ'}]);
+          this.listKhachHang$ = of([{id: 0, tenKhachHang : 'Khách hàng lẻ'}]);
         }
       });
     }
@@ -613,6 +614,18 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           this.listBacSys = res.data;
         }
       });
+      }
+    });
+  }
+
+  async openAddDrugDialog() {
+    const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
+      data: 0,
+      width: '80%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        this.onDrugChange(result);
       }
     });
   }

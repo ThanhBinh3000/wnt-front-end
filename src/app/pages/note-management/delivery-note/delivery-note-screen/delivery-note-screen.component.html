@@ -74,6 +74,7 @@
                                 <div class="input-group">
                                     <div class="flex-grow-1 ip-position ng-isolate-scope">
                                         <ng-select appendTo="body"
+                                            formControlName="khachHangMaKhachHang"
                                             appendTo="body"
                                             appearance="outline" 
                                             [items]="listKhachHang$ | async" 
@@ -242,7 +243,7 @@
                     <div *ngIf="data.isEditingItem">
                         <div>
                             <div class="w-100">
-                                <div class="control-group">
+                                <div class="input-group">
                                     <ng-select #selectDrug 
                                         appendTo="body" 
                                         [(ngModel)]="data.thuocThuocId"
@@ -266,6 +267,13 @@
                                                 |number}}</span>
                                         </ng-template>
                                     </ng-select>
+                                    <div class="input-group-btn">
+
+                                        <button class="btn btn-primary" title="Thêm mới mặt hàng nếu chưa có"
+                                            (click)="openAddDrugDialog()">
+                                            <i class="fa-regular fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
