@@ -236,7 +236,7 @@
 
                      <span class="input-group-btn">
                                     <button class="btn btn-primary"
-                                            ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
+                                            (click)="openAddCustomerDialog()"
                                             title="Thêm khách hàng mới nếu chưa có">
                                         <i class="fa-regular fa-plus"></i>
                                     </button>
@@ -289,7 +289,7 @@
                     </div>
                     <span class="input-group-btn">
                                     <button class="btn btn-primary"
-                                            ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
+                                           (click)="openAddDoctorDialog()"
                                             title="Thêm bác sỹ mới nếu chưa có">
                                         <i class="fa-regular fa-plus"></i>
                                     </button>

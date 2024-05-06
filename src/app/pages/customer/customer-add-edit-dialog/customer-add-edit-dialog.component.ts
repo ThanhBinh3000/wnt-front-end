@@ -15,17 +15,17 @@ import { DatePipe } from '@angular/common';
 })
 export class CustomerAddEditDialogComponent extends BaseComponent implements OnInit {
   oldNumber: number = 0;
-  @Input() isMinimized: boolean = false;
   showMoreForm: boolean = false;
   expandLabel: string = '[+]';
   listNhomKhachHang: any[] = [];
+  isMinimized : boolean = false;
 
   constructor(
     injector: Injector,
     private _service: KhachHangService,
     private nhomKhachHangService: NhomKhachHangService,
     public dialogRef: MatDialogRef<CustomerAddEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public customerID: any,
+    @Inject(MAT_DIALOG_DATA) public customer: any,
     private datePipe: DatePipe
   ) {
     super(injector, _service);
@@ -78,8 +78,9 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
 
   async ngOnInit() {
     this.getDataFilter();
-    if (this.customerID) {
-      const data = await this.detail(this.customerID);
+    this.isMinimized = this.customer.isMinimized;
+    if (this.customer.id > 0) {
+      const data = await this.detail(this.customer.id);
       if (data) {
         if (data.birthDate) {
           data.birthDate = new Date(data.birthDate);
@@ -87,7 +88,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
         this.formData.patchValue(data);
       }
     }
-    if (!this.customerID) {
+    if (!this.customer.id) {
       this.genBarcodeCustomer();
     }
   }
