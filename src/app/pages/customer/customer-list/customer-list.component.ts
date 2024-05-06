@@ -146,9 +146,10 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     });
   }
 
-  async openAddEditDialog(customerID: any) {
+  async openAddEditDialog(customer: any) {
+    customer.isMinimized =  false;
     const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
-      data: customerID,
+      data: customer,
       width: '1000px',
     });
     dialogRef.afterClosed().subscribe(async result => {

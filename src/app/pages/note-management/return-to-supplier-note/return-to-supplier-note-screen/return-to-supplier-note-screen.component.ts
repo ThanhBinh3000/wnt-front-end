@@ -84,7 +84,6 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     this.getId();
     if (this.idUrl) {
       let data = await this.detail(this.idUrl);
-      console.log(data);
       this.formData.patchValue(data);
       this.listNhaCungCaps = [{ id: data.nhaCungCapMaNhaCungCap, tenNhaCungCap: data.nhaCungCapMaNhaCungCapText }];
       this.dataTable =data.chiTiets;
@@ -244,7 +243,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
   async onChangeUnit(item: any) {
     if (item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh) {
       item.giaXuat = item.giaNhap;
-      item.tonHT = item.ton * item.heSo;
+      item.tonHT = item.ton;
     } else {
       item.giaXuat = item.giaNhap * item.heSo;
       item.tonHT = item.ton / item.heSo;

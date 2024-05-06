@@ -12,6 +12,8 @@ import {NgSelectComponent} from "@ng-select/ng-select";
 import {KhachHangService} from "../../../../services/customer/khach-hang.service";
 import {BacSiesService} from "../../../../services/medical/bac-sies.service";
 import {SETTING} from "../../../../constants/setting";
+import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
+import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
 
 @Component({
   selector: 'delivery-note-barcode-screen',
@@ -184,13 +186,13 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
           let item = res.data;
           item.isEditingItem = true;
           item.thuocThuocId = item.id;
-          item.giaXuat = item.heSo > 1 ? item.giaNhap * item.heSo : item.giaNhap;
+          item.giaXuat = item.heSo > 1 ? item.giaBanLe * item.heSo : item.giaBanLe;
           item.soLuong = 1;
           item.donViTinhMaDonViTinh = item.heSo > 1 ? item.donViThuNguyenMaDonViTinh : item.donViXuatLeMaDonViTinh;
           item.donViTinhs = item.listDonViTinhs;
           item.vat = 0;
           item.chietKhau = 0;
-          item.retailPrice = item.giaNhap;
+          item.retailPrice = item.giaBanLe;
           item.tonHT = item.inventory ? item.inventory.lastValue : 0;
           item.ton = item.tonHT;
           item.isModified = false;
@@ -239,10 +241,10 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
 
   async onChangeUnit(item: any) {
     if (item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh) {
-      item.giaXuat = item.giaNhap;
-      item.tonHT = item.ton * item.heSo;
+      item.giaXuat = item.giaBanLe;
+      item.tonHT = item.ton;
     } else {
-      item.giaXuat = item.giaNhap * item.heSo;
+      item.giaXuat = item.giaBanLe * item.heSo;
       item.tonHT = item.ton / item.heSo;
     }
     await this.getItemAmount(item);
@@ -427,6 +429,36 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         }
       });
     }
+  }
+
+  async openAddCustomerDialog() {
+    const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
+      data: {isMinimized : true},
+      width: '70%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+       this.listKhachHangs = [result];
+       this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
+      }
+    });
+  }
+
+  async openAddDoctorDialog() {
+    const dialogRef = this.dialog.open(DoctorAddEditDialogComponent, {
+      data: 0,
+      width: '30%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+       this.formData.controls['bacSyMaBacSy'].setValue(result.id);
+       this.bacsyService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
+        if (res?.status == STATUS_API.SUCCESS) {
+          this.listBacSys = res.data;
+        }
+      });
+      }
+    });
   }
 
   @HostListener('window:keyup', ['$event'])
