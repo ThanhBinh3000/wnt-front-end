@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Injector, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Injector, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../../component/base/base.component';
 import { SETTING } from '../../../../constants/setting';
@@ -19,18 +19,21 @@ import moment from 'moment';
 import { RegionInformationEditDialogComponent } from '../../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
 import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'delivery-note-screen',
   templateUrl: './delivery-note-screen.component.html',
   styleUrls: ['./delivery-note-screen.component.css'],
 })
-export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit {
+export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
-
-  listKhachHangs: any[] = [];
-  listBacSys: any[] = [];
-  listThuocs: any[] = [];
+   
+  listBacSys : any[] = [];
+  listThuoc$ = new Observable<any[]>;
+  listKhachHang$ = new Observable<any[]>;
+  searchThuocTerm$ = new Subject<string>();
+  searchKhachHangTerm$ = new Subject<string>();
   listPaymentType: any[] = [];
   listNhanViens: any[] = [];
 
@@ -76,11 +79,11 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     private _service: PhieuXuatService,
     private khachHangService: KhachHangService,
     private thuocService: ThuocService,
-    private bacsyService: BacSiesService,
+    private bacSiesService: BacSiesService,
     private datePipe: DatePipe,
     private paymentTypeService: PaymentTypeService,
-    private pxService: PhieuXuatService,
-    private nvService: UserProfileService
+    private phieuXuatService: PhieuXuatService,
+    private userProfileService: UserProfileService
   ) {
 
     super(injector, _service);
@@ -129,7 +132,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     if (this.idUrl) {
       let data = await this.detail(this.idUrl);
       this.formData.patchValue(data);
-      this.listKhachHangs = [{ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText }];
+      this.listKhachHang$ = of([{ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText }]);
       this.dataTable = data.chiTiets;
       this.dataTable.unshift({ isEditingItem: true });
       console.log(this.dataTable);
@@ -148,7 +151,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           x.tonHT = x.ton / x.heSo;
         }
         this.getItemAmount(x);
-        this.onCustomerChange(this.listKhachHangs[0]);
+        this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
       });
     } else {
       this.dataTable.push({ isEditingItem: true });
@@ -163,7 +166,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
           this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
           this.formData.controls['khachHangMaKhachHang'].setValue(this.maKhachHangLe);
-          this.listKhachHangs = [{ id: data.khachHangMaKhachHang, tenKhachHang: 'Khách lẻ'}];
+          this.listKhachHang$ = of([{id: this.maKhachHangLe, tenKhachHang: 'Khách hàng lẻ'}]);
         }
       });
     }
@@ -192,59 +195,70 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
 
   getDataFilter() {
     let body = { dataDelete: false, maNhaThuoc: this.getMaNhaThuoc() };
-    this.bacsyService.searchList(body).then((res) => {
+    this.bacSiesService.searchList(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listBacSys = res.data;
       }
     });
 
-    this.nvService.searchListStaffManagement(body).then((res) => {
+    this.userProfileService.searchListStaffManagement(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listNhanViens = res.data;
       }
     });
+    
+    this.listThuoc$ = this.searchThuocTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        console.log('call thuoc');
+        if(term.length >= 2){
+          let bodyThuoc = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
+            typeService : 0
+          };
+          return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+    // Search khách hàng
+    this.listKhachHang$ = this.searchKhachHangTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let bodyKhachHang = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.khachHangService.searchPage(bodyKhachHang).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
   }
 
-  async searchPageKhachHang($event: any) {
-    if ($event.term.length >= 2) {
-      let body = {
-        textSearch: $event.term, paggingReq: {}, dataDelete: false,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc()
-      };
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.khachHangService.searchPage(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listKhachHangs = res.data.content;
-          this.listKhachHangs.push({ id: this.maKhachHangLe, tenKhachHang: 'Khách lẻ' });
-        }
-      });
-    }
-  }
-
-  async searchPageDrug($event: any) {
-    if ($event.term.length >= 2) {
-      let body = {
-        textSearch: $event.term, paggingReq: {}, dataDelete: false,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), typeService: LOAI_SAN_PHAM.THUOC
-      };
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.thuocService.searchPage(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listThuocs = res.data.content;
-        }
-      });
-    }
-  }
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
   // Call to clear
-
   async onDrugChange(data: any) {
     if (data && data.id > 0) {
       this.thuocService.getDetail(data.id).then((res) => {
@@ -508,7 +522,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
         nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
         ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
-      this.pxService.getTotalDebtAmountCustomer(bodyPX).then(res => {
+      this.phieuXuatService.getTotalDebtAmountCustomer(bodyPX).then(res => {
         if (res && res.status == STATUS_API.SUCCESS) {
           this.totalDebtAmount = res.data;
         }
@@ -580,7 +594,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-       this.listKhachHangs = [result];
+       this.listKhachHang$ = of([result]);
        this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
       }
     });
@@ -594,7 +608,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
        this.formData.controls['bacSyMaBacSy'].setValue(result.id);
-       this.bacsyService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
+       this.bacSiesService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
         if (res?.status == STATUS_API.SUCCESS) {
           this.listBacSys = res.data;
         }

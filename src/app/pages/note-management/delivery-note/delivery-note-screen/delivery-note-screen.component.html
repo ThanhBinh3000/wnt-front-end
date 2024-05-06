@@ -73,11 +73,18 @@
                                 </label>
                                 <div class="input-group">
                                     <div class="flex-grow-1 ip-position ng-isolate-scope">
-                                        <ng-select appendTo="body" formControlName="khachHangMaKhachHang"
-                                            appearance="outline" [items]="listKhachHangs" bindLabel="tenKhachHang"
-                                            bindValue="id" placeholder="Tra cứu theo tên..."
-                                            notFoundText="Không tìm thấy mục nào" (search)="searchPageKhachHang($event)"
-                                            (change)="onCustomerChange($event)">
+                                        <ng-select appendTo="body"
+                                            appendTo="body"
+                                            appearance="outline" 
+                                            [items]="listKhachHang$ | async" 
+                                            [typeahead]="searchKhachHangTerm$"
+                                            bindLabel="tenKhachHang"
+                                            bindValue="id" 
+                                            [minTermLength]="2"
+                                            appendTo="body" 
+                                            appearance="outline"
+                                            placeholder="Tra cứu theo tên, mã, mã vạch..."
+                                            notFoundText="Không tìm thấy mục nào" (change)="searchKhachHangTerm$.next(''); onCustomerChange($event)">
                                             <ng-template ng-label-tmp let-item="item">
                                                 <span>{{item.tenKhachHang}}</span>
                                             </ng-template>
@@ -144,8 +151,7 @@
                                             </ng-select>
                                         </div>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-primary"
-                                                (click)="openAddDoctorDialog()"
+                                            <button class="btn btn-primary" (click)="openAddDoctorDialog()"
                                                 title="Thêm bác sỹ mới nếu chưa có">
                                                 <i class="fa-regular fa-plus"></i>
                                             </button>
@@ -237,11 +243,19 @@
                         <div>
                             <div class="w-100">
                                 <div class="control-group">
-                                    <ng-select #selectDrug appendTo="body" [(ngModel)]="data.thuocThuocId"
-                                        appearance="outline" [items]="listThuocs" bindLabel="tenThuoc" bindValue="id"
+                                    <ng-select #selectDrug 
+                                        appendTo="body" 
+                                        [(ngModel)]="data.thuocThuocId"
+                                        appearance="outline" 
+                                        [items]="listThuoc$ | async" 
+                                        [typeahead]="searchThuocTerm$"
+                                        bindLabel="tenThuoc"
+                                        bindValue="id" 
+                                        [minTermLength]="2"
+                                        appendTo="body" 
+                                        appearance="outline"
                                         placeholder="Tra cứu theo tên, mã, mã vạch..."
-                                        notFoundText="Không tìm thấy mục nào" (search)="searchPageDrug($event)"
-                                        (change)="onDrugChange($event)">
+                                        notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)">
                                         <ng-template ng-label-tmp let-item="item">
                                             <span>{{item.maThuoc}}-{{item.tenThuoc}}</span>
                                         </ng-template>
@@ -518,9 +532,12 @@
                             <div class="d-flex justify-content-center align-items-center gap-10">
                                 <input type="button" value="Quay lại" class="btn btn-default"
                                     (click)="onReturnListing()">
-                                <input type="submit" value="Ghi Phiếu - F9" disabled="{{formData.value?.locked ? 'disabled' : ''}}" id="save-note-btn-id" title="F9-Ghi phiếu"
-                                    class="btn btn-primary" class="btn btn-primary" (click)="onSave()">
-                                <button class="btn btn-default" title="Sao chép phiếu" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
+                                <input type="submit" value="Ghi Phiếu - F9"
+                                    disabled="{{formData.value?.locked ? 'disabled' : ''}}" id="save-note-btn-id"
+                                    title="F9-Ghi phiếu" class="btn btn-primary" class="btn btn-primary"
+                                    (click)="onSave()">
+                                <button class="btn btn-default" title="Sao chép phiếu"
+                                    disabled="{{formData.value?.locked ? 'disabled' : ''}}"
                                     *ngIf="isDesktop() && formData.value?.id > 0"
                                     ng-click="onCopyNoteDelivery(viewModel.NoteId)">Copy</button>
                                 <div class="btn-group ng-scope" *ngIf="isDesktop() && formData.value?.id > 0">
@@ -544,20 +561,22 @@
                                 </div>
                                 <span *ngIf="formData.value?.id > 0" class="ng-scope">
                                     <span>&nbsp;</span>
-                                    <button class="btn btn-danger" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
+                                    <button class="btn btn-danger"
+                                        disabled="{{formData.value?.locked ? 'disabled' : ''}}"
                                         (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất bán của khách hàng \'' +
                     formData.value?.khachHangMaKhachHangText + '\' có số phiếu \'' + formData.value?.soPhieuXuat + '\' ?', formData.value?.id)">
                                         Xóa phiếu</button>
                                     <span>&nbsp;</span>
-                                    <a (click)="onLockNote()"
-                                        title="Mở/Khóa phiếu" class="btn btn-default"><i
+                                    <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
                                             class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
                                 </span>
                                 <span *ngIf="enableElectronicInvoice" class="ng-scope">
-                                    <input disabled="{{formData.value?.locked ? 'disabled' : ''}}" type="file" ngf-select="uploadXmlInvoiceFiles($file, $invalidFiles)"
-                                        style="display: none;" id="chooseXmlInvoiceFileId" accept="text/xml"
-                                        ngf-max-size="10MB" value="Tải file" class="btn btn-default">
-                                    <input disabled="{{formData.value?.locked ? 'disabled' : ''}}" type="button" value="Đọc HĐ" class="btn btn-warning"
+                                    <input disabled="{{formData.value?.locked ? 'disabled' : ''}}" type="file"
+                                        ngf-select="uploadXmlInvoiceFiles($file, $invalidFiles)" style="display: none;"
+                                        id="chooseXmlInvoiceFileId" accept="text/xml" ngf-max-size="10MB"
+                                        value="Tải file" class="btn btn-default">
+                                    <input disabled="{{formData.value?.locked ? 'disabled' : ''}}" type="button"
+                                        value="Đọc HĐ" class="btn btn-warning"
                                         ng-click="onSelectXmlInvoiceFileToImport(); $event.preventDefault(); $event.stopPropagation();">
                                 </span>
                             </div>
