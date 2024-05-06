@@ -6,6 +6,7 @@ import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";
 import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.service";
 import {MESSAGE, STATUS_API} from "../../../../constants/message";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'warehouse-transfer-note-table',
@@ -13,9 +14,9 @@ import {MESSAGE, STATUS_API} from "../../../../constants/message";
   styleUrls: ['./warehouse-transfer-note-table.component.css'],
 })
 export class WarehouseTransferNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'nhanVien', 'nhaThuoc', 'dienGiai', 'tongTien', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'createdByUserText', 'targetStoreText', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -71,25 +72,5 @@ export class WarehouseTransferNoteTableComponent extends BaseComponent implement
 
   getTotalAmount() {
     return this.dataSource.data.map((i: any) => i.tongTien).reduce((acc, value) => acc + value, 0);
-  }
-
-  async onDelete(item: any){
-    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
-  }
-
-  async onLockNote(item: any){
-    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.status == STATUS_API.SUCCESS) {
-      item.locked = res.data.locked;
-      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
-    }
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

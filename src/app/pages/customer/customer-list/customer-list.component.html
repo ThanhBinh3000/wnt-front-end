@@ -92,7 +92,7 @@
         <ng-container matColumnDef="#">
           <th mat-header-cell *matHeaderCellDef style="width:8%"> #</th>
           <td mat-cell *matCellDef="let data; index as i;" style="width:8%">
-            <span class="btn-link" (click)="openUpdateRegionInformationDialog(data)">{{ (page - 1) * pageSize + i + 1
+            <span class="btn-link" (click)="openRegionInformationEditDialog(data)">{{ (page - 1) * pageSize + i + 1
               }}</span>
           </td>
         </ng-container>
@@ -137,7 +137,7 @@
                   <span *ngIf="item.id" [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar" />
                     {{item.tenNhaThuoc}}</span>
                   <span *ngIf="!item.id" class="{{item.id ? '' : 'btn-primary'}}"
-                    (click)="danhSachNhaThuocDonghBoPhieu()"> {{item.tenNhaThuoc}}</span>
+                    (click)="danhSachNhaThuocDongBoPhieu()"> {{item.tenNhaThuoc}}</span>
                 </ng-template>
               </ng-select>
             </div>

@@ -5,6 +5,7 @@ import { RECORD_STATUS } from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";
 import {PhieuDuTruService} from "../../../../services/products/phieu-du-tru.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'reserve-note-table',
@@ -12,9 +13,9 @@ import {PhieuDuTruService} from "../../../../services/products/phieu-du-tru.serv
   styleUrls: ['./reserve-note-table.component.css'],
 })
 export class ReserveNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'soPhieu', 'ngayTao', 'nhanVien', 'nhaCungCap', 'tongTien', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'soPhieu', 'ngayTao', 'createdByUseText', 'supplierText', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -64,21 +65,5 @@ export class ReserveNoteTableComponent extends BaseComponent implements OnInit, 
 
   getTotalAmount() {
     return this.dataSource.data.map((i: any) => i.tongTien).reduce((acc, value) => acc + value, 0);
-  }
-
-  async onDelete(item: any){
-
-  }
-
-  async onLockNote(item: any){
-
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
   }
 }

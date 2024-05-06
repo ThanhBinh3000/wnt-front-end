@@ -213,13 +213,13 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     });
     // Tỉnh thành
     this.tinhThanhsService.searchList({}).then((res: any) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTinhThanh = res.data;
       }
     });
     // Chính sách bán hàng
     this.typeBasisService.searchList({}).then((res: any) => {
-      if (res?.statusCode == STATUS_API.SUCCESS) {
+      if (res?.status == STATUS_API.SUCCESS) {
         this.listTypeBasis = res.data;
       }
     });
@@ -234,7 +234,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     let body = item;
     item.businessId = $event?.id;
     let res =  await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -244,7 +244,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     let body = item;
     item.supporterId = $event?.id;
     let res =  await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -252,7 +252,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
 
   async onUpdateNoteType(item: any) {
     let res =  await this.save(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -261,7 +261,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
 
   async onUpdateBusinessDescription(item: any) {
     let res =  await this.save(item);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
@@ -289,25 +289,16 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
     let body = item;
     body.paidDate = this.datePipe.transform(body.paidDate, 'dd/MM/yyyy HH:mm:ss') ?? '';
     let res =  await this.save(body);
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       return res.data;
     }
     item.isEditPaid = false;
   }
 
-  async openRegionalDetailDialog(item: any) {
+  async openRegionInformationEditDialog(data: any) {
     this.dialog.open(RegionInformationEditDialogComponent, {
-      data: {
-        id: item.id,
-        code: item.maNhaThuoc,
-        name: item.tenNhaThuoc,
-        address: item.diaChi,
-        cityId: item.tinhThanhId,
-        regionId: item.regionId,
-        wardId: item.wardId,
-        type: 'drug-store'
-      },
+      data: { id: data.id, controller: 'nha-thuocs' },
       width: '600px',
     });
   }
@@ -344,7 +335,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
         let body = item;
         item.hoatDong = false;
         let res =  await this.save(body);
-        if (res && res.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
           return res.data;
         }
@@ -365,7 +356,7 @@ export class DrugStoreListComponent extends BaseComponent implements OnInit, Aft
         let body = item;
         item.hoatDong = true;
         let res =  await this.save(body);
-        if (res && res.statusCode == STATUS_API.SUCCESS) {
+        if (res?.status == STATUS_API.SUCCESS) {
           this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
           return res.data;
         }

@@ -64,7 +64,7 @@ export class StaffAddEditDialogComponent extends BaseComponent implements OnInit
     } else {
       res = await this.userProfileService.createStaff(body);
     }
-    if (res && res.statusCode == STATUS_API.SUCCESS) {
+    if (res?.status == STATUS_API.SUCCESS) {
       if (body.id && body.id > 0) {
         this.notification.success(MESSAGE.SUCCESS, MESSAGE.UPDATE_SUCCESS);
       } else {

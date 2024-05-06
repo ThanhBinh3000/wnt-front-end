@@ -87,7 +87,7 @@
           {{ data.tongTien | number }}
         </div>
         <div class="text-right">
-          {{data.paymentTypeId == 1 ? '(Chuyển khoản)' : '(Tiền mặt)'}}
+          ({{data.tenPaymentType}})
         </div>
       </td>
     </ng-container>
@@ -104,7 +104,7 @@
             <a class="btn btn-primary btn-edit btn-sm" href="/management/note-management/receipt-note-screen/{{data.id}}">
               <i class="fa-regular fa-pen-to-square"></i>
             </a>
-            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDelete(data)"><i class="fa-regular fa-trash"></i></button>
+            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="delete('Bạn có chắc là muốn xóa phiếu này?', data)"><i class="fa-regular fa-trash"></i></button>
           </div>
           <div class="baocao-actions-item">
             <span *ngIf="storeCodeForConnectivity.activated && !data.targetId">
@@ -118,7 +118,7 @@
                 </a>
             </span>
             <span *ngIf="isSuperUser() || isAdmin()">
-                <button type="button" class="btn btn-sm" [ngClass]="data.locked ? 'btn-danger' : 'btn-primary'" (click)="onLockNote(data);" title="Mở/Khóa phiếu">
+                <button type="button" class="btn btn-sm" [ngClass]="data.locked ? 'btn-danger' : 'btn-primary'" (click)="lockUnlock(data);" title="Mở/Khóa phiếu">
                   <i [ngClass]="data.locked ? 'fa-regular fa-lock' : 'fa-regular fa-lock-open'"></i>
                 </button>
             </span>
@@ -126,14 +126,14 @@
         </div>
         <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
           <div class="baocao-actions-item">
-            <button *ngIf="receiptNoteRestore" type="button" class="btn btn-warning btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
-            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
+            <button *ngIf="receiptNoteRestore" type="button" class="btn btn-warning btn-edit btn-sm" (click)="restore('Bạn có chắc là muốn khôi phục phiếu này?', data)">Khôi phục</button>
+            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="deleteDatabase('Bạn có chắc là muốn xóa vĩnh viễn phiếu này?', data)">Xóa</button>
           </div>
         </div>
         <div *ngIf="data.recordStatusId === RECORD_STATUS.ACCEPTANCE_PENDING" class="baocao-actions baocao-actions-row">
           <div class="baocao-actions-item">
-            <button type="button" class="btn btn-primary btn-edit btn-sm" (click)="onApprove(data)">Duyệt</button>
-            <button type="button" class="btn btn-primary btn-edit btn-sm" (click)="onCancel(data)">Hủy</button>
+            <button type="button" class="btn btn-primary btn-edit btn-sm" (click)="approve(data.soPhieuNhap, data)">Duyệt</button>
+            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="cancel(data.soPhieuNhap, data)">Hủy</button>
           </div>
         </div>
       </td>

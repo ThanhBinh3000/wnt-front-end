@@ -8,6 +8,11 @@ import {
   AccountResetPasswordDialogComponent
 } from "../account-reset-password-dialog/account-reset-password-dialog.component";
 import {MatSort} from "@angular/material/sort";
+import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
+import {NhaThuocsService} from "../../../services/system/nha-thuocs.service";
+import {
+  RegionInformationEditDialogComponent
+} from "../../utilities/region-information-edit-dialog/region-information-edit-dialog.component";
 
 @Component({
   selector: 'account-list',
@@ -27,29 +32,14 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
     'permissions',
     'action'
   ];
-  drugStores = [
-    {
-      code: '0010',
-      name: 'Công ty TNHH Web Nhà Thuốc',
-      fullInfo: `0010 - Công ty TNHH Web Nhà Thuốc - Số 133, Yên Duyên, Yên Sở, Hoàng Mai, Hà Nội - Admin1`
-    },
-    {
-      code: '0011',
-      name: 'Chi nhánh công ty TNHH Web Nhà Thuốc',
-      fullInfo: `0011 - Chi nhánh công ty TNHH Web Nhà Thuốc - Ba Vì, Hà Nội - Chủ quầy thuốc`
-    },
-    {
-      code: '0013',
-      name: 'QT Thủy Tiên CL',
-      fullInfo: `0013 - QT Thủy Tiên CL - Tiền Giang - Web Nhà Thuốc`
-    },
-  ];
+  listNhaThuoc$ = new Observable<any[]>;
+  searchNhaThuocTerm$ = new Subject<string>();
 
   constructor(
     injector: Injector,
     private titleService: Title,
     private _service: UserProfileService,
-    // private dialog: MatDialog
+    private nhaThuocsService: NhaThuocsService
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -61,12 +51,37 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.getDataFilter();
     await this.searchPage();
   }
 
   @ViewChild(MatSort) sort?: MatSort;
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+
+  getDataFilter() {
+    this.listNhaThuoc$ = this.searchNhaThuocTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            hoatDong: true
+          };
+          return from(this.nhaThuocsService.searchPage(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
   }
 
   override async searchPage() {
@@ -81,11 +96,22 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
       this.dataTable = data.content;
       this.totalRecord = data.totalElements;
       this.totalPages = data.totalPages;
-
     } else {
       this.dataTable = [];
       this.totalRecord = 0;
     }
+  }
+
+  trackByFn(item: any) {
+    return item.id;
+  }
+
+  getUserId() {
+    return this.authService.getUser()?.id;
+  }
+
+  getDisplayedNhaThuocs(nhaThuocs: any) {
+    return nhaThuocs.replace(/,/g, '<br> ');
   }
 
   async openAddEditDialog(userProfile: any) {
@@ -112,7 +138,18 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
     });
   }
 
-  async openRegionalDetailDialog(userProfile: any) {
-
+  async openRegionInformationEditDialog(data: any) {
+    const dialogRef = this.dialog.open(RegionInformationEditDialogComponent, {
+      data: { id: data.id, controller: 'nguoi-dung' },
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        data.address = result.address;
+        data.regionId = result.regionId;
+        data.cityId = result.cityId;
+        data.wardId = result.wardId;
+      }
+    });
   }
 }

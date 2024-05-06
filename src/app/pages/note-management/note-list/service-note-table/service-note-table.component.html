@@ -48,24 +48,24 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nguoiThucHien">
+    <ng-container matColumnDef="createdByUseText">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Người thực hiện</th>
       <td mat-cell *matCellDef="let data">
-        <div class="text-left">{{ data.nguoiThucHien }}</div>
+        <div class="text-left">{{ data.createdByUseText }}</div>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="benhNhan">
+    <ng-container matColumnDef="customerName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Bệnh nhân</th>
       <td mat-cell *matCellDef="let data">
-        <div class="text-left">{{ data.benhNhan }}</div>
+        <div class="text-left">{{ data.customerName }}</div>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="bacSi">
+    <ng-container matColumnDef="doctorName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Bác sĩ</th>
       <td mat-cell *matCellDef="let data">
-        <div class="text-left">{{ data.bacSi }}</div>
+        <div class="text-left">{{ data.doctorName }}</div>
       </td>
     </ng-container>
 
@@ -78,8 +78,8 @@
       <td mat-cell *matCellDef="let data">
         <div *ngIf="data.recordStatusId === RECORD_STATUS.DELETED" class="baocao-actions baocao-actions-row">
           <div class="baocao-actions-item">
-            <button type="button" class="btn btn-warning btn-edit btn-sm" (click)="onRestore(data)">Khôi phục</button>
-            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="onDeleteForever(data)">Xóa</button>
+            <button type="button" class="btn btn-warning btn-edit btn-sm" (click)="restore('Bạn có chắc là muốn khôi phục phiếu này?', data)">Khôi phục</button>
+            <button type="button" class="btn btn-danger btn-del btn-sm" (click)="deleteDatabase('Bạn có chắc là muốn xóa vĩnh viễn phiếu này?', data)">Xóa</button>
           </div>
         </div>
       </td>

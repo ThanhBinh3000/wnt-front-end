@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, EventEmitter, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {MatSort} from "@angular/material/sort";
 import {RECORD_STATUS, TRANG_THAI_DONG_BO} from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {PhieuXuatService} from "../../../../services/inventory/phieu-xuat.service";
 import {MESSAGE, STATUS_API} from "../../../../constants/message";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'delivery-note-table',
@@ -13,9 +13,9 @@ import {MESSAGE, STATUS_API} from "../../../../constants/message";
   styleUrls: ['./delivery-note-table.component.css'],
 })
 export class DeliveryNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'nhanVien', 'khachHang', 'dienGiai', 'tongTien', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'createdByUserText', 'khachHangMaKhachHangText', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   storeCodeForConnectivity = {
@@ -79,37 +79,43 @@ export class DeliveryNoteTableComponent extends BaseComponent implements OnInit,
   }
 
   getSyncStatusColor(item: any) {
-    if (item.SynStatusId == TRANG_THAI_DONG_BO.SYNCHRONIZED) return '#00B8C7';
-    if (item.SynStatusId == TRANG_THAI_DONG_BO.FAILED) return '#FC0F0F';
-    if (item.SynStatusId == TRANG_THAI_DONG_BO.NOT_SYNC) return '#C98209';
+    if (item.synStatusId == TRANG_THAI_DONG_BO.SYNCHRONIZED) return '#00B8C7';
+    if (item.synStatusId == TRANG_THAI_DONG_BO.FAILED) return '#FC0F0F';
+    if (item.synStatusId == TRANG_THAI_DONG_BO.NOT_SYNC) return '#C98209';
     return '';
   }
 
-  async onDelete(item: any){
-    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
-  }
-
-  async onLockNote(item: any){
-    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.status == STATUS_API.SUCCESS) {
-      item.locked = res.data.locked;
-      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+  async onResetSyncMultiple() {
+    let dataResetSync : any[] = [];
+    if (this.dataTable && this.dataTable.length > 0) {
+      this.dataTable.forEach((item) => {
+        if (item.checked) {
+          dataResetSync.push(item.id);
+        }
+      });
+    }
+    if (dataResetSync && dataResetSync.length > 0) {
+      this.modal.confirm({
+        closable: false,
+        title: 'Xác nhận',
+        content: "Bạn thực sự muốn thiết lập lại trạng thái để đồng bộ lại?",
+        okText: 'Đồng ý',
+        cancelText: 'Không',
+        okDanger: true,
+        width: 310,
+        onOk: async () => {
+          let res = await this._service.resetSync({listIds: dataResetSync});
+          if (res && res.data) {
+            this.notification.success(MESSAGE.SUCCESS, "Đồng bộ hóa đơn thành công.");
+            await this.searchPage();
+          }
+        },
+      });
+    } else {
+      this.notification.error(MESSAGE.ERROR, "Chọn các phiếu muốn thiết lập trạng thái để đồng bộ lại.");
     }
   }
 
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
-  }
-
-  async onApprove(item: any){
-
-  }
-
-  async onCancel(item: any){
-
+  async onExportMultipleInvoice() {
   }
 }

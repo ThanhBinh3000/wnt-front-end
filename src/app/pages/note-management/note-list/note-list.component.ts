@@ -24,13 +24,14 @@ import {
 } from "./receipt-medical-fee-note-table/receipt-medical-fee-note-table.component";
 import {SETTING} from "../../../constants/setting";
 import {NhaThuocsService} from "../../../services/system/nha-thuocs.service";
-import {STATUS_API} from "../../../constants/message";
+import {MESSAGE, STATUS_API} from "../../../constants/message";
 import {BacSiesService} from "../../../services/medical/bac-sies.service";
 import {UserProfileService} from "../../../services/system/user-profile.service";
 import {catchError, concat, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
 import {ThuocService} from "../../../services/products/thuoc.service";
 import {KhachHangService} from "../../../services/customer/khach-hang.service";
 import {NhaCungCapService} from "../../../services/categories/nha-cung-cap.service";
+import {PhieuXuatService} from "../../../services/inventory/phieu-xuat.service";
 
 @Component({
   selector: 'note-list',
@@ -38,6 +39,7 @@ import {NhaCungCapService} from "../../../services/categories/nha-cung-cap.servi
   styleUrls: ['./note-list.component.css'],
 })
 export class NoteListComponent extends BaseComponent implements OnInit, AfterViewInit {
+  title = '';
   @ViewChild(ReceiptNoteTableComponent) receiptNoteTable!: ReceiptNoteTableComponent;
   @ViewChild(DeliveryNoteTableComponent) deliveryNoteTable!: DeliveryNoteTableComponent;
   @ViewChild(ReturnFromCustomerNoteTableComponent) returnFromCustomerNoteTable!: ReturnFromCustomerNoteTableComponent;
@@ -99,6 +101,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
   constructor(
     injector: Injector,
     private titleService: Title,
+    private phieuXuatService : PhieuXuatService,
     private nhaThuocsService : NhaThuocsService,
     private userProfileService: UserProfileService,
     private bacSiesService: BacSiesService,
@@ -133,7 +136,8 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
   }
 
   ngOnInit() {
-    this.titleService.setTitle(this.isDeleted ? "Khôi phục các chứng từ bị xóa" : "Tra cứu phiếu Nhập/Xuất");
+    this.title = this.isDeleted ? "Khôi phục các chứng từ bị xóa" : "Tra cứu phiếu Nhập/Xuất";
+    this.titleService.setTitle(this.title);
     this.route.queryParams.subscribe(params => {
       const noteTypeId = params['noteTypeId'];
       if(noteTypeId) {
@@ -142,7 +146,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
         });
       }
     });
-    this.getDataFilter(this.getMaNhaThuoc());
+    this.getDataFilter();
   }
 
   async ngAfterViewInit() {
@@ -295,7 +299,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     await this.searchPage();
   }
 
-  getDataFilter(maNhaThuoc: any) {
+  getDataFilter() {
     // Danh sách nhà thuốc quản lý
     if(this.viewMultipleWarehousesFromReports.activated){
       this.nhaThuocsService.searchList({
@@ -321,9 +325,8 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: maNhaThuoc,
+            maNhaThuoc: this.formData.get('maNhaThuoc')?.value,
           };
-          console.log(body)
           return from(this.userProfileService.searchPage(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
@@ -345,7 +348,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: maNhaThuoc,
+            maNhaThuoc: this.formData.get('maNhaThuoc')?.value,
           };
           return from(this.bacSiesService.searchPage(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -368,7 +371,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            nhaThuocMaNhaThuoc: maNhaThuoc,
+            nhaThuocMaNhaThuoc: this.formData.get('maNhaThuoc')?.value,
             typeService: LOAI_SAN_PHAM.THUOC
           };
           return from(this.thuocsService.searchPage(body).then((res) => {
@@ -392,7 +395,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: maNhaThuoc
+            maNhaThuoc: this.formData.get('maNhaThuoc')?.value,
           };
           return from(this.khachHangService.searchPage(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -415,7 +418,7 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
-            maNhaThuoc: maNhaThuoc
+            maNhaThuoc: this.formData.get('maNhaThuoc')?.value,
           };
           return from(this.nhaCungCapService.searchPage(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -498,6 +501,16 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     await this.searchPage();
   }
 
+  async onAcceptancePendingCheckedChanged($event: any){
+    const checked = $event.target.checked;
+    if(checked) {
+      this.formData.get('recordStatusId')?.setValue(RECORD_STATUS.ACCEPTANCE_PENDING);
+    } else {
+      this.formData.get('recordStatusId')?.setValue(RECORD_STATUS.ACTIVE);
+    }
+    await this.searchPage();
+  }
+
   async onImport() {
 
   }
@@ -510,32 +523,46 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
 
   }
 
-  async onSync() {
-
+  async onExportMultipleInvoice() {
+    await this.deliveryNoteTable.onExportMultipleInvoice();
   }
 
-  async onAcceptancePendingCheckedChanged($event: any){
-    const checked = $event.target.checked;
-    if(checked) {
-      this.formData.get('recordStatusId')?.setValue(RECORD_STATUS.ACCEPTANCE_PENDING);
+  async onSync() {
+    if (this.totalRecord >= 1000) {
+      this.modal.confirm({
+        closable: false,
+        title: 'Xác nhận',
+        content: "Mỗi lần đồng bộ Hệ thống sẽ đồng bộ tối đa 1000 phiếu bạn có muốn đồng bộ?",
+        okText: 'Đồng ý',
+        cancelText: 'Không',
+        okDanger: true,
+        width: 310,
+        onOk: async () => {
+          let res = await this.phieuXuatService.sync({ nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), listIds: [] });
+          if (res && res.data) {
+            this.notification.success(MESSAGE.SUCCESS, "Đồng bộ hoá đơn thành công.");
+          }
+        },
+      });
     } else {
-      this.formData.get('recordStatusId')?.setValue(RECORD_STATUS.ACTIVE);
+      let res = await this.phieuXuatService.sync({ nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), listIds: [] });
+      if (res && res.data) {
+        this.notification.success(MESSAGE.SUCCESS, "Đồng bộ hoá đơn thành công.");
+      }
     }
-    await this.searchPage();
   }
 
   async onResetSyncMultiple() {
-
-  }
-
-  async onExportMultipleInvoice() {
-
+    await this.deliveryNoteTable.onResetSyncMultiple();
   }
 
   async onDeleteMultiple() {
     const viewChild = this.noteTypes.find((item: any) => item.id == this.getNoteType())?.viewChild;
     if(viewChild){
-      await viewChild.deleteMulti('Bạn thực sự muốn xóa các phiếu được chọn?');
+      if(this.isDeleted)
+        await viewChild.deleteMultiDatabase('Bạn thực sự muốn xóa vĩnh viễn các phiếu được chọn?');
+      else
+        await viewChild.deleteMulti('Bạn thực sự muốn xóa các phiếu được chọn?');
     }
   }
 }

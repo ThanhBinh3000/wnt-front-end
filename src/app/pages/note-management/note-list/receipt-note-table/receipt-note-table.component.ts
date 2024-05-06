@@ -4,7 +4,7 @@ import {PhieuNhapService} from "../../../../services/inventory/phieu-nhap.servic
 import {MatSort} from "@angular/material/sort";
 import {RECORD_STATUS} from "../../../../constants/config";
 import {SETTING} from "../../../../constants/setting";
-import {MESSAGE, STATUS_API} from "../../../../constants/message";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'receipt-note-table',
@@ -12,7 +12,7 @@ import {MESSAGE, STATUS_API} from "../../../../constants/message";
   styleUrls: ['./receipt-note-table.component.css'],
 })
 export class ReceiptNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
   displayedColumns = ['checkBox', 'stt', 'soPhieuNhap', 'ngayNhap', 'tenNguoiTao', 'tenNhaCungCap', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
@@ -75,33 +75,5 @@ export class ReceiptNoteTableComponent extends BaseComponent implements OnInit, 
 
   getTotalAmount() {
     return this.dataSource.data.map((i: any) => i.tongTien).reduce((acc, value) => acc + value, 0);
-  }
-
-  async onDelete(item: any){
-    this.delete('Bạn có chắc là muốn xóa phiếu này?', item);
-  }
-
-  async onLockNote(item: any){
-    const res = item.locked ? await this._service.unlock(item) : await this._service.lock(item);
-    if (res && res.status == STATUS_API.SUCCESS) {
-      item.locked = res.data.locked;
-      this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
-    }
-  }
-
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
-  }
-
-  async onApprove(item: any){
-
-  }
-
-  async onCancel(item: any){
-
   }
 }

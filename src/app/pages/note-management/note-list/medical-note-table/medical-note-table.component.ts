@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {MatSort} from "@angular/material/sort";
 import {RECORD_STATUS, TRANG_THAI_PHIEU_KHAM} from '../../../../constants/config';
-import {SETTING} from "../../../../constants/setting";
 import {PhieuKhamService} from "../../../../services/medical/phieu-kham.service";
+import {STATUS_API} from "../../../../constants/message";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'medical-note-table',
@@ -12,9 +12,9 @@ import {PhieuKhamService} from "../../../../services/medical/phieu-kham.service"
   styleUrls: ['./medical-note-table.component.css'],
 })
 export class MedicalNoteTableComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Input() override formData = this.fb.group({});
+  @Input() override formData: FormGroup = this.fb.group({});
   @Input() formDataChange!: EventEmitter<any>;
-  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'created', 'nguoiTiepNhan', 'benhNhan', 'bacSi', 'action'];
+  displayedColumns = ['checkBox', 'stt', 'noteNumber', 'created', 'createdByUseText', 'patientName', 'doctorName', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
   // Authorities
@@ -31,7 +31,7 @@ export class MedicalNoteTableComponent extends BaseComponent implements OnInit, 
       this.formData = this.fb.group({
         ...newValue,
         storeCode: newValue.maNhaThuoc,
-        //statusNote: != TRANG_THAI_PHIEU_KHAM.CHO_KHAM,
+        // statusNote: != TRANG_THAI_PHIEU_KHAM.CHO_KHAM,
       });
     });
   }
@@ -63,11 +63,22 @@ export class MedicalNoteTableComponent extends BaseComponent implements OnInit, 
     return this.authService.isAdmin();
   }
 
-  async onRestore(item: any){
-
-  }
-
-  async onDeleteForever(item: any){
-
+  override async searchPage() {
+    let body = this.formData.value
+    body.paggingReq = {
+      limit: this.pageSize,
+      page: this.page - 1
+    }
+    let res = await this._service.searchPagePhieuKham(body);
+    if (res?.status == STATUS_API.SUCCESS) {
+      let data = res.data;
+      this.dataTable = data.content;
+      this.totalRecord = data.totalElements;
+      this.totalPages = data.totalPages;
+      console.log(this.dataTable)
+    } else {
+      this.dataTable = [];
+      this.totalRecord = 0;
+    }
   }
 }

@@ -5,10 +5,10 @@ import {BaseService} from "../base.service";
 @Injectable({
   providedIn: 'root'
 })
-export class PhieuThuTienService extends BaseService {
+export class MedicalFeeReceiptsService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-medical','phieu-thu-tien');
+    super(httpClient, 'wnt-medical','medical-fee-receipts');
   }
 
 

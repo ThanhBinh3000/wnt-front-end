@@ -2,7 +2,7 @@
   <div class="col-md-3">
     <form [formGroup]="formData">
       <div class="sidebar-bg">
-        <h2 class="title-section title-border">Tra cứu phiếu Nhập/Xuất</h2>
+        <h2 class="title-section title-border">{{title}}</h2>
         <fieldset class="mb-3" *ngIf="viewMultipleWarehousesFromReports.activated">
           <div class="row">
             <div class="col-md-3">
@@ -19,7 +19,7 @@
                 placeholder="Chọn hoặc gõ vào để tìm..."
                 notFoundText="Không tìm thấy mục nào"
                 [clearable]="false"
-                (change)="searchPage();getDataFilter($event.maNhaThuoc);getSearchType()"
+                (change)="searchPage();getSearchType()"
               >
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span [ngOptionHighlight]="search">{{ item.tenNhaThuoc }}</span>
