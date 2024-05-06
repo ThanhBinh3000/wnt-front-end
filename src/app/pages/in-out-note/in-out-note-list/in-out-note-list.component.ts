@@ -1,12 +1,20 @@
-import { AfterViewInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { BaseComponent } from '../../../component/base/base.component';
-import { KhachHangService } from '../../../services/customer/khach-hang.service';
-import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
-import { MatSort } from '@angular/material/sort';
-import { ThuChiService } from '../../../services/thu-chi.service';
-import { STATUS_API } from '../../../constants/message';
-import { UserProfileService } from '../../../services/system/user-profile.service';
+import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {BaseComponent} from '../../../component/base/base.component';
+import {KhachHangService} from '../../../services/customer/khach-hang.service';
+import {NhaCungCapService} from '../../../services/categories/nha-cung-cap.service';
+import {MatSort} from '@angular/material/sort';
+import {PhieuThuChiService} from '../../../services/thuchi/phieu-thu-chi.service';
+import {STATUS_API} from '../../../constants/message';
+import {UserProfileService} from '../../../services/system/user-profile.service';
+import {LOAI_THU_CHI, RECORD_STATUS} from "../../../constants/config";
+import {NavigationExtras} from "@angular/router";
+import {
+  OtherInOutNoteAddEditDialogComponent
+} from "../other-in-out-note-add-edit-dialog/other-in-out-note-add-edit-dialog.component";
+import {InOutNoteAddEditDialogComponent} from "../in-out-note-add-edit-dialog/in-out-note-add-edit-dialog.component";
+import {SETTING} from "../../../constants/setting";
+import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-in-out-note',
@@ -15,51 +23,60 @@ import { UserProfileService } from '../../../services/system/user-profile.servic
 })
 export class InOutNoteListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Tra cứu phiếu thu chi";
-  tongTien: number = 0;
-  tienMat: number = 0;
-  chuyenKhoan: number = 0;
   displayedColumns = [
     '#',
     'soPhieu',
     'nguoiNhan',
     'ngayTao',
-    'createBy_UserName',
+    'createByUserName',
     'amount',
     'dienGiai',
     'httt',
     'action'
   ];
-  listNhanVien: any[] = [];
-  listNhaCungCap: any[] = [];
-  listKhachHang: any[] = [];
-  loaiPhieus: any[] = [
-    { id: 1, value: 'Phiếu thu nợ khách hàng' },
-    { id: 2, value: 'Phiếu chi trả nhà cung cấp' },
-    { id: 3, value: 'Phiếu thu khác' },
-    { id: 4, value: 'Phiếu chi khác' },
-    { id: 5, value: 'Phiếu chi phí kinh doanh' },
-    { id: 6, value: 'Phiếu thu lại nhà cung cấp' },
-    { id: 7, value: 'Phiếu chi trả lại khách hàng' },
+  listLoaiPhieu: any[] = [
+    {id: LOAI_THU_CHI.THU_NO_KHACH_HANG, name: 'Phiếu thu nợ khách hàng'},
+    {id: LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP, name: 'Phiếu chi trả nợ nhà cung cấp'},
+    {id: LOAI_THU_CHI.THU_LAI_NHA_CUNG_CAP, name: 'Phiếu thu lại nhà cung cấp'},
+    {id: LOAI_THU_CHI.CHI_TRA_LAI_KHACH_HANG, name: 'Phiếu chi trả lại khách hàng'},
+    {id: LOAI_THU_CHI.THU_KHAC, name: 'Phiếu thu khác'},
+    {id: LOAI_THU_CHI.CHI_KHAC, name: 'Phiếu chi khác'},
+    {id: LOAI_THU_CHI.CHI_PHI_KINH_DOANH, name: 'Phiếu chi phí kinh doanh'},
   ];
+  listKhachHang$ = new Observable<any[]>;
+  listNCC$ = new Observable<any[]>;
+  listNhanVien$ = new Observable<any[]>;
+  searchKhachHangTerm$ = new Subject<string>();
+  searchNCCTerm$ = new Subject<string>();
+  searchNhanVienTerm$ = new Subject<string>();
+  // Settings
+  enableCustomerToSupplier = {
+    activated: this.authService.getSettingActivated(SETTING.ENABLE_CUSTOMER_TO_SUPPLIER)
+  }
+  // Authorities
+  inOutComingNoteWrite = true;
+  inOutComingNoteDelete = true;
+  inOutComingNoteRead = true;
+  inOutComingNoteImportExcel = true;
+
   constructor(
     injector: Injector,
     private titleService: Title,
-    private _service: ThuChiService,
-    private nhanVienService: UserProfileService,
+    private _service: PhieuThuChiService,
+    private userProfileService: UserProfileService,
     private khachHangService: KhachHangService,
     private nhaCungCapService: NhaCungCapService,
   ) {
 
     super(injector, _service);
     this.formData = this.fb.group({
-      soPhieu: '',
-      loaiPhieu: [1],
-      khachHangMaKhachHang: null,
-      nhaCungCapMaNhaCungCap: null,
-      createdBy_UserId: '',
-      fromDate: '',
-      toDate: '',
-      nguoiNhan: [null]
+      loaiPhieu: [LOAI_THU_CHI.THU_NO_KHACH_HANG],
+      nhaThuocMaNhaThuoc: [this.getMaNhaThuoc()],
+      soPhieu: [null],
+      khachHangMaKhachHang: [null],
+      nhaCungCapMaNhaCungCap: [null],
+      createdByUserId: [null],
+      nguoiNhan: [null],
     });
   }
 
@@ -67,59 +84,162 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    this.fetchData();
+    this.route.queryParams.subscribe(params => {
+      const loaiPhieu = params['loaiPhieu'];
+      if (loaiPhieu) {
+        this.formData.patchValue({
+          loaiPhieu: Number(loaiPhieu)
+        });
+      }
+
+      const addPhieu = params['addPhieu'];
+      if (addPhieu) {
+        this.openAddEditDialog(Number(addPhieu), null);
+        let navigationExtras: NavigationExtras = {
+          queryParams: {'addPhieu': null},
+          queryParamsHandling: 'merge'
+        };
+        this.router.navigate([], navigationExtras);
+      }
+    });
     this.getDataFilter();
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
-  }
-
-  //tính tổng tiền
-  async sumTotalAmount() {
-    if (this.dataTable) {
-      this.tongTien = this.dataTable.reduce((acc, val) => acc += val.amount, 0);
-      this.tienMat = this.dataTable.filter(x => x.paymentTypeId == 0).reduce((acc, val) => acc += val.amount, 0);
-      this.chuyenKhoan = this.dataTable.filter(x => x.paymentTypeId == 1).reduce((acc, val) => acc += val.amount, 0);
-    }
-  }
-
-  async fetchData() {
     await this.searchPage();
-    this.sumTotalAmount();
+    console.log(this.dataTable);
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  clearSearchValue() {
+    this.formData.patchValue({
+      soPhieu: null,
+      khachHangMaKhachHang: null,
+      nhaCungCapMaNhaCungCap: null,
+      createdByUserId: null,
+      nguoiNhan: null,
+    });
+  }
+
+  getTongTien() {
+    return this.dataSource.data.map((i: any) => i.amount).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTongTienMat() {
+    return this.dataSource.data.filter((i: any) => i.paymentTypeId == 0).map((i: any) => i.amount).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTongChuyenKhoan() {
+    return this.dataSource.data.filter((i: any) => i.paymentTypeId == 0).map((i: any) => i.amount).reduce((acc, value) => acc + value, 0);
+  }
+
+  getLoaiPhieu() {
+    return this.formData.get('loaiPhieu')?.value;
   }
 
   getDataFilter() {
-    // Nhóm khách hàng
-    this.nhanVienService.searchListStaffManagement({}).then((res) => {
-      if (res?.status == STATUS_API.SUCCESS) {
-        this.listNhanVien = res.data;
-        this.listNhanVien.unshift({ id: '', tenDayDu: 'Tất cả' });
+    // Search nhân viên
+    this.listNhanVien$ = this.searchNhanVienTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.userProfileService.searchPage(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+    // Search khách hàng
+    this.listKhachHang$ = this.searchKhachHangTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.khachHangService.searchPage(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+    // Search nhà cung cấp
+    this.listNCC$ = this.searchNCCTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.nhaCungCapService.searchPage(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+  }
+
+  onImport() {
+
+  }
+
+  onExport() {
+
+  }
+
+  async openAddEditDialog(noteTypeId: number, id: any) {
+    const config = {
+      data: {noteTypeId: noteTypeId, id: id},
+      width: '600px',
+    };
+
+    let dialogRef;
+    if ([LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(noteTypeId))
+      dialogRef = this.dialog.open(OtherInOutNoteAddEditDialogComponent, config);
+    else
+      dialogRef = this.dialog.open(InOutNoteAddEditDialogComponent, config);
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
       }
     });
   }
 
-  //tìm kiếm data
-  async searchObject($event: any) {
-    if ($event.term.length >= 2) {
-      let body = { textSearch : $event.term,  paggingReq: {}, dataDelete : false};
-        body.paggingReq = {
-        limit: 25,
-        page: this.page - 1
-      }
-      if(this.formData.get('loaiPhieu')?.value == 1 || this.formData.get('loaiPhieu')?.value == 7){
-        this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
-          if (res?.status == STATUS_API.SUCCESS) {
-            this.listKhachHang = res.data.content;
-          }
-        });
-      }else{
-        this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-          if (res?.status == STATUS_API.SUCCESS) {
-            this.listNhaCungCap = res.data.content;
-          }
-        });
-      }
-    }
-  }
+  protected readonly RECORD_STATUS = RECORD_STATUS;
+  protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
 }

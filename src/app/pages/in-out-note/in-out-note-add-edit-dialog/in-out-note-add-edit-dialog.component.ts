@@ -1,21 +1,20 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {Component, Inject, Injector, OnInit} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../component/base/base.component';
-import { ThuChiService } from '../../../services/thu-chi.service';
+import { PhieuThuChiService } from '../../../services/thuchi/phieu-thu-chi.service';
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
 import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
 import { STATUS_API } from '../../../constants/message';
 import { DatePipe } from '@angular/common';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {LOAI_THU_CHI} from "../../../constants/config";
 
 @Component({
-  selector: 'app-in-out-note',
-  templateUrl: './incoming-note-add-edit.component.html',
-  styleUrls: ['./incoming-note-add-edit.component.css'],
+  selector: 'in-out-note-add-edit-dialog',
+  templateUrl: './in-out-note-add-edit-dialog.component.html',
+  styleUrls: ['./in-out-note-add-edit-dialog.component.css'],
 })
-export class InComingNoteAddEditComponent extends BaseComponent implements OnInit {
-  title: string = "PHIẾU THU";
-  inComingNoteID: number = 0;
-  loaiPhieu: number = 1;
+export class InOutNoteAddEditDialogComponent extends BaseComponent implements OnInit {
   showMoreForm: boolean = false;
   expandLabel: string = '[+]';
   listObject : any[] = [];
@@ -25,54 +24,51 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
   constructor(
     injector: Injector,
     private titleService: Title,
-    private _service: ThuChiService,
+    private _service: PhieuThuChiService,
     private khachHangService: KhachHangService,
-    private nhaCungCapService : NhaCungCapService
+    private nhaCungCapService : NhaCungCapService,
+    public dialogRef: MatDialogRef<InOutNoteAddEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
       khachHangMaKhachHang : [''],
       phieuXuat : [-1],
-      tienNo : [0],
       tienThanhToan : [0]
     });
   }
 
-  ngOnInit() {
-    this.titleService.setTitle(this.title);
-    if(this.inComingNoteID == 0){
-      this.genNoteNumber(this.loaiPhieu);
+  async ngOnInit() {
+
+  }
+
+  isCreateView() {
+    return !this.data.id;
+  }
+
+  isUpdateView() {
+    return this.data.id;
+  }
+
+  getTitle() {
+    let title = '';
+
+    return this.data.loaiPhieu == 1 ? 'Phiếu Thu' : 'Phiếu Chi';
+  }
+
+  getReturnTitle() {
+    let title = "Phiếu chi trả lại khách hàng";
+    if ([LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP, LOAI_THU_CHI.THU_LAI_NHA_CUNG_CAP].includes(this.data.loaiPhieu)) {
+      title = "Phiếu thu lại nhà cung cấp";
     }
+    return title;
   }
 
   expandForm() {
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
-  //tìm kiếm data
-  async searchObject($event: any) {
-    console.log($event.term);
-    if ($event.term.length >= 2) {
-      let body = { textSearch : $event.term,  paggingReq: {}, dataDelete : false};
-        body.paggingReq = {
-        limit: 25,
-        page: this.page - 1
-      }
-      if(this.loaiPhieu == 1 || this.loaiPhieu == 7){
-        this.khachHangService.searchFilterPageKhachHang(body).then((res) => {
-          if (res?.status == STATUS_API.SUCCESS) {
-            this.listObject = res.data.content;
-          }
-        });
-      }else{
-        this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-          if (res?.status == STATUS_API.SUCCESS) {
-            this.listObject = res.data.content;
-          }
-        });
-      }
-    }
-  }
+
   async onGetNoteDebt(){
     let id = this.formData.get('khachHangMaKhachHang')?.value;
     if(!id) return;
@@ -106,5 +102,9 @@ export class InComingNoteAddEditComponent extends BaseComponent implements OnIni
         this.noteNumber = res.data;
       }
     });
+  }
+
+  closeModal() {
+    this.dialogRef.close();
   }
 }

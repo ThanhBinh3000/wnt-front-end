@@ -441,10 +441,6 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     }
   }
 
-  trackByFn(item: any) {
-    return item.id;
-  }
-
   getSearchTypes() {
     return this.noteTypes.find((item: any) => item.id == this.getNoteType())?.searchTypes;
   }

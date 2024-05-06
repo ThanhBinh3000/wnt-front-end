@@ -89,7 +89,6 @@
                 [multiple]="true"
                 [typeahead]="searchThuocTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="thuocIds"
                 appendTo="body"
                 appearance="outline"
@@ -111,7 +110,6 @@
                 [items]="listNhanVien$ | async"
                 [typeahead]="searchNhanVienTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="createdByUserId"
                 appendTo="body"
                 appearance="outline"
@@ -142,7 +140,6 @@
                 [items]="listBacSy$ | async"
                 [typeahead]="searchBacSyTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="idDoctor"
                 appendTo="body"
                 appearance="outline"
@@ -154,7 +151,7 @@
                 (change)="searchBacSyTerm$.next('')"
               >
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+                  <span [ngOptionHighlight]="search">{{ item.tenBacSy }}</span>
                 </ng-template>
               </ng-select>
             </div>
@@ -196,7 +193,6 @@
                 [items]="listKhachHang$ | async"
                 [typeahead]="searchKhachHangTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="nhaCungCapMaNhaCungCap"
                 appendTo="body"
                 appearance="outline"
@@ -215,7 +211,6 @@
                 [items]="listNCC$ | async"
                 [typeahead]="searchNCCTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="nhaCungCapMaNhaCungCap"
                 appendTo="body"
                 appearance="outline"
@@ -243,7 +238,6 @@
                 [items]="listKhachHang$ | async"
                 [typeahead]="searchKhachHangTerm$"
                 [minTermLength]="2"
-                [trackByFn]="trackByFn"
                 formControlName="khachHangMaKhachHang"
                 appendTo="body"
                 appearance="outline"
