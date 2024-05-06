@@ -8,6 +8,18 @@ import { ServiceNoteComponent } from './service-note.component';
 import { ServiceNoteListComponent } from './service-note-list/service-note-list.component';
 import { ServiceNoteAddEditComponent } from './service-note-add-edit/service-note-add-edit.component';
 import {ServiceNoteDetailComponent} from "./service-note-detail/service-note-detail.component";
+import {ComponentsModule} from "../../component/base/components.module";
+import {FormsModule} from "@angular/forms";
+import {
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatFooterCell,
+    MatFooterRow,
+    MatFooterRowDef,
+    MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable
+} from "@angular/material/table";
+import {MatSort, MatSortHeader} from "@angular/material/sort";
 
 
 @NgModule({
@@ -17,7 +29,7 @@ import {ServiceNoteDetailComponent} from "./service-note-detail/service-note-det
     ServiceNoteAddEditComponent,
     ServiceNoteDetailComponent
   ],
-  imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule],
+    imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule, ComponentsModule, FormsModule, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatSort, MatSortHeader, MatTable],
   exports: [],
 })
 export class ServiceNoteModule {

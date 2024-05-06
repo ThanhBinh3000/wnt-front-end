@@ -29,6 +29,7 @@ import {NgxDropzoneModule} from "ngx-dropzone";
 import {UploadImageComponent} from "../upload-image/upload-image.component";
 import {PreviewImageComponent} from "../preview-image/preview-image.component";
 import {ModalPreviewImageComponent} from "../preview-image/modal-preview-image/modal-preview-image.component";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -72,6 +73,9 @@ import {ModalPreviewImageComponent} from "../preview-image/modal-preview-image/m
     CdkDrag,
     CdkDragHandle,
     MatRadioGroup,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
     NgxDropzoneModule
   ],
   exports: [
@@ -109,7 +113,10 @@ import {ModalPreviewImageComponent} from "../preview-image/modal-preview-image/m
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
-    MatRadioGroup
+    MatRadioGroup,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
   ],
   providers: [
     DatePipe,

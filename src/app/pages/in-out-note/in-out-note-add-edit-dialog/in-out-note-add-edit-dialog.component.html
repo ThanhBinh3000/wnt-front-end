@@ -1,0 +1,183 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="card-title text-center mt-0 mb-0">
+        <b>{{getTitle()}}</b>
+        <span *ngIf="isDesktop()" style="padding-bottom: 12px; padding-left: 8px" class="btn tooltip-content-drug">
+                    <span><i style="font-size:20px; color: black" class="fa fa-info-circle"
+                             aria-hidden="true"></i></span>
+                    <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
+                        <b>F1:</b> Thêm mới phiếu trong tab mới<br/>
+                        <b>F9:</b> Ghi phiếu<br/>
+                        <b>F11:</b> Toàn màn hình<br/>
+                    </span>
+                </span>
+      </h4>
+      <div class="text-center card-desc" style="display: flex; justify-content: space-between;">
+        <div class="card-code">
+          Mã số: <strong>{{ noteNumber }}</strong>
+        </div>
+        Ngày:
+        <div class="clickable-text daterange-picker text-link">
+          <input type="text" name="noteDate" id="note-date-id"
+                 ng-change="onNoteDateChanged()"
+                 ng-model="noteDate">
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formData">
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Khách hàng</label>
+            <div class="col-sm-8">
+              <div class="control-group">
+
+              </div>
+              <div class="form-check">
+                <input [disabled]="isUpdateView()" type="checkbox" class="form-check-input form-control mb-0"
+                       ng-change="onStatusChange()" ng-model="isActive">
+                <label class="form-check-label ng-binding">Phiếu chi trả lại khách hàng</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Phiếu xuất</label>
+            <div class="col-sm-8">
+              <div class="control-group">
+                <ng-select appendTo="body" formControlName="phieuXuat"
+                           appearance="outline"
+                           [items]="listPhieuNo" bindLabel="tieuDe"
+                           bindValue="id"
+                           placeholder="Tra cứu theo tên..."
+                           notFoundText="Không tìm thấy mục nào">
+                  <ng-template ng-option-tmp let-item="item" let-index="index"
+                               let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item.tieuDe }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Tiền nợ</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control mb-0" readonly="readonly" formControlName="tienNo"
+                     awnum="app-decimal-number">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Số tiền</label>
+            <div class="col-sm-8">
+              <div class="d-flex align-items-center gap-10">
+                <input type="text" class="form-control mb-0" formControlName="tienThanhToan"
+                       ng-disabled="!paymentAmountEditable || deleteMode || viewMode" awnum="app-decimal-number">
+                <button class="btn btn-primary" (click)="onPayFull()" ng-show="!deleteMode &amp;&amp; !viewMode">
+                  Trả hết
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Diễn giải</label>
+            <div class="col-sm-8">
+              <textarea ng-model="model.Description" class="w-100 mb-0 form-control"
+                        ng-disabled="deleteMode || viewMode"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Diễn giải</label>
+            <div class="col-sm-8">
+              <textarea ng-model="model.Description" class="w-100 mb-0 form-control"
+                        ng-disabled="deleteMode || viewMode"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Hình thức thanh toán<span style="cursor: pointer"
+                                                                            (click)="expandForm()">{{ expandLabel }}</span></label>
+            <div class="col-sm-8">
+              <div *ngIf="showMoreForm" class="form-check" style="display: block;">
+                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
+                  <input type="radio" ng-disabled="viewMode" class="form-check-input"
+                         ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio"
+                         checked="checked">Tiền mặt
+                </p>
+                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
+                  <input type="radio" ng-disabled="viewMode" class="form-check-input"
+                         ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio">Chuyển
+                  khoản
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Người lập</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid" disabled="disabled"
+                     ng-model="model.CreatedByName">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+      <!--      <button class="btn btn-primary" (click)="saveEdit()"-->
+      <!--              [disabled]="formData.invalid">{{ customerGroupID > 0 ? 'Cập nhật' : 'Thêm mới' }}-->
+      <!--      </button>-->
+      <div class="d-flex align-items-center justify-content-center gap-10" ng-show="!deleteMode &amp;&amp; !viewMode">
+        <input type="submit" ng-show="createMode" value="Ghi phiếu" class="btn btn-primary"
+               ng-disabled="model.PaymentAmount < 0.1 || model.DebtAmount <= 0"
+               ng-click="onSave(); $event.preventDefault(); $event.stopPropagation(); " disabled="disabled">
+        <input type="submit" ng-show="editMode" value="Ghi phiếu" class="btn btn-primary"
+               ng-disabled="model.status == false"
+               ng-click="onSave(); $event.preventDefault(); $event.stopPropagation(); ">
+        <div class="btn-group" ng-show="editMode">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+            In <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote')">In 1 liên - A5</a></li>
+            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote?loaiPhieuIn=A4')">In 2 liên - A4</a></li>
+          </ul>
+        </div>
+        <a ng-show="!createMode &amp;&amp; permittedFields.InOutComingNote_Delete"
+           href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2&amp;taskMode=3" class="btn btn-danger">Xóa</a>
+      </div>
+      <div class="d-flex align-items-center justify-content-center gap-10" ng-show="viewMode">
+        <a href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2&amp;noteDate=03%2F22%2F2024%2014%3A22%3A59"
+           class="btn btn-primary">Tiếp tục</a>
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+            In <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" style="z-index: 10">
+            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote')">In 1 liên - A5</a></li>
+            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote?loaiPhieuIn=A4')">In 2 liên - A4</a></li>
+          </ul>
+        </div>
+        <a ng-show="permittedFields.InOutComingNote_Write"
+           href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2&amp;taskMode=2" class="btn btn-default">Sửa</a>
+        <a ng-show="permittedFields.InOutComingNote_Delete"
+           href="/InOutCommingNote/InOutcommingNoteScreen?noteTypeId=2&amp;taskMode=3" class="btn btn-danger">Xóa</a>
+      </div>
+    </div>
+  </div>
+</div>

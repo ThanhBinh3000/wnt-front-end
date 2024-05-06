@@ -12,7 +12,4 @@ export class InOutNoteComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  logOut() {
-  }
 }

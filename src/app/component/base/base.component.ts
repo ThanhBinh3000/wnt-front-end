@@ -126,7 +126,6 @@ export class BaseComponent {
         this.dataTable = [];
         this.totalRecord = 0;
       }
-      console.log(this.dataTable)
     } catch (e) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
     } finally {

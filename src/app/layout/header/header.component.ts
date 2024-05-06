@@ -9,6 +9,7 @@ import {
   DrugStoreAddEditDialogComponent
 } from "../../pages/drug-store/drug-store-add-edit-dialog/drug-store-add-edit-dialog.component";
 import {SETTING} from "../../constants/setting";
+import {LOAI_THU_CHI} from "../../constants/config";
 
 
 @Component({
@@ -111,4 +112,6 @@ export class HeaderComponent implements OnInit {
       width: '90%',
     });
   }
+
+    protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
 }

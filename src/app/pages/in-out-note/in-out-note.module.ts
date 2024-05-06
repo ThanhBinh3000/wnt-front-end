@@ -4,18 +4,16 @@ import {InOutNoteComponent} from './in-out-note.component';
 import {RouterOutlet} from "@angular/router";
 import {InOutNoteRoutingModule} from "./in-out-note.routing";
 import { InOutNoteListComponent } from './in-out-note-list/in-out-note-list.component';
-import { InComingNoteAddEditComponent } from './incoming-note-add-edit/incoming-note-add-edit.component';
-import { OutComingNoteAddEditComponent } from './outcoming-note-add-edit/outcoming-note-add-edit.component';
-import { OtherInOutNoteAddEditComponent } from './other-in-out-note-add-edit/other-in-out-note-add-edit.component';
+import { InOutNoteAddEditDialogComponent } from './in-out-note-add-edit-dialog/in-out-note-add-edit-dialog.component';
+import { OtherInOutNoteAddEditDialogComponent } from './other-in-out-note-add-edit-dialog/other-in-out-note-add-edit-dialog.component';
 import { ComponentsModule } from '../../component/base/components.module';
 
 @NgModule({
   declarations: [
     InOutNoteComponent,
     InOutNoteListComponent,
-    InComingNoteAddEditComponent,
-    OutComingNoteAddEditComponent,
-    OtherInOutNoteAddEditComponent
+    InOutNoteAddEditDialogComponent,
+    OtherInOutNoteAddEditDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, InOutNoteRoutingModule, ComponentsModule],
   exports: [],
