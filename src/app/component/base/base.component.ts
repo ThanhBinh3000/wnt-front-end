@@ -19,6 +19,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {DeviceService} from "../../services/device.service";
 
 
 @Component({
@@ -46,6 +47,7 @@ export class BaseComponent {
 
   // Service
   notification: NotificationService;
+  device: DeviceService;
   userService: UserService;
   httpClient: HttpClient;
   storageService: StorageService;
@@ -78,6 +80,7 @@ export class BaseComponent {
     this.storageService = this.injector.get(StorageService);
     this.userService = this.injector.get(UserService);
     this.notification = this.injector.get(NotificationService);
+    this.device = this.injector.get(DeviceService);
     this.helperService = this.injector.get(HelperService);
     // get user info login
     this.userInfo = this.userService.getUserLogin();
@@ -538,6 +541,18 @@ export class BaseComponent {
 
   goToUrl(url: any, id?: any){
     this.router.navigate([url,id]);
+  }
+
+  isMobile() {
+    return this.device.isMobile();
+  }
+
+  isTablet() {
+    return this.device.isTablet();
+  }
+
+  isDesktop() {
+    return this.device.isDesktop();
   }
 }
 
