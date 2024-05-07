@@ -78,12 +78,11 @@ export class AuthService extends BaseService {
     return this.getUser()?.roles?.some((item: any) => item.roleName === "User");
   }
 
-  getSettingValue(key: string) {
-    return this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.settingValue;
-  }
-
-  getSettingActivated(key: string) {
-    return this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.activated;
+  getSettingByKey(key: string) {
+    return {
+      activated: this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.activated,
+      value: this.getUser()?.applicationSettings.find((item: any) => item.settingKey === key)?.settingValue
+    }
   }
 
   logout() {

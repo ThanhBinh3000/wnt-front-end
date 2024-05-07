@@ -18,9 +18,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   totalScore: number= 0;
   totalDebtAmount: number=0;
 
-  updateImagesForProducts : any ={
-    activated : this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS)
-  };
+  updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
   constructor(
     injector: Injector,
@@ -58,7 +56,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
     this.getId();
     if (this.idUrl) {
       let data = await this.detail(this.idUrl)
-      
+
       this.formData.patchValue(data);
       this.dataTable = data.chiTiets;
       this.dataTable.forEach(x=>{
@@ -91,7 +89,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       this.notification.success(MESSAGE.SUCCESS, item.locked ? "Phiếu đã được khóa" : "Phiếu đã được mở");
     }
   }
-  
+
   getMaNhaThuoc() {
     return this.authService.getNhaThuoc().maNhaThuoc;
   }
@@ -136,7 +134,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       'vat',
       'hanDung',
       'thanhTien',
-      
+
     ];
     if(!this.updateImagesForProducts.activated)
     {

@@ -11,6 +11,7 @@ import {KhachHangService} from "../../../services/customer/khach-hang.service";
 import {UserProfileService} from "../../../services/system/user-profile.service";
 import {BacSiesService} from "../../../services/medical/bac-sies.service";
 import {ThuocService} from "../../../services/products/thuoc.service";
+import {CustomerDetailDialogComponent} from "../../customer/customer-detail-dialog/customer-detail-dialog.component";
 
 @Component({
   selector: 'app-service-note',
@@ -35,9 +36,7 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
     { name: "Dịch vụ", value: 3 },
   ]
   // Settings
-  disableTimeClinic = {
-    activated:  this.authService.getSettingActivated(SETTING.DISABLE_TIME_CLINIC),
-  };
+  disableTimeClinic = this.authService.getSettingByKey(SETTING.DISABLE_TIME_CLINIC);
   // Authorities
   noteServiceCreateAndWrite = true;
   noteServicePrint = true;
@@ -196,6 +195,17 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
 
   async onPrint(printType: any) {
 
+  }
+
+  async openCustomerDetailDialog(item: any) {
+    const dialogRef = this.dialog.open(CustomerDetailDialogComponent, {
+      data: item.id,
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+      }
+    });
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;

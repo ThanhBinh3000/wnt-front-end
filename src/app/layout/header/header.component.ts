@@ -78,19 +78,17 @@ export class HeaderComponent implements OnInit {
   getMuNhaThuoc(){
     let muNhaThuoc = '';
     const nhaThuoc = this.authService.getNhaThuoc();
-    const enableConnectivityStoreToManageStore = this.authService.getSettingActivated(SETTING.ENABLE_CONNECTIVITY_STORE_TO_MANAGE_STORE);
-    const useClinicIntegration = this.authService.getSettingActivated(SETTING.USE_CLINIC_INTEGRATION);
+    const enableConnectivityStoreToManageStore = this.authService.getSettingByKey(SETTING.ENABLE_CONNECTIVITY_STORE_TO_MANAGE_STORE);
+    const useClinicIntegration = this.authService.getSettingByKey(SETTING.USE_CLINIC_INTEGRATION);
     if(nhaThuoc){
       if(nhaThuoc.isConnectivity){
         if(nhaThuoc.upgradeToPlus) muNhaThuoc = "LT+";
-        else if (enableConnectivityStoreToManageStore) muNhaThuoc = "QL + LT";
+        else if (enableConnectivityStoreToManageStore.activated) muNhaThuoc = "QL + LT";
         else muNhaThuoc = "LT";
       } else if (nhaThuoc.isGeneralPharmacy){
-        if(useClinicIntegration) muNhaThuoc = "PK";
-        else muNhaThuoc = "CTY";
+        if(useClinicIntegration.activated) muNhaThuoc = "PK"; else muNhaThuoc = "CTY";
       } else {
-        if(useClinicIntegration)muNhaThuoc = "PK";
-        else muNhaThuoc = "QL";
+        if(useClinicIntegration.activated)muNhaThuoc = "PK"; else muNhaThuoc = "QL";
       }
       if (nhaThuoc.expiredDate) muNhaThuoc = "PLUS";
     }

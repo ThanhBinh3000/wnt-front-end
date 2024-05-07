@@ -24,17 +24,9 @@ export class SampleNoteListComponent extends BaseComponent implements OnInit {
   searchKhachHangTerm$ = new Subject<string>();
 
   // Settings
-  useDoctorCommon = {
-    activated: this.authService.getSettingActivated(SETTING.USE_DOCTOR_COMMON),
-  };
-
-  useCustomerCommon = {
-    activated: this.authService.getSettingActivated(SETTING.USE_CUSTOMER_COMMON),
-  };
-
-  useSampleNoteCommon = {
-    activated: this.authService.getSettingActivated(SETTING.USE_SAMPLE_NOTE_FROM_PARENT),
-  };
+  useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
+  useCustomerCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
+  useSampleNoteFromParent = this.authService.getSettingByKey(SETTING.USE_SAMPLE_NOTE_FROM_PARENT);
 
   constructor(
     injector: Injector,
@@ -45,7 +37,7 @@ export class SampleNoteListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-      maNhaThuoc: [this.useSampleNoteCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc()],
+      maNhaThuoc: [this.useSampleNoteFromParent.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc()],
       noteName: [],
       patientId: [],
       doctorId: [],

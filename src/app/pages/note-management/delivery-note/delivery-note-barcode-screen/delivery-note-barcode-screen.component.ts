@@ -35,19 +35,10 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   debtValue: number = 0;
   debtLabel: string = 'Còn nợ';
 
-  notAllowDeliverOverQuantity: any = {
-    activated : this.authService.getSettingActivated(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY)
-  };
-  allowChangeTotalAmountInDeliveryNote : any={
-    activated : this.authService.getSettingActivated(SETTING.ALLOW_CHANGE_TOTAL_AMOUNT_IN_DELIVERY_NOTE)
-  } ;
-  updateImagesForProducts : any ={
-    activated : this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS)
-  };
-  moneyPerScoreRate : any = {
-    activated : this.authService.getSettingValue(SETTING.MONEY_PER_SCORE_RATE),
-    value : this.authService.getSettingValue(SETTING.MONEY_PER_SCORE_RATE)
-  };
+  notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
+  allowChangeTotalAmountInDeliveryNote = this.authService.getSettingByKey(SETTING.ALLOW_CHANGE_TOTAL_AMOUNT_IN_DELIVERY_NOTE)
+  updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
+  moneyPerScoreRate = this.authService.getSettingByKey(SETTING.MONEY_PER_SCORE_RATE);
 
   constructor(
     injector: Injector,
