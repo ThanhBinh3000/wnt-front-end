@@ -15,9 +15,7 @@ export class CancelDeliveryNoteDetailComponent extends BaseComponent implements 
   title: string = "Phiếu xuất huỷ";
 
   // Settings
-  displayImage = {
-    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS),
-  };
+  displayImage = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
   displayedColumns = this.getDisplayedColumns();
 

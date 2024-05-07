@@ -14,9 +14,7 @@ import { SETTING } from '../../../../constants/setting';
 export class WarehouseTransferNoteDetailComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu chuyển kho";
   // Settings
-  displayImage = {
-    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS),
-  };
+  displayImage = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
   displayedColumns = this.getDisplayedColumns();
 
   constructor(

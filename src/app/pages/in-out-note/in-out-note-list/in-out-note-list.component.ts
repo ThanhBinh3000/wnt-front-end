@@ -28,7 +28,7 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
     'soPhieu',
     'nguoiNhan',
     'ngayTao',
-    'createByUserName',
+    'createdByUserText',
     'amount',
     'dienGiai',
     'httt',
@@ -50,9 +50,7 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
   searchNCCTerm$ = new Subject<string>();
   searchNhanVienTerm$ = new Subject<string>();
   // Settings
-  enableCustomerToSupplier = {
-    activated: this.authService.getSettingActivated(SETTING.ENABLE_CUSTOMER_TO_SUPPLIER)
-  }
+  enableCustomerToSupplier = this.authService.getSettingByKey(SETTING.ENABLE_CUSTOMER_TO_SUPPLIER);
   // Authorities
   inOutComingNoteWrite = true;
   inOutComingNoteDelete = true;
@@ -108,7 +106,6 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
     await this.searchPage();
-    console.log(this.dataTable);
   }
 
   getMaNhaThuoc() {

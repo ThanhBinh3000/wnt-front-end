@@ -210,7 +210,11 @@
             {{ [LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP, LOAI_THU_CHI.THU_LAI_NHA_CUNG_CAP].includes(getLoaiPhieu()) ? 'Nhà cung cấp' : '' }}
             {{ [LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(getLoaiPhieu()) ? 'Đối tác' : '' }}
           </th>
-          <td mat-cell *matCellDef="let data">{{ data.nguoiNhan }}</td>
+          <td mat-cell *matCellDef="let data">
+            {{ [LOAI_THU_CHI.THU_NO_KHACH_HANG, LOAI_THU_CHI.CHI_TRA_LAI_KHACH_HANG].includes(getLoaiPhieu()) ? data.customerText : '' }}
+            {{ [LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP, LOAI_THU_CHI.THU_LAI_NHA_CUNG_CAP].includes(getLoaiPhieu()) ? data.nhaCungCapMaNhaCungCapText : '' }}
+            {{ [LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(getLoaiPhieu()) ? data.nguoiNhan : '' }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="ngayTao">
@@ -218,9 +222,9 @@
           <td mat-cell *matCellDef="let data">{{ data.ngayTao | appDateTime }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="createByUserName">
+        <ng-container matColumnDef="createdByUserText">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nhân viên</th>
-          <td mat-cell *matCellDef="let data">{{ data.createByUserName }}</td>
+          <td mat-cell *matCellDef="let data">{{ data.createdByUserText }}</td>
         </ng-container>
 
         <ng-container matColumnDef="amount">

@@ -11,6 +11,7 @@ import { KhachHangService } from '../../../services/customer/khach-hang.service'
   styleUrls: ['./customer-detail-dialog.component.css'],
 })
 export class CustomerDetailDialogComponent extends BaseComponent implements OnInit {
+  customerDetail: any;
   expandLabel = '[+]';
   showMoreForm = false;
   constructor(
@@ -21,28 +22,12 @@ export class CustomerDetailDialogComponent extends BaseComponent implements OnIn
     @Inject(MAT_DIALOG_DATA) public customerId: any
   ) {
     super(injector, _service);
-    this.formData = this.fb.group({
-      id: [],
-      tenKhachHang: [],
-      soDienThoai: [],
-      diaChi: [],
-      email: [],
-      birthDate: [],
-      sexId: [],
-      job: [],
-      abilityToPay: [],
-      nameContacter: [],
-      phoneContacter: [],
-      refCus: [],
-      age: [],
-    });
   }
 
   async ngOnInit() {
     if (this.customerId) {
-      const data = await this.detail(this.customerId);
-      data.age = this.calculateAge(data.birthDate);
-      this.formData.patchValue(data);
+      this.customerDetail = await this.detail(this.customerId);
+      this.customerDetail.age = this.calculateAge(this.customerDetail.birthDate);
     }
   }
 

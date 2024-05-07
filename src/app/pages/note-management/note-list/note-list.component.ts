@@ -75,21 +75,11 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     { name: "Chưa đồng bộ", value: 1 },
   ];
   // Settings
-  viewMultipleWarehousesFromReports = {
-    activated:  this.authService.getSettingActivated(SETTING.VIEW_MULTIPLE_WAREHOUSES_FROM_REPORTS),
-  };
-  useClinicIntegration = {
-    activated:  this.authService.getSettingActivated(SETTING.USE_CLINIC_INTEGRATION),
-  };
-  autoSynchronizeDeliveryNote = {
-    activated: this.authService.getSettingActivated(SETTING.AUTO_SYNCHRONIZE_DELIVERY_NOTE)
-  }
-  enableElectronicInvoice = {
-    activated: this.authService.getSettingActivated(SETTING.ENABLE_ELECTRONIC_INVOICE)
-  }
-  enableCustomerToSupplier = {
-    activated: this.authService.getSettingActivated(SETTING.ENABLE_CUSTOMER_TO_SUPPLIER)
-  }
+  viewMultipleWarehousesFromReports = this.authService.getSettingByKey(SETTING.VIEW_MULTIPLE_WAREHOUSES_FROM_REPORTS);
+  useClinicIntegration = this.authService.getSettingByKey(SETTING.USE_CLINIC_INTEGRATION);
+  autoSynchronizeDeliveryNote = this.authService.getSettingByKey(SETTING.AUTO_SYNCHRONIZE_DELIVERY_NOTE);
+  enableElectronicInvoice = this.authService.getSettingByKey(SETTING.ENABLE_ELECTRONIC_INVOICE);
+  enableCustomerToSupplier = this.authService.getSettingByKey(SETTING.ENABLE_CUSTOMER_TO_SUPPLIER);
   // Authorities
   receiptNoteImportExcel = true;
   deliveryNoteImportExcel = true;

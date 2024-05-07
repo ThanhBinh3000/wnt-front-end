@@ -204,7 +204,9 @@
           <ng-container matColumnDef="customerName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Bệnh nhân</th>
             <td mat-cell *matCellDef="let data">
-              <div class="text-left">{{ data.customerName }}</div>
+              <div class="text-left">
+                <a (click)="openCustomerDetailDialog(data.customer)">{{ data.customerName }}{{ data.customer?.birthDate ? ' - ' + (data.customer.birthDate | appDate: 'yyyy') : ''}}</a>
+              </div>
             </td>
           </ng-container>
 
