@@ -14,6 +14,8 @@ import {BacSiesService} from "../../../../services/medical/bac-sies.service";
 import {SETTING} from "../../../../constants/setting";
 import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
+import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
 
 @Component({
   selector: 'delivery-note-barcode-screen',
@@ -23,10 +25,13 @@ import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-di
 export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu bán hàng với mã vạch";
 
-  listKhachHangs: any[] = [];
+  listThuoc$ = new Observable<any[]>;
+  listKhachHang$ = new Observable<any[]>;
+  searchThuocTerm$ = new Subject<string>();
+  searchKhachHangTerm$ = new Subject<string>();
   listBacSys: any[] = [];
-  listThuocs: any[] = [];
   listPaymentType: any[] = [];
+
   expandLabel: string = "[-]";
   showMoreForm: boolean = true;
   maKhachHangLe : number = 0;
@@ -46,10 +51,10 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     private _service: PhieuXuatService,
     private khachHangService: KhachHangService,
     private thuocService: ThuocService,
-    private bacsyService : BacSiesService,
+    private bacSiesService : BacSiesService,
     private datePipe: DatePipe,
     private paymentTypeService: PaymentTypeService,
-    private pxService: PhieuXuatService
+    private phieuXuatService: PhieuXuatService
   ) {
 
     super(injector, _service);
@@ -77,7 +82,8 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
       created: [],
       recordStatusId: [0],
       bacSyMaBacSy: [0],
-      doseNumber:[1]
+      doseNumber:[1],
+      khachHang: [{}]
     });
   }
 
@@ -97,10 +103,10 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
         this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
         this.formData.controls['khachHangMaKhachHang'].setValue(this.maKhachHangLe);
-        this.listKhachHangs = [{id: data.khachHangMaKhachHang, tenKhachHang: 'Khách lẻ', diaChi : '', soDienThoai : ''}];
+        this.formData.controls['khachHang'].setValue({id: data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ"});
       }
     });
-    await this.searchListBacSy();
+    this.getDataFilter();
   }
 
   ngAfterViewInit() {
@@ -122,50 +128,63 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     return this.authService.getNhaThuoc().maNhaThuoc;
   }
 
-  async searchPageKhachHang($event: any) {
-    if ($event.term.length >= 2) {
-      let body = {textSearch: $event.term, paggingReq: {}, dataDelete: false,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc()};
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.khachHangService.searchPage(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listKhachHangs = res.data.content;
-          this.listKhachHangs.push({id: this.maKhachHangLe, tenKhachHang: 'Khách lẻ'});
-        }
-      });
-    }
-  }
-
-  async searchListBacSy() {
-    let body = {dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()};
-    this.bacsyService.searchList(body).then((res) => {
+  getDataFilter() {
+    let body = { dataDelete: false, maNhaThuoc: this.getMaNhaThuoc() };
+    this.bacSiesService.searchList(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listBacSys = res.data;
       }
     });
-  }
-
-
-  async searchPageDrug($event: any) {
-    if ($event.term.length >= 2) {
-      let body = {
-        textSearch: $event.term, paggingReq: {}, dataDelete: false,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), typeService: LOAI_SAN_PHAM.THUOC
-      };
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.thuocService.searchPage(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listThuocs = res.data.content;
+    
+    this.listThuoc$ = this.searchThuocTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        console.log('call thuoc');
+        if(term.length >= 2){
+          let bodyThuoc = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
+            typeService : 0
+          };
+          return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
         }
-      });
-    }
+      }),
+      catchError(() => of([]))
+    );
+    // Search khách hàng
+    this.listKhachHang$ = this.searchKhachHangTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if(term.length >= 2){
+          let bodyKhachHang = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.khachHangService.searchPage(bodyKhachHang).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
   }
+
   @ViewChild(NgSelectComponent) ngSelectComponent!: NgSelectComponent;
 
   // Call to clear
@@ -298,7 +317,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
     this.save(body).then(res => {
       if (res) {
-        this.router.navigate(['/management/note-management/delivery-note-detail', res.id]);
+        this.router.navigate(['/management/note-management/delivery-note-detail/', res.id]);
       }
     });
   }
@@ -397,6 +416,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   //lấy thông tin điểm, nợ khách hàng
   onCustomerChange($event : any){
     if($event && $event.id > 0){
+      this.formData.controls['khachHang'].setValue($event);
       //điểm tích luỹ
       let bodyKH = {
         id: $event.id,
@@ -413,7 +433,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
         nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
         ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
-      this.pxService.getTotalDebtAmountCustomer(bodyPX).then(res => {
+      this.phieuXuatService.getTotalDebtAmountCustomer(bodyPX).then(res => {
         if(res && res.status == STATUS_API.SUCCESS){
           this.totalDebtAmount = res.data;
           console.log(res.data);
@@ -429,8 +449,8 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-       this.listKhachHangs = [result];
-       this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
+        this.formData.controls['khachHang'].setValue(result);
+        this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
       }
     });
   }
@@ -443,13 +463,29 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
        this.formData.controls['bacSyMaBacSy'].setValue(result.id);
-       this.bacsyService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
+       this.bacSiesService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
         if (res?.status == STATUS_API.SUCCESS) {
           this.listBacSys = res.data;
         }
       });
       }
     });
+  }
+
+  async openTransaction(){
+    if(this.formData.get('khachHangMaKhachHang')?.value > 0){
+      var data = {
+        id : this.formData.get('khachHang')?.value.id,
+        name: this.formData.get('khachHang')?.value.tenKhachHang,
+        type : 'xuất'
+      };
+      const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
+        data: data,
+        width: '90%',
+      });
+    }else{
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn khách hàng');
+    }
   }
 
   @HostListener('window:keyup', ['$event'])

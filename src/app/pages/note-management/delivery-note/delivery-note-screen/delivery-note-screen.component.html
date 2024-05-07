@@ -87,7 +87,8 @@
                                             placeholder="Tra cứu theo tên, mã, mã vạch..."
                                             notFoundText="Không tìm thấy mục nào" (change)="searchKhachHangTerm$.next(''); onCustomerChange($event)">
                                             <ng-template ng-label-tmp let-item="item">
-                                                <span>{{item.tenKhachHang}}</span>
+                                                <span *ngIf="item.tenKhachHang">{{item.tenKhachHang}}</span>
+                                                <span *ngIf="!item.tenKhachHang">{{formData.value?.khachHang.tenKhachHang}}</span>
                                             </ng-template>
                                             <ng-template ng-option-tmp let-item="item" let-index="index"
                                                 let-search="searchTerm">
@@ -108,7 +109,7 @@
                                         <input type="button" value="LS"
                                             title="Chi tiết lịch sử giao dịch của khách hàng"
                                             class="btn btn-primary btn-not-radius"
-                                            ng-click="onTransByObjectDetails(4); $event.preventDefault(); $event.stopPropagation();">
+                                            (click)="openTransaction()">
                                     </div>
                                 </div>
                             </div>
@@ -245,6 +246,7 @@
                             <div class="w-100">
                                 <div class="input-group">
                                     <ng-select #selectDrug 
+                                        class="w-100"
                                         appendTo="body" 
                                         [(ngModel)]="data.thuocThuocId"
                                         appearance="outline" 
@@ -258,7 +260,8 @@
                                         placeholder="Tra cứu theo tên, mã, mã vạch..."
                                         notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)">
                                         <ng-template ng-label-tmp let-item="item">
-                                            <span>{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                                            <span *ngIf="item.maThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                                            <span *ngIf="!item.maThuoc">{{drugDefault.maThuoc}} - {{drugDefault.tenThuoc}}</span>
                                         </ng-template>
                                         <ng-template ng-option-tmp let-item="item" let-index="index"
                                             let-search="searchTerm">
