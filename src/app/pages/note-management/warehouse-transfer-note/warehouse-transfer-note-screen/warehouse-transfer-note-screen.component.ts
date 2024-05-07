@@ -24,12 +24,8 @@ export class WarehouseTransferNoteScreenComponent extends BaseComponent implemen
   listThuoc: any[] = [];
   listNhaThuoc: any[] = [];
   // Settings
-  discountByValue = {
-    activated: this.authService.getSettingActivated(SETTING.DELIVERY_NOTE_DISCOUNT_BY_VALUE),
-  };
-  displayImage = {
-    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS),
-  };
+  discountByValue = this.authService.getSettingByKey(SETTING.DELIVERY_NOTE_DISCOUNT_BY_VALUE);
+  displayImage = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
   displayedColumns = this.getDisplayedColumns();
 

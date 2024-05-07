@@ -18,14 +18,8 @@ export class DeliveryNoteTableComponent extends BaseComponent implements OnInit,
   displayedColumns = ['checkBox', 'stt', 'soPhieuXuat', 'ngayXuat', 'createdByUserText', 'khachHangMaKhachHangText', 'dienGiai', 'tongTien', 'action'];
   protected readonly RECORD_STATUS = RECORD_STATUS;
   // Settings
-  storeCodeForConnectivity = {
-    activated:  this.authService.getSettingActivated(SETTING.STORE_CODE_FOR_CONNECTIVITY),
-    value: this.authService.getSettingValue(SETTING.STORE_CODE_FOR_CONNECTIVITY)
-  };
-  storeCodeForManagement = {
-    activated:  this.authService.getSettingActivated(SETTING.STORE_CODE_FOR_MANAGEMENT),
-    value: this.authService.getSettingValue(SETTING.STORE_CODE_FOR_MANAGEMENT)
-  };
+  storeCodeForConnectivity = this.authService.getSettingByKey(SETTING.STORE_CODE_FOR_CONNECTIVITY);
+  storeCodeForManagement = this.authService.getSettingByKey(SETTING.STORE_CODE_FOR_MANAGEMENT);
   // Authorities
   drugViewInputPrice = true;
   deliveryNoteRestore = true;

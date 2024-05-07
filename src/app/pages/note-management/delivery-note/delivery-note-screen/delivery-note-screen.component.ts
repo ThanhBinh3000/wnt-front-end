@@ -29,7 +29,7 @@ import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/d
 })
 export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
-   
+
   listBacSys : any[] = [];
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
@@ -49,30 +49,13 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   loaiGiaBan: number = 0;
 
 
-  notAllowDeliverOverQuantity: any = {
-    activated: this.authService.getSettingActivated(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY)
-  };
-  allowChangeTotalAmountInDeliveryNote: any = {
-    activated: this.authService.getSettingActivated(SETTING.ALLOW_CHANGE_TOTAL_AMOUNT_IN_DELIVERY_NOTE)
-  };
-  updateImagesForProducts: any = {
-    activated: this.authService.getSettingActivated(SETTING.UPDATE_IMAGES_FOR_PRODUCTS)
-  };
-  moneyPerScoreRate: any = {
-    activated: this.authService.getSettingValue(SETTING.MONEY_PER_SCORE_RATE),
-    value: this.authService.getSettingValue(SETTING.MONEY_PER_SCORE_RATE)
-  };
-  enableChangeStaffDeliveryNote: any = {
-    activated: this.authService.getSettingValue(SETTING.ENABLE_CHANGE_STAFF_DELIVERY_NOTE)
-  };
-
-  enableElectronicInvoice: any = {
-    activated: this.authService.getSettingValue(SETTING.ENABLE_ELECTRONIC_INVOICE)
-  };
-
-  deliveryNoteDiscountTotalByValue: any = {
-    activated: this.authService.getSettingValue(SETTING.DELIVERY_NOTE_DISCOUNT_TOTAL_BY_VALUE)
-  };
+  notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
+  allowChangeTotalAmountInDeliveryNote = this.authService.getSettingByKey(SETTING.ALLOW_CHANGE_TOTAL_AMOUNT_IN_DELIVERY_NOTE);
+  updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
+  moneyPerScoreRate = this.authService.getSettingByKey(SETTING.MONEY_PER_SCORE_RATE);
+  enableChangeStaffDeliveryNote = this.authService.getSettingByKey(SETTING.ENABLE_CHANGE_STAFF_DELIVERY_NOTE);
+  enableElectronicInvoice = this.authService.getSettingByKey(SETTING.ENABLE_ELECTRONIC_INVOICE);
+  deliveryNoteDiscountTotalByValue = this.authService.getSettingByKey(SETTING.DELIVERY_NOTE_DISCOUNT_TOTAL_BY_VALUE);
 
   constructor(
     injector: Injector,
@@ -207,7 +190,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
         this.listNhanViens = res.data;
       }
     });
-    
+
     this.listThuoc$ = this.searchThuocTerm$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -494,7 +477,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     }
     return displayedColumns;
   }
-  
+
   async onLockNote(){
     let locked = this.formData.get('locked')?.value;
     const res = locked ? await this._service.unlock({id : this.formData.get('id')?.value}) : await this._service.lock({id : this.formData.get('id')?.value});
