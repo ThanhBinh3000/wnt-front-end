@@ -138,6 +138,10 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('../pages/utilities/utilities.module').then((m) => m.UtilitiesModule),
       },
+      {
+        path: '',
+        loadChildren: () => import('../pages/transaction/transaction.module').then((m) => m.TransactionModule),
+      },
     ],
   }
 ];

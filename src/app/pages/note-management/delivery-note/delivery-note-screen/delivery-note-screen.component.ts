@@ -19,7 +19,9 @@ import moment from 'moment';
 import { RegionInformationEditDialogComponent } from '../../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
 import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, of, switchMap } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, observeOn, of, startWith, switchMap } from 'rxjs';
+import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component';
+import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
 
 @Component({
   selector: 'delivery-note-screen',
@@ -39,13 +41,13 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
 
   expandLabel: string = "[-]";
   showMoreForm: boolean = true;
-  maKhachHangLe: number = 0;
   totalScore: number = 0;
   totalDebtAmount: number = 0;
   debtValue: number = 0;
   debtLabel: string = 'Còn nợ';
   isAdminUser: boolean = true;
   loaiGiaBan: number = 0;
+  drugDefault: any = {};
 
 
   notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
@@ -101,7 +103,8 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       nationalFacilityCode: [''],
       discountWithRatio: [0],
       doctorComments :[''],
-      locked : []
+      locked : [],
+      khachHang : [{}]
     });
   }
 
@@ -115,7 +118,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     if (this.idUrl) {
       let data = await this.detail(this.idUrl);
       this.formData.patchValue(data);
-      this.listKhachHang$ = of([{ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText }]);
       this.dataTable = data.chiTiets;
       this.dataTable.unshift({ isEditingItem: true });
       console.log(this.dataTable);
@@ -134,8 +136,8 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           x.tonHT = x.ton / x.heSo;
         }
         this.getItemAmount(x);
-        this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
       });
+        this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
     } else {
       this.dataTable.push({ isEditingItem: true });
       let body = {
@@ -145,11 +147,10 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       this.service.init(body).then((res) => {
         if (res && res.data) {
           const data = res.data;
-          this.maKhachHangLe = data.khachHangMaKhachHang;
           this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
           this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
-          this.formData.controls['khachHangMaKhachHang'].setValue(this.maKhachHangLe);
-          this.listKhachHang$ = of([{id: this.maKhachHangLe, tenKhachHang: 'Khách hàng lẻ'}]);
+          this.formData.controls['khachHangMaKhachHang'].setValue(data.khachHangMaKhachHang);
+          this.formData.controls['khachHang'].setValue({id: data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ"});
         }
       });
     }
@@ -194,7 +195,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => {
-        console.log('call thuoc');
         if(term.length >= 2){
           let bodyThuoc = {
             textSearch: term,
@@ -300,7 +300,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
 
   async onAddNew(item: any) {
     //kiểm tra hàng âm kho
-    if (item.ton <= 0 && this.notAllowDeliverOverQuantity) {
+    if (item.ton <= 0 && this.notAllowDeliverOverQuantity.activated) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
       return;
     }
@@ -489,6 +489,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   //lấy thông tin điểm, nợ khách hàng
   onCustomerChange($event: any) {
     if ($event && $event.id > 0) {
+      this.formData.controls['khachHang'].setValue($event);
       //điểm tích luỹ
       let bodyKH = {
         id: $event.id,
@@ -577,7 +578,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-       this.listKhachHang$ = of([result]);
+       this.formData.controls['khachHang'].setValue(result);
        this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
       }
     });
@@ -599,6 +600,37 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       }
     });
   }
+
+  async openAddDrugDialog() {
+    const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
+      data: 0,
+      width: '80%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        this.drugDefault = result;
+        this.onDrugChange({id: result.id});
+      }
+    });
+  }
+  
+  async openTransaction(){
+    if(this.formData.get('khachHangMaKhachHang')?.value > 0){
+      var data = {
+        id : this.formData.get('khachHang')?.value.id,
+        name: this.formData.get('khachHang')?.value.tenKhachHang,
+        type : 'xuất'
+      };
+      const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
+        data: data,
+        width: '90%',
+      });
+    }else{
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn khách hàng');
+    }
+    
+  }
+
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {

@@ -17,6 +17,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   title: string = "Phiếu bán hàng";
   totalScore: number= 0;
   totalDebtAmount: number=0;
+  isContinue = false;
 
   updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
@@ -55,6 +56,9 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   async ngOnInit() {
     this.getId();
     if (this.idUrl) {
+      this.route.queryParams.subscribe(params => {
+       this.isContinue = params['isContinue'] === 'true';
+      });
       let data = await this.detail(this.idUrl)
 
       this.formData.patchValue(data);
