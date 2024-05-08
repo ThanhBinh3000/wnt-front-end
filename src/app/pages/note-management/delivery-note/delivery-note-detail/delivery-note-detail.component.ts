@@ -18,6 +18,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   totalScore: number= 0;
   totalDebtAmount: number=0;
   isContinue = false;
+  fromBcScanner= false;
 
   updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
@@ -57,7 +58,8 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
     this.getId();
     if (this.idUrl) {
       this.route.queryParams.subscribe(params => {
-       this.isContinue = params['isContinue'] === 'true';
+       this.isContinue = this.route.snapshot.paramMap.get('isContinue') === 'true';
+       this.fromBcScanner = this.route.snapshot.paramMap.get('fromBcScanner') === 'true';
       });
       let data = await this.detail(this.idUrl)
 
@@ -68,7 +70,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       });
       this.onGetInforCustomer(data.khachHangMaKhachHang);
       this.title = this.title + ' #' + this.formData.get('soPhieuXuat')?.value;
-      console.log(data);
+      //console.log(data);
     }
     this.titleService.setTitle(this.title);
   }
@@ -145,6 +147,12 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       displayedColumns = displayedColumns.filter(x => x !== 'anh');
     }
     return displayedColumns;
+  }
+
+  getUrlContinue(){
+    return this.isContinue && this.fromBcScanner ? 
+    '/management/note-management/delivery-note-barcode-screen' : 
+    '/management/note-management/delivery-note-screen'
   }
 }
 

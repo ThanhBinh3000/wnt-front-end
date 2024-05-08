@@ -40,7 +40,7 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'delivery-note-detail/:id',
+        path: 'delivery-note-detail/:id/:isContinue/:fromBcScanner',
         component: DeliveryNoteDetailComponent,
         // canActivate: [AuthGuard],
       },

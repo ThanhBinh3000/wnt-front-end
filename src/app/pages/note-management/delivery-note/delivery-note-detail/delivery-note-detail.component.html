@@ -176,7 +176,8 @@
     <div class="form-group mt-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-center align-items-center gap-10">
-                <a *ngIf="isContinue" type="button" href="/management/note-management/delivery-note-screen" class="btn btn-primary">Tiếp tục</a>
+                <a *ngIf="isContinue" type="button" 
+                   href="{{getUrlContinue()}}" class="btn btn-primary">Tiếp tục</a>
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
                 <div class="btn-group">
