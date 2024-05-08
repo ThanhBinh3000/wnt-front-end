@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {LOAI_PHIEU, LOAI_SAN_PHAM, RECORD_STATUS} from "../../../constants/config";
+import {DATE_RANGE, LOAI_PHIEU, LOAI_SAN_PHAM, RECORD_STATUS} from "../../../constants/config";
 import {BaseComponent} from "../../../component/base/base.component";
 import {ReceiptNoteTableComponent} from "./receipt-note-table/receipt-note-table.component";
 import {DeliveryNoteTableComponent} from "./delivery-note-table/delivery-note-table.component";
@@ -551,4 +551,6 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
         await viewChild.deleteMulti('Bạn thực sự muốn xóa các phiếu được chọn?');
     }
   }
+
+  protected readonly DATE_RANGE = DATE_RANGE;
 }

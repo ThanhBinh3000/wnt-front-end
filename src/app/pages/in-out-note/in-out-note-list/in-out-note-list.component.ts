@@ -15,6 +15,10 @@ import {
 import {InOutNoteAddEditDialogComponent} from "../in-out-note-add-edit-dialog/in-out-note-add-edit-dialog.component";
 import {SETTING} from "../../../constants/setting";
 import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
+import {
+  OtherInOutNoteDetailDialogComponent
+} from "../other-in-out-note-detail-dialog/other-in-out-note-detail-dialog.component";
+import {InOutNoteDetailDialogComponent} from "../in-out-note-detail-dialog/in-out-note-detail-dialog.component";
 
 @Component({
   selector: 'app-in-out-note',
@@ -218,14 +222,33 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
 
   }
 
-  async openAddEditDialog(noteTypeId: number, id: any) {
+  async openDetailDialog(loaiPhieu: number, id: any) {
     const config = {
-      data: {noteTypeId: noteTypeId, id: id},
+      data: {loaiPhieu: loaiPhieu, id: id},
       width: '600px',
     };
 
     let dialogRef;
-    if ([LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(noteTypeId))
+    if ([LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(loaiPhieu))
+      dialogRef = this.dialog.open(OtherInOutNoteDetailDialogComponent, config);
+    else
+      dialogRef = this.dialog.open(InOutNoteDetailDialogComponent, config);
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
+    });
+  }
+
+  async openAddEditDialog(loaiPhieu: number, id: any) {
+    const config = {
+      data: {loaiPhieu: loaiPhieu, id: id},
+      width: '600px',
+    };
+
+    let dialogRef;
+    if ([LOAI_THU_CHI.THU_KHAC, LOAI_THU_CHI.CHI_KHAC, LOAI_THU_CHI.CHI_PHI_KINH_DOANH].includes(loaiPhieu))
       dialogRef = this.dialog.open(OtherInOutNoteAddEditDialogComponent, config);
     else
       dialogRef = this.dialog.open(InOutNoteAddEditDialogComponent, config);

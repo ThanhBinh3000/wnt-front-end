@@ -300,7 +300,9 @@
           </div>
         </fieldset>
         <fieldset class="baocao-filter mb-3">
-          <app-date-range-filter [filterType]="0"
+          <app-date-range-filter [filterType]="DATE_RANGE.ALL"
+                                 [fromDateControl]="'fromDateCreate'"
+                                 [toDateControl]="'toDateCreate'"
                                  (filterTypeChange)="changeFilterType($event)"
                                  (fromDateChange)="changeFromDate($event)"
                                  (toDateChange)="changeToDate($event)"
