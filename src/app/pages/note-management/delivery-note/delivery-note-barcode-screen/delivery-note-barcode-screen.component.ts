@@ -226,7 +226,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
 
   async onAddNew(item: any) {
     //kiểm tra hàng âm kho
-    if (item.ton <= 0 && this.notAllowDeliverOverQuantity) {
+    if (item.ton <= 0 && this.notAllowDeliverOverQuantity.activated) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
       return;
     }
@@ -317,7 +317,9 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
     this.save(body).then(res => {
       if (res) {
-        this.router.navigate(['/management/note-management/delivery-note-detail/', res.id, true, true]);
+        this.router.navigate(['/management/note-management/delivery-note-from-barcode-detail/', res.id],
+          {queryParams : {fromBcScanner: true}}
+        );
       }
     });
   }

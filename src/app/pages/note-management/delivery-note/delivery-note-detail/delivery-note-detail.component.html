@@ -176,7 +176,7 @@
     <div class="form-group mt-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-center align-items-center gap-10">
-                <a *ngIf="isContinue" type="button" 
+                <a *ngIf="isContinue || fromBcScanner" type="button" 
                    href="{{getUrlContinue()}}" class="btn btn-primary">Tiếp tục</a>
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
@@ -204,7 +204,7 @@
                         data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize="true">Chia sẻ
                         Zalo</span>
                 </span>
-                <a class="btn btn-default" href="/DeliveryNote/DeliveryNoteScreen?taskMode=5&amp;noteId=35432435"
+                <a class="btn btn-default" href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
                     title="Sao chép phiếu">Copy</a> <span
                     ng-show="model.NoteTypeId == 2 &amp;&amp; !model.IsRefSampleNote &amp;&amp; model.DrugStoreId == '9006'"
                     class="ng-hide">

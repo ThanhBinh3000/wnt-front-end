@@ -10,6 +10,7 @@ import { STATUS_API } from '../../../constants/message';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import { ThuocService } from '../../../services/products/thuoc.service';
 import { NhomThuocService } from '../../../services/products/nhom-thuoc.service';
+import {DATE_RANGE} from "../../../constants/config";
 
 @Component({
   selector: 'transaction-detail-by-object-dialog',
@@ -138,4 +139,6 @@ export class TransactionDetailByObjectDialogComponent extends BaseComponent impl
   closeModal() {
     this.dialogRef.close();
   }
+
+  protected readonly DATE_RANGE = DATE_RANGE;
 }
