@@ -1,0 +1,285 @@
+<div class="row">
+  <div class="col-md-3">
+    <form [formGroup]="formData">
+      <div class="sidebar-bg">
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Bệnh nhân</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                [items]="listKhachHang$ | async"
+                [typeahead]="searchKhachHangTerm$"
+                [minTermLength]="2"
+                formControlName="idCus"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenKhachHang"
+                bindValue="id"
+                placeholder="Nhập mã, mã vạch hoặc tên..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchKhachHangTerm$.next('')">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Tìm theo</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="searchTypes"
+                formControlName="searchType"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="--Tất cả--"
+                notFoundText="Không tìm thấy mục nào"
+                (change)="clearSearchTypeValue()"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+              <!--0: Ma so phieu-->
+              <input *ngIf="formData.get('searchType')?.value == 0" formControlName="noteNumber" type="text"
+                     placeholder="Nhập số phiếu vào đây..." class="form-control w-100"/>
+              <!--1: Bac si-->
+              <ng-select
+                *ngIf="formData.get('searchType')?.value == 1"
+                [items]="listBacSy$ | async"
+                [typeahead]="searchBacSyTerm$"
+                [minTermLength]="2"
+                formControlName="idDoctor"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenBacSy"
+                bindValue="id"
+                placeholder="Chọn hoặc gõ vào để tìm..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchBacSyTerm$.next('')"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenBacSy }}</span>
+                </ng-template>
+              </ng-select>
+              <!--2: Nguoi thuc hien-->
+              <ng-select
+                *ngIf="formData.get('searchType')?.value == 2"
+                [items]="listNguoiThucHien$ | async"
+                [typeahead]="searchNguoiThucHienTerm$"
+                [minTermLength]="2"
+                formControlName="performerId"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenDayDu"
+                bindValue="id"
+                placeholder="Chọn hoặc gõ vào để tìm..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchNguoiThucHienTerm$.next('')"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+                </ng-template>
+              </ng-select>
+              <!--3: Dich vu-->
+              <ng-select
+                *ngIf="formData.get('searchType')?.value == 3"
+                [items]="listDichVu$ | async"
+                [typeahead]="searchDichVuTerm$"
+                [minTermLength]="2"
+                formControlName="serviceId"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="maThuoc"
+                placeholder="Nhập mã, mã vạch hoặc tên..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchDichVuTerm$.next('')"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenThuoc }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="baocao-filter mb-3">
+          <app-date-range-filter [filterType]="0" (filterTypeChange)="changeFilterType($event)"
+                                 (fromDateChange)="changeFromDate($event)"
+                                 (toDateChange)="changeToDate($event)"></app-date-range-filter>
+          <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
+                 class="btn btn-primary w-100" (click)="searchPage()">
+        </fieldset>
+        <fieldset class="mb-3">
+          <label><b>Nhập/Xuất từ File</b></label>
+          <div>
+            <span class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+                <input type="button" value="Xuất file" (click)="onExport()" class="btn btn-default w-100"/>
+            </span>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-9">
+    <div class="baocao-container box-group-white">
+      <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
+      <div class="mat-table-container">
+        <table mat-table
+               class="table table-striped table-bordered table-hover tr-ng-grid"
+               [dataSource]="getDataSource()" matSort>
+
+          <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef>
+              <div class="text-left">
+                STT
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let data; index as i;">
+              <div class="text-right">
+                {{ (page - 1) * pageSize + i + 1 }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="noteNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-right">
+                <a href="/management/service-note/detail/{{data.id}}">{{ data.noteNumber }}</a>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="barCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">
+                {{ data.barCode }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">
+                {{ disableTimeClinic.activated ? (data.created | appDate) : (data.created | appDateTime) }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdByUseText">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Người thực hiện</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{ data.createdByUseText }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="doctorName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Bác sĩ chỉ định</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{ data.doctorName }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Bệnh nhân</th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">
+                <a (click)="openCustomerDetailDialog(data.customer)">{{ data.customerName }}{{ data.customer?.birthDate ? ' - ' + (data.customer.birthDate | appDate: 'yyyy') : ''}}</a>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>
+              <div class="text-left">
+                Kết luận
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let data">
+              <div class="text-left">{{ data.description }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isDeb">
+            <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
+            <td mat-cell *matCellDef="let data">{{ data.isDeb ? 'Chưa thanh toán' : 'Đã thanh toán' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalMoney">
+            <th mat-header-cell *matHeaderCellDef width="10%" mat-sort-header>
+              <div class="text-left">
+                Tổng tiền<br/>Σ = {{ getTongTien() | number }}
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let data" class="text-right"> {{ data.totalMoney | number }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+              <div class="text-left">
+                Thao tác
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let data">
+              <div class="baocao-actions baocao-actions-row">
+                <div class="baocao-actions-item">
+                  <a *ngIf="noteServiceCreateAndWrite" href="/management/service-note/edit/{{data.id}}"
+                     class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
+
+                  <button *ngIf="noteServicePrint" class="btn btn-sm btn-primary" [matMenuTriggerFor]="printMenu"><i
+                    class="fas fa-print"></i></button>
+                  <mat-menu #printMenu="matMenu">
+                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In - A4</button>
+                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In - A5</button>
+                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In theo phòng TH - A4</button>
+                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In theo phòng TH - A5</button>
+                  </mat-menu>
+
+                  <button *ngIf="noteServiceDelete" class="btn btn-sm btn-danger"
+                          (click)="delete('Bạn thực sự muốn xóa phiếu này?', data)">
+                    <i class="fa-regular fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100">
+              <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                              (pageChange)="changePageIndex($event)"
+                              (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

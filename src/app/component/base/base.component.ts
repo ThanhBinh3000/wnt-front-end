@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {Department} from "../../models/department";
 import {UserService} from "../../services/user.service";
 import {UserLogin} from "../../models/user-login";
-import {PAGE_SIZE_DEFAULT} from "../../constants/config";
+import {DATE_RANGE, PAGE_SIZE_DEFAULT} from "../../constants/config";
 import {MESSAGE, STATUS_API} from "../../constants/message";
 import {StorageService} from "../../services/storage.service";
 import {BaseService} from "../../services/base.service";
@@ -37,9 +37,6 @@ export class BaseComponent {
   dataDetail: any;
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
-  filterType: number = 0;
-  fromDate: string = '';
-  toDate: string = '';
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
@@ -112,10 +109,6 @@ export class BaseComponent {
         limit: this.pageSize,
         page: this.page - 1
       }
-      if(this.filterType == 1){
-        body.fromDate = this.fromDate;
-        body.toDate = this.toDate;
-      }
       let res = await this.service.searchPage(body);
       if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
@@ -180,16 +173,22 @@ export class BaseComponent {
     }
   }
 
-  async changeFilterType(filterType: number) {
-    this.filterType = filterType;
+  async changeFilterType($event: any) {
+    if($event.filterType === DATE_RANGE.ALL){
+      this.formData.removeControl($event.fromDateControl);
+      this.formData.removeControl($event.toDateControl);
+    } else {
+      this.formData.addControl($event.fromDateControl, this.fb.control(''));
+      this.formData.addControl($event.toDateControl, this.fb.control(''));
+    }
   }
 
-  async changeFromDate(fromDate: string) {
-    this.fromDate = fromDate;
+  async changeFromDate($event: any) {
+    this.formData.get($event.fromDateControl)?.setValue($event.fromDate);
   }
 
-  async changeToDate(toDate: string) {
-    this.toDate = toDate;
+  async changeToDate($event: any) {
+    this.formData.get($event.toDateControl)?.setValue($event.toDate);
   }
 
   // DELETE 1 item table

@@ -29,7 +29,7 @@
                 </ng-select>
                 <span class="input-group-btn" *ngIf="inOutComingNoteWrite">
                   <button class="btn btn-primary" type="button"
-                          (click)="openAddEditDialog(formData.get('noteTypeId')?.value, null)">
+                          (click)="openAddEditDialog(formData.get('loaiPhieu')?.value, null)">
                     <i class="fa-regular fa-plus"></i>
                   </button>
                 </span>
@@ -201,7 +201,9 @@
 
         <ng-container matColumnDef="soPhieu">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Số phiếu</th>
-          <td mat-cell *matCellDef="let data" class="text-right">{{ data.soPhieu }}</td>
+          <td mat-cell *matCellDef="let data" class="text-right">
+            <a (click)="openDetailDialog(data.loaiPhieu, data.id)">{{ data.soPhieu }}</a>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="nguoiNhan">
