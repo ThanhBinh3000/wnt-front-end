@@ -226,7 +226,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
 
   async onAddNew(item: any) {
     //kiểm tra hàng âm kho
-    if (item.ton <= 0 && this.notAllowDeliverOverQuantity) {
+    if (item.ton <= 0 && this.notAllowDeliverOverQuantity.activated) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
       return;
     }
@@ -317,7 +317,9 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
     this.save(body).then(res => {
       if (res) {
-        this.router.navigate(['/management/note-management/delivery-note-detail/', res.id]);
+        this.router.navigate(['/management/note-management/delivery-note-from-barcode-detail/', res.id],
+          {queryParams : {fromBcScanner: true}}
+        );
       }
     });
   }
@@ -384,13 +386,13 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
   }
 
   getDebtAmount(){
-    let totalAmount = this.formData.get('tongTien')?.value;
-    let paymentAmount = this.formData.get('daTra')?.value;
-    let discount = this.formData.get('discount')?.value;
-    let paymentScoreAmount = this.formData.get('paymentScoreAmount')?.value;
-    this.debtValue = totalAmount - (paymentAmount + discount + paymentScoreAmount);
+    let totalAmount = Number(this.formData.get('tongTien')?.value);
+    let paymentAmount = Number(this.formData.get('daTra')?.value);
+    let discount = Number(this.formData.get('discount')?.value);
+    let paymentScoreAmount = Number(this.formData.get('paymentScoreAmount')?.value);
+    this.debtValue = Number(totalAmount - (paymentAmount + discount + paymentScoreAmount));
     this.debtLabel = this.debtValue < 0 ? 'Tiền thừa' : 'Còn nợ';
-    return Math.abs(this.debtValue);
+    return this.debtValue < 0 ? -this.debtValue : this.debtValue;
   }
 
   getDisplayedColumns(){

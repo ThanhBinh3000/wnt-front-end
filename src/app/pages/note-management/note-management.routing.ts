@@ -45,6 +45,12 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
+        path: 'delivery-note-from-barcode-detail/:id',
+        component: DeliveryNoteDetailComponent,
+        data: { fromBcScanner: true },
+        // canActivate: [AuthGuard],
+      },
+      {
         path: 'delivery-note-screen',
         component: DeliveryNoteScreenComponent,
         // canActivate: [AuthGuard],

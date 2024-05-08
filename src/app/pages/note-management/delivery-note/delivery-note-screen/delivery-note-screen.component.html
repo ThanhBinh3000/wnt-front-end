@@ -435,7 +435,7 @@
                                         <span style="text-align: left;width:100px"><label
                                                 class="mb-0 ng-binding">{{debtLabel}}:</label>
                                         </span>
-                                        <span style="text-align: left; color: red">
+                                        <span style="text-align: left; color: red; padding-left: 5px;">
                                             <label class="control-label ng-binding">{{getDebtAmount() | number}}</label>
                                         </span>
                                     </div>
@@ -547,11 +547,11 @@
                                     disabled="{{formData.value?.locked ? 'disabled' : ''}}" id="save-note-btn-id"
                                     title="F9-Ghi phiếu" class="btn btn-primary" class="btn btn-primary"
                                     (click)="onSave()">
-                                <button class="btn btn-default" title="Sao chép phiếu"
-                                    disabled="{{formData.value?.locked ? 'disabled' : ''}}"
-                                    *ngIf="isDesktop() && formData.value?.id > 0"
-                                    ng-click="onCopyNoteDelivery(viewModel.NoteId)">Copy</button>
-                                <div class="btn-group ng-scope" *ngIf="isDesktop() && formData.value?.id > 0">
+                                <a class="btn btn-default" title="Sao chép phiếu"
+                                    *ngIf="!formData.value?.locked && isDesktop() && (copyId > 0 || formData.value?.id > 0)"
+                                    href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
+                                    >Copy</a>
+                                <div class="btn-group ng-scope" *ngIf="isDesktop() && isUpdateView()">
                                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         In <span class="caret"></span>
@@ -570,7 +570,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <span *ngIf="formData.value?.id > 0" class="ng-scope">
+                                <span *ngIf="isUpdateView()" class="ng-scope">
                                     <span>&nbsp;</span>
                                     <button class="btn btn-danger"
                                         disabled="{{formData.value?.locked ? 'disabled' : ''}}"
@@ -593,7 +593,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngIf="formData.value?.id > 0" class="ng-scope">
+                    <tr *ngIf="isUpdateView()" class="ng-scope">
                         <td colspan="2" class="text-center">
                             <div class="d-flex justify-content-center align-items-center gap-10">
                                 <span class="ng-binding">[Người lập: {{formData.value?.createdByUserText}}] - [Ngày lập:

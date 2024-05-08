@@ -18,7 +18,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   totalScore: number= 0;
   totalDebtAmount: number=0;
   isContinue = false;
-
+  fromBcScanner= false;
   updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
 
   constructor(
@@ -56,6 +56,10 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   async ngOnInit() {
     this.getId();
     if (this.idUrl) {
+      this.route.data.subscribe((data: any) => {
+        this.fromBcScanner = data.fromBcScanner;
+        console.log(this.fromBcScanner);
+      });
       this.route.queryParams.subscribe(params => {
        this.isContinue = params['isContinue'] === 'true';
       });
@@ -68,7 +72,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       });
       this.onGetInforCustomer(data.khachHangMaKhachHang);
       this.title = this.title + ' #' + this.formData.get('soPhieuXuat')?.value;
-      console.log(data);
+      //console.log(data);
     }
     this.titleService.setTitle(this.title);
   }
@@ -145,6 +149,14 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       displayedColumns = displayedColumns.filter(x => x !== 'anh');
     }
     return displayedColumns;
+  }
+
+  getUrlContinue(){
+    let url = '/management/note-management/delivery-note-screen';
+    if(this.fromBcScanner){
+      url = '/management/note-management/delivery-note-barcode-screen';
+    }
+    return url;
   }
 }
 
