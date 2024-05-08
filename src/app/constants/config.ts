@@ -75,4 +75,9 @@ export const LOAI_THU_CHI = {
   CHI_TRA_LAI_KHACH_HANG: 7
 }
 
+export const DATE_RANGE = {
+  ALL: 0,
+  BY_DATE: 1,
+};
+
 export const PAGE_SIZE_DEFAULT = 10;

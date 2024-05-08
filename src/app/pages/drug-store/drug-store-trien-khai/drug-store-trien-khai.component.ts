@@ -137,10 +137,6 @@ export class DrugStoreTrienKhaiComponent extends BaseComponent implements OnInit
       limit: this.pageSize,
       page: this.page - 1
     }
-    if(this.filterType == 1){
-      body.fromDate = this.fromDate;
-      body.toDate = this.toDate;
-    }
     if(this.filterTransactionType == 0){
       body.transactionFromDate = null;
       body.transactionToDate = null;

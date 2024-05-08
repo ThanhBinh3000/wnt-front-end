@@ -51,10 +51,6 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
         limit: this.pageSize,
         page: this.page - 1
       }
-      if(this.filterType == 1){
-        body.fromDate = this.fromDate;
-        body.toDate = this.toDate;
-      }
       let res = await this._service.DetailsByDay(body);
       if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;

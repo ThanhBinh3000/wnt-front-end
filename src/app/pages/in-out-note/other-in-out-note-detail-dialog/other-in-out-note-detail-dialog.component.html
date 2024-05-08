@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title text-capitalize text-center mt-0 mb-0">
+        <b>{{ getTitle() }}</b>
+      </h4>
+      <div class="card-desc">
+        <div class="card-code">
+          Mã số: <strong>{{noteDetail?.soPhieu}}</strong>
+        </div>
+        Ngày: <strong>{{noteDetail?.ngayTao | appDate}}</strong>
+      </div>
+    </div>
+    <div class="modal-body">
+      <table class="table table-bordered table-userpicker">
+        <tbody>
+        <tr>
+          <td><b>Loại phiếu</b></td>
+          <td>
+            <span class="text-capitalize">{{getTitle()}}</span>
+          </td>
+        </tr>
+        <tr *ngIf="['0010', '9274'].includes(getMaNhaThuoc())">
+          <td><b>Cơ sở</b></td>
+          <td>
+            <span class="text-capitalize">Cơ sơdajskl;djalksdjs</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Người nhận</b></td>
+          <td>
+            <span class="text-capitalize">{{noteDetail?.nguoiNhan}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Địa chỉ</b></td>
+          <td>
+            <span class="text-capitalize">{{noteDetail?.diaChi}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Số tiền</b></td>
+          <td>{{noteDetail?.amount | number}}</td>
+        </tr>
+        <tr>
+          <td><b>Diễn giải</b></td>
+          <td>{{noteDetail?.dienGiai}}</td>
+        </tr>
+        <tr>
+          <td><b>Hình thức thanh toán</b></td>
+          <td>{{ noteDetail?.paymentTypeId == 0 ? 'Tiền mặt' : 'Chuyển khoản' }}</td>
+        </tr>
+        <tr *ngIf="noteDetail?.loaiPhieu == LOAI_THU_CHI.CHI_PHI_KINH_DOANH && noteDetail?.fromDate && noteDetail?.toDate">
+          <td><b>Thanh toán theo kỳ</b></td>
+          <td>
+            <span><i class="glyphicon-check glyphicon text-success"></i> {{noteDetail?.fromDate | appDate}}</span> - <span>{{noteDetail?.toDate | appDate}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Người lập</b></td>
+          <td>{{noteDetail?.createdByUserText}}</td>
+        </tr>
+        <tr>
+          <td><b>Ngày lập</b></td>
+          <td>{{noteDetail?.created | appDate}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="inOutComingNoteCreate && data.isContinue" class="btn btn-primary"
+              (click)="openAddEditDialog(null)">Tiếp tục
+      </button>
+      <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+      <button *ngIf="inOutComingNotePrint" class="btn btn-primary" [matMenuTriggerFor]="printMenu"><i
+        class="fas fa-print"></i></button>
+      <mat-menu #printMenu="matMenu">
+        <button mat-menu-item (click)="onPrint('printType')">In 1 liên - A5</button>
+        <button mat-menu-item (click)="onPrint('printType')">In 2 liên - A4</button>
+      </mat-menu>
+      <button *ngIf="inOutComingNoteWrite" (click)="openAddEditDialog(noteDetail?.id)" class="btn btn-primary"><i
+        class="fa-regular fa-pen-to-square"></i></button>
+      <button *ngIf="inOutComingNoteDelete" class="btn btn-danger"
+              (click)="delete('Bạn thực sự muốn xóa phiếu này?', data)">
+        <i class="fa-regular fa-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>
