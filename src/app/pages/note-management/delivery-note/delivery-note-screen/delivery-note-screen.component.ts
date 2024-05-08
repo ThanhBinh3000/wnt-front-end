@@ -31,7 +31,7 @@ import { TransactionDetailByObjectDialogComponent } from '../../../transaction/t
 export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
 
-  listBacSys : any[] = [];
+  listBacSys: any[] = [];
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
@@ -48,6 +48,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   isAdminUser: boolean = true;
   loaiGiaBan: number = 0;
   drugDefault: any = {};
+  copyId = 0;
 
 
   notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
@@ -102,9 +103,12 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       invoiceDate: [''],
       nationalFacilityCode: [''],
       discountWithRatio: [0],
-      doctorComments :[''],
-      locked : [],
-      khachHang : [{}]
+      doctorComments: [''],
+      locked: [],
+      khachHang: [{}],
+      uId:[],
+      modified: [],
+      modifiedByUserId: [0]
     });
   }
 
@@ -114,48 +118,39 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.loadDataOpt();
+    this.route.queryParams.subscribe(params => {
+      this.copyId = Number(params['copyId']);
+    });
     this.getId();
-    if (this.idUrl) {
-      let data = await this.detail(this.idUrl);
-      this.formData.patchValue(data);
-      this.dataTable = data.chiTiets;
-      this.dataTable.unshift({ isEditingItem: true });
-      console.log(this.dataTable);
-      this.dataTable.filter(x => x.id > 0).forEach(x => {
-        x.donViTinhs = x.thuocs.listDonViTinhs;
-        x.tonHT = x.thuocs.inventory ? x.thuocs.inventory.lastValue : 0;
-        x.ton = x.tonHT;
-        x.heSo = x.thuocs.heSo;
-        x.donViXuatLeMaDonViTinh = x.thuocs.donViXuatLeMaDonViTinh;
-        x.donViThuNguyenMaDonViTinh = x.thuocs.donViThuNguyenMaDonViTinh;
-        x.maThuoc = x.maThuocText;
-        x.tenThuoc = x.tenThuocText;
-        x.giaBanLe = x.thuocs.giaBanLe;
-        x.giaBanBuon = x.thuocs.giaBanBuon;
-        if (x.donViTinhMaDonViTinh == x.donViThuNguyenMaDonViTinh) {
-          x.tonHT = x.ton / x.heSo;
-        }
-        this.getItemAmount(x);
-      });
-        this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
-    } else {
-      this.dataTable.push({ isEditingItem: true });
+    if (this.isUpdateView() || this.copyId > 0) {
+      let noteId = !this.idUrl ? this.copyId : this.idUrl;
+      let data = await this.detail(noteId);
+      this.getDataUpdate(data , data.chiTiets);
+    }
+    
+    if(!this.isUpdateView()){
+      console.log(this.isUpdateView());
       let body = {
         maLoaiXuatNhap: LOAI_PHIEU.PHIEU_XUAT,
-        id: null
+        id: this.copyId > 0 ? this.copyId : null
       }
       this.service.init(body).then((res) => {
         if (res && res.data) {
-          const data = res.data;
-          this.formData.controls['soPhieuXuat'].setValue(data.soPhieuXuat);
-          this.formData.controls['ngayXuat'].setValue(data.ngayXuat);
-          this.formData.controls['khachHangMaKhachHang'].setValue(data.khachHangMaKhachHang);
-          this.formData.controls['khachHang'].setValue({id: data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ"});
+            this.formData.controls['id'].setValue(0);
+             this.formData.controls['createdByUserId'].setValue(0);
+             this.formData.controls['modifiedByUserId'].setValue(0);
+             this.formData.controls['created'].setValue(null);
+             this.formData.controls['modified'].setValue(null);
+             this.formData.controls['soPhieuXuat'].setValue(res.data.soPhieuXuat);
+             this.formData.controls['ngayXuat'].setValue(res.data.ngayXuat);
+             this.formData.controls['khachHangMaKhachHang'].setValue(res.data.khachHangMaKhachHang);
+             this.formData.controls['khachHang'].setValue({ id: res.data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ" });
         }
       });
     }
-
+    this.dataTable.unshift({ isEditingItem: true });
     this.getDataFilter();
+    console.log(this.formData.value);
   }
 
   ngAfterViewInit() {
@@ -171,6 +166,10 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     this.paymentTypeService.searchList({}).then((res) => {
       this.listPaymentType = res?.data;
     });
+  }
+
+  isUpdateView() {
+    return this.idUrl;
   }
 
   getMaNhaThuoc() {
@@ -195,13 +194,13 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => {
-        if(term.length >= 2){
+        if (term.length >= 2) {
           let bodyThuoc = {
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
             dataDelete: false,
             nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
-            typeService : 0
+            typeService: 0
           };
           return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -219,7 +218,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => {
-        if(term.length >= 2){
+        if (term.length >= 2) {
           let bodyKhachHang = {
             textSearch: term,
             paggingReq: { limit: 25, page: 0 },
@@ -397,9 +396,15 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       await this.onAddNew(this.dataTable[0])
     }
     body.chiTiets = this.dataTable.filter(x => x.thuocThuocId > 0);
-    this.save(body).then(res => {
-      if (res) {
-        this.router.navigate(['/management/note-management/delivery-note-detail', res.id]);
+    this.save(body).then(data => {
+      if (data) {
+        if (this.isUpdateView()) {
+          this.router.navigate(['/management/note-management/list'],
+            { queryParams: { noteTypeId: LOAI_PHIEU.PHIEU_XUAT } });
+        } else {
+          this.router.navigate(['/management/note-management/delivery-note-detail', data.id],
+            { queryParams: { isContinue: true } });
+        }
       }
     });
   }
@@ -447,13 +452,13 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   }
 
   getDebtAmount() {
-    let totalAmount = this.formData.get('tongTien')?.value;
-    let paymentAmount = this.formData.get('daTra')?.value;
-    let discount = this.formData.get('discount')?.value;
-    let paymentScoreAmount = this.formData.get('paymentScoreAmount')?.value;
-    this.debtValue = totalAmount - (paymentAmount + discount + paymentScoreAmount);
+    let totalAmount = Number(this.formData.get('tongTien')?.value);
+    let paymentAmount = Number(this.formData.get('daTra')?.value);
+    let discount = Number(this.formData.get('discount')?.value);
+    let paymentScoreAmount = Number(this.formData.get('paymentScoreAmount')?.value);
+    this.debtValue = Number(totalAmount - (paymentAmount + discount + paymentScoreAmount));
     this.debtLabel = this.debtValue < 0 ? 'Tiền thừa' : 'Còn nợ';
-    return Math.abs(this.debtValue);
+    return this.debtValue < 0 ? -this.debtValue : this.debtValue;
   }
 
   getDisplayedColumns() {
@@ -477,9 +482,9 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     return displayedColumns;
   }
 
-  async onLockNote(){
+  async onLockNote() {
     let locked = this.formData.get('locked')?.value;
-    const res = locked ? await this._service.unlock({id : this.formData.get('id')?.value}) : await this._service.lock({id : this.formData.get('id')?.value});
+    const res = locked ? await this._service.unlock({ id: this.formData.get('id')?.value }) : await this._service.lock({ id: this.formData.get('id')?.value });
     if (res && res.status == STATUS_API.SUCCESS) {
       this.formData.controls['locked'].setValue(res.data.locked);
       this.notification.success(MESSAGE.SUCCESS, this.formData.get('locked')?.value ? "Phiếu đã được khóa" : "Phiếu đã được mở");
@@ -552,34 +557,34 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   }
 
   //ck quy ra tien or %
-  onDiscountChange(type: any){
+  onDiscountChange(type: any) {
     let totalAmount = this.formData.get('tongTien')?.value;
-      let discount = this.formData.get('discount')?.value;
-      let discountWithRatio = this.formData.get('discountWithRatio')?.value;
-      let paymentScoreAmount = this.formData.get('paymentScoreAmount')?.value;
-     if(type='tien'){
-      this.formData.controls['discountWithRatio'].setValue(totalAmount > 0.5 ? (discount/ totalAmount) * 100 : 0);
-     }else{
-      this.formData.controls['discount'].setValue((discountWithRatio /100) * totalAmount);
-     }
-     discount = this.formData.get('discount')?.value;
-     this.formData.controls['daTra'].setValue(totalAmount - discount - paymentScoreAmount);
-     this.getDebtAmount();
+    let discount = this.formData.get('discount')?.value;
+    let discountWithRatio = this.formData.get('discountWithRatio')?.value;
+    let paymentScoreAmount = this.formData.get('paymentScoreAmount')?.value;
+    if (type = 'tien') {
+      this.formData.controls['discountWithRatio'].setValue(totalAmount > 0.5 ? (discount / totalAmount) * 100 : 0);
+    } else {
+      this.formData.controls['discount'].setValue((discountWithRatio / 100) * totalAmount);
+    }
+    discount = this.formData.get('discount')?.value;
+    this.formData.controls['daTra'].setValue(totalAmount - discount - paymentScoreAmount);
+    this.getDebtAmount();
   }
 
-  onReturnListing(){
+  onReturnListing() {
     this.router.navigate(['/management/note-management/list']);
   }
 
   async openAddCustomerDialog() {
     const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
-      data: {isMinimized : true},
+      data: { isMinimized: true },
       width: '70%',
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-       this.formData.controls['khachHang'].setValue(result);
-       this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
+        this.formData.controls['khachHang'].setValue(result);
+        this.formData.controls['khachHangMaKhachHang'].setValue(result.id);
       }
     });
   }
@@ -591,12 +596,12 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-       this.formData.controls['bacSyMaBacSy'].setValue(result.id);
-       this.bacSiesService.searchList({dataDelete: false, maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listBacSys = res.data;
-        }
-      });
+        this.formData.controls['bacSyMaBacSy'].setValue(result.id);
+        this.bacSiesService.searchList({ dataDelete: false, maNhaThuoc: this.getMaNhaThuoc() }).then((res) => {
+          if (res?.status == STATUS_API.SUCCESS) {
+            this.listBacSys = res.data;
+          }
+        });
       }
     });
   }
@@ -609,28 +614,49 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
         this.drugDefault = result;
-        this.onDrugChange({id: result.id});
+        this.onDrugChange({ id: result.id });
       }
     });
   }
-  
-  async openTransaction(){
-    if(this.formData.get('khachHangMaKhachHang')?.value > 0){
+
+  async openTransaction() {
+    if (this.formData.get('khachHangMaKhachHang')?.value > 0) {
       var data = {
-        id : this.formData.get('khachHang')?.value.id,
+        id: this.formData.get('khachHang')?.value.id,
         name: this.formData.get('khachHang')?.value.tenKhachHang,
-        type : 'xuất'
+        type: 'xuất'
       };
       const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
         data: data,
         width: '90%',
       });
-    }else{
+    } else {
       this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn khách hàng');
     }
-    
+
   }
 
+  async getDataUpdate(data: any, chiTiets : any[]) {
+    this.formData.patchValue(data);
+    this.dataTable = chiTiets;
+    this.dataTable.filter(x => x.id > 0).forEach(x => {
+      x.donViTinhs = x.thuocs.listDonViTinhs;
+      x.tonHT = x.thuocs.inventory ? x.thuocs.inventory.lastValue : 0;
+      x.ton = x.tonHT;
+      x.heSo = x.thuocs.heSo;
+      x.donViXuatLeMaDonViTinh = x.thuocs.donViXuatLeMaDonViTinh;
+      x.donViThuNguyenMaDonViTinh = x.thuocs.donViThuNguyenMaDonViTinh;
+      x.maThuoc = x.maThuocText;
+      x.tenThuoc = x.tenThuocText;
+      x.giaBanLe = x.thuocs.giaBanLe;
+      x.giaBanBuon = x.thuocs.giaBanBuon;
+      if (x.donViTinhMaDonViTinh == x.donViThuNguyenMaDonViTinh) {
+        x.tonHT = x.ton / x.heSo;
+      }
+      this.getItemAmount(x);
+    });
+    this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
+  }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
