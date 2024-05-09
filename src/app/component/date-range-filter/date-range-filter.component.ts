@@ -19,6 +19,7 @@ export class DateRangeFilterComponent implements OnInit {
   @Input() filterType: number = 0;
   @Input() fromDateControl: string = 'fromDate';
   @Input() toDateControl: string = 'toDate';
+  @Input() isToday: boolean = false;
 
   @Output() filterTypeChange = new EventEmitter<object>();
   @Output() fromDateChange = new EventEmitter<object>();
@@ -83,8 +84,11 @@ export class DateRangeFilterComponent implements OnInit {
   }
 
   initDateRanges() {
-    let toDate = moment().utc().startOf('day').toDate();
-    let fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
+    let toDate = moment().utcOffset(420).endOf('day').toDate();
+    let fromDate =
+      this.isToday
+        ? moment().utcOffset(420).startOf('day').toDate()
+        : new Date(toDate.getFullYear(), toDate.getMonth(), 1);
 
     this.dateForm = new FormGroup({
       pickerFromDate: new FormControl(fromDate),

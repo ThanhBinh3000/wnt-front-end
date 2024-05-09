@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import {PhieuDichVuService} from "../../../services/medical/phieu-dich-vu.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {MatSort} from "@angular/material/sort";
-import {LOAI_SAN_PHAM, LOAI_THU_CHI} from "../../../constants/config";
+import {DATE_RANGE, LOAI_SAN_PHAM, LOAI_THU_CHI} from "../../../constants/config";
 import {SETTING} from "../../../constants/setting";
 import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
 import {STATUS_API} from "../../../constants/message";
@@ -209,4 +209,5 @@ export class ServiceNoteWaitListComponent extends BaseComponent implements OnIni
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
+  protected readonly DATE_RANGE = DATE_RANGE;
 }

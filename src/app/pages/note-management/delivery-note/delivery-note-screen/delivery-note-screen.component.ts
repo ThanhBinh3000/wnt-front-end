@@ -31,7 +31,7 @@ import { TransactionDetailByObjectDialogComponent } from '../../../transaction/t
 export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
 
-  listBacSys: any[] = [];
+  listBacSys : any[] = [];
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
