@@ -2,64 +2,54 @@
   <div class="col-md-3">
     <form [formGroup]="formData">
       <div class="sidebar-bg">
+        <fieldset>
+          <label>Tìm theo</label>
+          <input formControlName="noteName" (keyup.enter)="searchPage()" class="form-control" type="text" id="searchTen"
+            name="searchTen" placeholder="Tìm đơn mẫu theo tên hoặc mã vạch..." />
+        </fieldset>
         <fieldset class="mb-3">
-          <div class="row">
-            <div class="col-md-3">
-              <label>Tìm theo</label>
-            </div>
-            <div class="col-md-9">
-              <input formControlName="noteName" (keyup.enter)="searchPage()" class="form-control" type="text"
-                id="searchTen" name="searchTen" placeholder="Tìm đơn mẫu theo tên hoặc mã vạch..." />
-            </div>
+          <div>
+            <label>Bác sỹ</label>
+          </div>
+          <div>
+            <ng-select [items]="listBacSy$ | async" [typeahead]="searchBacSyTerm$" [minTermLength]="2"
+              [trackByFn]="trackByFn" formControlName="doctorId" appendTo="body" appearance="outline"
+              bindLabel="tenBacSy" bindValue="id" placeholder="Chọn hoặc gõ vào để tìm..."
+              notFoundText="Không tìm thấy mục nào" typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+              (change)="searchBacSyTerm$.next('')">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.tenBacSy }}</span>
+              </ng-template>
+            </ng-select>
           </div>
         </fieldset>
         <fieldset class="mb-3">
-          <div class="row">
-            <div class="col-md-3">
-              <label>Bác sỹ</label>
-            </div>
-            <div class="col-md-9">
-              <ng-select [items]="listBacSy$ | async" [typeahead]="searchBacSyTerm$" [minTermLength]="2"
-                [trackByFn]="trackByFn" formControlName="doctorId" appendTo="body" appearance="outline"
-                bindLabel="tenBacSy" bindValue="id" placeholder="Chọn hoặc gõ vào để tìm..."
-                notFoundText="Không tìm thấy mục nào" typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
-                (change)="searchBacSyTerm$.next('')">
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <span [ngOptionHighlight]="search">{{ item.tenBacSy }}</span>
-                </ng-template>
-              </ng-select>
-            </div>
+          <div>
+            <label>Bệnh nhân</label>
           </div>
-        </fieldset>
-        <fieldset class="mb-3">
-          <div class="row">
-            <div class="col-md-3">
-              <label>Bệnh nhân</label>
-            </div>
-            <div class="col-md-9">
-              <ng-select [items]="listKhachHang$ | async" [typeahead]="searchKhachHangTerm$" [minTermLength]="2"
-                [trackByFn]="trackByFn" formControlName="patientId" appendTo="body" appearance="outline"
-                bindLabel="tenKhachHang" placeholder="Nhập mã, mã vạch hoặc tên..."
-                notFoundText="Không tìm thấy mục nào" typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
-                (change)="searchKhachHangTerm$.next('')">
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
-                </ng-template>
-              </ng-select>
-            </div>
+          <div>
+            <ng-select [items]="listKhachHang$ | async" [typeahead]="searchKhachHangTerm$" [minTermLength]="2"
+              [trackByFn]="trackByFn" formControlName="patientId" appendTo="body" appearance="outline"
+              bindLabel="tenKhachHang" bindValue="id" placeholder="Nhập mã, mã vạch hoặc tên..."
+              notFoundText="Không tìm thấy mục nào" typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+              (change)="searchKhachHangTerm$.next('')">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+              </ng-template>
+            </ng-select>
           </div>
         </fieldset>
 
         <fieldset class="baocao-filter mb-3">
-          <app-date-range-filter [filterType]="0" (filterTypeChange)="changeFilterType($event)"
+          <app-date-range-filter [filterType]="1" (filterTypeChange)="changeFilterType($event)"
             (fromDateChange)="changeFromDate($event)" (toDateChange)="changeToDate($event)"></app-date-range-filter>
           <button type="button" class="btn btn-primary w-100" (click)="searchPage()">Xem</button>
         </fieldset>
 
         <fieldset>
           <span class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-            <span type="button" class="btn btn-primary mt-3 w-50">Xuất excel</span>
-            <a type="button" href="/management/sample-note/sample-note-add-edit" class="btn btn-primary mt-3 w-50">Thêm
+            <span type="button" class="btn btn-primary w-50">Xuất excel</span>
+            <a type="button" href="/management/sample-note/sample-note-add-edit" class="btn btn-primary w-50">Thêm
               mới</a>
           </span>
         </fieldset>
@@ -76,7 +66,7 @@
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef> #</th>
           <td mat-cell *matCellDef="let data; index as i;">
-            <a>
+            <a href="/management/sample-note/sample-note-detail/{{data.id}}">
               {{ (page - 1) * pageSize + i + 1 }}
             </a>
           </td>
@@ -106,12 +96,14 @@
 
         <ng-container matColumnDef="doctor">
           <th mat-header-cell *matHeaderCellDef> B.S kê đơn SĐT</th>
-          <td mat-cell *matCellDef="let data"> <a (click)="openDoctorDetailDialog(data.doctorId)">{{ data.doctorName }} <br> {{data.doctorPhoneNumber}}</a></td>
+          <td mat-cell *matCellDef="let data"> <a (click)="openDoctorDetailDialog(data.doctorId)">{{ data.doctorName }}
+              <br> {{data.doctorPhoneNumber}}</a></td>
         </ng-container>
 
         <ng-container matColumnDef="customer">
           <th mat-header-cell *matHeaderCellDef> Bệnh nhân SĐT</th>
-          <td mat-cell *matCellDef="let data"> <a (click)="openCustomerDetailDialog(data.patientId)">{{ data.patientName }} <br> {{data.patientPhoneNumber}}</a></td>
+          <td mat-cell *matCellDef="let data"> <a (click)="openCustomerDetailDialog(data.patientId)">{{ data.patientName
+              }} <br> {{data.patientPhoneNumber}}</a></td>
         </ng-container>
 
         <ng-container matColumnDef="slThuoc">
@@ -127,7 +119,23 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Thao tác</th>
           <td mat-cell *matCellDef="let data">
+            <div class="baocao-actions baocao-actions-row">
+              <div class="baocao-actions-item">
+                <a href="/management/sample-note/sample-note-add-edit/{{data.id}}"
+                  class="btn btn-sm btn-primary flex-grow-1" title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
+                <a ng-if="permittedFields.SampleNote_Delete" href="javascript:;"
+                  class="btn btn-sm btn-danger flex-grow-1"
+                  (click)="delete('Bạn có chắc chắn muốn đơn liều mẫu: ' + data.noteName + ' ?', data.id)"
+                  title="Xóa"><i class="fa-regular fa-trash"></i></a>
+                <a href="" class="btn btn-sm btn-primary flex-grow-1" title="Copy"><i
+                    class="fa-regular fa-copy"></i></a>
+              </div>
+              <div class="baocao-actions-item">
+                <div class="btn-group flex-grow-1">
 
+                </div>
+              </div>
+            </div>
           </td>
         </ng-container>
 

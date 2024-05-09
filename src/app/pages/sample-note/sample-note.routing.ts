@@ -4,6 +4,7 @@ import { AuthGuard } from "../../guard/auth.guard";
 import { SampleNoteComponent } from './sample-note.component';
 import { SampleNoteListComponent } from './sample-note-list/sample-note-list.component';
 import { SampleNoteAddEditComponent } from './sample-note-add-edit/sample-note-add-edit.component';
+import { SampleNoteDetailComponent } from './sample-note-detail/sample-note-detail.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,6 +23,16 @@ const routes: Routes = [
       {
         path: 'sample-note-add-edit',
         component: SampleNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'sample-note-add-edit/:id',
+        component: SampleNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'sample-note-detail/:id',
+        component: SampleNoteDetailComponent,
         // canActivate: [AuthGuard],
       },
     ],
