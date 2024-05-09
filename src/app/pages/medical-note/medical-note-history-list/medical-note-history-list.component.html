@@ -1,0 +1,329 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar-bg">
+            <div class="mb-3">
+                <label>Nhóm bệnh nhân</label>
+                <select class="form-control" ng-model="filterModel.customerGroupId">
+                    <option value="0">Tất cả</option>
+                    <option>tên nhóm</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Bệnh nhân</label>
+                <div>
+                    <input class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Chẩn đoán bệnh</label>
+                <div>
+                    <input class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Loại phiếu</label>
+                <select class="form-control mb-0">
+                    <option value="-1" selected>Tất cả</option>
+                    <option value="0">Phiếu khám</option>
+                    <option value="1">Phiếu dịch vụ</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Loại ngày</label>
+                <select class="form-control">
+                    <option value="0" selected>Tất cả</option>
+                    <option value="1">Ngày khám</option>
+                    <option value="2">Ngày tái khám</option>
+                </select>
+            </div>
+            <div class="input-daterange input-group ng-scope mb-3" id="datepicker">
+                <div class="input-group">
+                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="from"
+                        id="reportFromDate" placeholder="Từ ngày.." ng-model="reportFromDate">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary"
+                            ng-click="onFromDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                class="fa-regular fa-calendar-days"></i></button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="form-control ng-untouched ng-valid ng-dirty ng-valid-parse" name="to"
+                        id="reportToDate" placeholder="Đến ngày.." ng-model="reportToDate">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary"
+                            ng-click="onToDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                class="fa-regular fa-calendar-days"></i></button>
+                    </span>
+                </div>
+            </div>
+            <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
+                class="btn btn-primary w-100"
+                ng-click="onDisplayData(true); $event.preventDefault(); $event.stopPropagation();">
+            <span type="button" class="btn btn-primary mt-3 w-100">Xuất Excel</span>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="baocao-container box-group-white">
+            <h2 class="mb-3 d-block text-center"><b>{{title}}</b></h2>
+            <table class="table table-striped table-bordered table-hover tr-ng-grid">
+                <thead>
+                    <tr>
+                        <th display-name="STT">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> STT </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Số phiếu">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Số phiếu
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Loại phiếu">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Loại phiếu
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Ngày khám">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Ngày khám
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Tên bệnh nhân">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Tên bệnh nhân
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Tuổi">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Tuổi
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="SĐT">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> SĐT
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Địa chỉ">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Địa chỉ
+                                        <div class="tr-ng-sort" title="Sort">
+                                            <div
+                                                class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Bác sỹ khám">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Bác sỹ khám
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Khám lâm sàng, triệu chứng">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Khám lâm sàng, triệu chứng
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Chẩn đoán bệnh">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Chẩn đoán bệnh
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Kết luận và hướng điều trị">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Kết luận và hướng điều trị
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th display-name="Ngày tái khám">
+                            <div class="tr-ng-column-header tr-ng-cell">
+                                <div>
+                                    <div class="tr-ng-title"> Ngày tái khám
+                                    </div>
+                                </div>
+                            </div>
+                        </th>                      
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>1</div>
+                        </td>
+                        <td>
+                            <div>180</div>
+                        </td>
+                        <td>
+                            <div>Phiếu khám</div>
+                        </td>
+                        <td>
+                            <div>24/03/2024</div>
+                        </td>
+                        <td>
+                            <div>vũ thị hồng - 1973</div>
+                        </td>
+                        <td>
+                            <div>51</div>
+                        </td>
+                        <td>
+                            <div>098478501</div>
+                        </td>
+                        <td>
+                            <div>Thượng Điện - Vinh Quang</div>
+                        </td>
+                        <td>
+                            <div>Bác sỹ Tỉnh</div>
+                        </td>
+                        <td>
+                            <div></div>
+                        </td>
+                        <td>
+                            <div>Viêm dạ dày - ruột và viêm đại tràng do nhiễm trùng và không xác định được nguyên nhân-</div>
+                        </td>
+                        <td>
+                            <div></div>
+                        </td>
+                        <td>
+                            <div></div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr id="footerId">
+                        <td align="center" is-customized="true" colspan="13">
+                            <div class="tr-ng-grid-footer form-inline">
+                                <div>
+                                    <div>
+                                        <span class="form-group pull-left page-size">
+                                            <select id="ddlPageSize" class="form-control">
+                                                <option label="10" value="number:10" selected="selected">10</option>
+                                                <option label="20" value="number:20">20</option>
+                                                <option label="50" value="number:50">50</option>
+                                                <option label="100" value="number:100">100</option>
+                                                <option label="--All--" value="number:9000">--All--</option>
+                                            </select>
+                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
+                                        </span>
+                                        <span class="pull-right form-group" style="height:40px">
+                                            <ul class="pagination">
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang đầu"> <span>«</span> </a>
+                                                </li>
+                                                <li class="disabled">
+                                                    <a href="javascript:void(0);" title="Trang trước"> <span>‹</span>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a href="javascript:void(0);" title="Trang">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">6</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">7</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">8</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">9</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang">10</a>
+                                                <li class="disabled"><span>...</span>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang tiếp"> <span>›</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" title="Trang cuối"> <span>»</span>
+                                                    </a>
+                                                </li>
+                                                <li class="disabled" style="white-space: nowrap;">
+                                                    <span class="ng-hide">Không có dữ liệu</span>
+                                                    <span> Tổng: 3182 bản ghi </span>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- model.length <= 0 -->
+            <div>
+                <p class="text-danger text-center mt-3">Không tìm thấy phiếu nào</p>
+            </div>
+        </div>
+    </div>
+</div>
