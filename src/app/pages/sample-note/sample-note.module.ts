@@ -8,6 +8,7 @@ import { SampleNoteAddEditComponent } from './sample-note-add-edit/sample-note-a
 import { CustomerModule } from '../customer/customer.module';
 import { DoctorModule } from '../doctor/doctor.module';
 import { ComponentsModule } from '../../component/base/components.module';
+import { SampleNoteDetailComponent } from './sample-note-detail/sample-note-detail.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ComponentsModule } from '../../component/base/components.module';
     SampleNoteComponent,
     SampleNoteListComponent,
     SampleNoteAddEditComponent,
+    SampleNoteDetailComponent
   ],
   imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule, ComponentsModule],
   exports: [],
