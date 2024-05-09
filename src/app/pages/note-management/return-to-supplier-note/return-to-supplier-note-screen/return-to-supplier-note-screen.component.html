@@ -43,21 +43,41 @@
                                     </label>
                                     <div class="w-100">
                                         <div class="control-group">
-                                            <ng-select appendTo="body" formControlName="nhaCungCapMaNhaCungCap"
-                                                appearance="outline" [items]="listNhaCungCaps" bindLabel="tenNhaCungCap"
-                                                bindValue="id" placeholder="Tra cứu theo tên..."
-                                                notFoundText="Không tìm thấy mục nào" refresh-delay="500"
-                                                (search)="searchPageNhaCungCap($event)">
-                                                <ng-template ng-label-tmp let-item="item">
-                                                  <span >{{item.tenNhaCungCap}}</span>
-                                                </ng-template>
-                                                <ng-template ng-option-tmp let-item="item" let-index="index"
-                                                    let-search="searchTerm">
-                                                    <span
-                                                        [ngOptionHighlight]="search">{{item.tenNhaCungCap}}-{{item.soDienThoai}}-
-                                                        {{item.diaChi}}</span>
-                                                </ng-template>
-                                            </ng-select>
+                                            <div class="input-group">
+                                                <div class="flex-grow-1 ip-position ng-isolate-scope">
+                                                    <ng-select appendTo="body"
+                                                        formControlName="nhaCungCapMaNhaCungCap"
+                                                        appendTo="body"
+                                                        appearance="outline" 
+                                                        [items]="listNhaCungCap$ | async" 
+                                                        [typeahead]="searchNhaCungCapTerm$"
+                                                        bindLabel="tenNhaCungCap"
+                                                        bindValue="id" 
+                                                        [minTermLength]="2"
+                                                        appendTo="body" 
+                                                        appearance="outline"
+                                                        placeholder="Tra cứu theo tên, mã, mã vạch..."
+                                                        notFoundText="Không tìm thấy mục nào" (change)="searchNhaCungCapTerm$.next(''); onSupplierChange($event)">
+                                                        <ng-template ng-label-tmp let-item="item">
+                                                            <span *ngIf="item.tenNhaCungCap">{{item.tenNhaCungCap}}</span>
+                                                            <span *ngIf="!item.tenNhaCungCap">{{formData.value?.nhaCungCap.tenNhaCungCap}}</span>
+                                                        </ng-template>
+                                                        <ng-template ng-option-tmp let-item="item" let-index="index"
+                                                            let-search="searchTerm">
+                                                            <span
+                                                                [ngOptionHighlight]="search">{{item.tenNhaCungCap}}-{{item.soDienThoai}}-
+                                                                {{item.diaChi}}</span>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </div>
+            
+                                                <div class="input-group-btn">
+                                                    <input type="button" value="LS"
+                                                        title="Chi tiết lịch sử giao dịch trả hàng nhà cung cấp"
+                                                        class="btn btn-primary btn-not-radius"
+                                                        (click)="openTransaction()">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -99,25 +119,30 @@
                             <div>
                                 <div class="w-100">
                                     <div class="control-group">
-                                        <ng-select
-                                            #selectDrug
-                                            appendTo="body"
-                                            [(ngModel)]="data.thuocThuocId"
-                                            appearance="outline" [items]="listThuocs" bindLabel="tenThuoc" bindValue="id"
-                                            placeholder="Tra cứu theo tên, mã, mã vạch..."
-                                            notFoundText="Không tìm thấy mục nào"
-                                            (search)="searchPageDrug($event)"
-                                            (change)="onDrugChange($event)">
-                                            <ng-template ng-label-tmp let-item="item">
-                                                <span >{{item.maThuoc}}-{{item.tenThuoc}}</span>
-                                            </ng-template>
-                                            <ng-template ng-option-tmp let-item="item" let-index="index"
-                                                let-search="searchTerm">
-                                                <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
-                                                    {{item.tenDonViTinhXuatLe}} - Gián bán : {{item.giaNhap
-                                                    |number}}</span>
-                                            </ng-template>
-                                        </ng-select>
+                                        <ng-select #selectDrug 
+                                        class="w-100"
+                                        appendTo="body" 
+                                        [(ngModel)]="data.thuocThuocId"
+                                        appearance="outline" 
+                                        [items]="listThuoc$ | async" 
+                                        [typeahead]="searchThuocTerm$"
+                                        bindLabel="tenThuoc"
+                                        bindValue="id" 
+                                        [minTermLength]="2"
+                                        appendTo="body" 
+                                        appearance="outline"
+                                        placeholder="Tra cứu theo tên, mã, mã vạch..."
+                                        notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span *ngIf="item.maThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-index="index"
+                                            let-search="searchTerm">
+                                            <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
+                                                {{item.tenDonViTinhXuatLe}} - Gián : {{item.giaNhap
+                                                |number}}</span>
+                                        </ng-template>
+                                    </ng-select>
                                     </div>
                                 </div>
                             </div>

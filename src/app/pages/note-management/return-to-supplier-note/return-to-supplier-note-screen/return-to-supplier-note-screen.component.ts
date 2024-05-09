@@ -10,6 +10,8 @@ import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug
 import { DatePipe } from '@angular/common';
 import { PaymentTypeService } from '../../../../services/categories/payment-type.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'return-to-supplier-note-screen',
@@ -19,8 +21,10 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 export class ReturnToSupplierNoteScreenComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu trả lại hàng trả cung cấp";
 
-  listNhaCungCaps: any[] = [];
-  listThuocs: any[] = [];
+  listThuoc$ = new Observable<any[]>;
+  listNhaCungCap$ = new Observable<any[]>;
+  searchThuocTerm$ = new Subject<string>();
+  searchNhaCungCapTerm$ = new Subject<string>();
   maPhieuXuat: number = 0;
   phieuXuat: any = {};
   listPaymentType: any[] = [];
@@ -73,7 +77,8 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
       vat: [0],
       createdByUserText : [''],
       created : [],
-      recordStatusId : [0]
+      recordStatusId : [0],
+      nhaCungCap: [{}]
     });
   }
   @ViewChildren('pickerNgayXuat') pickerNgayXuat!: Date;
@@ -85,7 +90,6 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     if (this.idUrl) {
       let data = await this.detail(this.idUrl);
       this.formData.patchValue(data);
-      this.listNhaCungCaps = [{ id: data.nhaCungCapMaNhaCungCap, tenNhaCungCap: data.nhaCungCapMaNhaCungCapText }];
       this.dataTable =data.chiTiets;
       this.dataTable.unshift({ isEditingItem: true });
       this.dataTable.filter(x=>x.id > 0).forEach(x=>{
@@ -101,6 +105,8 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
         }
         this.getItemAmount(x);
       });
+      console.log(data);
+      this.onSupplierChange({id: data.nhaCungCapMaNhaCungCap, tenNhaCungCap : data.nhaCungCapMaNhaCungCapText})
     }
     else {
       this.dataTable.push({ isEditingItem: true });
@@ -116,6 +122,7 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
         }
       });
     }
+    this.getDataFilter();
   }
 
   ngAfterViewInit() {
@@ -136,37 +143,53 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     return this.authService.getNhaThuoc().maNhaThuoc;
   }
 
-  async searchPageNhaCungCap($event: any) {
-    if ($event.term.length >= 2) {
-      let body = { textSearch: $event.term, paggingReq: {}, dataDelete: false };
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.nhaCungCapService.searchFilterPageNhaCungCap(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listNhaCungCaps = res.data.content;
+  getDataFilter() {
+    this.listThuoc$ = this.searchThuocTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let bodyThuoc = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
+            typeService: 0
+          };
+          return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
         }
-      });
-    }
-  }
-
-  async searchPageDrug($event: any) {
-    if ($event.term.length >= 2) {
-      let body = {
-        textSearch: $event.term, paggingReq: {}, dataDelete: false,
-        nhaThuocMaNhaThuoc: this.getMaNhaThuoc(), typeService: LOAI_SAN_PHAM.THUOC
-      };
-      body.paggingReq = {
-        limit: 25,
-        page: 0
-      }
-      this.thuocService.searchPage(body).then((res) => {
-        if (res?.status == STATUS_API.SUCCESS) {
-          this.listThuocs = res.data.content;
+      }),
+      catchError(() => of([]))
+    );
+    // Search khách hàng
+    this.listNhaCungCap$ = this.searchNhaCungCapTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let bodyNCC = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.getMaNhaThuoc(),
+          };
+          return from(this.nhaCungCapService.searchPage(bodyNCC).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
         }
-      });
-    }
+      }),
+      catchError(() => of([]))
+    );
   }
 
   async onDrugChange(data: any) {
@@ -251,6 +274,12 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
     this.getItemAmount(item);
   }
 
+  onSupplierChange($event: any) {
+    if ($event && $event.id > 0) {
+      this.formData.controls['nhaCungCap'].setValue($event);
+    }
+  }
+
   async onDelete(item: any) {
     var index = this.dataTable.indexOf(item);
     if (index >= 0) {
@@ -327,6 +356,23 @@ export class ReturnToSupplierNoteScreenComponent extends BaseComponent implement
   }
 
   async onLockNote(){
+
+  }
+
+  async openTransaction() {
+    if (this.formData.get('nhaCungCapMaNhaCungCap')?.value > 0) {
+      var data = {
+        id: this.formData.get('nhaCungCap')?.value.id,
+        name: this.formData.get('nhaCungCap')?.value.tenNhaCungCap,
+        typeId : LOAI_PHIEU.PHIEU_TRA_LAI_NCC
+      };
+      const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
+        data: data,
+        width: '90%',
+      });
+    } else {
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn nhà cung cấp');
+    }
 
   }
 
