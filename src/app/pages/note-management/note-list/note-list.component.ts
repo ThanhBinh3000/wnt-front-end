@@ -100,9 +100,6 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     private nhaCungCapService: NhaCungCapService
   ) {
     super(injector, nhaThuocsService);
-    this.route.data.subscribe((data: any) => {
-      this.isDeleted = data.isDeleted;
-    });
     this.formData = this.fb.group({
       textSearch: [''],
       searchType: [null],
@@ -126,8 +123,9 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
   }
 
   ngOnInit() {
-    this.title = this.isDeleted ? "Khôi phục các chứng từ bị xóa" : "Tra cứu phiếu Nhập/Xuất";
-    this.titleService.setTitle(this.title);
+    this.route.data.subscribe((data: any) => {
+      this.isDeleted = data.isDeleted;
+    });
     this.route.queryParams.subscribe(params => {
       const noteTypeId = params['noteTypeId'];
       if(noteTypeId) {
@@ -136,6 +134,8 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
         });
       }
     });
+    this.title = this.isDeleted ? "Khôi phục các chứng từ bị xóa" : "Tra cứu phiếu Nhập/Xuất";
+    this.titleService.setTitle(this.title);
     this.getDataFilter();
   }
 

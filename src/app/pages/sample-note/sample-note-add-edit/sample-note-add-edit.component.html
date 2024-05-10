@@ -1,6 +1,6 @@
 <div>
-    <form role="form" name="SampleNoteForm">
-        <div class="row">
+    <div class="row">
+        <form [formGroup]="formData">
             <div class="col-md-4">
                 <div class="sidebar-bg">
                     <h4 class="mt-0"><b>{{title}}</b></h4>
@@ -8,66 +8,64 @@
                     <div class="form-inline-flex mb-3">
                         <label class="control-label" for="NoteName">Ngày</label>
                         <div class="flex-grow-1">
-                            <div class="clickable-text daterange-picker"><input type="text"
-                                    disabled="{{action == 'view'}}" name="noteDate" id="note-date-id"
-                                    ng-model="SampleNote.NoteDate"><span></span></div>
+                            <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1"
+                                    formControlName="date" type="text" class="form-control"
+                                    (dateChange)="onDateChange($event.value)" [matDatepicker]="pickerNoteDate"
+                                    (click)="pickerNoteDate.open()">
+                                <mat-datepicker #pickerNoteDate="matDatepicker" disabled="false"></mat-datepicker><span
+                                    class="text-link" (click)="pickerNoteDate.open()">{{formData.value.noteDate |
+                                    appDate}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="TypeId">Loại đơn</label>
-                        <div *ngIf="currentDrugStoreCode == '3214'" class="flex-grow-1">
-                            <select class="form-control mb-0" ng-model="SampleNote.TypeSampleNote" required id="TypeId"
-                                name="TypeId" disabled="{{action == 'view'}}">
-                                <option value="0">test</option>
-                            </select>
+                        <div *ngIf="getMaNhaThuoc() == '3214'" class="flex-grow-1">
+                            <ng-select appendTo="body" formControlName="typeSampleNote">
+                                <ng-option *ngFor="let item of listTypeSample3214" [value]="item.id">{{item.label}}
+                                </ng-option>
+                            </ng-select>
                         </div>
-                        <div *ngIf="currentDrugStoreCode != '3214'" class="flex-grow-1">
-                            <select class="form-control mb-0" ng-model="SampleNote.TypeId" required id="TypeId"
-                                name="TypeId" disabled="{{action == 'view'}}">
-                                <option value="0">test</option>
-                            </select>
-                            <span class="text-danger"
-                                ng-iff="submited|| (SampleNoteForm.TypeId.$touched && SampleNoteForm.TypeId.$invalid)">
-                                <span
-                                    ng-if="SampleNoteForm.TypeId.$error.required && (SampleNote.TypeId == '' ||  SampleNote.TypeId == null) && isConnect == 1">Chọn
-                                    loại đơn</span>
-                            </span>
+                        <div *ngIf="getMaNhaThuoc() != '3214'" class="flex-grow-1">
+                            <ng-select appendTo="body" formControlName="typeId">
+                                <ng-option *ngFor="let item of listTypeSample" [value]="item.id">{{item.label}}
+                                </ng-option>
+                            </ng-select>
                         </div>
 
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="FormOfTreatment">HT điều trị</label>
                         <div class="flex-grow-1">
-                            <select class="form-control mb-0" ng-model="SampleNote.FormOfTreatment" required
-                                id="FormOfTreatment" name="FormOfTreatment" disabled="{{action == 'view'}}">
-                                <option value="0">test</option>
-                            </select>
-                            <span class="text-danger"
-                                ng-if="submited|| (SampleNoteForm.FormOfTreatment.$touched && SampleNoteForm.FormOfTreatment.$invalid)">
-                                <span
-                                    ng-if="SampleNoteForm.FormOfTreatment.$error.required && (SampleNote.FormOfTreatment == '' || SampleNote.FormOfTreatment == null ) && isConnect == 1">Chọn
-                                    hình thức điều trị</span>
-                            </span>
+                            <ng-select appendTo="body" formControlName="formOfTreatment">
+                                <ng-option *ngFor="let item of listTypeFormOfTreatment" [value]="item.id">{{item.label}}
+                                </ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="NoteName">Tên đơn<span class="text-danger">*</span></label>
                         <div class="flex-grow-1">
-                            <input class="form-control mb-0" disabled="{{action == 'view'}}" required id="NoteName"
-                                name="NoteName" ng-model="SampleNote.NoteName" type="text">
-                            <span class="text-danger"
-                                ng-if="submited|| (SampleNoteForm.NoteName.$touched && SampleNoteForm.NoteName.$invalid)">
-                                <span ng-if="SampleNoteForm.NoteName.$error.required">Nhập tên đơn</span>
+                            <input formControlName="noteName" class="form-control mb-0" required id="NoteName"
+                                name="NoteName" type="text">
+                            <span *ngIf="formData.get('noteName')?.invalid && formData.get('noteName')?.touched">
+                                <span class="text-danger field-validation-error"
+                                    *ngIf="formData.get('noteName')?.errors?.['required']">
+                                    Chưa nhập tên đơn!
+                                </span>
+                                <span class="text-danger field-validation-error"
+                                    *ngIf="formData.get('noteName')?.errors?.['maxlength']">
+                                    Tên đơn không được vượt quá 255 kí tự!
+                                </span>
                             </span>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="Barcode">Mã vạch</label>
                         <div class="flex-grow-1">
-                            <div class="{{action == 'view'?'':'input-group'}}">
-                                <input class="form-control mb-0" disabled="{{action == 'view'}}" maxlength="100"
-                                    ng-model="SampleNote.Barcode" type="text">
-                                <span class="input-group-btn" *ngIf="action == 'create' || action == 'edit'">
+                            <div class="input-group">
+                                <input class="form-control mb-0" maxlength="100" formControlName="barcode" type="text">
+                                <span class="input-group-btn">
                                     <a href="javascript:void(0);" class="btn btn-primary"
                                         ng-click="fnGenbarcode(); $event.preventDefault(); $event.stopPropagation();"><i
                                             class="fa-regular fa-barcode-read"></i></a>
@@ -77,16 +75,17 @@
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="Doctor">Bác sỹ</label>
-                        <div *ngIf="action == 'view'">
-                            <!-- {{SampleNote.Doctor.TenBacSy}} -->
-                        </div>
                         <div class="flex-grow-1">
-                            <div class="input-group" *ngIf="action == 'create' || action == 'edit'">
-                                <input type="text" class="form-control">
+                            <div class="input-group">
+                                <div class="flex-grow-1">
+                                    <ng-select appendTo="body" formControlName="doctorId">
+                                        <ng-option [value]="0">-Mặc định-</ng-option>
+                                        <ng-option *ngFor="let item of listBacSies" [value]="item.id">{{item.tenBacSy}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary"
-                                    (click)="doctorID = 0" data-toggle="modal"
-                                    data-target="#doctor-add-edit-dialog"
+                                    <button class="btn btn-primary" (click)="openDoctorAddEditDialog()"
                                         title="Thêm bác sỹ mới nếu chưa có">
                                         <i class="fa-regular fa-plus"></i>
                                     </button>
@@ -94,76 +93,101 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mb-3" ng-if="SampleNote.DoctorId > 0">
+                    <div class="form-group mb-3" *ngIf="formData.value?.doctorId > 0">
                         <label class="control-label">Số điện thoại</label>
-                        <div class="flex-grow-1"><a ng-click="detailDoctor(SampleNote.Doctor)"></a></div>
+                        <div class="flex-grow-1"><a
+                                (click)="openDoctorDetailDialog(formData.value?.doctorId)">{{getDoctorPhoneNumber(formData.value?.doctorId)}}</a>
+                        </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="Custommer">Bệnh nhân</label>
-                        <div *ngIf="action == 'view'" class="mt-3 col-md-8">
-                            <!-- {{receiverSelectedItem.Name}} -->
-                        </div>
                         <div class="flex-grow-1">
-                            <div class="input-group" *ngIf="action == 'create' || action == 'edit'">
-                                <input type="text" class="form-control">
+                            <div class="input-group">
+                                <div class="flex-grow-1">
+                                    <ng-select [items]="listKhachHang$ | async" [typeahead]="searchKhachHangTerm$"
+                                        [minTermLength]="2" [trackByFn]="trackByFn" formControlName="patientId"
+                                        appendTo="body" appearance="outline" bindLabel="tenKhachHang" bindValue="id"
+                                        placeholder="Nhập mã, mã vạch hoặc tên..." notFoundText="Không tìm thấy mục nào"
+                                        typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                                        (change)="searchKhachHangTerm$.next(''); getPatientDetail($event)">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index"
+                                            let-search="searchTerm">
+                                            <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary" (click)="customerID = 0" data-toggle="modal"
-                                    data-target="#customer-add-edit-dialog" title="Thêm khách hàng mới nếu chưa có">
+                                    <button class="btn btn-primary" (click)="openCustomerAddEditDialog()"
+                                        title="Thêm khách hàng mới nếu chưa có">
                                         <i class="fa-regular fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mb-3" ng-if="receiverSelectedItem !=null">
+                    <div class="form-group mb-3" *ngIf="formData.value?.patientId > 0">
                         <label class="control-label">Số điện thoại</label>
-                        <div class="flex-grow-1"><a ng-click="detailCustomer(SampleNote.Customer)"></a></div>
+                        <div class="flex-grow-1"><a
+                                (click)="openCustomerDetailDialog(formData.value?.patientId)">{{formData.value?.patientPhoneNumber}}</a>
+                        </div>
                     </div>
-                    <div class="form-group mb-3" ng-if="receiverSelectedItem !=null">
+                    <div class="form-group mb-3" *ngIf="formData.value?.patientId > 0">
                         <label class="control-label">Địa chỉ</label>
-                        <div class="flex-grow-1"></div>
+                        <div class="flex-grow-1">{{formData.value?.patientAddress}}</div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label">Chẩn đoán bệnh</label>
                         <div class="flex-grow-1">
-                            <input type="text" class="form-control">
+                            <ng-select [items]="listDiagnose$ | async" [multiple]="true"
+                                [typeahead]="searchDiagnoseTerm$" [minTermLength]="2" formControlName="chanDoanIds"
+                                appendTo="body" appearance="outline" bindLabel="tenChanDoan" bindValue="id"
+                                placeholder="Nhập mã, mã vạch hoặc tên..." notFoundText="Không tìm thấy mục nào"
+                                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                                (change)="searchDiagnoseTerm$.next('')">
+                                <ng-template ng-label-tmp let-clear="clear" let-item="item">
+                                    <span>{{item.maChanDoan}}_{{item.tenChanDoan}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)">×</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                    <span [ngOptionHighlight]="search">{{item.maChanDoan}}_{{item.tenChanDoan}}</span>
+                                </ng-template>
+                            </ng-select>
                         </div>
                     </div>
-                    <div class="form-group mb-3" ng-if=" isConnect == 1">
-                        <label class="control-label" for="Description">Chẩn đoán của B.S</label>
+                    <div class="form-group mb-3">
+                        <label class="control-label" for="Description">Kết luận và HĐT</label>
                         <div class="flex-grow-1">
-                            <textarea class="form-control mb-0" disabled="{{action == 'view'}}"
-                                ng-model="SampleNote.Conclude" maxlength="255" type="text"></textarea>
+                            <textarea class="form-control mb-0" formControlName="conclude" maxlength="255"
+                                type="text"></textarea>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="Description">Lời dặn của B.S</label>
                         <div class="flex-grow-1">
-                            <textarea class="form-control mb-0" disabled="{{action == 'view'}}"
-                                ng-model="SampleNote.Description" maxlength="255" type="text"></textarea>
+                            <textarea class="form-control mb-0" formControlName="doctorComments" maxlength="255"
+                                type="text"></textarea>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label" for="Barcode">Tiền bán</label>
                         <div class="flex-grow-1">
-                            <div ng-class="action == 'view'?'':'input-group'">
-                                <input class="form-control mb-0" disabled="{{action == 'view'}}" maxlength="100"
-                                    ng-model="SampleNote.Amount" type="text" awnum="app-decimal-number">
-                                <span class="input-group-btn" *ngIf="action == 'create' || action == 'edit'">
+                            <div class="input-group">
+                                <input class="form-control mb-0" maxlength="100" formControlName="amount" type="text"
+                                    mask="separator">
+                                <span class="input-group-btn">
                                     <input type="button" value="F" class="btn btn-default"
-                                        title="Ấn vào đây để = Tổng tiền"
-                                        ng-click="onPayFull(); $event.preventDefault(); $event.stopPropagation();" />
+                                        title="Ấn vào đây để bằng tổng tiền" (click)="onPayFull()" />
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center gap-10">
-                        <a href="/SampleNote/List" class="btn btn-default flex-grow-1">Quay lại</a>
+                        <a href="/management/sample-note/sample-note-list" class="btn btn-default flex-grow-1">Quay
+                            lại</a>
                         <input *ngIf="action == 'view'" type="button" ng-click="updateNote(SampleNote.NoteID)" id="0"
                             title="Sửa" value="Sửa" class="btn btn-primary flex-grow-1" />
-                        <input *ngIf="action == 'create'" type="button"
-                            ng-click="fnSave(SampleNoteForm.$valid,'no'); $event.preventDefault(); $event.stopPropagation();"
-                            value="Lưu đơn" class="btn btn-primary flex-grow-1">
+                        <input *ngIf="action == 'create'" type="button" (click)="createUpdate()" value="Lưu đơn"
+                            class="btn btn-primary flex-grow-1">
                         <input *ngIf="action == 'create' && isClinic && isConnect" type="button"
                             ng-click="fnSave(SampleNoteForm.$valid , 'yes'); $event.preventDefault(); $event.stopPropagation();"
                             value="Lưu đơn và LT" class="btn btn-primary flex-grow-1">
@@ -190,133 +214,120 @@
                                 <li><a href="javascript:;" ng-click="onPrintGroupByGroupDrugId(1)">In đơn/liều - A4</a>
                                 </li>
                                 <!-- <li><a href="javascript:;" ng-click="printNoteDrug(2)">In đơn/liều - A5</a></li>
-                                    <li><a href="javascript:;" ng-click="printNoteDrug(1)">In đơn/liều - A4</a></li> -->
+                                        <li><a href="javascript:;" ng-click="printNoteDrug(1)">In đơn/liều - A4</a></li> -->
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-                <div class="box-group-white">
-                    <h2 class="text-center"><b>Danh sách thuốc</b></h2>
-                    <div class="row" *ngIf="action == 'create' || action == 'edit'">
-                        <div class="col-md-12">
-                            <div *ngIf="deviceType != 0" class="input-group">
-                                <div item-search-filter select-changed-callback="onDrugSelectChanged"
-                                    clear-after-selected="true" search-type="5" record-status-id="0"
-                                    show-cam-barcode-scanner="true" inventory-viewable="!isClinic">
-                                </div>
-                            </div>
-                            <div *ngIf="deviceType == 0">
-                                <div item-search-filter select-changed-callback="onDrugSelectChanged"
-                                    clear-after-selected="true" search-type="5" show-cam-barcode-scanner="false"
-                                    record-status-id="0" inventory-viewable="!isClinic">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br *ngIf="action == 'create' || action == 'edit'" />
-                    <table tr-ng-grid="" items="model.items" display-total-items-count="true" locale="en"
-                        class="table table-striped table-bordered table-hover" selection-mode="None"
-                        current-page="setCurrentPage" enable-filtering="false" enable-sorting="false">
-                        <thead>
-                            <tr>
-                                <th width="4%" display-name="#"></th>
-                                <th width="9%" display-name="Mã"></th>
-                                <th width="20%" display-name="Tên"></th>
-                                <th width="12%" display-name="Đơn vị"></th>
-                                <th width="10%" display-name="Số lượng"></th>
-                                <th *ngIf="isClinic && isConnect" width="9%" display-name="Tồn kho"></th>
-                                <th *ngIf="" width="5%"
-                                    display-name="Đợt dùng thuốc"></th>
-                                <th width="15%" display-name="Ghi chú"></th>
-                                <th width="9%" display-name="Giá bán"></th>
-                                <th width="9%" display-name="Tổng tiền"></th>
-                                <th width="4%" display-name=""></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-hide="gridItem.IsDelete">
-                                <td>
-                                    <div>
-                                        <a href=""
-                                            ng-click="onDrugInfoDetails(gridItem.ThuocId); $event.preventDefault(); $event.stopPropagation();">
-                                            <!-- {{gridItem.Order}} -->1
-                                        </a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <!-- {{gridItem.MaThuoc}} -->EGO+13.810
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <!-- {{gridItem.TenThuoc}} -->Miếng dán vết thương Ego (72x19mm)
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control mb-0" disabled="{{action == 'view'}}"
-                                        ng-model="gridItem.DrugUnitID">
-                                        <option value="1">viên</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div>
-                                        <input class="form-control mb-0" disabled="{{action == 'view'}}" required
-                                            name="" ng-model="gridItem.Quantity"
-                                            type="number" />
-                                        <span class="text-danger"
-                                            *ngIf="">
-                                            <span *ngIf="">Nhập số
-                                                lượng</span>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td *ngIf="isClinic && isConnect">
-                                    <div style="text-align:right"
-                                        ng-click="onGetDataDetailLastValueWarehouse(gridItem)">
-                                        <span class="btn btn-link" title="Xem tồn ở các kho">10</span>
-                                    </div>
-                                </td>
-                                <td *ngIf="">
-                                    <span
-                                        ng-click="updateInfoDrugUse($event, gridItem); $event.preventDefault(); $event.stopPropagation();"
-                                        style=""><i
-                                            class="glyphicon glyphicon-calendar"></i></span>
-                                </td>
-                                <td>
-                                    <input id="autocomplete" class="form-control" disabled="{{action == 'view'}}"
-                                        ng-model="gridItem.Comment" list="browsers">
-                                    <datalist id="browsers"></datalist>
-
-                                </td>
-                                <td>
-                                    <div class="number-value">
-                                        <!-- <strong> {{getPrice(gridItem) | number:0}}</strong> -->1,667
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="number-value">
-                                        <!-- <strong> {{getAmount(gridItem) | number:0}}</strong> -->1,667
-                                    </div>
-                                </td>
-                                <td>
-                                    <div *ngIf="action == 'create' || action == 'edit'">
-                                        <a class="btn btn-danger delete-line"
-                                            ng-click="fnRemoveItem(gridItem); $event.preventDefault(); $event.stopPropagation();"
-                                            title="Xóa"><i class="fa-regular fa-xmark"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="text-right mt-3">
-                        <!-- <span><strong class="text-danger">Tổng tiền: {{getTotalAmount() | number:0}}</strong> </span> -->Tổng tiền: 1,667
+        </form>
+        <div class="col-md-8">
+            <div class="box-group-white">
+                <h2 class="text-center"><b>Danh sách thuốc</b></h2>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <ng-select [items]="listThuoc$ | async" [typeahead]="searchThuocTerm$" [minTermLength]="2"
+                            [trackByFn]="trackByFn" appendTo="body" appearance="outline" bindLabel="tenThuoc"
+                            bindValue="id" placeholder="Nhập mã, mã vạch hoặc tên..."
+                            notFoundText="Không tìm thấy mục nào"
+                            typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                            (change)="searchThuocTerm$.next(''); onChangeThuoc($event)">
+                            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                <span [ngOptionHighlight]="search">{{ item.tenThuoc }}</span>
+                            </ng-template>
+                        </ng-select>
                     </div>
                 </div>
 
+                <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid"
+                    [dataSource]="getDataSource()" matSort>
+
+                    <ng-container matColumnDef="checkbox">
+                        <th mat-header-cell *matHeaderCellDef> <input type="checkbox" [(ngModel)]="allChecked"
+                                (ngModelChange)="updateAllChecked()" title="select row">
+                        </th>
+                        <td mat-cell *matCellDef="let data; index as i;">
+                            <input type="checkbox" [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked()"
+                                title="select row">
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="#">
+                        <th mat-header-cell *matHeaderCellDef> #</th>
+                        <td mat-cell *matCellDef="let data; index as i;">
+                            <a (click)="openDetailDialog(data.drugID)">
+                                {{ (page - 1) * pageSize + i + 1 }}
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="maThuoc">
+                        <th mat-header-cell *matHeaderCellDef> Mã thuốc</th>
+                        <td mat-cell *matCellDef="let data">
+                            {{ data.maThuoc }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tenThuoc">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mặt hàng[Mã-Tên]</th>
+                        <td mat-cell *matCellDef="let data">
+                            {{ data.tenThuoc }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="donVi">
+                        <th mat-header-cell *matHeaderCellDef> Đơn vị</th>
+                        <td mat-cell *matCellDef="let data">
+                            <ng-select appendTo="body" [(ngModel)]="data.drugUnitID"
+                                (ngModelChange)="getItemAmount(data)" [clearable]="false">
+                                <ng-option *ngFor="let item of data.listDonViTinhs"
+                                    [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+                            </ng-select>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="soLuong">
+                        <th mat-header-cell *matHeaderCellDef> Số lượng</th>
+                        <td mat-cell *matCellDef="let data">
+                            <input type="text" mask="separator" [(ngModel)]="data.quantity"
+                                (ngModelChange)="getItemAmount(data)"
+                                class="form-control mb-0  mousetrap row-item-quantiy" style="text-align:right;">
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ghiChu">
+                        <th mat-header-cell *matHeaderCellDef> Ghi chú</th>
+                        <td mat-cell *matCellDef="let data">
+                            <input type="text" [(ngModel)]="data.comment" class="form-control mb-0">
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="giaBan">
+                        <th mat-header-cell *matHeaderCellDef> Giá bán</th>
+                        <td mat-cell *matCellDef="let data"> {{getItemPrice(data) | number}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tongTien">
+                        <th mat-header-cell *matHeaderCellDef> Tổng tiền</th>
+                        <td mat-cell *matCellDef="let data"> {{getItemAmount(data) | number}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let data">
+                            <a class="btn btn-danger delete-line" (click)="fnRemoveItem(data)" title="Xóa"><i
+                                    class="fa-regular fa-xmark"></i></a>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div class="text-right mt-3">
+                    <span><strong class="text-danger">Tổng tiền: {{getTotalAmount() | number}}</strong> </span>
+                </div>
             </div>
+
         </div>
-    </form>
+    </div>
 </div>

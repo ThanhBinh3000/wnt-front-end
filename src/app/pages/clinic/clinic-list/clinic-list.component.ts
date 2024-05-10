@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PhongKhamsService } from '../../../services/medical/phong-khams.service';
 import { BaseComponent } from '../../../component/base/base.component';
@@ -10,7 +10,7 @@ import { ClinicAddEditDialogComponent } from '../clinic-add-edit-dialog/clinic-a
   templateUrl: './clinic-list.component.html',
   styleUrl: './clinic-list.component.css'
 })
-export class ClinicListComponent extends BaseComponent implements OnInit {
+export class ClinicListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Danh sách phòng khám";
   displayedColumns = ['stt', 'tenPhongKham', 'description', 'action'];
   constructor(
@@ -21,14 +21,15 @@ export class ClinicListComponent extends BaseComponent implements OnInit {
     super(injector, _service);
     this.formData = this.fb.group({
       tenPhongKham: [],
+      maNhaThuoc: this.authService.getNhaThuoc()?.maNhaThuoc
     });
   }
 
   @ViewChild(MatSort) sort?: MatSort;
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle(this.title);
-    this.searchPage();
+    await this.searchPage();
   }
 
   async ngAfterViewInit() {

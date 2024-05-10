@@ -122,9 +122,13 @@
           </div>
         </fieldset>
         <fieldset class="baocao-filter mb-3">
-          <app-date-range-filter [filterType]="0" (filterTypeChange)="changeFilterType($event)"
+          <app-date-range-filter [filterType]="DATE_RANGE.ALL"
+                                 [fromDateControl]="'fromDateCreate'"
+                                 [toDateControl]="'toDateCreate'"
+                                 (filterTypeChange)="changeFilterType($event)"
                                  (fromDateChange)="changeFromDate($event)"
-                                 (toDateChange)="changeToDate($event)"></app-date-range-filter>
+                                 (toDateChange)="changeToDate($event)"
+          ></app-date-range-filter>
           <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
                  class="btn btn-primary w-100" (click)="searchPage()">
         </fieldset>

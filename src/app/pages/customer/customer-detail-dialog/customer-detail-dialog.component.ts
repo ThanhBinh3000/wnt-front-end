@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { CustomerAddEditDialogComponent } from '../customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
+import {AppDatePipe} from "../../../component/pipe/app-date.pipe";
 
 @Component({
   selector: 'customer-detail-dialog',
@@ -18,6 +19,7 @@ export class CustomerDetailDialogComponent extends BaseComponent implements OnIn
     injector: Injector,
     private titleService: Title,
     private _service: KhachHangService,
+    private appDatePipe: AppDatePipe,
     public dialogRef: MatDialogRef<CustomerDetailDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public customerId: any
   ) {
@@ -50,7 +52,7 @@ export class CustomerDetailDialogComponent extends BaseComponent implements OnIn
 
   calculateAge(dateString: string): number {
     // Chuyển chuỗi ngày sinh sang Date object
-    const birthDate = new Date(dateString);
+    const birthDate = new Date(this.appDatePipe.transform(dateString, 'yyyy-MM-ddTHH:mm:ss'));
     const today = new Date();
 
     // Tính số năm chênh lệch giữa năm hiện tại và năm sinh

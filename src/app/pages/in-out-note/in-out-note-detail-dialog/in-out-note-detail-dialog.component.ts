@@ -60,6 +60,14 @@ export class InOutNoteDetailDialogComponent extends BaseComponent implements OnI
     return title;
   }
 
+  getChiTiets() {
+    let chiTiets = '';
+    // this.noteDetail.chiTiets.forEach((detail: any) => {
+    //   chiTiets += `${detail.dienGiai} - ${detail.amount} - ${detail.httt}\n`;
+    // });
+    return chiTiets;
+  }
+
   async onPrint(printType: any) {
 
   }

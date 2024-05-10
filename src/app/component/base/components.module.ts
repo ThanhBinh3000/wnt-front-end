@@ -120,6 +120,8 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
   ],
   providers: [
     DatePipe,
+    AppDatePipe,
+    AppDateTimePipe,
     provideEnvironmentNgxMask(),
     { provide: DateAdapter, useClass: CustomDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }

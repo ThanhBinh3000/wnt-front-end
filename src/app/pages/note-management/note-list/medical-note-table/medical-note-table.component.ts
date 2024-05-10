@@ -75,7 +75,6 @@ export class MedicalNoteTableComponent extends BaseComponent implements OnInit, 
       this.dataTable = data.content;
       this.totalRecord = data.totalElements;
       this.totalPages = data.totalPages;
-      console.log(this.dataTable)
     } else {
       this.dataTable = [];
       this.totalRecord = 0;
