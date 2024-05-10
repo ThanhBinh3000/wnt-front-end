@@ -1,204 +1,205 @@
 <div class="card-bg ng-scope">
-    <h2 class="card-title text-center"><b>PHIẾU NHẬP HÀNG</b></h2>
+  <h2 class="card-title text-center"><b>PHIẾU NHẬP HÀNG</b></h2>
 
-    <div class="text-center card-desc">
-        <div class="card-code">
-            Mã số: <strong>{{dataDetail?.soPhieuNhap}}</strong>
-        </div>
-
-        <span style="width: 10%">Ngày: <strong>{{dataDetail?.created}}</strong></span>
+  <div class="text-center card-desc">
+    <div class="card-code">
+      Mã số: <strong>{{ dataDetail?.soPhieuNhap }}</strong>
     </div>
-    <table class="table borderless table-condensed">
-        <tbody>
-            <tr>
-                <td style="text-align: left">
-                    <span class="control-label"><b>Nhà cung cấp:</b>{{dataDetail?.tenNhaCungCap}}</span>
-                </td>
-                <td style="text-align: right">
-                    <label class="control-label">Số hóa đơn: {{dataDetail?.invoiceCode}} </label>
-                    <label class="control-label" style="font-weight: normal"></label>
-                </td>
 
-            </tr>
-        </tbody>
-    </table>
-    <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width: 100%">
-        <thead>
-            <tr>
-                <th style="width: 10px">STT</th>
-                <th style="width: 70px">Mã</th>
-                <th style="width: 100px">Hình ảnh</th>
-                <th>Tên hàng</th>
-                <th style="width: 100px;">Đơn vị</th>
-                <th style="width: 100px; text-align: right">SL</th>
-                <th style="width: 150px; text-align: right">Giá nhập</th>
-                <th style="width: 150px; text-align: right">Giá bán</th>
-                <th style="width: 150px; text-align: right">TSLN(%)</th>
+    <span style=" width: 10%">Ngày: <strong>{{ dataDetail?.created }}</strong></span>
+  </div>
+  <table class="table borderless table-condensed">
+    <tbody>
+    <tr>
+      <td style="text-align: left">
+        <span class="control-label"><b>Nhà cung cấp:</b>{{ dataDetail?.tenNhaCungCap }}</span>
+      </td>
+      <td style="text-align: right">
+        <label class="control-label">Số hóa đơn: {{ dataDetail?.invoiceCode }} </label>
+        <label class="control-label" style="font-weight: normal"></label>
+      </td>
 
-                <th style="width: 80px; text-align: right">C.K</th>
+    </tr>
+    </tbody>
+  </table>
+  <table class="table-condensed table-responsive display table-bordered" id="tblCt" style="width: 100%">
+    <thead>
+    <tr>
+      <th style="width: 10px">STT</th>
+      <th style="width: 70px">Mã</th>
+      <th style="width: 100px">Hình ảnh</th>
+      <th>Tên hàng</th>
+      <th style="width: 100px;">Đơn vị</th>
+      <th style="width: 100px; text-align: right">SL</th>
+      <th style="width: 150px; text-align: right">Giá nhập</th>
+      <th style="width: 150px; text-align: right">Giá bán</th>
+      <th style="width: 150px; text-align: right">TSLN(%)</th>
 
-                <th style="width: 55px; text-align: right">VAT(%)</th>
-                <th style="width: 100px; text-align: right">
-                    <span>Hạn dùng</span>
-                    <p>(Số lô)</p>
-                </th>
+      <th style="width: 80px; text-align: right">C.K</th>
 
-                <th style="width: 150px; text-align: right">Thành tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of dataTable; index as i;">
-                <td>
-                    <a href=""
-                        ng-click="onDrugInfoDetails(9330218); $event.preventDefault(); $event.stopPropagation();">
-                        {{i+1}}
-                    </a>
-                </td>
-                <td>
-                    <span class="" id="dMaThuoc1"> {{item.thuocs.maThuoc}}</span>
-                </td>
-                <td>
-                </td>
-                <td>
-                    <span class="" id="PhieuNhapChiTiets_1__TenSp">{{item.thuocs.tenThuoc}}</span>
-                    <p class="btn-link tooltip-content-drug"
-                        style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
-                        ng-click="onSearchPriceInOut({&quot;MaPhieuNhapCt&quot;:34842751,&quot;ThuocId&quot;:9330218,&quot;DrugId&quot;:9330218,&quot;MaThuoc&quot;:&quot;TH0228&quot;,&quot;TenThuoc&quot;:&quot;AUGBACTAM 625MG MEKOPHAR&quot;,&quot;DrugName&quot;:&quot;AUGBACTAM 625MG MEKOPHAR&quot;,&quot;HeSo&quot;:12,&quot;MaPhieuNhap&quot;:3648150,&quot;MaNhaThuoc&quot;:null,&quot;MaDonViTinh&quot;:697113,&quot;MaDonViTinhLe&quot;:697106,&quot;MaDonViTinhThuNguyen&quot;:697113,&quot;TenDonViTinh&quot;:&quot;hộp&quot;,&quot;ChietKhau&quot;:0.00,&quot;GiaNhap&quot;:60000.00,&quot;GiaBan&quot;:120000.00,&quot;SoLuong&quot;:1.00,&quot;SoLo&quot;:&quot;&quot;,&quot;HanDung&quot;:null,&quot;VAT&quot;:0.00,&quot;ItemOrder&quot;:2,&quot;ConnectivityStatusId&quot;:0,&quot;Amount&quot;:60000.00,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;GroupIdMapping&quot;:9740604,&quot;Flag&quot;:false,&quot;RateRevenue&quot;:100.0})"
-                        title="Tra cứu giá thị trường">
-                        <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
-                    </p>
-                </td>
-                <td>
-                    <span class="display-mode" id="PhieuNhapChiTiets_1__MaDonViTinhSp">{{item.tenDonViTinh}}</span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__SoLuongSp">{{item.soLuong}}</span>
+      <th style="width: 55px; text-align: right">VAT(%)</th>
+      <th style="width: 100px; text-align: right">
+        <span>Hạn dùng</span>
+        <p>(Số lô)</p>
+      </th>
 
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__GiaNhapSp">{{item.giaNhap}}</span>
+      <th style="width: 150px; text-align: right">Thành tiền</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of dataTable; index as i;">
+      <td>
+        <a href=""
+           ng-click="onDrugInfoDetails(9330218); $event.preventDefault(); $event.stopPropagation();">
+          {{ i + 1 }}
+        </a>
+      </td>
+      <td>
+        <span class="" id="dMaThuoc1"> {{ item.thuocs.maThuoc }}</span>
+      </td>
+      <td>
+      </td>
+      <td>
+        <span class="" id="PhieuNhapChiTiets_1__TenSp">{{ item.thuocs.tenThuoc }}</span>
+        <p class="btn-link tooltip-content-drug"
+           style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
+           ng-click="onSearchPriceInOut({&quot;MaPhieuNhapCt&quot;:34842751,&quot;ThuocId&quot;:9330218,&quot;DrugId&quot;:9330218,&quot;MaThuoc&quot;:&quot;TH0228&quot;,&quot;TenThuoc&quot;:&quot;AUGBACTAM 625MG MEKOPHAR&quot;,&quot;DrugName&quot;:&quot;AUGBACTAM 625MG MEKOPHAR&quot;,&quot;HeSo&quot;:12,&quot;MaPhieuNhap&quot;:3648150,&quot;MaNhaThuoc&quot;:null,&quot;MaDonViTinh&quot;:697113,&quot;MaDonViTinhLe&quot;:697106,&quot;MaDonViTinhThuNguyen&quot;:697113,&quot;TenDonViTinh&quot;:&quot;hộp&quot;,&quot;ChietKhau&quot;:0.00,&quot;GiaNhap&quot;:60000.00,&quot;GiaBan&quot;:120000.00,&quot;SoLuong&quot;:1.00,&quot;SoLo&quot;:&quot;&quot;,&quot;HanDung&quot;:null,&quot;VAT&quot;:0.00,&quot;ItemOrder&quot;:2,&quot;ConnectivityStatusId&quot;:0,&quot;Amount&quot;:60000.00,&quot;ImageThumbUrl&quot;:null,&quot;ImagePreviewUrl&quot;:null,&quot;GroupIdMapping&quot;:9740604,&quot;Flag&quot;:false,&quot;RateRevenue&quot;:100.0})"
+           title="Tra cứu giá thị trường">
+          <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
+        </p>
+      </td>
+      <td>
+        <span class="display-mode" id="PhieuNhapChiTiets_1__MaDonViTinhSp">{{ item.tenDonViTinh }}</span>
+      </td>
+      <td>
+        <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__SoLuongSp">{{ item.soLuong }}</span>
 
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__GiaBanSp">{{item.giaBanLe}}</span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__RateRevenue">{{calendarRateRevenue(item)}}</span>
-                </td>
+      </td>
+      <td>
+        <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__GiaNhapSp">{{ item.giaNhap }}</span>
 
-                <td>
-                    <span class="display-mode pNumber" >
-                        {{item.chietKhau}}
-                    </span>
-                </td>
-                <td>
+      </td>
+      <td>
+        <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__GiaBanSp">{{ item.giaBanLe }}</span>
+      </td>
+      <td>
+        <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__RateRevenue">{{ calendarRateRevenue(item) }}</span>
+      </td>
+
+      <td>
                     <span class="display-mode pNumber">
-                        {{item.vat}}
+                        {{ item.chietKhau }}
                     </span>
-                </td>
-                <td style="text-align: right">
-                    <span class="" id="PhieuNhapChiTiets_1__HanDung"></span>
-                    <p class="" id="PhieuNhapChiTiets_1__SoLo"></p>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__ThanhTien">{{calendarTongTien(item)}}</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
+      </td>
+      <td>
+                    <span class="display-mode pNumber">
+                        {{ item.vat }}
+                    </span>
+      </td>
+      <td style="text-align: right">
+        <span class="" id="PhieuNhapChiTiets_1__HanDung"></span>
+        <p class="" id="PhieuNhapChiTiets_1__SoLo"></p>
+      </td>
+      <td>
+        <span class="display-mode pNumber" id="PhieuNhapChiTiets_1__ThanhTien">{{ calendarTongTien(item) }}</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
 
-    <div class="row">
-        <div class="col-md-3">
-            <b>Tổng số tiền : &nbsp;<span id="spanSumAll"></span></b>{{dataDetail?.tongTien}}
-        </div>
-        <div class="col-md-3" >
-            <b style="margin-left:20px;">Chiết khấu : &nbsp;<span id="spanSumAll"></span></b> {{dataDetail?.discount}}
+  <div class="row">
+    <div class="col-md-3">
+      <b>Tổng số tiền : &nbsp;<span id="spanSumAll"></span></b>{{ dataDetail?.tongTien }}
+    </div>
+    <div class="col-md-3">
+      <b style="margin-left:20px;">Chiết khấu : &nbsp;<span id="spanSumAll"></span></b> {{ dataDetail?.discount }}
 
-        </div>
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-2">
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-2">
             <span style="font-weight: bold" id="spSumfinal">
             </span>
-        </div>
-        <div class="col-md-5">
-            <table style="padding: 5px">
-                <tbody>
-                    <tr>
-                        <td>
-                            <strong>Đã trả:</strong> {{dataDetail?.daTra}}
-                            <br>
-                            <span><strong>Hình thức thanh toán:</strong> {{dataDetail?.paymentTypeName}}</span>
-                            <br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span id="spDebt" class="text-danger">
-                                <strong>Trả Lại:</strong> {{dataDetail?.tongTien - dataDetail?.daTra}}
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
     </div>
-    <table class="table borderless table-condensed">
+    <div class="col-md-5">
+      <table style="padding: 5px">
         <tbody>
-            <tr>
-                <td class="text-left">
-                    <span><strong>Diễn giải: </strong></span><strong>
-                        <span>{{dataDetail?.dienGiai}}</span>
-                    </strong>
-                </td>
-
-                <td class="text-right">
-                    <span>[<strong>Người lập:</strong> </span>
-                    <span>{{dataDetail?.tenNguoiTao}}]</span>
-                </td>
-                <td class="text-right">
-                    <span>[<strong>Ngày lập:</strong> </span>
-                    <span>{{dataDetail?.created}}]</span>
-                </td>
-            </tr>
+        <tr>
+          <td>
+            <strong>Đã trả:</strong> {{ dataDetail?.daTra }}
+            <br>
+            <span><strong>Hình thức thanh toán:</strong> {{ dataDetail?.paymentTypeName }}</span>
+            <br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+                            <span id="spDebt" class="text-danger">
+                                <strong>Trả Lại:</strong> {{ dataDetail?.tongTien - dataDetail?.daTra }}
+                            </span>
+          </td>
+        </tr>
         </tbody>
-    </table>
-    <div class="card-footer">
-        <div class="d-flex justify-content-center align-items-center gap-10">
-            <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
+      </table>
+    </div>
 
-            <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    In <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#" ng-click="onPrint(3648150, 1, 1)">In phiếu</a></li>
-                    <li><a href="#" ng-click="onOpenFormPrint(3648150,'ipn')">In khác</a></li>
-                    <li><a href="#" ng-click="onOpenFormPrint(3648150,'bbkn')">In biên bản</a></li>
-                    <li><a
-                            href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=3648150&amp;LoaiPhieu=1',target = '_blank')">In
-                            mã vạch thuốc</a></li>
-                </ul>
-            </div>
-            <a class="btn btn-primary" (click)="goToUrl('/management/note-management/receipt-note-screen',this.dataDetail.id)">Sửa</a>
-            <span ng-show="model.LinkFile !=''">
+  </div>
+  <table class="table borderless table-condensed">
+    <tbody>
+    <tr>
+      <td class="text-left">
+        <span><strong>Diễn giải: </strong></span><strong>
+        <span>{{ dataDetail?.dienGiai }}</span>
+      </strong>
+      </td>
+
+      <td class="text-right">
+        <span>[<strong>Người lập:</strong> </span>
+        <span>{{ dataDetail?.tenNguoiTao }}]</span>
+      </td>
+      <td class="text-right">
+        <span>[<strong>Ngày lập:</strong> </span>
+        <span>{{ dataDetail?.created }}]</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="card-footer">
+    <div class="d-flex justify-content-center align-items-center gap-10">
+      <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
+
+      <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+          In <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a (click)="printPreview()">In phiếu</a></li>
+          <li><a href="#" ng-click="onOpenFormPrint(3648150,'ipn')">In khác</a></li>
+          <li><a href="#" ng-click="onOpenFormPrint(3648150,'bbkn')">In biên bản</a></li>
+          <li><a
+            href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=3648150&amp;LoaiPhieu=1',target = '_blank')">In
+            mã vạch thuốc</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-primary"
+         (click)="goToUrl('/management/note-management/receipt-note-screen',this.dataDetail.id)">Sửa</a>
+      <span ng-show="model.LinkFile !=''">
                 <span class="btn btn-default zalo-share-button" style="width:105px;height:35px"
-                    data-href="https://s.webnhathuoc.com/Uploads/WNT_FOLDER//0010/3648150_1_0/0010_3648150.pdf"
-                    data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize="true">Chia sẻ
+                      data-href="https://s.webnhathuoc.com/Uploads/WNT_FOLDER//0010/3648150_1_0/0010_3648150.pdf"
+                      data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize="true">Chia sẻ
                     Zalo</span>
             </span>
-            <a class="btn btn-danger" (click)="delete('Bạn có muốn xóa phiếu nhập ?',this.dataDetail)">Xóa</a>
-            <a class="btn btn-default"
-                href="/ReceiptNote/ConnReceiptNoteScreen?noteId=3648150&amp;isConnectivity=1">LT</a>
-            <a class="btn btn-default"
-                href="/ReceiptNote/ManagementReceiptNoteScreen?noteId=3648150&amp;isManagement=1">QL</a>
-            <a class="btn btn-default"
-                href="/DeliveryNote/SupplierDeliveryNoteScreen?noteId=3648150&amp;taskMode=1">Trả hàng</a>
-            <input
-                type="button" class="btn btn-default" ng-click="onExport(3648150)" value="Xuất excel">
-        </div>
+      <a class="btn btn-danger" (click)="delete('Bạn có muốn xóa phiếu nhập ?',this.dataDetail)">Xóa</a>
+      <a class="btn btn-default"
+         href="/ReceiptNote/ConnReceiptNoteScreen?noteId=3648150&amp;isConnectivity=1">LT</a>
+      <a class="btn btn-default"
+         href="/ReceiptNote/ManagementReceiptNoteScreen?noteId=3648150&amp;isManagement=1">QL</a>
+      <a class="btn btn-default"
+         href="/DeliveryNote/SupplierDeliveryNoteScreen?noteId=3648150&amp;taskMode=1">Trả hàng</a>
+      <input
+        type="button" class="btn btn-default" ng-click="onExport(3648150)" value="Xuất excel">
     </div>
+  </div>
 </div>
