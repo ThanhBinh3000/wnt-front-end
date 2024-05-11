@@ -20,6 +20,7 @@ import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {DeviceService} from "../../services/device.service";
+import printJS from "print-js";
 
 
 @Component({
@@ -37,6 +38,9 @@ export class BaseComponent {
   dataDetail: any;
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
+  filterType: number = 0;
+  fromDate: string = '';
+  toDate: string = '';
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
@@ -52,18 +56,22 @@ export class BaseComponent {
   service: BaseService;
   spinner: SpinnerService;
   modal: ModalService;
-  dialog : MatDialog;
+  dialog: MatDialog;
   helperService: HelperService
 
   allChecked = false;
   indeterminate = false;
 
-  authService : AuthService;
-  router : Router
+  authService: AuthService;
+  router: Router
   route: ActivatedRoute
   idUrl: number = 0;
 
-  location : Location
+  location: Location
+  printSrc: any;
+  pdfSrc: any;
+  showDlgPreview = false;
+  PATH_PDF = 'data:application/pdf;base64,';
 
   constructor(
     injector: Injector,
@@ -89,7 +97,7 @@ export class BaseComponent {
     this.location = this.injector.get(Location);
   }
 
-  getDataSource(){
+  getDataSource() {
     this.dataSource.data = this.dataTable;
     return this.dataSource;
   }
@@ -108,6 +116,10 @@ export class BaseComponent {
       body.paggingReq = {
         limit: this.pageSize,
         page: this.page - 1
+      }
+      if(this.filterType == 1){
+        body.fromDate = this.fromDate;
+        body.toDate = this.toDate;
       }
       let res = await this.service.searchPage(body);
       if (res?.status == STATUS_API.SUCCESS) {
@@ -204,10 +216,10 @@ export class BaseComponent {
       onOk: async () => {
         try {
           let body = {
-            id : item.id
+            id: item.id
           }
           this.service.delete(body).then(async (res) => {
-            if(res && res.data){
+            if (res && res.data) {
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
               await this.searchPage();
             }
@@ -222,7 +234,7 @@ export class BaseComponent {
   }
 
   deleteDatabase(message: string, item: any) {
-    console.log(message,item);
+    console.log(message, item);
     this.modal.confirm({
       closable: false,
       title: 'Xác nhận',
@@ -252,7 +264,7 @@ export class BaseComponent {
   }
 
   restore(message: string, item: any) {
-    console.log(message,item);
+    console.log(message, item);
     this.modal.confirm({
       closable: false,
       title: 'Xác nhận',
@@ -264,10 +276,10 @@ export class BaseComponent {
       onOk: async () => {
         try {
           let body = {
-            id : item.id
+            id: item.id
           }
           this.service.restore(body).then(async (res) => {
-            if(res && res.data){
+            if (res && res.data) {
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.RESTORE_SUCCESS);
               await this.searchPage();
               this.spinner.hide();
@@ -316,7 +328,7 @@ export class BaseComponent {
 
   restoreMulti(message?: string) {
     console.log('deletee');
-    let dataDelete : any[] = [];
+    let dataDelete: any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
         if (item.checked) {
@@ -347,7 +359,7 @@ export class BaseComponent {
   }
 
   deleteMultiDatabase(message?: string) {
-    let dataDelete : any[] = [];
+    let dataDelete: any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
         if (item.checked) {
@@ -420,10 +432,10 @@ export class BaseComponent {
     }
   }
 
-  async detail(id:number) {
-    if(id){
+  async detail(id: number) {
+    if (id) {
       let res = await this.service.getDetail(id);
-      if(res?.status == STATUS_API.SUCCESS){
+      if (res?.status == STATUS_API.SUCCESS) {
         const data = res.data;
         return data;
       } else {
@@ -442,8 +454,8 @@ export class BaseComponent {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.service.approve({ id: item.id}).then(async (res) => {
-          if(res && res.data){
+        this.service.approve({id: item.id}).then(async (res) => {
+          if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, `Phiếu có mã số '${code}' đã được phê duyệt và đưa vào hệ thống.`);
             await this.searchPage();
           }
@@ -462,8 +474,8 @@ export class BaseComponent {
       okDanger: true,
       width: 310,
       onOk: async () => {
-        this.service.cancel({ id: item.id}).then(async (res) => {
-          if(res && res.data){
+        this.service.cancel({id: item.id}).then(async (res) => {
+          if (res && res.data) {
             this.notification.success(MESSAGE.SUCCESS, `Phiếu có mã số '${code}' đã bị hủy.`);
             await this.searchPage();
           }
@@ -472,7 +484,7 @@ export class BaseComponent {
     });
   }
 
-  async lockUnlock(item: any){
+  async lockUnlock(item: any) {
     const res = item.locked ? await this.service.unlock(item) : await this.service.lock(item);
     if (res && res.status == STATUS_API.SUCCESS) {
       item.locked = res.data.locked;
@@ -509,7 +521,7 @@ export class BaseComponent {
     if (this.allChecked) {
       if (this.dataTable && this.dataTable.length > 0) {
         this.dataTable.forEach((item) => {
-            item.checked = true;
+          item.checked = true;
         });
       }
     } else {
@@ -533,12 +545,12 @@ export class BaseComponent {
     }
   }
 
-  goBack(){
+  goBack() {
     this.location.back();
   }
 
-  goToUrl(url: any, id?: any){
-    this.router.navigate([url,id]);
+  goToUrl(url: any, id?: any) {
+    this.router.navigate([url, id]);
   }
 
   isMobile() {
@@ -551,6 +563,21 @@ export class BaseComponent {
 
   isDesktop() {
     return this.device.isDesktop();
+  }
+
+  async printPreview(loai?: any) {
+    let res = await this.service.preview({
+      loai: loai,
+      id: this.idUrl,
+    });
+    if (res?.data) {
+      this.printSrc = res.data.pdfSrc;
+      this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
+      this.showDlgPreview = true;
+      printJS({printable: this.printSrc, type: 'pdf', base64: true})
+    } else {
+      this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+    }
   }
 }
 

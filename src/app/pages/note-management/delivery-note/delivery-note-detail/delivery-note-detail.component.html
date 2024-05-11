@@ -101,7 +101,7 @@
                 </td>
         </ng-container>
         <ng-container matColumnDef="hanDung">
-            <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: right">  
+            <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: right">
                 Hạn dùng
                 <p>(Số lô)</p></th>
             <td mat-cell *matCellDef="let data" style="vertical-align: middle;text-align: right">
@@ -176,7 +176,7 @@
     <div class="form-group mt-3">
         <div class="col-md-12">
             <div class="d-flex justify-content-center align-items-center gap-10">
-                <a *ngIf="isContinue || fromBcScanner" type="button" 
+                <a *ngIf="isContinue || fromBcScanner" type="button"
                    href="{{getUrlContinue()}}" class="btn btn-primary">Tiếp tục</a>
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
@@ -186,8 +186,8 @@
                         In <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" ng-click="onPrint(35432435, 2, 4)">Phiếu khách lẻ - 58mm</a></li>
-                        <li><a href="#" ng-click="onPrint(35432435, 2, 3)">Phiếu khách lẻ - 80mm</a></li>
+                        <li><a (click)="printPreview('58mm')">Phiếu khách lẻ - 58mm</a></li>
+                        <li><a (click)="printPreview('80mm')">Phiếu khách lẻ - 80mm</a></li>
                         <li><a href="#" ng-click="onPrint(35432435, 2, 1)">Phiếu khách quen - A4</a></li>
                         <li><a href="#" ng-click="onPrint(35432435, 2, 2)">Phiếu khách lẻ - A5</a></li>
                         <li><a href="#" ng-click="onPrint(35432435, 2, 5)">In liều dùng</a></li>
