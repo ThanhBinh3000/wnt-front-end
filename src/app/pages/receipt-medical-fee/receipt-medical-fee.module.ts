@@ -7,6 +7,7 @@ import { ReceiptMedicalFeeComponent } from './receipt-medical-fee.component';
 import { ReceiptMedicalFeeListComponent } from './receipt-medical-fee-list/receipt-medical-fee-list.component';
 import { ReceiptMedicalFeeAddEditComponent } from './receipt-medical-fee-add-edit/receipt-medical-fee-add-edit.component';
 import {ReceiptMedicalFeeDetailComponent} from "./receipt-medical-fee-detail/receipt-medical-fee-detail.component";
+import {ComponentsModule} from "../../component/base/components.module";
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {ReceiptMedicalFeeDetailComponent} from "./receipt-medical-fee-detail/rec
     ReceiptMedicalFeeAddEditComponent,
     ReceiptMedicalFeeDetailComponent
   ],
-  imports: [CommonModule, RouterOutlet, ReceiptMedicalFeeRoutingModule],
+  imports: [CommonModule, RouterOutlet, ReceiptMedicalFeeRoutingModule, ComponentsModule],
   exports: [],
 })
 export class ReceiptMedicalFeeModule {

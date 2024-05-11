@@ -31,7 +31,6 @@ export class MedicalNoteTableComponent extends BaseComponent implements OnInit, 
       this.formData = this.fb.group({
         ...newValue,
         storeCode: newValue.maNhaThuoc,
-        // statusNote: != TRANG_THAI_PHIEU_KHAM.CHO_KHAM,
       });
     });
   }
