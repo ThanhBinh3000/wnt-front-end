@@ -40,8 +40,8 @@
                             <table>
                                 <tr>
                                     <td>Mã đơn </td>
-                                    <td><input type="text" id="txtSearch" style="width: 50%;" [disabled]="action =='view'"
-                                        class="form-control" formControlName="eSampleNoteCode"
+                                    <td><input type="text" id="txtSearch" style="width: 50%;" readonly="action =='view'"
+                                        class="form-control" formControlName="esampleNoteCode"
                                         (change)="getThongTinDOnDienTu()" placeholder="Mã đơn thuốc điện tử"></td>
                                 </tr>
                                 <tr>
@@ -119,8 +119,8 @@
                     <ng-container matColumnDef="maThuoc">
                         <th mat-header-cell *matHeaderCellDef style="width:15%"> Mã thuốc theo đơn </th>
                         <td mat-cell *matCellDef="let data" class="text-right">
-                             <select *ngIf="!data.isEditingItem" class="form-control" [(ngModel)]="data.refConnectivityCode" (change)="onMaThuocDonChange(data)">
-                                <option selected>Chọn mã thuốc</option>
+                             <select *ngIf="!data.isEditingItem" [disabled]="action =='view'" class="form-control" [(ngModel)]="data.refConnectivityCode" (change)="onMaThuocDonChange(data)">
+                                <option selected value="">Chọn mã thuốc</option>
                                 <option *ngFor="let item of maThuocDons;" value="{{item}}">{{item}}</option>
                              </select>
                         </td>

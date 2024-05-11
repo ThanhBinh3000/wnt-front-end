@@ -95,7 +95,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       discountWithRatio: [0],
       doctorComments: [''],
       locked: [],
-      eSampleNoteCode:[''],
+      esampleNoteCode:[''],
       thongTinDon:[{}]
     });
   }
@@ -111,6 +111,8 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       let noteId = this.idUrl;
       let data = await this.detail(noteId);
       this.getDataUpdate(data , data.chiTiets);
+      this.getThongTinDOnDienTu();
+      console.log(data);
     }
     
     if(!this.isUpdateView()){
@@ -139,10 +141,10 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   };
 
   getThongTinDOnDienTu(){
-    console.log(this.formData.get('eSampleNoteCode')?.value.length);
-    if(this.formData.get('eSampleNoteCode')?.value.length < 14) return;
+    console.log(this.formData.get('esampleNoteCode')?.value.length);
+    if(this.formData.get('esampleNoteCode')?.value.length < 14) return;
     let body = {
-      code : this.formData.get('eSampleNoteCode')?.value,
+      code : this.formData.get('esampleNoteCode')?.value,
       storeCode: this.authService.getNhaThuoc().maNhaThuoc
     }
     this.donThuocQuocGiaService.searchList(body).then((res)=>{
@@ -327,6 +329,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
           this.dataTable[0].recordStatusId = 0;
           this.dataTable[0].giaBanBuon = item.giaBanBuon;
           this.dataTable[0].giaBanLe = item.giaBanLe;
+          this.dataTable[0].refConnectivityCode = '';
           if (item.heSo > 1) {
             this.dataTable[0].tonHT = this.dataTable[0].ton / item.heSo;
           }
@@ -394,12 +397,16 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   }
 
   async onSave() {
-    if(!this.formData.get('eSampleNoteCode')?.value){
+    if(!this.formData.get('esampleNoteCode')?.value){
       this.notification.error(MESSAGE.ERROR, 'Vui lòng nhập mã đơn thuốc điện tử');
       return;
     }
     if (this.dataTable.filter(x => x.thuocThuocId > 0).length == 0) {
       this.notification.error(MESSAGE.ERROR, MESSAGE.DATA_EMPTY);
+      return;
+    }
+    if(this.dataTable.filter(x=>x.refConnectivityCode).length <=0){
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn thuốc trong đơn');
       return;
     }
     let body = this.formData.value;
@@ -414,7 +421,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
             { queryParams: { noteTypeId: LOAI_PHIEU.PHIEU_XUAT } });
         } else {
           this.router.navigate(['/management/note-management/delivery-note-es-screen', data.id],
-            { queryParams: { action: 'view'} });
+             { queryParams: { action: 'view'} });
         }
       }
     });
@@ -464,6 +471,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   onMaThuocDonChange(item: any){
     //kiểm tra mã thuốc đã chọn chưa
     if(this.dataTable.filter(x=>x.refConnectivityCode == item.refConnectivityCode && x.thuocThuocId != item.thuocThuocId).length > 0){
+      item.refConnectivityCode = "";
       this.notification.error(MESSAGE.ERROR, 'Mã thuốc này đã được chọn vui lòng chọn thuốc mã khác');
       return;
     }
