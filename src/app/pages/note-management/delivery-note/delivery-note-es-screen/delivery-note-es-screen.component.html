@@ -37,28 +37,38 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <label class="control-label">Thông tin cơ sở khám</label>
-                            <div class="input-group" style="width: 30%;">
-                                <span>Mã đơn: </span><input type="text" id="txtSearch" [disabled]="action =='view'"
-                                    class="form-control" formControlName="eSampleNoteCode"
-                                    ng-change="onShowDialogDetail()" placeholder="Mã đơn thuốc điện tử">
-                            </div>
-                            
-                            <p>Cơ sở kê đơn: <strong class="ng-binding">Cơ sở test CM</strong></p>
-                            <p>Địa chỉ: <strong class="ng-binding"></strong></p>
-                            <p>Bác sỹ kê đơn: <strong class="ng-binding">BÁC SĨ TEST</strong></p>
-                            <p>Chuẩn đoán:</p>
-                            <p ng-show="model.chan_doan" class="">
-                                <span ng-repeat="i in model.chan_doan"
-                                    class="ng-binding ng-scope">Mã: A28 - Chẩn đoán: Bệnh nhiễm trùng khác do động vật truyền
-                                    sang người, không phân loại nơi khác - Kết luận: bệnh nhiễm
-                                    trùng</span>
-                            </p>
+                            <table>
+                                <tr>
+                                    <td>Mã đơn </td>
+                                    <td><input type="text" id="txtSearch" style="width: 50%;" readonly="action =='view'"
+                                        class="form-control" formControlName="esampleNoteCode"
+                                        (change)="getThongTinDOnDienTu()" placeholder="Mã đơn thuốc điện tử"></td>
+                                </tr>
+                                <tr>
+                                    <td>Cơ sở kê đơn: </td>
+                                    <td><strong class="ng-binding" >{{formData.value?.thongTinDon.tenCoSoKhamChuaBenh}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Địa chỉ: </td>
+                                    <td><strong class="ng-binding" style="padding-left: 5px;">{{formData.value?.thongTinDon.diaChi}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%;">Bác sỹ kê đơn: </td>
+                                    <td><strong class="ng-binding" style="padding-left: 5px;">{{formData.value?.thongTinDon.tenBacSi}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Chuẩn đoán: </td>
+                                    <td><span *ngFor="let item of formData.value?.thongTinDon.chanDoan;"
+                                        class="ng-binding ng-scope">{{item.maChanDoan}} - {{item.tenChanDoan}}</span></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="col-md-6 text-left">
                             <label class="control-label">Thông tin bệnh nhân</label>
-                            <p class="ng-binding">Khách hàng: Nguyễn Thị Vân Anh  <span class="ng-binding">Tuổi :24</span></p>
-                            <p class="ng-binding">Địa chỉ: Hà Nội</p>
-                            <div class="ng-binding">Giới tính: Nữ</div>
+                            <p class="ng-binding">Khách hàng: {{formData.value?.thongTinDon.hoTenBenhNhan}}  
+                                <span class="ng-binding">Tuổi :{{formData.value?.thongTinDon.age}}</span></p>
+                            <p class="ng-binding">Địa chỉ: {{formData.value?.thongTinDon.diaChi}}</p>
+                            <div class="ng-binding">Giới tính: {{formData.value?.thongTinDon.gioiTinh == 2 ? 'Nữ' : 'Nam'}}</div>
                         </div>
                     </div>
                 </div>
@@ -78,14 +88,14 @@
                         </thead>
                         <tbody>
                             
-                            <tr ng-repeat="item in model.thong_tin_don_thuoc" class="ng-scope">
-                                <td class="ng-binding">TH30</td>
-                                <td class="ng-binding">Betadine</td>
-                                <td class="ng-binding">Betadine</td>
-                                <td class="ng-binding">chai</td>
-                                <td class="ng-binding">1</td>
-                                <td class="ng-binding">ngày uống 2 lần</td>
-                                <td class="ng-binding">8</td>
+                            <tr *ngFor="let item of formData.value?.thongTinDon.thongTinDonThuoc;" class="ng-scope">
+                                <td class="ng-binding">{{item.maThuoc}}</td>
+                                <td class="ng-binding">{{item.bietDuoc}}</td>
+                                <td class="ng-binding">{{item.tenThuoc}}</td>
+                                <td class="ng-binding">{{item.donViTinh}}</td>
+                                <td class="ng-binding">{{item.soLuong}}</td>
+                                <td class="ng-binding">{{item.cachDung}}</td>
+                                <td class="ng-binding">{{item.soLuongBan}}</td>
                             </tr>
                         </tbody>
         
@@ -109,7 +119,10 @@
                     <ng-container matColumnDef="maThuoc">
                         <th mat-header-cell *matHeaderCellDef style="width:15%"> Mã thuốc theo đơn </th>
                         <td mat-cell *matCellDef="let data" class="text-right">
-        
+                             <select *ngIf="!data.isEditingItem" [disabled]="action =='view'" class="form-control" [(ngModel)]="data.refConnectivityCode" (change)="onMaThuocDonChange(data)">
+                                <option selected value="">Chọn mã thuốc</option>
+                                <option *ngFor="let item of maThuocDons;" value="{{item}}">{{item}}</option>
+                             </select>
                         </td>
                     </ng-container>
         
