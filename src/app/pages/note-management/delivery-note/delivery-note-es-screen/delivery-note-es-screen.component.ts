@@ -13,6 +13,7 @@ import { DrugUpdateBatchDialogComponent } from '../../../drug/drug-update-batch-
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SETTING } from '../../../../constants/setting';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
+import { AppDatePipe } from '../../../../component/pipe/app-date.pipe';
 
 @Component({
   selector: 'delivery-note-es-screen',
@@ -32,6 +33,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   debtLabel: string = 'Còn nợ';
   maNhaThuoc = this.authService.getNhaThuoc().maNhaThuoc;
   action: string = '';
+  maThuocDons: any[] = [];
 
   notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
   moneyPerScoreRate = this.authService.getSettingByKey(SETTING.MONEY_PER_SCORE_RATE);
@@ -56,7 +58,8 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
     private thuocService: ThuocService,
     private paymentTypeService: PaymentTypeService,
     private datePipe: DatePipe,
-    private donThuocQuocGiaService : DonThuocQuocGiaService
+    private donThuocQuocGiaService : DonThuocQuocGiaService,
+    private appDatePipe: AppDatePipe,
   ) {
 
     super(injector, _service);
@@ -92,7 +95,8 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       discountWithRatio: [0],
       doctorComments: [''],
       locked: [],
-      eSampleNoteCode:['']
+      eSampleNoteCode:[''],
+      thongTinDon:[{}]
     });
   }
 
@@ -122,15 +126,6 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       });
     }
     this.dataTable.unshift({ isEditingItem: true });
-    let body = {
-      code : '22786c238a85-c',//this.formData.get('code')?.value,
-      storeCode: this.authService.getNhaThuoc().maNhaThuoc
-    }
-    this.donThuocQuocGiaService.searchList(body).then((res)=>{
-      if (res?.status == STATUS_API.SUCCESS){
-        console.log(res.data);
-      }
-    });
     this.getDataFilter();
   }
   
@@ -142,6 +137,44 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+
+  getThongTinDOnDienTu(){
+    console.log(this.formData.get('eSampleNoteCode')?.value.length);
+    if(this.formData.get('eSampleNoteCode')?.value.length < 14) return;
+    let body = {
+      code : this.formData.get('eSampleNoteCode')?.value,
+      storeCode: this.authService.getNhaThuoc().maNhaThuoc
+    }
+    this.donThuocQuocGiaService.searchList(body).then((res)=>{
+      if (res?.status == STATUS_API.SUCCESS){
+        this.formData.controls['thongTinDon'].setValue(res.data);
+        if(res.data.ngaySinhBenhNhan){
+           res.data.age = this.calculateAge(res.data.ngaySinhBenhNhan);
+        }
+        this.maThuocDons = res.data.thongTinDonThuoc.map((x: { maThuoc: any; })=>x.maThuoc);
+      }
+    });
+  }
+
+  calculateAge(dateString: string): number {
+    // Chuyển chuỗi ngày sinh sang Date object
+    const birthDate = new Date(dateString);
+    const today = new Date();
+
+    // Tính số năm chênh lệch giữa năm hiện tại và năm sinh
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    // Kiểm tra xem tháng/ngày của năm hiện tại có trùng hoặc vượt quá tháng/ngày của năm sinh không
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    const dayDifference = today.getDate() - birthDate.getDate();
+
+    // Điều chỉnh tuổi nếu sinh nhật của người đó chưa đến trong năm nay
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--;
+    }
+
+    return age;
+  }
 
   getDataFilter() {
     this.listThuoc$ = this.searchThuocTerm$.pipe(
@@ -426,6 +459,22 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
 
   editDeliveryNote(){
     this.router.navigate(['/management/note-management/delivery-note-es-screen', this.idUrl]);
+  }
+
+  onMaThuocDonChange(item: any){
+    //kiểm tra mã thuốc đã chọn chưa
+    if(this.dataTable.filter(x=>x.refConnectivityCode == item.refConnectivityCode && x.thuocThuocId != item.thuocThuocId).length > 0){
+      this.notification.error(MESSAGE.ERROR, 'Mã thuốc này đã được chọn vui lòng chọn thuốc mã khác');
+      return;
+    }
+    //gán thong tin liên quan
+    //lấy ra thông tin theo mã thuốc
+    let data = this.formData.get('thongTinDon')?.value.thongTinDonThuoc.filter((x: { maThuoc: any; })=>x.maThuoc == item.refConnectivityCode);
+
+    if(data){
+      item.soLuong = data[0].soLuong;
+      item.usage = data[0].cachDung;
+    }
   }
 
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
