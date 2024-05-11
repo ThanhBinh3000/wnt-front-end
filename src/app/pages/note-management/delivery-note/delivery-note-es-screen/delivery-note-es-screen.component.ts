@@ -112,7 +112,6 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       let data = await this.detail(noteId);
       this.getDataUpdate(data , data.chiTiets);
       this.getThongTinDOnDienTu();
-      console.log(data);
     }
     
     if(!this.isUpdateView()){
@@ -141,7 +140,6 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   };
 
   getThongTinDOnDienTu(){
-    console.log(this.formData.get('esampleNoteCode')?.value.length);
     if(this.formData.get('esampleNoteCode')?.value.length < 14) return;
     let body = {
       code : this.formData.get('esampleNoteCode')?.value,
