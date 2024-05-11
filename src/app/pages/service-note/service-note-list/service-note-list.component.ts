@@ -60,7 +60,8 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
       noteNumber: [null], // searchType: 0
       idDoctor: [null], // searchType: 1
       performerId: [null], // searchType: 2
-      serviceId: [null] // searchType: 3
+      serviceId: [null], // searchType: 3
+      customer: [null]
     });
   }
 
@@ -73,7 +74,20 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
   @ViewChild(MatSort) sort?: MatSort;
 
   async ngAfterViewInit() {
-    this.dataSource.sort = this.sort!;
+    this.route.queryParams.subscribe(async params => {
+      const customerId = params['customerId'];
+      if (customerId) {
+        let res = await this.khachHangService.getDetail(customerId);
+        if (res?.status == STATUS_API.SUCCESS){
+          this.formData.patchValue({
+            idCus: res.data.id,
+            customer: res.data
+          });
+        }
+      }
+      await this.searchPage();
+      this.dataSource.sort = this.sort!;
+    });
   }
 
   getMaNhaThuoc() {

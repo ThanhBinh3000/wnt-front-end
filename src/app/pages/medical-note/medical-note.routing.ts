@@ -33,7 +33,7 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'add/:id',
+        path: 'add',
         component: MedicalNoteAddEditComponent,
         // canActivate: [AuthGuard],
       },

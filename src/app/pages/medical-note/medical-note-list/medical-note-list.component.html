@@ -2,98 +2,120 @@
   <div class="col-md-3">
     <form [formGroup]="formData">
       <div class="sidebar-bg">
-        <div class="mb-3">
-          <label>Tìm theo bệnh nhân</label>
-          <div class="{{isWaitList ? 'input-group' : ''}}">
-            <div class="input-group d-flex align-items-center">
-              <ng-select
-                class="flex-grow-1"
-                [items]="listKhachHang$ | async"
-                [typeahead]="searchKhachHangTerm$"
-                [minTermLength]="2"
-                formControlName="idPatient"
-                appendTo="body"
-                appearance="outline"
-                bindLabel="tenKhachHang"
-                bindValue="id"
-                placeholder="Nhập mã, mã vạch hoặc tên..."
-                notFoundText="Không tìm thấy mục nào"
-                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
-                (change)="onKhachHangSelectChange($event);searchKhachHangTerm$.next('')">
-                <ng-template ng-label-tmp let-item="item">
-                  <span *ngIf="item.tenKhachHang">{{item.tenKhachHang}}</span>
-                  <span *ngIf="!item.tenKhachHang">{{formData.value?.customer.tenKhachHang}}</span>
-                </ng-template>
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
-                </ng-template>
-              </ng-select>
-              <span *ngIf="isWaitList" class="input-group-btn">
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Tìm theo bệnh nhân</label>
+            </div>
+            <div class="col-md-9">
+              <div class="{{isWaitList ? 'input-group' : ''}}">
+                <div class="input-group d-flex align-items-center">
+                  <ng-select
+                    class="flex-grow-1"
+                    [items]="listKhachHang$ | async"
+                    [typeahead]="searchKhachHangTerm$"
+                    [minTermLength]="2"
+                    formControlName="idPatient"
+                    appendTo="body"
+                    appearance="outline"
+                    bindLabel="tenKhachHang"
+                    bindValue="id"
+                    placeholder="Nhập mã, mã vạch hoặc tên..."
+                    notFoundText="Không tìm thấy mục nào"
+                    typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                    (change)="onKhachHangSelectChange($event);searchKhachHangTerm$.next('')">
+                    <ng-template ng-label-tmp let-item="item">
+                      <span *ngIf="item.tenKhachHang">{{ item.tenKhachHang }}</span>
+                      <span *ngIf="!item.tenKhachHang">{{ formData.value?.customer.tenKhachHang }}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                      <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                    </ng-template>
+                  </ng-select>
+                  <span *ngIf="isWaitList" class="input-group-btn">
                   <button class="btn btn-primary" type="button" (click)="openAddEditCustomerDialog(null)">
                     <i class="fa-regular fa-plus"></i>
                   </button>
                 </span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </fieldset>
         <div *ngIf="formData.value?.customer"
              class="mb-3">
-          <p class="font-small">Số điện thoại : {{formData.value?.customer?.soDienThoai}}</p>
-          <p class="font-small">Tuổi: {{ formData.value?.customer?.birthDate ? calculateAge(formData.value?.customer.birthDate) : ''}}</p>
-          <p class="font-small">Địa chỉ: {{formData.value?.customer?.diaChi}}</p>
-          <p class="font-small">Nghề nghiệp: {{formData.value?.customer?.job}}</p>
+          <p class="font-small">Số điện thoại : {{ formData.value?.customer?.soDienThoai }}</p>
+          <p class="font-small">
+            Tuổi: {{ formData.value?.customer?.birthDate ? calculateAge(formData.value?.customer.birthDate) : '' }}</p>
+          <p class="font-small">Địa chỉ: {{ formData.value?.customer?.diaChi }}</p>
+          <p class="font-small">Nghề nghiệp: {{ formData.value?.customer?.job }}</p>
           <div class="d-flex align-items-center gap-10">
-            <a *ngIf="noteServiceCreateAndWrite" href="/management/service-note/add?customerId={{formData.value?.customer?.id}}" class="btn btn-primary flex-grow-1" target="_blank"
-                    title="Chỉ định">Chỉ định
+            <a *ngIf="noteServiceCreateAndWrite"
+               href="/management/service-note/add?customerId={{formData.value?.customer?.id}}"
+               class="btn btn-primary flex-grow-1" target="_blank"
+               title="Chỉ định">Chỉ định
             </a>
-            <a *ngIf="noteMedicalRead" class="btn btn-primary flex-grow-1" href="/management/medical-note/history-list?customerId={{formData.value?.customer?.id}}"
-                    title="Lịch sử khám chữa bệnh">LS khám
+            <a *ngIf="noteMedicalRead" class="btn btn-primary flex-grow-1"
+               href="/management/medical-note/history-list?customerId={{formData.value?.customer?.id}}"
+               title="Lịch sử khám chữa bệnh">LS khám
             </a>
             <button class="btn btn-primary flex-grow-1" (click)="openAddEditCustomerDialog(formData.value?.customer)"
                     title="Sửa thông tin bệnh nhân">Sửa
             </button>
           </div>
         </div>
-        <div class="mb-3">
-          <label>Trạng thái</label>
-          <ng-select
-            class="flex-grow-1"
-            appendTo="body"
-            appearance="outline"
-            [items]="listStatusNote"
-            formControlName="statusNote"
-            bindLabel="name"
-            bindValue="value"
-            placeholder="--Mặc định--"
-            notFoundText="Không tìm thấy mục nào"
-            (change)="searchPage()"
-          >
-            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-              <span [ngOptionHighlight]="search">{{ item.name }}</span>
-            </ng-template>
-          </ng-select>
-        </div>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Trạng thái</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                class="flex-grow-1"
+                appendTo="body"
+                appearance="outline"
+                [items]="listStatusNote"
+                formControlName="statusNote"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="--Mặc định--"
+                notFoundText="Không tìm thấy mục nào"
+                (change)="searchPage()"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
         <fieldset *ngIf="!isWaitList" class="mb-3">
-          <label>Trạng thái thanh toán</label>
-          <ng-select
-            class="flex-grow-1"
-            appendTo="body"
-            appearance="outline"
-            [items]="listPaymentStatus"
-            formControlName="isDeb"
-            bindLabel="name"
-            bindValue="value"
-            placeholder="--Tất cả--"
-            notFoundText="Không tìm thấy mục nào"
-          >
-            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-              <span [ngOptionHighlight]="search">{{ item.name }}</span>
-            </ng-template>
-          </ng-select>
+          <div class="row">
+            <div class="col-md-3">
+              <label>Trạng thái thanh toán</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                class="flex-grow-1"
+                appendTo="body"
+                appearance="outline"
+                [items]="listPaymentStatus"
+                formControlName="isDeb"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="--Tất cả--"
+                notFoundText="Không tìm thấy mục nào"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
         </fieldset>
         <fieldset class="baocao-filter mb-3">
           <app-date-range-filter
-            [filterType]="DATE_RANGE.ALL"
+            [filterType]="DATE_RANGE.BY_DATE"
             [fromDateControl]="'fromDateCreated'"
             [toDateControl]="'toDateCreated'"
             [isToday]="true"
@@ -126,12 +148,14 @@
 
         <ng-container matColumnDef="created">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            {{getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH ? 'Ngày tiếp nhận' : 'Ngày mua'}}
+            {{ getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH ? 'Ngày tiếp nhận' : 'Ngày mua' }}
           </th>
           <td mat-cell *matCellDef="let data">
             <div class="text-left">
-              <span *ngIf="data.statusNote == TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">{{ disableTimeClinic.activated ? (data.noteDate | appDate) : (data.noteDate | appDateTime) }}</span>
-              <span *ngIf="data.statusNote != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">{{ disableTimeClinic.activated ? (data.created | appDate) : (data.created | appDateTime) }}</span>
+              <span
+                *ngIf="data.statusNote == TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">{{ disableTimeClinic.activated ? (data.noteDate | appDate) : (data.noteDate | appDateTime) }}</span>
+              <span
+                *ngIf="data.statusNote != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">{{ disableTimeClinic.activated ? (data.created | appDate) : (data.created | appDateTime) }}</span>
             </div>
           </td>
         </ng-container>
@@ -139,14 +163,14 @@
         <ng-container matColumnDef="orderWait">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Phiếu chờ</th>
           <td mat-cell *matCellDef="let data" class="text-right">
-            {{ data.orderWait}}
+            {{ data.orderWait }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="noteNumber">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Phiếu khám</th>
           <td mat-cell *matCellDef="let data" class="text-right">
-            {{data.noteNumber}}
+            {{ data.noteNumber }}
           </td>
         </ng-container>
 
@@ -155,58 +179,58 @@
           <td mat-cell *matCellDef="let data" class="text-left">
             <b>Họ tên: </b>
             <a (click)="openCustomerDetailDialog(data.customer)">
-              {{data.customer?.tenKhachHang}}
+              {{ data.customer?.tenKhachHang }}
             </a><br>
-            <span><b>Tuổi:</b> {{ data.customer?.birthDate ? calculateAge(data.customer.birthDate) + ' (' + (data.customer.birthDate | appDate: 'yyyy') + ')' : ''}}</span><br>
-            <span><b>Giới tính: </b>{{data.customer?.sexId == 1 ? 'Nữ' : 'Nam'}}</span><br>
-            <span><b>Địa chỉ: </b>{{data.customer?.diaChi}}</span><br>
-            <span><b>SĐT: </b>{{data.customer?.soDienThoai}}</span><br>
+            <span><b>Tuổi:</b> {{ data.customer?.birthDate ? calculateAge(data.customer.birthDate) + ' (' + (data.customer.birthDate | appDate: 'yyyy') + ')' : '' }}</span><br>
+            <span><b>Giới tính: </b>{{ data.customer?.sexId == 1 ? 'Nữ' : 'Nam' }}</span><br>
+            <span><b>Địa chỉ: </b>{{ data.customer?.diaChi }}</span><br>
+            <span><b>SĐT: </b>{{ data.customer?.soDienThoai }}</span><br>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="createdByUseText">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Người tiếp nhận</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            {{data.createdByUseText}}
+            {{ data.createdByUseText }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="reasonExamination">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Lý do khám</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            {{data.reasonExamination}}
+            {{ data.reasonExamination }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="doctorName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Bác sỹ</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            {{data.doctorName}}
+            {{ data.doctorName }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="statusNote">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            {{getStatusName(data.statusNote)}}
+            {{ getStatusName(data.statusNote) }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="isDeb">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Thanh toán</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            {{data.isDeb ? 'Chưa thanh toán' : 'Đã thanh toán'}}
+            {{ data.isDeb ? 'Chưa thanh toán' : 'Đã thanh toán' }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="tenDichVu">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Liệu trình</th>
           <td mat-cell *matCellDef="let data" class="text-left">
-            <span><b>Dịch vụ: </b> {{data.tenDichVu}}</span><br>
-            <span><b>Số buổi: </b> {{(data.countNumbers * data.amount) | number}}</span><br>
-            <span><b>Số tiền: </b> {{(data.retailOutPrice * data.amount) | number}}</span><br>
-            <span><b>Số buổi sử dụng: </b> {{data.lastCountNumbers}}</span><br>
-            <span><b>Số buổi còn lại: </b> {{((data.countNumbers * data.amount - data.lastCountNumbers) > 0 ? (data.countNumbers * data.amount - data.lastCountNumbers) : 0) | number }}</span><br>
+            <span><b>Dịch vụ: </b> {{ data.dichVu?.tenThuoc }}</span><br>
+            <span><b>Số buổi: </b> {{ (data.countNumbers * data.amount) | number }}</span><br>
+            <span><b>Số tiền: </b> {{ (data.retailOutPrice * data.amount) | number }}</span><br>
+            <span><b>Số buổi sử dụng: </b> {{ data.lastCountNumbers }}</span><br>
+            <span><b>Số buổi còn lại: </b> {{ ((data.countNumbers * data.amount - data.lastCountNumbers) > 0 ? (data.countNumbers * data.amount - data.lastCountNumbers) : 0) | number }}</span><br>
           </td>
         </ng-container>
 
@@ -221,37 +245,42 @@
                    class="btn btn-sm btn-primary">Chỉ định</a>
               </div>
             </div>
-              <div class="baocao-actions baocao-actions-row" *ngIf="getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">
-                <div class="baocao-actions-item">
-                  <a *ngIf="noteMedicalRead && [TRANG_THAI_PHIEU_KHAM.DANG_KHAM, TRANG_THAI_PHIEU_KHAM.DA_KHAM].includes(data.statusNote)"
-                     class="btn btn-sm btn-primary"
-                     href="/management/medical-note/detail/{{data.id}}">Phiếu khám</a>
-                  <a *ngIf="noteMedicalCreateAndWrite && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
-                     class="btn btn-sm btn-primary"
-                     href="/management/medical-note/add/{{data.id}}">Khám bệnh</a>
-                </div>
-                <div class="baocao-actions-item">
-                  <button *ngIf="waitNoteCreateAndWrite"
-                          (click)="openAddEditNoteWaitDialog(data)"
-                          class="btn btn-sm btn-primary">Phiếu chờ</button>
-                  <button *ngIf="waitNotePrint && ((isWaitList && data.statusNote != TRANG_THAI_PHIEU_KHAM.DA_KHAM) || (!isWaitList && data.statusNote == TRANG_THAI_PHIEU_KHAM.DANG_KHAM))"
-                          (click)="onPrint(data)"
-                          class="btn btn-sm btn-primary"><i class="fas fa-print"></i></button>
-                  <a *ngIf="noteMedicalRead"
-                     href="/management/medical-note/history-list?customerId={{data.customer.id}}"
-                     target="_blank"
-                     class="btn btn-sm btn-primary"
-                     title="Lịch sử khám chữa bệnh">LS</a>
-                </div>
-                <div class="baocao-actions-item">
-                  <button *ngIf="waitNoteDeleteAndCancel" class="btn btn-sm btn-danger"
-                          (click)="delete('Bạn có chắc chắn muốn xóa phiếu số \'' + data.orderWait + '\' ?', data)">
-                    <i class="fa-regular fa-trash"></i></button>
-                  <button *ngIf="waitNoteDeleteAndCancel && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM" class="btn btn-sm btn-danger"
-                          (click)="cancel('Bạn có chắc chắn muốn huỷ phiếu số \'' + data.orderWait + '\' ?', data)">
-                    Huỷ</button>
-                </div>
+            <div class="baocao-actions baocao-actions-row" *ngIf="getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">
+              <div class="baocao-actions-item">
+                <a
+                  *ngIf="noteMedicalRead && [TRANG_THAI_PHIEU_KHAM.DANG_KHAM, TRANG_THAI_PHIEU_KHAM.DA_KHAM].includes(data.statusNote)"
+                  class="btn btn-sm btn-primary"
+                  href="/management/medical-note/detail/{{data.id}}">Phiếu khám</a>
+                <a *ngIf="noteMedicalCreateAndWrite && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
+                   class="btn btn-sm btn-primary"
+                   href="/management/medical-note/add/{{data.id}}">Khám bệnh</a>
               </div>
+              <div class="baocao-actions-item">
+                <button *ngIf="waitNoteCreateAndWrite"
+                        (click)="openAddEditNoteWaitDialog(data)"
+                        class="btn btn-sm btn-primary">Phiếu chờ
+                </button>
+                <button
+                  *ngIf="waitNotePrint && ((isWaitList && data.statusNote != TRANG_THAI_PHIEU_KHAM.DA_HUY) || (!isWaitList && data.statusNote == TRANG_THAI_PHIEU_KHAM.DANG_KHAM))"
+                  (click)="onPrint(data)"
+                  class="btn btn-sm btn-primary"><i class="fas fa-print"></i></button>
+                <a *ngIf="noteMedicalRead"
+                   href="/management/medical-note/history-list?customerId={{data.customer.id}}"
+                   target="_blank"
+                   class="btn btn-sm btn-primary"
+                   title="Lịch sử khám chữa bệnh">LS</a>
+              </div>
+              <div class="baocao-actions-item">
+                <button *ngIf="waitNoteDeleteAndCancel" class="btn btn-sm btn-danger"
+                        (click)="delete('Bạn có chắc chắn muốn xóa phiếu số \'' + data.orderWait + '\' ?', data)">
+                  <i class="fa-regular fa-trash"></i></button>
+                <button *ngIf="waitNoteDeleteAndCancel && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
+                        class="btn btn-sm btn-danger"
+                        (click)="cancel('Bạn có chắc chắn muốn huỷ phiếu số \'' + data.orderWait + '\' ?', data)">
+                  Huỷ
+                </button>
+              </div>
+            </div>
           </td>
         </ng-container>
 
@@ -264,7 +293,8 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();" [ngStyle]="{'background-color': getRowColor(row)}"></tr>
+        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"
+            [ngStyle]="{'background-color': getRowColor(row)}"></tr>
         <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
 
       </table>
