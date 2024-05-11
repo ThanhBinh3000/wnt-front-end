@@ -96,9 +96,9 @@ export abstract class BaseService {
     return this.httpClient.post(url, id, {responseType: 'blob'});
   }
 
-  preview(id: number) {
+  preview(body: any) {
     const url = `/api/${this.gateway}/${this.controller}/preview`;
-    return this.httpClient.post<ResponseData>(url, id).toPromise();
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
   downloadFile(fileName: any) {

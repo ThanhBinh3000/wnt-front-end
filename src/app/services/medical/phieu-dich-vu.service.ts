@@ -16,4 +16,9 @@ export class PhieuDichVuService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/search-page-lieu-trinh`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  searchPageChoThucHien(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/search-page-cho-thuc-hien`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

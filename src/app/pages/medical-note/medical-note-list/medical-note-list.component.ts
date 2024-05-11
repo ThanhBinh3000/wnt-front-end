@@ -17,6 +17,7 @@ import {KhachHangService} from "../../../services/customer/khach-hang.service";
 import {
   CustomerAddEditDialogComponent
 } from "../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component";
+import {calculateAge} from "../../../utils/date.utils";
 
 @Component({
   selector: 'app-medical-note-list',
@@ -69,7 +70,6 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
     private _service: PhieuKhamService,
     private phieuDichVuService: PhieuDichVuService,
     private khachHangService: KhachHangService,
-    private appDatePipe: AppDatePipe,
     private titleService: Title
   ) {
     super(injector, _service);
@@ -101,8 +101,20 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
   @ViewChild(MatSort) sort?: MatSort;
 
   async ngAfterViewInit() {
-    this.dataSource.sort = this.sort!;
-    await this.searchPage();
+    this.route.queryParams.subscribe(async params => {
+      const customerId = params['customerId'];
+      if (customerId) {
+        let res = await this.khachHangService.getDetail(customerId);
+        if (res?.status == STATUS_API.SUCCESS){
+          this.formData.patchValue({
+            idPatient: res.data.id,
+            customer: res.data
+          });
+        }
+      }
+      await this.searchPage();
+      this.dataSource.sort = this.sort!;
+    });
   }
 
   override async searchPage() {
@@ -183,26 +195,6 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
 
   getRowColor(item: any) {
     return this.getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH || (item.countNumbers * item.amount - item.lastCountNumbers) > 0 ? '' : '#ffcccc';
-  }
-
-  calculateAge(dateString: string): number {
-    // Chuyển chuỗi ngày sinh sang Date object
-    const birthDate = new Date(this.appDatePipe.transform(dateString, 'yyyy-MM-ddTHH:mm:ss'));
-    const today = new Date();
-
-    // Tính số năm chênh lệch giữa năm hiện tại và năm sinh
-    let age = today.getFullYear() - birthDate.getFullYear();
-
-    // Kiểm tra xem tháng/ngày của năm hiện tại có trùng hoặc vượt quá tháng/ngày của năm sinh không
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    const dayDifference = today.getDate() - birthDate.getDate();
-
-    // Điều chỉnh tuổi nếu sinh nhật của người đó chưa đến trong năm nay
-    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-      age--;
-    }
-
-    return age;
   }
 
   onPrint(item: any) {
@@ -307,4 +299,5 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
   protected readonly DATE_RANGE = DATE_RANGE;
   protected readonly TRANG_THAI_PHIEU_KHAM = TRANG_THAI_PHIEU_KHAM;
+  protected readonly calculateAge = calculateAge;
 }
