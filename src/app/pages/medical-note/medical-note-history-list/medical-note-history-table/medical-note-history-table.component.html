@@ -1,0 +1,117 @@
+<div class="mat-table-container">
+  <table mat-table
+         class="table table-striped table-bordered table-hover tr-ng-grid"
+         [dataSource]="getDataSource()" matSort>
+    <ng-container matColumnDef="checkBox">
+      <th mat-header-cell *matHeaderCellDef>
+        <input type="checkbox"
+               [(ngModel)]="allChecked"
+               (ngModelChange)="updateAllChecked()"
+               title="select row">
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-center">
+          <input type="checkbox"
+                 [(ngModel)]="data.checked"
+                 (ngModelChange)="updateSingleChecked()"
+                 title="select row">
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stt">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="text-left">
+          STT
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data; index as i;">
+        <div class="text-right">
+          {{ (page - 1) * pageSize + i + 1 }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="noteNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Số phiếu</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-right">
+          <a *ngIf="noteMedicalRead" href="/management/medical-note/detail/{{data.id}}">{{data.noteNumber}}</a>
+          <p *ngIf="!noteMedicalRead">{{data.noteNumber}}</p>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="noteDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày khám</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ disableTimeClinic.activated ? (data.noteDate | appDate) : (data.noteDate | appDateTime) }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="patientName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bệnh nhân</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">
+          <b>Họ tên: </b>
+          <a (click)="openCustomerDetailDialog(data.customer)">
+            {{data.customer?.tenKhachHang}}
+          </a><br>
+          <span><b>Tuổi:</b> {{ data.customer?.birthDate ? calculateAge(data.customer.birthDate) + ' (' + (data.customer.birthDate | appDate: 'yyyy') + ')' : ''}}</span><br>
+          <span><b>Giới tính: </b>{{data.customer?.sexId == 1 ? 'Nữ' : 'Nam'}}</span><br>
+          <span><b>Địa chỉ: </b>{{data.customer?.diaChi}}</span><br>
+          <span><b>SĐT: </b>{{data.customer?.soDienThoai}}</span><br>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctorName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bác sỹ khám</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">{{ data.doctorName }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="clinicalExamination">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Khám lâm sàng, triệu chứng</th>
+      <td mat-cell *matCellDef="let data" class="text-left">
+        {{data.clinicalExamination}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="diagnostic">
+      <th mat-header-cell *matHeaderCellDef>Chẩn đoán bệnh</th>
+      <td mat-cell *matCellDef="let data" class="text-left" [innerHTML]="getDiagnostics(data.diagnostics) | sanitizeHtml">
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="conclude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kết luận và hướng điều trị</th>
+      <td mat-cell *matCellDef="let data" class="text-left">
+        {{data.conclude}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="reexaminationDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tái khám</th>
+      <td mat-cell *matCellDef="let data">
+        <div class="text-left">
+          {{ data.reexaminationDate | appDate  }}
+          <span *ngIf="data.reexaminationDate && calculateDayFromDateRange(null, data.reexaminationDate) > 0"> (Sau {{calculateDayFromDateRange(null, data.reexaminationDate)}} ngày)</span></div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="footer">
+      <td mat-footer-cell *matFooterCellDef colspan="100">
+        <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                        (pageChange)="changePageIndex($event)"
+                        (pageSizeChange)="changePageSize($event)"></app-pagination>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+    <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+  </table>
+</div>

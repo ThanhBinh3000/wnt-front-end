@@ -20,12 +20,20 @@ import {
   MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable
 } from "@angular/material/table";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
+import {
+  MedicalNoteHistoryTableComponent
+} from "./medical-note-history-list/medical-note-history-table/medical-note-history-table.component";
+import {
+  ServiceNoteHistoryTableComponent
+} from "./medical-note-history-list/service-note-history-table/service-note-history-table.component";
 
 
 @NgModule({
   declarations: [
     MedicalNoteComponent,
     MedicalNoteListComponent,
+    MedicalNoteHistoryTableComponent,
+    ServiceNoteHistoryTableComponent,
     MedicalNoteHistoryListComponent,
     MedicalNoteAddEditComponent,
     MedicalNoteWaitAddEditDialogComponent
