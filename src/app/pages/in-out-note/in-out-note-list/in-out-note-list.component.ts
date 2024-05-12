@@ -7,7 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import {PhieuThuChiService} from '../../../services/thuchi/phieu-thu-chi.service';
 import {STATUS_API} from '../../../constants/message';
 import {UserProfileService} from '../../../services/system/user-profile.service';
-import {LOAI_THU_CHI, RECORD_STATUS} from "../../../constants/config";
+import {DATE_RANGE, LOAI_THU_CHI, RECORD_STATUS} from "../../../constants/config";
 import {NavigationExtras} from "@angular/router";
 import {
   OtherInOutNoteAddEditDialogComponent
@@ -262,4 +262,5 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
 
   protected readonly RECORD_STATUS = RECORD_STATUS;
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
+  protected readonly DATE_RANGE = DATE_RANGE;
 }

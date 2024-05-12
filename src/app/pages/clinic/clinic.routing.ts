@@ -10,7 +10,12 @@ const routes: Routes = [
     component: ClinicComponent,
     children: [
       {
-        path: 'clinic-list',
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full',
+      },
+      {
+        path: 'list',
         component: ClinicListComponent,
         // canActivate: [AuthGuard],
       }

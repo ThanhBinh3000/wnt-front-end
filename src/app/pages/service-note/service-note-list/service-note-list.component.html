@@ -21,6 +21,10 @@
                 notFoundText="Không tìm thấy mục nào"
                 typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
                 (change)="searchKhachHangTerm$.next('')">
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item.tenKhachHang">{{item.tenKhachHang}}</span>
+                  <span *ngIf="!item.tenKhachHang">{{formData.value?.customer.tenKhachHang}}</span>
+                </ng-template>
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
                 </ng-template>
@@ -122,9 +126,13 @@
           </div>
         </fieldset>
         <fieldset class="baocao-filter mb-3">
-          <app-date-range-filter [filterType]="0" (filterTypeChange)="changeFilterType($event)"
+          <app-date-range-filter [filterType]="DATE_RANGE.ALL"
+                                 [fromDateControl]="'fromDateCreate'"
+                                 [toDateControl]="'toDateCreate'"
+                                 (filterTypeChange)="changeFilterType($event)"
                                  (fromDateChange)="changeFromDate($event)"
-                                 (toDateChange)="changeToDate($event)"></app-date-range-filter>
+                                 (toDateChange)="changeToDate($event)"
+          ></app-date-range-filter>
           <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
                  class="btn btn-primary w-100" (click)="searchPage()">
         </fieldset>
@@ -132,7 +140,7 @@
           <label><b>Nhập/Xuất từ File</b></label>
           <div>
             <span class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                <input type="button" value="Xuất file" (click)="onExport()" class="btn btn-default w-100"/>
+                <input type="button" value="Xuất Excel" (click)="onExport()" class="btn btn-default w-100"/>
             </span>
           </div>
         </fieldset>

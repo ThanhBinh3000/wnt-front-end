@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-md-3">
+    <form [formGroup]="formData">
+      <div class="sidebar-bg">
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Nhóm bệnh nhân</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select appendTo="body"
+                         formControlName="maNhomKhachHang"
+                         appearance="outline"
+                         [items]="listNhomKhachHang"
+                         bindLabel="tenNhomKhachHang"
+                         bindValue="id"
+                         placeholder="--Tất cả--"
+                         notFoundText="Không tìm thấy mục nào">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{item.tenNhomKhachHang}}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Bệnh nhân</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                [items]="listKhachHang$ | async"
+                [typeahead]="searchKhachHangTerm$"
+                [minTermLength]="2"
+                formControlName="idPatient"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenKhachHang"
+                bindValue="id"
+                placeholder="Nhập mã, mã vạch hoặc tên..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="onKhachHangSelectChange($event);searchKhachHangTerm$.next('')">
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item.tenKhachHang">{{item.tenKhachHang}}</span>
+                  <span *ngIf="!item.tenKhachHang">{{formData.value?.customer.tenKhachHang}}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Chẩn đoán bệnh</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                [items]="listBenhBoYTe$ | async"
+                [typeahead]="searchBenhBoYTeTerm$"
+                [minTermLength]="2"
+                formControlName="diagnosticId"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Nhập mã, mã vạch hoặc tên..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchBenhBoYTeTerm$.next('')">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Loại ngày</label>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                class="flex-grow-1"
+                appendTo="body"
+                appearance="outline"
+                [items]="listDateType"
+                formControlName="dateType"
+                bindLabel="name"
+                bindValue="value"
+                notFoundText="Không tìm thấy mục nào"
+                [clearable]="false"
+                (change)="refreshDateControl($event)"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="baocao-filter mb-3">
+          <app-date-range-filter
+            [filterType]="DATE_RANGE.ALL"
+            [fromDateControl]="getFromDateControlName()"
+            [toDateControl]="getToDateControlName()"
+            (filterTypeChange)="changeFilterType($event)"
+            (fromDateChange)="changeFromDate($event)"
+            (toDateChange)="changeToDate($event)">
+          </app-date-range-filter>
+          <input type="button" value="Xem" id="btnDisplayDataByDateRange" name="btnDisplayDataByDateRange"
+                 class="btn btn-primary w-100" (click)="searchPage()">
+        </fieldset>
+        <fieldset class="mb-3">
+          <label><b>Nhập/Xuất từ File</b></label>
+          <div>
+            <span class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+                <input type="button" value="Xuất Excel" (click)="onExport()" class="btn btn-default w-100"/>
+            </span>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-9">
+    <div class="baocao-container box-group-white">
+      <h2 class="mb-3 d-block text-center"><b>{{ title }}</b></h2>
+      <ul class="nav nav-tabs">
+        <li [ngClass]="{'active': getNoteType() == LOAI_PHIEU.PHIEU_KHAM_BENH}">
+          <a data-toggle="tab" (click)="setNoteType(LOAI_PHIEU.PHIEU_KHAM_BENH)">Phiếu khám bệnh&nbsp;<span
+            class="label label-info pull-right">{{ medicalNoteHistoryTableComponent?.totalRecord }}</span></a>
+        </li>
+        <li [ngClass]="{'active': getNoteType() == LOAI_PHIEU.PHIEU_DICH_VU}">
+          <a data-toggle="tab" (click)="setNoteType(LOAI_PHIEU.PHIEU_DICH_VU)">Phiếu dịch vụ&nbsp;<span
+            class="label label-info pull-right">{{ serviceNoteHistoryTableComponent?.totalRecord }}</span></a>
+        </li>
+      </ul>
+      <div class="panel-body" [hidden]="getNoteType() !== LOAI_PHIEU.PHIEU_KHAM_BENH">
+        <medical-note-history-table
+          [formData]="formData"
+          [formDataChange]="formDataChange">
+        </medical-note-history-table>
+      </div>
+      <div class="panel-body" [hidden]="getNoteType() !== LOAI_PHIEU.PHIEU_DICH_VU">
+        <service-note-history-table
+          [formData]="formData"
+          [formDataChange]="formDataChange">
+        </service-note-history-table>
+      </div>
+    </div>
+  </div>
+</div>

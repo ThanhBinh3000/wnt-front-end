@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import {PhieuDichVuService} from "../../../services/medical/phieu-dich-vu.service";
 import {BaseComponent} from "../../../component/base/base.component";
 import {MatSort} from "@angular/material/sort";
-import {LOAI_SAN_PHAM, LOAI_THU_CHI} from "../../../constants/config";
+import {DATE_RANGE, LOAI_SAN_PHAM, LOAI_THU_CHI} from "../../../constants/config";
 import {SETTING} from "../../../constants/setting";
 import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
 import {STATUS_API} from "../../../constants/message";
@@ -60,7 +60,8 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
       noteNumber: [null], // searchType: 0
       idDoctor: [null], // searchType: 1
       performerId: [null], // searchType: 2
-      serviceId: [null] // searchType: 3
+      serviceId: [null], // searchType: 3
+      customer: [null]
     });
   }
 
@@ -73,7 +74,20 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
   @ViewChild(MatSort) sort?: MatSort;
 
   async ngAfterViewInit() {
-    this.dataSource.sort = this.sort!;
+    this.route.queryParams.subscribe(async params => {
+      const customerId = params['customerId'];
+      if (customerId) {
+        let res = await this.khachHangService.getDetail(customerId);
+        if (res?.status == STATUS_API.SUCCESS){
+          this.formData.patchValue({
+            idCus: res.data.id,
+            customer: res.data
+          });
+        }
+      }
+      await this.searchPage();
+      this.dataSource.sort = this.sort!;
+    });
   }
 
   getMaNhaThuoc() {
@@ -209,4 +223,5 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
+  protected readonly DATE_RANGE = DATE_RANGE;
 }

@@ -479,7 +479,7 @@ export class DeliveryNoteBarcodeScreenComponent extends BaseComponent implements
       var data = {
         id : this.formData.get('khachHang')?.value.id,
         name: this.formData.get('khachHang')?.value.tenKhachHang,
-        type : 'xuất'
+        typeId : LOAI_PHIEU.PHIEU_XUAT
       };
       const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
         data: data,

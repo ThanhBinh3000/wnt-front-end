@@ -31,7 +31,7 @@ import { TransactionDetailByObjectDialogComponent } from '../../../transaction/t
 export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
 
-  listBacSys: any[] = [];
+  listBacSys : any[] = [];
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
@@ -68,7 +68,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     private bacSiesService: BacSiesService,
     private datePipe: DatePipe,
     private paymentTypeService: PaymentTypeService,
-    private phieuXuatService: PhieuXuatService,
     private userProfileService: UserProfileService
   ) {
 
@@ -511,7 +510,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
         nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
         ngayTinhNo: this.formData.get('ngayXuat')?.value
       }
-      this.phieuXuatService.getTotalDebtAmountCustomer(bodyPX).then(res => {
+      this._service.getTotalDebtAmountCustomer(bodyPX).then(res => {
         if (res && res.status == STATUS_API.SUCCESS) {
           this.totalDebtAmount = res.data;
         }
@@ -624,7 +623,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       var data = {
         id: this.formData.get('khachHang')?.value.id,
         name: this.formData.get('khachHang')?.value.tenKhachHang,
-        type: 'xuất'
+        typeId : LOAI_PHIEU.PHIEU_XUAT
       };
       const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
         data: data,

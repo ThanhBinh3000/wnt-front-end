@@ -16,4 +16,19 @@ export class PhieuKhamService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/search-page-phieu-kham`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  getNewNoteWaitNumber() {
+    const url = `/api/${this.gateway}/${this.controller}/get-new-note-wait-number`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
+
+  createNoteWait(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/create-note-wait`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  updateNoteWait(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/update-note-wait`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

@@ -107,10 +107,6 @@ const routes: Routes = [
         loadChildren: () => import('../pages/notification/notification.module').then((m) => m.NotificationModule),
       },
       {
-        path: 'wait-note',
-        loadChildren: () => import('../pages/wait-note/wait-note.module').then((m) => m.WaitNoteModule),
-      },
-      {
         path: 'in-out-note',
         loadChildren: () => import('../pages/in-out-note/in-out-note.module').then((m) => m.InOutNoteModule),
       },

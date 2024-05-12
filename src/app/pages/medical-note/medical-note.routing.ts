@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from "../../guard/auth.guard";
 import { MedicalNoteComponent } from './medical-note.component';
-import { MedicalNoteListComponent } from './medical-note-list/medical-note-list.component';
+import { MedicalNoteHistoryListComponent } from './medical-note-history-list/medical-note-history-list.component';
 import { MedicalNoteAddEditComponent } from './medical-note-add-edit/medical-note-add-edit.component';
+import {MedicalNoteListComponent} from "./medical-note-list/medical-note-list.component";
 const routes: Routes = [
   {
     path: '',
@@ -11,16 +12,33 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'medical-note-list',
+        redirectTo: 'list',
         pathMatch: 'full',
       },
       {
-        path: 'medical-note-list',
+        path: 'list',
         component: MedicalNoteListComponent,
+        // canActivate: [AuthGuard],
+        data: { isWaitList: false }
+      },
+      {
+        path: 'wait-list',
+        component: MedicalNoteListComponent,
+        // canActivate: [AuthGuard],
+        data: { isWaitList: true }
+      },
+      {
+        path: 'history-list',
+        component: MedicalNoteHistoryListComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'medical-note-add-edit',
+        path: 'add',
+        component: MedicalNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit/:id',
         component: MedicalNoteAddEditComponent,
         // canActivate: [AuthGuard],
       },
