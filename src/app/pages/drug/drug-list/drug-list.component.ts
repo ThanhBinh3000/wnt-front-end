@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../component/base/base.component";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {ThuocService} from "../../../services/products/thuoc.service";
-import {STATUS_API} from "../../../constants/message";
+import {MESSAGE, STATUS_API} from "../../../constants/message";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";
 import {WarehouseLocationService} from "../../../services/products/warehouse-location-service";
 import {ProductTypesService} from "../../../services/products/product-types-service";
@@ -13,7 +13,6 @@ import { MatSort } from '@angular/material/sort';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import {UploadImageComponent} from "../../../component/upload-image/upload-image.component";
 import {UploadFileService} from "../../../services/file/upload-file.service";
-
 @Component({
   selector: 'drug-list',
   templateUrl: './drug-list.component.html',

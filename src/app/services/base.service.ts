@@ -91,9 +91,9 @@ export abstract class BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
-  export(id: number): Observable<Blob> {
+  export(body: any): Observable<Blob> {
     const url = `/api/${this.gateway}/${this.controller}/export`;
-    return this.httpClient.post(url, id, {responseType: 'blob'});
+    return this.httpClient.post(url, body, {responseType: 'blob'});
   }
 
   preview(id: number) {

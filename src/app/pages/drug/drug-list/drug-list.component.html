@@ -41,9 +41,9 @@
           <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
             <div style="display: none"><input id="uploadFile" name="uploadFile" type="file"><br></div>
             <input type="button" value="Tải File" title="Tải file"
-              ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
+                   (click)="export('drug-list.xlsx')"
               class="btn btn-default btn-outline" accept="Excel/*.xlsx">
-            <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+            <a class="btn btn-default btn-outline" (click)="export('drug-list.xlsx')">Xuất File</a>
           </div>
         </form>
       </fieldset>
