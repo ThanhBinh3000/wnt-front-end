@@ -87,10 +87,10 @@
         <form nzLayout="vertical">
           <div class="pull-right mb-2">
             <div class="d-flex gap-10 align-items-center">
-              <!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
-              <!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
-              <!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
-              <!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
+                  <div> Tổng khách nợ: <strong class="text-danger"> {{dataDetail.debtTotalAmount | number}}</strong></div>
+                  <div> Tổng thu: <strong class="text-danger"> {{dataDetail.inCommingTotalAmount | number}}</strong></div>
+                  <div> Tổng chi: <strong class="text-danger"> {{dataDetail.outCommingTotalAmount | number}}</strong></div>
+                  <div> Thu - Chi: <strong class="text-danger"> {{dataDetail.inCommingTotalAmount - dataDetail.outCommingTotalAmount | number}}</strong></div>
             </div>
           </div>
         </form>
@@ -113,45 +113,28 @@
           <tbody>
           <ng-container *ngFor="let data of dataTable; index as i;">
             <tr>
-              <td class="text-center">{{ (page - 1) * pageSize + i + 1 }}</td>
+              <td class="text-center">{{ data.order }}</td>
               <td class="text-left">
                 <a class="ng-binding">
-                  {{ data.loai }}
+                  {{ data.noteType }}
                 </a>
               </td>
-              <td class="text-left"> {{ data.thuTienMat | number }}</td>
-              <td class="text-left"> {{ data.thuChuyenKhoan | number }}</td>
-              <td class="text-left"> {{ data.chiTienMat | number }}</td>
-              <td class="text-left"> {{ data.chiChuyenKhoan | number }}</td>
-              <td class="text-left"> {{ data.ghiChu }}</td>
+              <td class="text-left"> {{ data.inCommingCashAmount ? (data.inCommingCashAmount | number) : 0 }}</td>
+              <td class="text-left"> {{ data.inCommingTransferAmount ? (data.inCommingTransferAmount | number) : 0 }}</td>
+              <td class="text-left"> {{ data.outCommingCashAmount ? (data.outCommingCashAmount | number) : 0 }}</td>
+              <td class="text-left"> {{ data.outCommingTransferAmount ? (data.outCommingTransferAmount | number) : 0 }}</td>
+              <td class="text-left"> {{ data.description }}</td>
             </tr>
           </ng-container>
           </tbody>
-          <ng-container *ngIf="dataTable.length > 0">
-            <tfoot>
-            <tr>
-              <th class="text-center">12</th>
-              <th class="text-left">
-                <a class="ng-binding">
-                  Tổng
-                </a>
-              </th>
-              <td class="text-left">{{ calcTong('thuTienMat') | number }}</td>
-              <td class="text-left">{{ calcTong('thuChuyenKhoan') | number }}</td>
-              <td class="text-left">{{ calcTong('chiTienMat') | number }}</td>
-              <td class="text-left">{{ calcTong('chiChuyenKhoan') | number }}</td>
-              <td class="text-left"></td>
-            </tr>
-            </tfoot>
-          </ng-container>
         </table>
         <form nzLayout="vertical" >
           <div class="pull-right mt-2">
             <div class="d-flex gap-10 align-items-center">
-              <!--              <div> Tổng khách nợ: <strong class="text-danger"> {{formData.value?.tongKhachNo | number}}</strong></div>-->
-              <!--              <div> Tổng thu: <strong class="text-danger"> {{formData.value?.tongThu | number}}</strong></div>-->
-              <!--              <div> Tổng chi: <strong class="text-danger"> {{formData.value?.tongChi | number}}</strong></div>-->
-              <!--              <div> Thu - Chi: <strong class="text-danger"> {{formData.value?.thuTruChi | number}}</strong></div>-->
+                <div> Tổng khách nợ: <strong class="text-danger"> {{dataDetail.debtTotalAmount | number}}</strong></div>
+                <div> Tổng thu: <strong class="text-danger"> {{dataDetail.inCommingTotalAmount | number}}</strong></div>
+                <div> Tổng chi: <strong class="text-danger"> {{dataDetail.outCommingTotalAmount | number}}</strong></div>
+                <div> Thu - Chi: <strong class="text-danger"> {{dataDetail.inCommingTotalAmount - dataDetail.outCommingTotalAmount | number}}</strong></div>
             </div>
           </div>
         </form>

@@ -5,6 +5,7 @@ import {MatSort} from "@angular/material/sort";
 import {ReportDetailsBydayService} from "../../../services/report/Report-Details-Byday.service";
 import {DatePipe} from "@angular/common";
 import {MESSAGE, STATUS_API} from "../../../constants/message";
+import {ReportService} from "../../../services/report/report.service";
 
 @Component({
   selector: 'RevenueDetailsByDay',
@@ -12,7 +13,7 @@ import {MESSAGE, STATUS_API} from "../../../constants/message";
   styleUrls: ['./RevenueDetailsByDay.component.css'],
 })
 export class RevenueDetailsByDayComponent extends BaseComponent implements OnInit {
-  title: string = "Báo cáo doanh thu chi tiết theo ngày";
+  title: string = " Báo cáo doanh thu chi tiết theo ngày";
   filterTransactionType: any = 1;
   optioncheck: any;
 
@@ -20,7 +21,7 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
     injector: Injector,
     private titleService: Title,
     private datePipe: DatePipe,
-    private _service: ReportDetailsBydayService,
+    private _service: ReportService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
@@ -51,7 +52,7 @@ export class RevenueDetailsByDayComponent extends BaseComponent implements OnIni
         limit: this.pageSize,
         page: this.page - 1
       }
-      let res = await this._service.DetailsByDay(body);
+      let res = await this._service.getRevenueDrugSynthesis(body);
       if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
         this.dataTable = data;
