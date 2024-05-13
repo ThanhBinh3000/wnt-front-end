@@ -1,0 +1,133 @@
+<div class="mat-table-container">
+    <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid" [dataSource]="getDataSource()"
+        matSort>
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef>
+                Stt
+            </th>
+            <td mat-cell *matCellDef="let data; index as i;">
+                <div class="text-center">
+                    <div class="text-right">
+                        {{ (page - 1) * pageSize + i + 1 }}
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ngay">
+            <th mat-header-cell *matHeaderCellDef>
+                <div class="text-left">
+                    Ngày
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let data; index as i;">
+                <div class="text-right">
+                    {{data.ngayXuat | appDateTime}}
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="soPhieu">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Số phiếu</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-right">
+                    <a href="{{getUrlDetail(data)}}">{{data.soPhieuXuat}}</a>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="khachHang">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Khách hàng</th>
+            <td mat-cell *matCellDef="let data">
+                {{getDataKhachHang(data)}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="loaiPhieu">
+            <th mat-header-cell *matHeaderCellDef>Loại phiếu</th>
+            <td mat-cell *matCellDef="let data">
+                {{getDataLoaiPhieu(data)}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tenThuoc">
+            <th mat-header-cell *matHeaderCellDef>Tên thuốc</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.tenThuocText }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="donVi">
+            <th mat-header-cell *matHeaderCellDef>Đơn vị</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.donViTinhMaDonViTinhText }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="soLuong">
+            <th mat-header-cell *matHeaderCellDef>
+                <div *ngIf="formData.value?.thuocThuocIds.length != 1">Số lượng</div>
+                <div *ngIf="formData.value?.thuocThuocIds.length == 1">
+                    Số lượng
+                    <p>
+                        {{formData.value?.drugDefault.tenDonViTinhXuatLe}}
+                    </p>
+                    <p class="number-value">Σ =
+                        {{getTotalXuat() | number}}
+                    </p>
+                </div>
+
+            </th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.soLuong | number}}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="donGia">
+            <th mat-header-cell *matHeaderCellDef>Đơn giá</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ data.giaXuat | number}}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="c.k">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>C.K</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ data.chietKhau | number }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="vat">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>VAT</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ data.vat | number }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="loHan">
+            <th mat-header-cell *matHeaderCellDef>Lô/Hạn</th>
+            <td mat-cell *matCellDef="let data">
+                <span>{{ data.soLo}}</span> <br />
+                <span *ngIf="data.hanDung">{{ data.hanDung | appDate}}</span>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="sdk">
+            <th mat-header-cell *matHeaderCellDef>Số đăng ký</th>
+            <td mat-cell *matCellDef="let data">
+                <span>{{ data.soDangKy}}</span>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="thanhTien">
+            <th mat-header-cell *matHeaderCellDef>Thành tiền</th>
+            <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ (data.giaXuat * data.soLuong) | number}}</div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+            <td mat-footer-cell *matFooterCellDef colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                    (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+        <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+    </table>
+</div>

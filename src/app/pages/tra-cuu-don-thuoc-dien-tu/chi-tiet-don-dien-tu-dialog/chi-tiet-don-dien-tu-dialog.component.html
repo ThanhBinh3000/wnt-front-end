@@ -1,0 +1,104 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header border-bottom-header">
+            <button type="button" class="close" (click)="closeModal()"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+        <div>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <p>Tên đơn vị: <strong>{{thongTinDon.tenCoSoKhamChuaBenh}}</strong></p>
+                    <p>Địa chỉ: <strong>{{thongTinDon.diaChiCoSoKhamChuaBenh}}</strong></p>
+                </div>
+                <div class="col-md-6 text-right">
+                    Mã đơn thuốc:&emsp;<strong class="code-sample">{{thongTinDon.maDonThuoc}}</strong>
+                </div>
+            </div>
+            <div class="col-md-12 text-center pading-bottom"><h3 style="color: #191C74 !important;">{{onTilteSampleNote(thongTinDon.loaiDonThuoc)}}</h3></div>
+            <div class="col-md-12 pading-bottom">
+                <div class="col-md-3">Họ tên: {{thongTinDon.hoTenBenhNhan}}</div>
+                <div class="col-md-3">Ngày sinh: {{thongTinDon.ngaySinhBenhNhan}}</div>
+                <div class="col-md-3">Cân nặng: {{thongTinDon.canNang}}</div>
+                <div class="col-md-3">Giới tính: {{thongTinDon.gioiTinh == 2 ? 'Nam' : 'Nữ'}}</div>
+            </div>
+            <div class="col-md-12 pading-bottom">
+                <div class="col-md-3">Mã số BHYT(nếu có): {{thongTinDon.maSoTheBaoHiemYTe}}</div>
+                <div class="col-md-3">CMT/CCCD (nếu có): {{thongTinDon.canCuocCongDan}}</div>
+                <div class="col-md-3">Mã định danh y tế: {{thongTinDon.maDinhDanhYTe}}</div>
+                <div class="col-md-3">Số điện thoại: {{thongTinDon.soDienThoai}}</div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">Mã định danh công dân: {{thongTinDon.maDinhDanhCongDan}}</div>
+                <div class="col-md-6">Địa chỉ liên hệ: {{thongTinDon.diaChi}}</div>
+            </div>
+            <div class="col-md-12">
+                <p>Chẩn đoán</p>
+                <table class="table table-striped table-responsive table-hover">
+                    <tr>
+                        <th>Mã</th>
+                        <th>Chẩn đoán</th>
+                        <th>Kết luận</th>
+                    </tr>
+                    <tr *ngFor="let item of thongTinDon.chanDoan">
+                        <td>{{item.maChanDoan}}</td>
+                        <td>{{item.tenChanDoan}}</td>
+                        <td>{{item.ketLuan}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-show="isDrugUsePriod" *ngFor="let item of thongTinDon.dotDungThuoc">
+                <div class="col-md-12">Đợt dùng thuốc:</div>
+                <div class="col-md-3">
+                    Đợt: {{item.dot}}
+                </div>
+                <div class="col-md-3">
+                    Từ ngày: {{item.tuNgay}}
+                </div>
+                <div class="col-md-3">
+                    Đến ngày: {{item.denNgay}}
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <p>Lưu ý: {{thongTinDon.luuY}}</p>
+                <p>Hình thức điều trị &emsp;<span><input type="radio" disabled [checked]="thongTinDon.hinhThucDieuTri == 1" />Nội trú</span>&emsp;
+                    <span><input type="radio" disabled [checked]="thongTinDon.hinhThucDieuTri == 2" />Ngoại trú</span></p>
+                <p>Thuốc điều trị</p>
+                <table class="table table-striped table-responsive table-hover">
+                    <tr>
+                        <th>Mã thuốc</th>
+                        <th>Hoạt chất</th>
+                        <th>Tên thuốc</th>
+                        <th>ĐVT</th>
+                        <th>SL</th>
+                        <th>Cách dùng</th>
+                        <th>Đã bán</th>
+                    </tr>
+                    <tr *ngFor="let item of thongTinDon.thongTinDonThuoc">
+                        <td>{{item.maThuoc}}</td>
+                        <td>{{item.bietDuoc}}</td>
+                        <td>{{item.tenThuoc}}</td>
+                        <td>{{item.donViTinh}}</td>
+                        <td>{{item.soLuong}}</td>
+                        <td>{{item.cachDung}}</td>
+                        <td>{{item.daBan}}</td>
+                    </tr>
+                </table>
+                <p><label>Lời dặn:&emsp;</label>{{thongTinDon.loiDan}}</p>
+                <p class="text-right">Ngày {{thongTinDon.ngayGioKeDon}}</p>
+                <p class="text-right">Bác sỹ {{thongTinDon.tenBacSi}}</p>
+                <p>
+                    Lịch tái khám sau {{thongTinDon.ngayTaiKham ? thongTinDon.ngayTaiKham : '........'}} ngày hoặc khi có biểu hiện bất thường
+                </p>
+                <p>
+                    Khám lại mang theo đơn này
+                </p>
+                <p>Tên bố hoặc mẹ của trẻ hoặc người đưa trẻ đến khám chữa bệnh</p>
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-width">
+            <button type="button" class="btn btn-primary" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>

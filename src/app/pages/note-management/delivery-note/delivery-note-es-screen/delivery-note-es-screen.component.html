@@ -40,7 +40,7 @@
                             <table>
                                 <tr>
                                     <td>Mã đơn </td>
-                                    <td><input type="text" id="txtSearch" style="width: 50%;" readonly="action =='view'"
+                                    <td><input type="text" id="txtSearch" style="width: 50%;" [disabled]="action =='view'"
                                         class="form-control" formControlName="esampleNoteCode"
                                         (change)="getThongTinDOnDienTu()" placeholder="Mã đơn thuốc điện tử"></td>
                                 </tr>
