@@ -9,6 +9,7 @@ import { CustomerModule } from '../customer/customer.module';
 import { DoctorModule } from '../doctor/doctor.module';
 import { ComponentsModule } from '../../component/base/components.module';
 import { SampleNoteDetailComponent } from './sample-note-detail/sample-note-detail.component';
+import { DrugUpdateInfoUseDialogComponent } from './drug-update-info-use-dialog/drug-update-info-use-dialog.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { SampleNoteDetailComponent } from './sample-note-detail/sample-note-deta
     SampleNoteComponent,
     SampleNoteListComponent,
     SampleNoteAddEditComponent,
-    SampleNoteDetailComponent
+    SampleNoteDetailComponent,
+    DrugUpdateInfoUseDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule, ComponentsModule],
   exports: [],

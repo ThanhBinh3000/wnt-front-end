@@ -18,6 +18,7 @@ import { ThuocService } from '../../../services/products/thuoc.service';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import { DrugDetailDialogComponent } from '../../drug/drug-detail-dialog/drug-detail-dialog.component';
 import { EsDiagnoseService } from '../../../services/categories/esdiagnose.service';
+import { DrugUpdateInfoUseDialogComponent } from '../drug-update-info-use-dialog/drug-update-info-use-dialog.component';
 
 @Component({
   selector: 'sample-note-add-edit',
@@ -26,7 +27,7 @@ import { EsDiagnoseService } from '../../../services/categories/esdiagnose.servi
 })
 export class SampleNoteAddEditComponent extends BaseComponent implements OnInit {
   title: string = "Thông tin chung đơn/liều mẫu";
-  displayedColumns = ['checkbox', '#', 'maThuoc', 'tenThuoc', 'donVi', 'soLuong', 'ghiChu', 'giaBan', 'tongTien', 'action'];
+  displayedColumns: string[] = [];
   listTypeSample: any[] = [];
   listTypeSample3214: any[] = [];
   listTypeFormOfTreatment: any[] = [];
@@ -37,9 +38,14 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   searchThuocTerm$ = new Subject<string>();
   listDiagnose$ = new Observable<any[]>;
   searchDiagnoseTerm$ = new Subject<string>();
+  browserList = ['Ngày uống 3 gói chia 3 lần trước ăn sáng -trưa - tối trước khi ngủ',
+    'Ngày 4 viên chia 2 lần sau ăn',
+    'Ngày 1 viên sau ăn sáng',
+    'Ngày 1 viên trước ăn sáng',
+    'Ngày 4 viên chia 2 lần trước ăn 30 phút',
+    'Đặt âm đạo 1 viên trước khi đi ngủ',
+    'Ngày uống 2 viên trước sau sáng'];
 
-  action: string = "create";
-  isClinic: boolean = false;
   isConnect: boolean = false;
   deviceType: number = 0;
 
@@ -48,6 +54,9 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   useCustomerCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
   useSampleNoteFromParent = this.authService.getSettingByKey(SETTING.USE_SAMPLE_NOTE_FROM_PARENT);
   warningOfInventory = this.authService.getSettingByKey(SETTING.NEGATIVE_PRESCRIBING_ARE_NOT_ALLOW);
+  useClinicIntegration = this.authService.getSettingByKey(SETTING.USE_CLINIC_INTEGRATION);
+  applyMultipleDosesOfMedication = this.authService.getSettingByKey(SETTING.APPLY_MULTIPLE_DOSES_OF_MEDICATION);
+  refStoreCode = this.authService.getSettingByKey(SETTING.REF_STORE_FOR_PRODUCTS);
 
   constructor(
     injector: Injector,
@@ -79,7 +88,22 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
       diagnosticIds: [''],
       amount: [''],
       recordStatusID: [0],
+      isConnect: [false],
     })
+  }
+
+  getDisplayedColumns() {
+    var val = ['checkbox', '#', 'maThuoc', 'tenThuoc', 'donVi', 'soLuong', 'ton', 'dotDungThuoc', 'ghiChu', 'giaBan', 'tongTien', 'action'];
+    if (!this.useClinicIntegration.activated || this.authService.getNhaThuoc().isConnectivity) {
+      val = val.filter(e => e !== 'ton');
+    }
+    if (!this.formData.value?.isConnect) {
+      val = val.filter(e => e !== 'dotDungThuoc');
+    }
+    else {
+      val = val.filter(e => e !== 'giaBan' && e !== 'tongTien');
+    }
+    return val;
   }
 
   @ViewChildren('pickerNoteDate') pickerNoteDate!: Date;
@@ -89,18 +113,21 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   async ngOnInit() {
-    this.titleService.setTitle(this.title);
-    this.getDataFilter();
+    this.route.data.subscribe((data: any) => {
+      this.formData.patchValue({
+        isConnect: data.isConnect,
+      });
+    });
     this.getId();
     if (this.idUrl) {
       let data = await this.detail(this.idUrl)
       console.log(data);
       this.formData.patchValue(data);
-      if(data.patientId > 0){
-        this.listKhachHang$ = of([{id: data.patientId, tenKhachHang: data.patientName}]);
+      if (data.patientId > 0) {
+        this.listKhachHang$ = of([{ id: data.patientId, tenKhachHang: data.patientName }]);
       }
       this.listDiagnose$ = of(data.diagnostics);
-      this.formData.patchValue({ chanDoanIds: data.diagnosticIds.split(',').map(Number) });
+      this.formData.patchValue({ chanDoanIds: data.diagnosticIds?.split(',').map(Number) });
       data.chiTiets.forEach(item => {
         item.listDonViTinhs = item.thuocs.listDonViTinhs;
         item.tenThuoc = item.thuocs.tenThuoc;
@@ -110,6 +137,15 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
       });
       this.dataTable.push(...data.chiTiets);
     }
+    else {
+      if (this.formData.value?.isConnect) {
+        this.formData.patchValue({ typeId: "c", formOfTreatment: 2 });
+      }
+    }
+    this.displayedColumns = this.getDisplayedColumns();
+    this.title = this.formData.value?.isConnect ? 'Thông tin chung đơn/liều mẫu LT' : 'Thông tin chung đơn/liều mẫu';
+    this.titleService.setTitle(this.title);
+    this.getDataFilter();
   }
 
   getDataFilter() {
@@ -193,7 +229,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
           return from(this.diagnoseService.searchPage(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
               console.log(res.data.content);
-              return res.data.content;    
+              return res.data.content;
             }
           }));
         } else {
@@ -213,7 +249,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   onChangeThuoc($event: any) {
-    if(this.dataTable.filter(x => x.drugID == $event.id).length > 0) {
+    if (this.dataTable.filter(x => x.drugID == $event.id).length > 0) {
       this.notification.error(MESSAGE.ERROR, 'Thuốc đã tồn tại trong danh sách');
       return;
     }
@@ -233,8 +269,12 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
           quantity: 1,
           tonKho: data.inventory ? data.inventory.lastValue : 0,
           heSo: data.heSo,
+          fromDate: '',
+          toDate: '',
+          batch: '',
+          numberOfPotionBars: '',
         };
-        if (item.tonKho == 0 && this.warningOfInventory.activated) {
+        if (this.useClinicIntegration.activated && !this.isConnect && this.formData && item.tonKho == 0 && this.warningOfInventory.activated) {
           this.modal.confirm({
             closable: false,
             title: 'Xác nhận',
@@ -316,10 +356,18 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
     body.chiTiets = this.dataTable;
     this.save(body).then(res => {
       if (res) {
-        this.router.navigate(['/management/sample-note/sample-note-list']);
+        this.router.navigate(['/management/sample-note/list']);
       }
     });
   }
+
+  getBatchDateCss(item: any) {
+    if (!item) return '';
+
+    if (!item.fromDate || !item.foDate || item.batch <= 0 || (!item.numberOfPotionBars && this.formData.value?.typeId == 'y')) return '';
+
+    return 'color: lightseagreen;';
+  };
 
   async openDoctorAddEditDialog() {
     const dialogRef = this.dialog.open(DoctorAddEditDialogComponent, {
@@ -363,6 +411,46 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
     this.dialog.open(DrugDetailDialogComponent, {
       data: drugId,
       width: '600px',
+    });
+  }
+
+  async openDrugUpdateInfoUseDialog(item: any, type: string) {
+    var data = {};
+    if (type == 'only') {
+      data = { type: 'only', sampleItem: item };
+    }
+    else {
+      console.log(this.dataTable);
+      if (this.dataTable.filter(x => x.checked).length == 0) {
+        this.notification.error(MESSAGE.ERROR, 'Hãy chọn thuốc muốn áp dụng đợt dùng thuốc.');
+        return;
+      }
+      data = { type: 'all', sampleItem: {} };
+    }
+    const dialogRef = this.dialog.open(DrugUpdateInfoUseDialogComponent, {
+      width: '600px',
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        if (type == 'only') {
+          item.fromDate = result.fromDate;
+          item.toDate = result.toDate;
+          item.batch = result.batch;
+          item.numberOfPotionBars = result.numberOfPotionBars;
+        }
+        else {
+          this.dataTable.forEach(item => {
+            if (item.checked) {
+              item.fromDate = result.fromDate;
+              item.toDate = result.toDate;
+              item.batch = result.batch;
+              item.numberOfPotionBars = result.numberOfPotionBars;
+              item.comment = result.comment;
+            }
+          });
+        }
+      }
     });
   }
 }
