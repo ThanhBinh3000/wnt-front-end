@@ -18,6 +18,7 @@ export class ChiTietDonDienTuDialogComponent {
   async ngOnInit() {
     console.log(this.thongTinDon);
   }
+  
   onTilteSampleNote(type: any) {
     var val = '';
     if (type == 'c') {
