@@ -12,26 +12,33 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'sample-note-list',
+        redirectTo: 'list',
         pathMatch: 'full',
       },
       {
-        path: 'sample-note-list',
+        path: 'list',
         component: SampleNoteListComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'sample-note-add-edit',
+        path: 'add',
+        component: SampleNoteAddEditComponent,
+        data: { isConnect: false },
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'add-isConnect',
+        component: SampleNoteAddEditComponent,
+        data: { isConnect: true },
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit/:id',
         component: SampleNoteAddEditComponent,
         // canActivate: [AuthGuard],
       },
       {
-        path: 'sample-note-add-edit/:id',
-        component: SampleNoteAddEditComponent,
-        // canActivate: [AuthGuard],
-      },
-      {
-        path: 'sample-note-detail/:id',
+        path: 'detail/:id',
         component: SampleNoteDetailComponent,
         // canActivate: [AuthGuard],
       },

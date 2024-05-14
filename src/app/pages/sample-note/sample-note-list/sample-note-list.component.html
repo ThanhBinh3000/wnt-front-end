@@ -49,7 +49,7 @@
         <fieldset>
           <span class="control-group d-flex justify-content-between gap-10 btn-group-flex">
             <span type="button" class="btn btn-primary w-50">Xuất excel</span>
-            <a type="button" href="/management/sample-note/sample-note-add-edit" class="btn btn-primary w-50">Thêm
+            <a type="button" href="/management/sample-note/add" class="btn btn-primary w-50">Thêm
               mới</a>
           </span>
         </fieldset>
@@ -66,7 +66,7 @@
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef> #</th>
           <td mat-cell *matCellDef="let data; index as i;">
-            <a href="/management/sample-note/sample-note-detail/{{data.id}}">
+            <a href="/management/sample-note/detail/{{data.id}}">
               {{ (page - 1) * pageSize + i + 1 }}
             </a>
           </td>
@@ -121,7 +121,7 @@
           <td mat-cell *matCellDef="let data">
             <div class="baocao-actions baocao-actions-row">
               <div class="baocao-actions-item">
-                <a href="/management/sample-note/sample-note-add-edit/{{data.id}}"
+                <a href="/management/sample-note/edit/{{data.id}}"
                   class="btn btn-sm btn-primary flex-grow-1" title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
                 <a ng-if="permittedFields.SampleNote_Delete" href="javascript:;"
                   class="btn btn-sm btn-danger flex-grow-1"
