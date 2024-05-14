@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { PhieuNhapChiTietService } from '../../../../services/inventory/phieu-nhap-chi-tiet.service';
 import { MatSort } from '@angular/material/sort';
 import { LOAI_PHIEU, RECORD_STATUS } from '../../../../constants/config';
+import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
 
 @Component({
   selector: 'transaction-history-receipt-item-table',
@@ -100,5 +101,12 @@ export class TransactionHistoryReceiptItemTableComponent extends BaseComponent i
 
   getTotalNhap(){
     return this.dataTable.reduce((acc, val) => acc += (val.retailQuantity), 0);
+  }
+
+  openDetailDialog(drugId: any) {
+    this.dialog.open(DrugDetailDialogComponent, {
+      data: drugId,
+      width: '600px',
+    });
   }
 }

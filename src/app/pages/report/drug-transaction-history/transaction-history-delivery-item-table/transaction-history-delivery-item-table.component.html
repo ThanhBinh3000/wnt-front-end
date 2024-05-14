@@ -53,7 +53,7 @@
         <ng-container matColumnDef="tenThuoc">
             <th mat-header-cell *matHeaderCellDef>Tên thuốc</th>
             <td mat-cell *matCellDef="let data">
-                <div class="text-left">{{ data.tenThuocText }}</div>
+                <div class="text-left"><a (click)="openDetailDialog(data.thuocThuocId)">{{ data.tenThuocText }}</a></div>
             </td>
         </ng-container>
         <ng-container matColumnDef="donVi">

@@ -13,9 +13,8 @@
                            notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next('');">
                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
                                <span *ngIf="item.tenThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
-                               <span *ngIf="item.tenThuoc" class="ng-value-icon right text-danger" (click)="clear(item)">×</span>
                                <span *ngIf="!item.tenThuoc">{{formData.value?.drugDefault.maThuoc}}-{{formData.value?.drugDefault.tenThuoc}}</span>
-                               <span *ngIf="!item.tenThuoc" class="ng-value-icon right text-danger" (click)="clear(formData.value?.drugDefault)">×</span>
+                               <span class="ng-value-icon right text-danger" (click)="clear(item)">×</span>
                                
                            </ng-template>
                            <ng-template ng-option-tmp let-item="item" let-index="index"

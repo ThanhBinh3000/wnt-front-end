@@ -11,6 +11,7 @@ import { STATUS_API } from '../../../constants/message';
 import { DATE_RANGE, LOAI_PHIEU, LOAI_SAN_PHAM } from '../../../constants/config';
 import { TransactionHistoryDeliveryItemTableComponent } from './transaction-history-delivery-item-table/transaction-history-delivery-item-table.component';
 import { TransactionHistoryReceiptItemTableComponent } from './transaction-history-receipt-item-table/transaction-history-receipt-item-table.component';
+import { DrugDetailDialogComponent } from '../../drug/drug-detail-dialog/drug-detail-dialog.component';
 
 @Component({
   selector: 'app-drug-transaction-history',
@@ -25,7 +26,6 @@ export class DrugTransactionHistoryComponent extends BaseComponent implements On
   @ViewChild(TransactionHistoryReceiptItemTableComponent) transactionHistoryReceiptItemTableComponent?: TransactionHistoryReceiptItemTableComponent;
   formDataChange = new EventEmitter();
   
-  listNhaThuoc: any[] = [];
   listThuoc$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
   checkTab: string = 'receipt';

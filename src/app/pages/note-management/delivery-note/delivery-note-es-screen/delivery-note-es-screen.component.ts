@@ -464,6 +464,11 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
     }
   }
 
+  @ViewChild('inputSearchCode') inputSearchCode!: NgSelectComponent;
+  async focusInpuSearchCode() {
+    this.inputSearchCode?.focus();
+  }
+
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
   async focusSearchDrug() {
     this.selectDrug?.focus();
