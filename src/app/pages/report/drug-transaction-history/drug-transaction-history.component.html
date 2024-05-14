@@ -1,78 +1,105 @@
 <div>
     <div>
         <div class="row">
-            <div class="col-md-3 baocao-filter">
-                <div class="sidebar-bg">
-                    <fieldset class="mb-3">
-                       <label>Mặt hàng</label>
-                       <input class="form-control" type="text"/>
-                    </fieldset>
-                    <div class="form-check mb-3" ng-show="!viewModel.ReportDetailsByGoods">
-                        <input type="checkbox" class="form-check-input form-control" ng-change="onStatusChange()" ng-model="isArchive" />
-                        <label class="form-check-label">Dữ liệu đóng băng</label>
+            <form [formGroup]="formData">
+                <div class="col-md-3 baocao-filter">
+                    <div class="sidebar-bg">
+                        <fieldset class="mb-3">
+                           <label>Mặt hàng</label>
+                           <ng-select appendTo="body" appearance="outline"
+                           [items]="listThuoc$ | async" formControlName="thuocThuocIds"
+                           [typeahead]="searchThuocTerm$" [multiple]="true" bindValue="id" [minTermLength]="2"
+                           appendTo="body" appearance="outline" placeholder="Tra cứu theo tên, mã, mã vạch..."
+                           notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next('');">
+                           <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                               <span *ngIf="item.tenThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                               <span *ngIf="!item.tenThuoc">{{formData.value?.drugDefault.maThuoc}}-{{formData.value?.drugDefault.tenThuoc}}</span>
+                               <span class="ng-value-icon right text-danger" (click)="clear(item)">×</span>
+                               
+                           </ng-template>
+                           <ng-template ng-option-tmp let-item="item" let-index="index"
+                               let-search="searchTerm">
+                               <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{ item.tenThuoc }}</span>
+                           </ng-template>
+                       </ng-select>
+                        </fieldset>
+                        <div class="form-check mb-3" ng-show="!viewModel.ReportDetailsByGoods">
+                            <input type="checkbox" class="form-check-input form-control" ng-change="onStatusChange()" ng-model="isArchive" />
+                            <label class="form-check-label">Dữ liệu đóng băng</label>
+                        </div>
+                        <fieldset class="mb-3">
+                            <input type="text" placeholder="Nhập số lô vào đây..." formControlName="soLo" class="form-control mb-0" ng-model="batchNumber" style="width: 100%" />
+                        </fieldset>
+                        <fieldset class="mb-3">
+                           <input type="text" placeholder="Nhập hạn dùng vào đây..." formControlName="hanDung" class="form-control mb-0" ng-model="expiredDate" style="width: 100%" id="expired-date-id" />
+                        </fieldset>
+                        <fieldset class="baocao-filter mb-3">
+                            <app-date-range-filter 
+                                [filterType]="DATE_RANGE.BY_DATE"
+                                (filterTypeChange)="changeFilterType($event)"
+                                (fromDateChange)="changeFromDate($event)"
+                                (toDateChange)="changeToDate($event)"></app-date-range-filter>
+                            <input type="button" value="Xem" id="btnDisplayDataByDateRange"
+                                name="btnDisplayDataByDateRange" (click)="searchPage()" class="btn btn-primary w-100">
+                        </fieldset>
                     </div>
-                    <fieldset class="mb-3">
-                        <input type="text" placeholder="Nhập số lô vào đây..." class="form-control mb-0" ng-model="batchNumber" style="width: 100%" />
-                    </fieldset>
-                    <fieldset class="mb-3">
-                       <input type="text" placeholder="Nhập hạn dùng vào đây..." class="form-control mb-0" ng-model="expiredDate" style="width: 100%" id="expired-date-id" />
-                    </fieldset>
                 </div>
-            </div>
-
+            </form>
             <div class="col-md-9">
                 <div class="box-group-white">
                     <h2 class="text-center"><b>{{title}}</b></h2>
                     <div class="baocao-container">
                         <div class="ibox float-e-margins">
                             <div class="tabs-container" ng-if="!viewModel.ReportDetailsByGoods">
-                                <div class="pull-right" ng-if="isAnItem && hasViewReceiptNotePrivilage && hasViewDeliveryNotePrivilage">
+                                <div class="pull-right" *ngIf="formData.value?.thuocThuocIds.length == 1">
                                     <div class="d-flex align-items-center gap-10">
                                         <span><strong>Tổng nhập:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemReceipt}} -->1
+                                            {{transactionHistoryReceiptItemTableComponent?.getTotalNhap() | number}}
                                         </span></span>
                                         <span><strong>Tổng xuất:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemDelivery}} -->1
+                                           {{transactionHistoryDeliveryItemTableComponent?.getTotalXuat() | number}}
                                         </span></span>
                                         <span><strong>Tồn:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemReceipt - TotalItemDelivery}} -->0
+                                            {{getTotalInventory() | number}}
                                         </span> </span>
                                     </div>
                                 </div>
                                 <ul class="nav nav-tabs">
                                     <li ng-if="hasViewReceiptNotePrivilage" [ngClass]="{'active' : checkTab == 'receipt'}">
                                         <a (click)="checkTab = 'receipt'">Nhập Hàng&nbsp;<span class="label label-info pull-right">
-                                            <!-- {{ReceiptTransHistoryCount}} -->1
+                                               {{transactionHistoryReceiptItemTableComponent?.totalRecord | number}}
                                         </span></a>
                                     </li>
                                     <li ng-if="hasViewDeliveryNotePrivilage" [ngClass]="{'active' : checkTab == 'delivery'}">
                                         <a (click)="checkTab = 'delivery'">Xuất Hàng&nbsp;<span class="label label-info pull-right">
-                                            <!-- {{DeliveryTransHistoryCount}} -->2
+                                            {{transactionHistoryDeliveryItemTableComponent?.totalRecord | number}}
                                         </span></a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div ng-if="hasViewReceiptNotePrivilage" id="#ActivePage=0" [hidden]="checkTab != 'receipt'">
                                         <div class="panel-body">
-                                            <transaction-history-receipt-item-table-partial [drugId]="drugId"></transaction-history-receipt-item-table-partial>
+                                            <transaction-history-receipt-item-table [formData]="formData"
+                                            [formDataChange]="formDataChange"></transaction-history-receipt-item-table>
                                         </div>
                                     </div>
                                     <div ng-if="hasViewDeliveryNotePrivilage" id="#ActivePage=1" [hidden]="checkTab != 'delivery'">
                                         <div class="panel-body">
-                                            <transaction-history-delivery-item-table-partial [drugId]="drugId"></transaction-history-delivery-item-table-partial>
+                                            <transaction-history-delivery-item-table [formData]="formData"
+                                            [formDataChange]="formDataChange"></transaction-history-delivery-item-table>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="pull-right" ng-if="isAnItem && hasViewReceiptNotePrivilage && hasViewDeliveryNotePrivilage">
+                                <div class="pull-right" *ngIf="formData.value?.thuocThuocIds.length == 1">
                                     <div class="d-flex align-items-center gap-10">
                                         <span><strong>Tổng nhập:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemReceipt}} -->1
+                                            {{transactionHistoryReceiptItemTableComponent?.getTotalNhap() | number}}
                                         </span></span>
                                         <span><strong>Tổng xuất:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemDelivery}} -->1
+                                           {{transactionHistoryDeliveryItemTableComponent?.getTotalXuat() | number}}
                                         </span></span>
                                         <span><strong>Tồn:</strong> <span class="text-danger"> 
-                                            <!-- {{TotalItemReceipt - TotalItemDelivery}} -->0
+                                            {{getTotalInventory() | number}}
                                         </span> </span>
                                     </div>
                                 </div>

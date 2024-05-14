@@ -34,6 +34,8 @@ export class TransactionDetailByObjectDialogComponent extends BaseComponent impl
   listThuoc$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
   objectName: String = "";
+  fromDateTxt = 'fromDateNgayXuat';
+  toDateTxt = "toDateNgayXuat";
 
   useCustomerCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
 
@@ -60,7 +62,14 @@ export class TransactionDetailByObjectDialogComponent extends BaseComponent impl
   }
 
   async ngOnInit() {
-    this.objectName = [LOAI_PHIEU.PHIEU_XUAT, LOAI_PHIEU.PHIEU_NHAP_TU_KH].includes(this.object.typeId) ? 'Khách hàng' : 'Nhà cung cấp';
+    if([LOAI_PHIEU.PHIEU_XUAT, LOAI_PHIEU.PHIEU_NHAP_TU_KH].includes(this.object.typeId)){
+      this.objectName = 'Khách hàng';
+    }else{
+      this.objectName = 'Nhà cung cấp';
+      this.fromDateTxt = 'fromDateNgayNhap';
+      this.toDateTxt = 'toDateNgayNhap';
+    }
+    
     await this.searchPageHistory();
     console.log(this.dataTable);
     this.getDataFilter();

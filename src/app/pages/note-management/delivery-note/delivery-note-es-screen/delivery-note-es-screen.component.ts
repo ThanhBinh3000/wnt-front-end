@@ -14,6 +14,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { SETTING } from '../../../../constants/setting';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
 import { AppDatePipe } from '../../../../component/pipe/app-date.pipe';
+import { calculateAge } from '../../../../utils/date.utils';
 
 @Component({
   selector: 'delivery-note-es-screen',
@@ -149,31 +150,11 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       if (res?.status == STATUS_API.SUCCESS){
         this.formData.controls['thongTinDon'].setValue(res.data);
         if(res.data.ngaySinhBenhNhan){
-           res.data.age = this.calculateAge(res.data.ngaySinhBenhNhan);
+          res.data.age = calculateAge(`${res.data.ngaySinhBenhNhan} 00:00:00`);
         }
         this.maThuocDons = res.data.thongTinDonThuoc.map((x: { maThuoc: any; })=>x.maThuoc);
       }
     });
-  }
-
-  calculateAge(dateString: string): number {
-    // Chuyển chuỗi ngày sinh sang Date object
-    const birthDate = new Date(dateString);
-    const today = new Date();
-
-    // Tính số năm chênh lệch giữa năm hiện tại và năm sinh
-    let age = today.getFullYear() - birthDate.getFullYear();
-
-    // Kiểm tra xem tháng/ngày của năm hiện tại có trùng hoặc vượt quá tháng/ngày của năm sinh không
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    const dayDifference = today.getDate() - birthDate.getDate();
-
-    // Điều chỉnh tuổi nếu sinh nhật của người đó chưa đến trong năm nay
-    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-      age--;
-    }
-
-    return age;
   }
 
   getDataFilter() {
@@ -481,6 +462,11 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
       item.soLuong = data[0].soLuong;
       item.usage = data[0].cachDung;
     }
+  }
+
+  @ViewChild('inputSearchCode') inputSearchCode!: NgSelectComponent;
+  async focusInpuSearchCode() {
+    this.inputSearchCode?.focus();
   }
 
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
