@@ -10,6 +10,7 @@ import { InventoryAddEditComponent } from './inventory-add-edit/inventory-add-ed
 import { InventoryItemUpdateDialogComponent } from './inventory-item-update-dialog/inventory-item-update-dialog.component';
 import { InventoryDetailComponent } from './inventory-detail/inventory-detail.component';
 import { InventoryMultipleWarehouseDialogComponent } from './inventory-multiple-warehouse-dialog/inventory-multiple-warehouse-dialog.component';
+import { ComponentsModule } from '../../component/base/components.module';
 @NgModule({
   declarations: [
     InventoryComponent,
@@ -20,7 +21,7 @@ import { InventoryMultipleWarehouseDialogComponent } from './inventory-multiple-
     InventoryDetailComponent,
     InventoryMultipleWarehouseDialogComponent
   ],
-  imports: [CommonModule, RouterOutlet, InventoryRoutingModule],
+  imports: [CommonModule, RouterOutlet, InventoryRoutingModule, ComponentsModule],
   exports: [
     InventoryMultipleWarehouseDialogComponent
   ],

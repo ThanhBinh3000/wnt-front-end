@@ -5,11 +5,11 @@ import {ReportRoutingModule} from './report.routing';
 import {ReportComponent} from './report.component';
 import {DrugTransactionHistoryComponent} from './drug-transaction-history/drug-transaction-history.component';
 import {
-  TransactionHistoryDeliveryItemTablePartialComponent
-} from './transaction-history-delivery-item-table-partial/transaction-history-delivery-item-table-partial.component';
+  TransactionHistoryDeliveryItemTableComponent
+} from './drug-transaction-history/transaction-history-delivery-item-table/transaction-history-delivery-item-table.component';
 import {
-  TransactionHistoryReceiptItemTablePartialComponent
-} from './transaction-history-receipt-item-table-partial/transaction-history-receipt-item-table-partial.component';
+  TransactionHistoryReceiptItemTableComponent
+} from './drug-transaction-history/transaction-history-receipt-item-table/transaction-history-receipt-item-table.component';
 import {RevenueDetailsByDayComponent} from "./RevenueDetailsByDay/RevenueDetailsByDay.component";
 import {ComponentsModule} from "../../component/base/components.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -31,8 +31,8 @@ import {NzModalModule} from "ng-zorro-antd/modal";
   declarations: [
     ReportComponent,
     DrugTransactionHistoryComponent,
-    TransactionHistoryDeliveryItemTablePartialComponent,
-    TransactionHistoryReceiptItemTablePartialComponent,
+    TransactionHistoryDeliveryItemTableComponent,
+    TransactionHistoryReceiptItemTableComponent,
     RevenueDetailsByDayComponent,
     InOutCommingDetailsByDayComponent,
   ],

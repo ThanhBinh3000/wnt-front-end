@@ -1,64 +1,75 @@
-<div class="modal fade inmodal" id="inventory-item-update-dialog" tabindex='-1'>
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div class="card">
+    <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span aria-hidden="true"><i class="fa-regular fa-xmark"></i></span></button>
-                <h4 class="modal-title"> Cập nhật giá/lô/hạn dùng cho thuốc <b>
-                    <!-- {{drug.TenThuoc}} -->thuốc 1
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span aria-hidden="true"><i
+                        class="fa-regular fa-xmark"></i></span></button>
+            <h4 class="modal-title"> Cập nhật giá/lô/hạn dùng cho thuốc <b>
+                    {{object.tenThuoc}}
                 </b></h4>
-            </div>
+        </div>
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table table-bordered table-userpicker">
-                            <tbody>
-                                <tr>
-                                    <td><b>Mã thuốc:</b>
-                                    <td>
-                                        <!-- {{drug.MaThuoc}} -->TH1
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Tên thuốc:</b></td>
-                                    <td>
-                                        <!-- {{drug.TenThuoc}} -->Thuốc 1
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Đơn vị:</b></td>
-                                    <td>
-                                        <!-- {{drug.Donvi}} -->Hộp
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Giá kiểm kê:</b></td>
-                                    <td ng-if="permittedFields.Drug_ViewInputPrice"><input type="text" class="form-control mb-0" awnum="app-decimal-number" ng-model="drug.Gia" enter-key-capture="updateDrugBatch()"></td>
-                                    <td ng-if="!permittedFields.Drug_ViewInputPrice">***</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Số lô:</b></td>
-                                    <td><input type="text" class="form-control mb-0" ng-model="drug.SoLo" enter-key-capture="updateDrugBatch()"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Hạn dùng:</b></td>
-                                    <td><input type="datetime" class="form-control mb-0 input-datetime" ng-model="drug.HanDung" date-parser="dd/MM/yyyy" enter-key-capture="updateDrugBatch()"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Đánh giá cảm quan:</b></td>
-                                    <td><b>Đạt yêu cầu</b> <i class="fa-regular fa-circle-check text-success"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table table-bordered table-userpicker">
+                        <tbody>
+                            <tr>
+                                <td><b>Mã thuốc:</b>
+                                <td>
+                                    {{object.maThuoc}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Tên thuốc:</b></td>
+                                <td>
+                                    {{object.tenThuoc}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Đơn vị:</b></td>
+                                <td>
+                                    {{object.tenDonViTinhLe}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá kiểm kê:</b></td>
+                                <td ng-if="permittedFields.Drug_ViewInputPrice">
+                                    <input [(ngModel)]="object.donGia" type="text" class="form-control mb-0"
+                                        awnum="app-decimal-number" ng-model="drug.Gia"
+                                        enter-key-capture="updateDrugBatch()">
+                                        <span ng-if="!permittedFields.Drug_ViewInputPrice">***</span>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td><b>Số lô:</b></td>
+                                <td><input type="text" class="form-control mb-0" [(ngModel)]="object.soLo"
+                                        enter-key-capture="updateDrugBatch()"></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hạn dùng:</b></td>
+                                <td>
+                                    <input [(ngModel)]="object.hanDung" type="text" class="form-control"
+                                        [matDatepicker]="pickerHanDung" (click)="pickerHanDung.open()">
+                                    <mat-datepicker #pickerHanDung="matDatepicker"
+                                        disabled="false"></mat-datepicker>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Đánh giá cảm quan:</b></td>
+                                <td><b>Đạt yêu cầu</b> <i class="fa-regular fa-circle-check text-success"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <div class="modal-footer d-flex align-items-center justify-content-end gap-10">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" ng-click="updateDrugBatch(); $event.preventDefault(); $event.stopPropagation();">Cập nhật</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        <div class="modal-footer d-flex align-items-center justify-content-end gap-10">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary"
+                (click)="updateDrugBatch();">Cập nhật</button>
+        </div>
+    </div><!-- /.modal-content -->
 </div><!-- /.modal -->
