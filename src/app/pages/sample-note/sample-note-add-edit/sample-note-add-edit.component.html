@@ -182,21 +182,17 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center gap-10">
-                        <a href="/management/sample-note/sample-note-list" class="btn btn-default flex-grow-1">Quay
+                        <a href="/management/sample-note/list" class="btn btn-default flex-grow-1">Quay
                             lại</a>
-                        <input *ngIf="action == 'view'" type="button" ng-click="updateNote(SampleNote.NoteID)" id="0"
-                            title="Sửa" value="Sửa" class="btn btn-primary flex-grow-1" />
-                        <input *ngIf="action == 'create'" type="button" (click)="createUpdate()" value="Lưu đơn"
+                        <input type="button" (click)="createUpdate()"
+                            value="{{ formData.value?.id > 0 ? 'Cập nhật' : 'Lưu đơn'}}"
                             class="btn btn-primary flex-grow-1">
-                        <input *ngIf="action == 'create' && isClinic && isConnect" type="button"
+                        <input *ngIf="useClinicIntegration.activated && formData.value?.isConnect" type="button"
                             ng-click="fnSave(SampleNoteForm.$valid , 'yes'); $event.preventDefault(); $event.stopPropagation();"
                             value="Lưu đơn và LT" class="btn btn-primary flex-grow-1">
-                        <input *ngIf="action == 'edit'" type="button"
-                            ng-click="fnSave(SampleNoteForm.$valid); $event.preventDefault(); $event.stopPropagation();"
-                            value="Cập nhật" class="btn btn-primary flex-grow-1">
-                        <a href="" *ngIf="action == 'view' || action == 'edit'" title="Xuất bán"
+                        <a href="" *ngIf="formData.value?.id > 0" title="Xuất bán"
                             class="btn btn-primary flex-grow-1">Xuất bán</a>
-                        <input *ngIf="action == 'view' || action == 'edit'" type="button"
+                        <input *ngIf="formData.value?.id > 0" type="button"
                             ng-click="fnOpenForPrint(); $event.preventDefault(); $event.stopPropagation();" value="In"
                             class="btn btn-default flex-grow-1">
 
@@ -238,13 +234,15 @@
                         </ng-select>
                     </div>
                 </div>
-
+                <button *ngIf="applyMultipleDosesOfMedication.activated && formData.value?.isConnect"
+                    class="btn btn-primary pull-right mb-div-5" (click)="openDrugUpdateInfoUseDialog(null, 'all')">Áp
+                    dụng đợt dùng chung</button>
                 <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid"
                     [dataSource]="getDataSource()" matSort>
 
                     <ng-container matColumnDef="checkbox">
-                        <th mat-header-cell *matHeaderCellDef> <input type="checkbox" [(ngModel)]="allChecked"
-                                (ngModelChange)="updateAllChecked()" title="select row">
+                        <th style="width: 5%;" mat-header-cell *matHeaderCellDef> <input type="checkbox"
+                                [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" title="select row">
                         </th>
                         <td mat-cell *matCellDef="let data; index as i;">
                             <input type="checkbox" [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked()"
@@ -253,7 +251,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="#">
-                        <th mat-header-cell *matHeaderCellDef> #</th>
+                        <th style="width: 4%;" mat-header-cell *matHeaderCellDef> #</th>
                         <td mat-cell *matCellDef="let data; index as i;">
                             <a (click)="openDetailDialog(data.drugID)">
                                 {{ (page - 1) * pageSize + i + 1 }}
@@ -262,21 +260,21 @@
                     </ng-container>
 
                     <ng-container matColumnDef="maThuoc">
-                        <th mat-header-cell *matHeaderCellDef> Mã thuốc</th>
+                        <th style="width: 9%;" mat-header-cell *matHeaderCellDef> Mã thuốc</th>
                         <td mat-cell *matCellDef="let data">
                             {{ data.maThuoc }}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="tenThuoc">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mặt hàng[Mã-Tên]</th>
+                        <th style="width: 20%;" mat-header-cell *matHeaderCellDef mat-sort-header> Mặt hàng[Mã-Tên]</th>
                         <td mat-cell *matCellDef="let data">
                             {{ data.tenThuoc }}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="donVi">
-                        <th mat-header-cell *matHeaderCellDef> Đơn vị</th>
+                        <th style="width: 12%;" mat-header-cell *matHeaderCellDef> Đơn vị</th>
                         <td mat-cell *matCellDef="let data">
                             <ng-select appendTo="body" [(ngModel)]="data.drugUnitID"
                                 (ngModelChange)="getItemAmount(data)" [clearable]="false">
@@ -287,7 +285,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="soLuong">
-                        <th mat-header-cell *matHeaderCellDef> Số lượng</th>
+                        <th style="width: 10%;" mat-header-cell *matHeaderCellDef> Số lượng</th>
                         <td mat-cell *matCellDef="let data">
                             <input type="text" mask="separator" [(ngModel)]="data.quantity"
                                 (ngModelChange)="getItemAmount(data)"
@@ -295,25 +293,46 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="ghiChu">
-                        <th mat-header-cell *matHeaderCellDef> Ghi chú</th>
+                    <ng-container *ngIf="useClinicIntegration.activated && !authService.getNhaThuoc().isConnectivity"
+                        matColumnDef="ton">
+                        <th style="width: 9%;" mat-header-cell *matHeaderCellDef> Tồn kho</th>
                         <td mat-cell *matCellDef="let data">
-                            <input type="text" [(ngModel)]="data.comment" class="form-control mb-0">
+                            <div style="text-align:right" ng-click="onGetDataDetailLastValueWarehouse(gridItem)">
+                                <span class="btn btn-link" title="Xem tồn ở các kho">{{data.tonKho | number}}</span>
+                            </div>
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="giaBan">
-                        <th mat-header-cell *matHeaderCellDef> Giá bán</th>
+                    <ng-container *ngIf="formData.value?.isConnect" matColumnDef="dotDungThuoc">
+                        <th style="width: 5%;" mat-header-cell *matHeaderCellDef> Đợt dùng thuốc</th>
+                        <td mat-cell *matCellDef="let data">
+                            <span (click)="openDrugUpdateInfoUseDialog(data, 'only')"
+                                style="{{getBatchDateCss(data)}}"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ghiChu">
+                        <th style="width: 15%;" mat-header-cell *matHeaderCellDef> Ghi chú</th>
+                        <td mat-cell *matCellDef="let data">
+                            <input type="text" list="suggestions" [(ngModel)]="data.comment" class="form-control mb-0">
+                            <datalist id="suggestions">
+                                <option *ngFor="let item of browserList" [value]="item"></option>
+                            </datalist>
+                        </td>
+                    </ng-container>
+
+                    <ng-container *ngIf="!formData.value?.isConnect" matColumnDef="giaBan">
+                        <th style="width: 9%;" mat-header-cell *matHeaderCellDef> Giá bán</th>
                         <td mat-cell *matCellDef="let data"> {{getItemPrice(data) | number}}</td>
                     </ng-container>
 
-                    <ng-container matColumnDef="tongTien">
-                        <th mat-header-cell *matHeaderCellDef> Tổng tiền</th>
+                    <ng-container *ngIf="!formData.value?.isConnect" matColumnDef="tongTien">
+                        <th style="width: 9%;" mat-header-cell *matHeaderCellDef> Tổng tiền</th>
                         <td mat-cell *matCellDef="let data"> {{getItemAmount(data) | number}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef></th>
+                        <th style="width: 4%;" mat-header-cell *matHeaderCellDef></th>
                         <td mat-cell *matCellDef="let data">
                             <a class="btn btn-danger delete-line" (click)="fnRemoveItem(data)" title="Xóa"><i
                                     class="fa-regular fa-xmark"></i></a>

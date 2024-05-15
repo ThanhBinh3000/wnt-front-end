@@ -14,6 +14,7 @@ import {
   ApexGrid
 } from "ng-apexcharts";
 import {ReportDetailsBydayService} from "../../../services/report/Report-Details-Byday.service";
+import {ReportService} from "../../../services/report/report.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -40,12 +41,13 @@ export class InOutCommingDetailsByDayComponent extends BaseComponent implements 
     injector: Injector,
     private titleService: Title,
     private datePipe: DatePipe,
-    private _service: ReportDetailsBydayService,
+    private _service: ReportService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-      nhaThuocMaNhaThuoc: [],
-      ngayXuat: ['09/11/2023 09:36:32'],
+      drugStoreId: [ this.authService.getNhaThuoc().maNhaThuoc],
+      reportFromDate: [],
+      reportToDate: [],
     });
     this.chartOptions = {
       title: {
@@ -113,8 +115,21 @@ export class InOutCommingDetailsByDayComponent extends BaseComponent implements 
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
-    await this.searchList();
-    this.calculatorTable();
+    this.getDataReport();
+    // this.calculatorTable();
+  }
+
+
+  getDataReport(){
+    let body = this.formData.value;
+    this._service.getInOutcommingDetailsByDayData(body).then(res=>{
+      console.log(res);
+      if(res?.data){
+        const data = res.data;
+        this.dataDetail = data
+        this.dataTable = data.listDetail;
+      }
+    })
   }
 
   onFilterTransactionTypeChange(filterTransactionType: number) {

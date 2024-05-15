@@ -188,10 +188,10 @@ export class WarehouseTransferNoteScreenComponent extends BaseComponent implemen
 
   async onAddNew(item: any) {
     //kiểm tra hàng âm kho
-    // if (item.ton <= 0) {
-    //   this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
-    //   return;
-    // }
+    if (item.ton <= 0) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.ALLOW_DELIVERY_OVER_QUANTITY);
+      return;
+    }
     //kiểm tra đã có thuốc chưa
     if (!item.thuocThuocId) {
       this.notification.error(MESSAGE.ERROR, "Hãy chọn thuốc thêm vào phiếu");
