@@ -30,7 +30,7 @@ export class InventoryListComponent extends BaseComponent implements OnInit {
     this.formData = this.fb.group({
       dataDelete: [false],
       nhaThuocMaNhaThuoc: this.authService.getNhaThuoc().maNhaThuoc,
-      thuocThuocIds: [{}],
+      thuocThuocId: [],
     });
   }
 

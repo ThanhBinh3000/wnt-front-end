@@ -3,204 +3,172 @@
         <div class="sidebar-bg">
             <h2 class="title-section title-border">PHIẾU KIỂM KÊ CHI TIẾT</h2>
             <table class="table table-bordered">
-                <tr>
-                    <td>
-                        <label class="mb-0">Mã phiếu: </label>
-                    </td>
-                    <td>
-                        <!-- {{InventoryModel.Id}} -->1
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label class="mb-0">Người lập: </label>
-                    </td>
-                    <td>
-                        <!-- {{InventoryModel.FullName}} -->Nhân viên A
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label class="mb-0">Ngày tạo: </label>
-                    </td>
-                    <td>
-                        <!-- {{InventoryModel.CreateTime | date:'dd/MM/yyyy'}} -->1/1/2024
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label class="mb-0">Cân kho: </label>
-                    </td>
-                    <td ng-if="InventoryModel.DaCanKho" style="text-align : left">
-                        <i class="fa-regular fa-check text-success"></i>
-                    </td>
-                    <td ng-if="!InventoryModel.DaCanKho" style="text-align : left">
-                        <i class="fa-regular fa-xmark text-danger"></i>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label class="mb-0">Mã phiếu: </label>
+                        </td>
+                        <td>
+                            {{data.id}}
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label class="mb-0">Người lập: </label>
+                        </td>
+                        <td>
+                            {{data.createdByUseText}}
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label class="mb-0">Ngày tạo: </label>
+                        </td>
+                        <td>
+                            {{data.created | appDate}}
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label class="mb-0">Cân kho: </label>
+                        </td>
+                        <td ng-if="InventoryModel.DaCanKho" style="text-align : left">
+                            <i [class]="data.daCanKho ? 'fa-regular fa-check text-success' : 'fa-regular fa-xmark text-danger'"></i>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <div ng-show="canAction" class="d-flex justify-content-end align-items-center gap-10 flex-wrap mt-3">
-                <a class="btn btn-default flex-grow-1" href="/Inventory/Index">Quay lại</a>
+                <a class="btn btn-default flex-grow-1" href="management/inventory/list">Quay lại</a>
                 <a class="btn btn-default flex-grow-1" href="/Inventory/In/" target="_blank">In</a>
-                <div ng-if="!InventoryModel.DaCanKho">
-                    <a class="btn btn-primary flex-grow-1" (click)="noteId=1" href="management/inventory/add-edit">Sửa/Cân kho</a>
+                <div *ngIf="!data.daCanKho">
+                    <a class="btn btn-primary flex-grow-1" href="management/inventory/edit/{{idUrl}}">Sửa/Cân kho</a>
                 </div>
                 <a class="btn flex-grow-1 btn-danger" href="/Inventory/Delete/">Xóa</a>
                 <button class="btn btn-primary flex-grow-1" ng-show="InventoryModel.NhaThuoc_MaNhaThuoc == '7892'" ng-click="onExportExcel()">Xuất Excel</button>
-            </div>
-            <div ng-show="!canAction" class="d-flex justify-content-end align-items-center gap-10 flex-wrap mt-3">
-                <a class="btn btn-default flex-grow-1" href="/NoteManagement/NotesListing##noteTypeId=5">Quay lại</a>
             </div>
         </div>
     </div>
     <div class="col-md-9">
         <div class="box-group-white baocao-container">
             <h2 class="text-center"><b>Danh sách thuốc</b></h2>
-            <table class="table table-striped table-bordered table-hover tr-ng-grid">
-                <thead>
-                    <tr>
-                        <th style="width: 6%" class="header-bg" display-name="STT">STT</th>
-                        <th field-name="TenNhomThuoc" style="width: 15%" class="header-bg" display-name="Nhóm Thuốc" enable-sorting="true">Nhóm thuốc</th>
-                        <th field-name="MaThuoc" style="width: 12%" class="header-bg" display-name="Mã Thuốc" enable-sorting="true">Mã thuốc</th>
-                        <th field-name="TenThuoc" style="width: 20%" class="header-bg" display-name="Tên Thuốc" enable-sorting="true">Tên thuốc</th>
-                        <th field-name="DonVi" style="width: 8%" class="header-bg" display-name="Đơn vị">Đơn vị</th>
-                        <th field-name="TonKho" style="width: 10%" class="header-bg" display-name="SL hệ thống" enable-sorting="true">SL hệ thống</th>
-                        <th field-name="ThucTe" style="width: 5%" class="header-bg" display-name="SL thực" enable-sorting="true">SL thực</th>
-                        <th field-name="Chenhlech" style="width: 5%" class="header-bg" display-name="SL chênh lệch" enable-sorting="false">
-                            <span>SL chênh lệch</span>
-                        </th>
-                        <th field-name="GiaKiemKe" style="width: 14%" class="header-bg" display-name="Giá kiểm kê" enable-sorting="true">Giá kiểm kê</th>
-                        <th style="width: 5%" class="header-bg" display-name="Giá/Lô/Hạn dùng">
-                            <span>Giá/Lô/Hạn dùng</span>
-                        </th>
-                        <th ng-show="canAction" style="width: 5%" class="header-bg"></th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-id-delivery-note-with-barcode">
-                    <tr class="tr-barcode">
-                        <!--STT-->
-                        <td>
-                            <div>
-                                <!-- {{gridOptions.currentPage * model.pageSize + $index + 1}} -->1
-                            </div>
-                        </td>
-                        <!--Tên nhóm thuốc-->
-                        <td field-name="TenNhomThuoc">
-                            <div>
-                                <!-- {{gridItem.TenNhomThuoc}} -->Nhóm 1
-                            </div>
-                        </td>
+            <div class="mat-table-container">
+                <table mat-table
+                       class="table table-striped table-bordered table-hover tr-ng-grid"
+                       [dataSource]="data.chiTiets" matSort>
+                  <ng-container matColumnDef="stt">
+                    <th mat-header-cell *matHeaderCellDef>
+                      <div class="text-left">
+                        STT
+                      </div>
+                    </th>
+                    <td mat-cell *matCellDef="let data; index as i;">
+                      <div class="text-right">
+                        {{i + 1 }}
+                      </div>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="nhomThuoc">
+                    <th mat-header-cell *matHeaderCellDef>Nhóm thuốc</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div>
+                        {{data.tenNhomThuoc}}
+                      </div>
+                    </td>
+                  </ng-container>
 
-                        <!--Mã Thuốc-->
-                        <td field-name="MaThuoc">
-                            <div>
-                                <!-- {{gridItem.MaThuoc}} -->TH01
-                            </div>
-                        </td>
+                  <ng-container matColumnDef="maThuoc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã thuốc</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div>
+                        {{data.maThuoc}}
+                      </div>
+                    </td>
+                  </ng-container>
 
-                        <!--Tên thuốc-->
-                        <td field-name="TenThuoc">
-                            <div>
-                                <!-- {{gridItem.TenThuoc}} -->Thuốc 1
-                            </div>
-                        </td>
-                        <!--Đơn vị-->
-                        <td field-name="DonVi">
-                            <div>
-                                <!-- {{gridItem.TenDonViTinh}} --> hộp
-                            </div>
-                        </td>
-                        <!--Số Lượng hệ thống-->
-                        <td field-name="TonKho">
-                            <div style="text-align:right">
-                                <!-- {{gridItem.TonKho}} -->1
-                            </div>
-                        </td>
-                        <!--Số Lượng thực tế-->
-                        <td field-name="ThucTe">
-                            <div style="text-align:right">
-                                <!-- {{gridItem.ThucTe | DrugQuantityFilter:1}} -->1
-                            </div>
-                        </td>
-                        <!--Chênh lệch-->
-                        <td field-name="Chenhlech">
-                            <div style="text-align:right">
-                                <!-- {{gridItem.ThucTe - gridItem.TonKho | DrugQuantityFilter:1}} -->1
-                            </div>
-                        </td>
-                        <!--Giá kiểm kê-->
-                        <td field-name="GiaKiemKe">
-                            <div style="text-align:right" ng-if="permittedFields.Drug_ViewInputPrice">
-                                <!-- {{gridItem.Gia | number: 0}} -->1.000
-                            </div>
-                            <div ng-if="!permittedFields.Drug_ViewInputPrice">***</div>
-                        </td>
-                        <!-- Ô cập nhật giá/lô/hạn dùng-->
-                        <td>
-                            <div ng-show="canAction" style="text-align:center">
-                                <a href="#" id="" class="btn btn-sm btn-primary"
-                                (click)="drugId=1" data-toggle="modal" data-target="#inventory-item-update-dialog"  title="Cập nhật giá/lô/hạn dùng"><i class="fa-regular fa-calendar-days"></i></a>
-                            </div>
-                            <div ng-show="!canAction" style="text-align:center">
-                                <!-- {{gridItem.SoLo}} - {{gridItem.HanDung | appDate}} --> 123 - 1/1/2025
-                            </div>
-                        </td>
+                  <ng-container matColumnDef="tenThuoc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên thuốc</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-left">{{ data.tenThuoc }}</div>
+                    </td>
+                  </ng-container>
 
-                        <!-- Xóa thuốc đã cân kho (chỉ cho admin NT thực hiện)-->
-                        <td ng-show="canAction">
-                            <div style="text-align:center" ng-show="isSuperUser || isAdminUser">
-                                <a class="delete-drug btn btn-danger btn-sm" style="cursor: pointer" title="Xóa" ng-click="onRemoveDrug(gridItem); $event.preventDefault(); $event.stopPropagation();"><i class="fa-regular fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr id="footerId">
-                        <td align="center"
-                            class="ng-scope" colspan="11">
-                            <div class="tr-ng-grid-footer form-inline">
-                                <div ng-switch-when="true" class="ng-scope">
-                                    <div ng-transclude=""><span class="form-group pull-left page-size ng-scope">
-                                            <select id="ddlPageSize"
-                                                class="form-control ng-pristine ng-untouched ng-valid"
-                                                ng-model="model.pageSize"
-                                                ng-options="item.pageSizeKey as item.pageSizeValue for item in pageSizeList"
-                                                ng-change="changePageSize()">
-                                                <option label="10" value="number:10" selected="selected">10</option>
-                                                <option label="20" value="number:20">20</option>
-                                                <option label="50" value="number:50">50</option>
-                                                <option label="100" value="number:100">100</option>
-                                                <option label="--All--" value="number:9000">--All--</option>
-                                            </select>
-                                            <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
-                                        </span><span class="pull-right form-group" tr-ng-grid-pager=""
-                                            style="height:40px;">
-                                            <ul class="pagination">
-                                                <li class="ng-scope active">
-                                                    <a href="" ng-click="navigateToPage(pageIndex)"
-                                                        ng-if="pageIndex!==null"
-                                                        class="ng-binding ng-scope" title="Trang">1</a>
-                                                    </li>
-                                                    <li ng-if="pageSelectionActive" class="ng-scope"><a href=""
-                                                            class="ng-binding ng-scope" title="Trang">2</a> </li>
-                                                    <li class="disabled" style="white-space: nowrap;"> <span
-                                                            ng-hide="totalItemsCount || !displayTotalItemsCount"
-                                                            class="ng-binding ng-hide">Không có dữ liệu</span> <span
-                                                            ng-show="totalItemsCount &amp;&amp; displayTotalItemsCount"
-                                                            class=""> <span class="ng-binding">Tổng: 2 bản ghi</span>
-                                                        </span> </li>
-                                                </ul>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-            </table>
+                  <ng-container matColumnDef="donVi">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Đơn vị tính</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-left">{{ data.tenDonViTinhLe }}</div>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="slHeThong">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SL hệ thống</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-right">{{ data.tonKho | number }}</div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="slThuc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SL thực</th>
+                    <td mat-cell *matCellDef="let data">
+                        <div class="text-right">{{ (data.thucTe ? data.thucTe : 0) | number }}</div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="chenhLech">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Chênh lệch</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-right">{{ (data.thucTe - data.tonKho) | number }}</div>
+                    </td>
+                  </ng-container>
+
+              
+                  <ng-container matColumnDef="giaKiemKe">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá kiểm kê</th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-right">{{ data.donGia }}</div>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="loHan">
+                    <th mat-header-cell *matHeaderCellDef>
+                      Giá/Lô/Hạn
+                    </th>
+                    <td mat-cell *matCellDef="let data">
+                      <div class="text-center">
+                        <button class="btn btn-primary btn-sm" (click)="openInventoryItemUpdateDialog(data)"><i class="fa-regular fa-calendar-days"></i></button>
+                      </div>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>
+                     Xoá
+                    </th>
+                    <td mat-cell *matCellDef="let data">
+                        <div class="baocao-actions">
+                            <button (click)="1" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash"></i></button>
+                        </div>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="footer">
+                    <td mat-footer-cell *matFooterCellDef colspan="100">
+                      <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                      (pageChange)="changePageIndex($event)"
+                                      (pageSizeChange)="changePageSize($event)"></app-pagination>
+                    </td>
+                  </ng-container>
+              
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="{'background-color': getRowColor(row)}"></tr>
+                  <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+              
+                </table>
+              </div>
         </div>
 
         <br />
