@@ -1,264 +1,257 @@
 <div>
-    <div class="row">
-        <div class="col-md-3">
-            <form [formGroup]="formData">
-                <div class="sidebar-bg">
-                    <div class="mb-3">
-                        <label>Thêm cả nhóm thuốc vào phiếu</label>
-                        <div class="input-group d-flex align-items-center">
-                            <ng-select appendTo="body" class="flex-grow-1" appearance="outline" [items]="listNhomThuoc"
-                                formControlName="nhomThuocMaNhomThuoc" bindLabel="tenNhomThuoc" bindValue="id"
-                                placeholder="Chọn hoặc gõ vào để tìm..." notFoundText="Không tìm thấy mục nào"
-                                [clearable]="false">
-                                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                                    <span [ngOptionHighlight]="search">{{ item.tenNhomThuoc }}</span>
-                                </ng-template>
-                            </ng-select>
-                            <input type="hidden" id="maThuoc" name="maThuoc" />
-                            <span class="input-group-btn">
-                                <button id="addDrugGroupBtn"
-                                    ng-click="AddThuocTheoNhom(); $event.preventDefault(); $event.stopPropagation();"
-                                    class="btn btn-primary">Thêm</button>
-                            </span>
-                        </div>
-                        <fieldset class="mt-3" *ngIf="1">
-                            <div class="form-check">
-                                <input type="checkbox" id="chkBienDong" class="form-control form-check-input"
-                                    style="width: 18px;display: inline;height: 18px;vertical-align: bottom;margin-top: 0px;"
-                                    ng-change="locThuocBienDong()" ng-model="chkboxBienDong" />
-                                <label class="form-check-label">Thuốc có biến động trong ngày</label>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <hr />
-                    <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
-                        <a class="btn btn-default w-50" href="/Inventory/Index">Quay lại</a>
-                        <input type="submit" value="Lưu phiếu" id="btnLuuPhieu" name="action"
-                            ng-click="saveInventory(false); $event.preventDefault(); $event.stopPropagation();"
-                            class="btn btn-primary w-50" />
-                    </div>
-                    <div class="control-group btn-fullwidth flex-grow-1">
-                        <input type="submit" value="Cân kho" id="btnCanKho" name="action"
-                            ng-click="confirmCankho(); $event.preventDefault(); $event.stopPropagation();"
-                            class="btn btn-primary w-100" />
-                        <input type="submit" value="Cập nhật tồn" id="btnUpdateInventories" name="action" *ngIf="0"
-                            ng-click="onUpdateInventories(); $event.preventDefault(); $event.stopPropagation();"
-                            class="btn btn-primary w-50" />
-                    </div>
-                </div>
-            </form>
-
-        </div>
-
-        <div class="col-md-9">
-            <div class="box-group-white">
-                <h2 style="padding: 0px" class="text-center">
-                    <b>PHIẾU KIỂM KÊ</b>
-                    <span ng-if="deviceType==0" class="btn tooltip-content-drug" ng-mouseover="onShowTitle(gridItem)">
-                        <span ng-click="">
-                            <i style="font-size: 20px; color: black; margin-bottom: 5px;" class="fa fa-info-circle"
-                                aria-hidden="true"></i>
-                        </span>
-                        <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
-                            <b>F1:</b> Thêm mới phiếu trong tab mới<br />
-                            <b>F9:</b> Ghi phiếu<br />
-                            <b>F11:</b> Toàn màn hình<br />
-                            <b>↑ và ↓:</b> Đi từ trên xuống<br />
-                        </span>
-                    </span>
-                </h2>
-                <div class="text-center mb-3">
-                    Ngày: <strong>
-                        <!-- {{reportDate}} -->1/1/2024
-                    </strong>
-                </div>
-                <table style="border: 1px solid #ddd;" class="table-condensed">
-                    <thead>
-                        <tr ng-show="deviceType!=1">
-                            <th style="width:8%; border: none; text-align: left">
-                                <label>Mã/Tên:</label>
-                            </th>
-                            <th style="width:27%; border: none">
-                                <div class="control-group">
-                                    <ng-select #selectDrug  appendTo="body" appearance="outline"
-                                    [items]="listThuoc$ | async" [(ngModel)]="itemWaiting.thuocThuocId"
-                                    [typeahead]="searchThuocTerm$" [multiple]="false" bindValue="id" [minTermLength]="2"
-                                    appendTo="body" appearance="outline" placeholder="Tra cứu theo tên, mã, mã vạch..."
-                                    notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next('');onDrugChange($event);">
-                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
-                                        <span>{{item.maThuoc}}-{{item.tenThuoc}}</span>
-                                        <span class="ng-value-icon right text-danger" (click)="clear(item)">×</span>
-                                    </ng-template>
-                                    <ng-template ng-option-tmp let-item="item" let-index="index"
-                                        let-search="searchTerm">
-                                        <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{ item.tenThuoc }}</span>
-                                    </ng-template>
-                                </ng-select>
-                                </div>
-                            </th>
-                            <th style="width:9%; border: none; text-align: left">
-                                <label>SL thực:</label>
-                            </th>
-                            <th style="width:12%; border: none">
-                                <div class="input-group">
-                                    <input #inputSoLuong type="text"
-                                        class="form-control mb-0 mousetrap text-right" [(ngModel)]="itemWaiting.thucTe"
-                                        (keyup.enter)="onAddNew(itemWaiting)"
-                                        style="width: 100%">
-                                    <span class="input-group-addon" style="width: 100%;">
-                                        {{itemWaiting.tenDonViTinhLe}}
-                                    </span>
-                                </div>
-                            </th>
-                            <th ng-if="permittedFields.Drug_ViewInventory"
-                                style="width:12%; border: none; text-align: left">
-                                <label>SL hệ thống:</label>
-                            </th>
-                            <th ng-if="permittedFields.Drug_ViewInventory" style="width:12%; border: none;">
-                                <div class="input-group">
-                                    <input type="text" class="text-right form-control mb-0"
-                                      [(ngModel)]="itemWaiting.tonKho" style="width: 100%" readonly="readonly">
-                                    <span class="input-group-addon" style="width: 100%;">
-                                        {{itemWaiting.tenDonViTinhLe}}
-                                    </span>
-                                </div>
-                            </th>
-                            <th style="width:11%; border: none; text-align: left">
-                                <label>Giá/Lô/Hạn:</label>
-                            </th>
-                            <th style="width: 5%; text-align: right; border: none;">
-                                <div class="d-flex align-items-center gap-10">
-                                    <button class="btn btn-primary btn-sm"
-                                        (click)="openInventoryItemUpdateDialog(itemWaiting);"
-                                        title="Cập nhật giá/lô/hạn dùng"><i class="fa-regular fa-calendar-days"></i></button>
-                                    <a class="btn btn-primary btn-sm" title="Thêm mới"
-                                        (click)="onAddNew(itemWaiting);"><i
-                                            class="fa-regular fa-plus"></i></a>
-                                    <a class="btn btn-primary btn-sm" ng-if="itemWaiting.IsProdRef"
-                                        title="Cập nhật thông tin"
-                                        ng-click="onUpdateCommonDrugInfo($event,itemWaiting); $event.preventDefault(); $event.stopPropagation();"><i
-                                            class="fa-regular fa-pen"></i></a>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                </table>
-                <div class="mat-table-container">
-                    <table mat-table
-                           class="table table-striped table-bordered table-hover tr-ng-grid"
-                           [dataSource]="getDataSource()" matSort>
-                      <ng-container matColumnDef="stt">
-                        <th mat-header-cell *matHeaderCellDef>
-                          <div class="text-left">
-                            STT
-                          </div>
-                        </th>
-                        <td mat-cell *matCellDef="let data; index as i;">
-                          <div class="text-right">
-                            {{i + 1 }}
-                          </div>
-                        </td>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="nhomThuoc">
-                        <th mat-header-cell *matHeaderCellDef>Nhóm thuốc</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div>
-                            {{data.tenNhomThuoc}}
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="maThuoc">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã thuốc</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div>
-                            {{data.maThuoc}}
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="tenThuoc">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên thuốc</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-left">{{ data.tenThuoc }}</div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="donVi">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên thuốc</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-left">{{ data.tenDonViTinhLe }}</div>
-                        </td>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="slHeThong">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> SL hệ thống</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-right">{{ data.tonKho | number }}</div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="slThuc">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> SL thực</th>
-                        <td mat-cell *matCellDef="let data">
-                          <input class="form-control text-right" type="text" [(ngModel)] ="data.thucTe"/>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="chenhLech">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chênh lệch</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-right">{{ (data.thucTe - data.tonKho) | number }}</div>
-                        </td>
-                      </ng-container>
-
-                  
-                      <ng-container matColumnDef="giaKiemKe">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá kiểm kê</th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-right">{{ data.donGia }}</div>
-                        </td>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="loHan">
-                        <th mat-header-cell *matHeaderCellDef>
-                          Giá/Lô/Hạn
-                        </th>
-                        <td mat-cell *matCellDef="let data">
-                          <div class="text-center">
-                            <button class="btn btn-primary btn-sm" (click)="openInventoryItemUpdateDialog(data)"><i class="fa-regular fa-calendar-days"></i></button>
-                          </div>
-                        </td>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef>
-                         Xoá
-                        </th>
-                        <td mat-cell *matCellDef="let data">
-                            <div class="baocao-actions">
-                                <button (click)="onDelete(data)" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash"></i></button>
-                            </div>
-                        </td>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="footer">
-                        <td mat-footer-cell *matFooterCellDef colspan="100">
-                          <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
-                                          (pageChange)="changePageIndex($event)"
-                                          (pageSizeChange)="changePageSize($event)"></app-pagination>
-                        </td>
-                      </ng-container>
-                  
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                      <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
-                  
-                    </table>
-                  </div>
-
+  <div class="row">
+    <div class="col-md-3">
+      <form [formGroup]="formData">
+        <div class="sidebar-bg">
+          <div class="mb-3">
+            <label>Thêm cả nhóm thuốc vào phiếu</label>
+            <div class="input-group d-flex align-items-center">
+              <ng-select appendTo="body" class="flex-grow-1" appearance="outline" [items]="listNhomThuoc"
+                formControlName="nhomThuocMaNhomThuoc" bindLabel="tenNhomThuoc" bindValue="id"
+                placeholder="Chọn hoặc gõ vào để tìm..." notFoundText="Không tìm thấy mục nào" [clearable]="false">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenNhomThuoc }}</span>
+                </ng-template>
+              </ng-select>
+              <input type="hidden" id="maThuoc" name="maThuoc" />
+              <span class="input-group-btn">
+                <button id="addDrugGroupBtn" (click)="addThuocTheoNhom();" class="btn btn-primary">Thêm</button>
+              </span>
             </div>
+            <fieldset class="mt-3" *ngIf="idUrl > 0 && !formData.value?.daCanKho">
+              <div class="form-check">
+                <input type="checkbox" id="chkBienDong" class="form-control form-check-input"
+                  style="width: 18px;display: inline;height: 18px;vertical-align: bottom;margin-top: 0px;"
+                  (change)="locThuocBienDong()" formControlName="bienDong" />
+                <label class="form-check-label">Thuốc có biến động trong ngày</label>
+              </div>
+            </fieldset>
+          </div>
+          <hr />
+          <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+            <a class="btn btn-default w-50" href="/Inventory/Index">Quay lại</a>
+            <input type="submit" value="Lưu phiếu" id="btnLuuPhieu" name="action" (click)="onSave(false);"
+              class="btn btn-primary w-50" />
+          </div>
+          <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
+            <input type="submit" value="Cân kho" id="btnCanKho" name="action" (click)="onSave(true);"
+              class="btn btn-primary w-50" />
+            <input type="submit" value="Cập nhật tồn" id="btnUpdateInventories" name="action"
+              *ngIf="idUrl > 0 && !formData.value?.daCanKho" (click)="onUpdateInventories();"
+              class="btn btn-primary w-50" />
+          </div>
         </div>
+      </form>
     </div>
+
+    <div class="col-md-9">
+      <div class="box-group-white">
+        <h2 style="padding: 0px" class="text-center">
+          <b>PHIẾU KIỂM KÊ</b>
+          <span ng-if="deviceType==0" class="btn tooltip-content-drug" ng-mouseover="onShowTitle(gridItem)">
+            <span ng-click="">
+              <i style="font-size: 20px; color: black; margin-bottom: 5px;" class="fa fa-info-circle"
+                aria-hidden="true"></i>
+            </span>
+            <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
+              <b>F1:</b> Thêm mới phiếu trong tab mới<br />
+              <b>F9:</b> Ghi phiếu<br />
+              <b>F11:</b> Toàn màn hình<br />
+              <b>↑ và ↓:</b> Đi từ trên xuống<br />
+            </span>
+          </span>
+        </h2>
+        <form [formGroup]="formData">
+          <div class="text-center mb-3">
+            Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1"
+                formControlName="noteDate" type="text" class="form-control" (dateChange)="onDateChange($event.value)"
+                [matDatepicker]="pickerNgayKiemKe" (click)="pickerNgayKiemKe.open()">
+              <mat-datepicker #pickerNgayKiemKe="matDatepicker" disabled="false"></mat-datepicker><span
+                class="text-link" (click)="pickerNgayKiemKe.open()">{{formData.value.created | appDate}}</span>
+            </div>
+          </div>
+        </form>
+
+        <table style="border: 1px solid #ddd;" class="table-condensed">
+          <thead>
+            <tr ng-show="deviceType!=1">
+              <th style="width:8%; border: none; text-align: left">
+                <label>Mã/Tên:</label>
+              </th>
+              <th style="width:27%; border: none">
+                <div class="control-group">
+                  <ng-select #selectDrug appendTo="body" appearance="outline" [items]="listThuoc$ | async"
+                    [(ngModel)]="itemWaiting.thuocThuocId" [typeahead]="searchThuocTerm$" [multiple]="false"
+                    bindValue="id" [minTermLength]="2" appendTo="body" appearance="outline"
+                    placeholder="Tra cứu theo tên, mã, mã vạch..." notFoundText="Không tìm thấy mục nào"
+                    (change)="searchThuocTerm$.next('');onDrugChange($event);">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span>{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                      <span class="ng-value-icon right text-danger" (click)="clear(item)">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                      <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{ item.tenThuoc }}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </th>
+              <th style="width:9%; border: none; text-align: left">
+                <label>SL thực:</label>
+              </th>
+              <th style="width:12%; border: none">
+                <div class="input-group">
+                  <input #inputSoLuong type="text" class="form-control mb-0 mousetrap text-right"
+                    [(ngModel)]="itemWaiting.thucTe" (keyup.enter)="onAddNew(itemWaiting)" style="width: 100%">
+                  <span class="input-group-addon" style="width: 100%;">
+                    {{itemWaiting.tenDonViTinhLe}}
+                  </span>
+                </div>
+              </th>
+              <th ng-if="permittedFields.Drug_ViewInventory" style="width:12%; border: none; text-align: left">
+                <label>SL hệ thống:</label>
+              </th>
+              <th ng-if="permittedFields.Drug_ViewInventory" style="width:12%; border: none;">
+                <div class="input-group">
+                  <input type="text" class="text-right form-control mb-0" [(ngModel)]="itemWaiting.tonKho"
+                    style="width: 100%" readonly="readonly">
+                  <span class="input-group-addon" style="width: 100%;">
+                    {{itemWaiting.tenDonViTinhLe}}
+                  </span>
+                </div>
+              </th>
+              <th style="width:11%; border: none; text-align: left">
+                <label>Giá/Lô/Hạn:</label>
+              </th>
+              <th style="width: 5%; text-align: right; border: none;">
+                <div class="d-flex align-items-center gap-10">
+                  <button class="btn btn-primary btn-sm" (click)="openInventoryItemUpdateDialog(itemWaiting);"
+                    title="Cập nhật giá/lô/hạn dùng"><i class="fa-regular fa-calendar-days"></i></button>
+                  <a class="btn btn-primary btn-sm" title="Thêm mới" (click)="onAddNew(itemWaiting);"><i
+                      class="fa-regular fa-plus"></i></a>
+                  <a class="btn btn-primary btn-sm" ng-if="itemWaiting.IsProdRef" title="Cập nhật thông tin"
+                    ng-click="onUpdateCommonDrugInfo($event,itemWaiting); $event.preventDefault(); $event.stopPropagation();"><i
+                      class="fa-regular fa-pen"></i></a>
+                </div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <div class="mat-table-container">
+          <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid"
+            [dataSource]="getDataSource()" matSort>
+            <ng-container matColumnDef="stt">
+              <th mat-header-cell *matHeaderCellDef>
+                <div class="text-left">
+                  STT
+                </div>
+              </th>
+              <td mat-cell *matCellDef="let data; index as i;">
+                <div class="text-right">
+                  {{i + 1 }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nhomThuoc">
+              <th mat-header-cell *matHeaderCellDef>Nhóm thuốc</th>
+              <td mat-cell *matCellDef="let data">
+                <div>
+                  {{data.tenNhomThuoc}}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="maThuoc">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã thuốc</th>
+              <td mat-cell *matCellDef="let data">
+                <div>
+                  {{data.maThuoc}}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tenThuoc">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên thuốc</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.tenThuoc }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="donVi">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Đơn vị</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-left">{{ data.tenDonViTinhLe }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="slHeThong">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> SL hệ thống</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ data.tonKho | number }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="slThuc">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> SL thực</th>
+              <td mat-cell *matCellDef="let data">
+                <input class="form-control text-right" type="text" [(ngModel)]="data.thucTe" />
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="chenhLech">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Chênh lệch</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ (data.thucTe - data.tonKho) | number }}</div>
+              </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="giaKiemKe">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá kiểm kê</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-right">{{ data.donGia }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="loHan">
+              <th mat-header-cell *matHeaderCellDef>
+                Giá/Lô/Hạn
+              </th>
+              <td mat-cell *matCellDef="let data">
+                <div class="text-center">
+                  <button class="btn btn-primary btn-sm" (click)="openInventoryItemUpdateDialog(data)"><i
+                      class="fa-regular fa-calendar-days"></i></button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>
+                Xoá
+              </th>
+              <td mat-cell *matCellDef="let data">
+                <div class="baocao-actions">
+                  <button (click)="onDelete(data)" class="btn btn-sm btn-danger"><i
+                      class="fa-regular fa-trash"></i></button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="footer">
+              <td mat-footer-cell *matFooterCellDef colspan="100">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="dataTable.length"
+                  (pageChange)="changePageIndex($event)" (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

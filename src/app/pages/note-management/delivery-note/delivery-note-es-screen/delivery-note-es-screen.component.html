@@ -1,21 +1,6 @@
 <div class="card-bg row">
     <h2 class="text-center mt-0 mb-0">
         <b>PHIẾU BÁN HÀNG</b>
-        <span ng-if="deviceType==0" style="padding-bottom: 12px; padding-left: 8px"
-            class="btn tooltip-content-drug ng-scope" ng-mouseover="onShowTitle(gridItem)">
-            <span ng-click="">
-                <i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i>
-            </span>
-            <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
-                <b>F1:</b> Thêm mới phiếu trong tab mới<br>
-                <b>F2:</b> Tìm khách hàng/nhà cung cấp<br>
-                <b>F4:</b> Tính liều<br>
-                <b>F8:</b> Thay đổi tổng tiền<br>
-                <b>F9:</b> Ghi phiếu<br>
-                <b>F11:</b> Toàn màn hình<br>
-                <b>↑ và ↓:</b> Đi từ trên xuống<br>
-            </span>
-        </span>
     </h2>
     <form [formGroup]="formData">
         <div class="text-center card-desc">

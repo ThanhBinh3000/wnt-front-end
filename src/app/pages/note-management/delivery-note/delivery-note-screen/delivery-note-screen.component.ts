@@ -149,7 +149,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     }
     this.dataTable.unshift({ isEditingItem: true });
     this.getDataFilter();
-    console.log(this.formData.value);
   }
 
   ngAfterViewInit() {
@@ -427,7 +426,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   }
 
   @ViewChildren('inputSoLuong') inputSoLuongs!: QueryList<ElementRef>;
-
   async focusInputSoLuong() {
     if (this.inputSoLuongs.last) {
       this.inputSoLuongs.last.nativeElement.focus();
@@ -435,11 +433,19 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   }
 
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
-
   async focusSearchDrug() {
     this.selectDrug?.focus();
   }
 
+  @ViewChild('selectCustomer') selectCustomer!: NgSelectComponent;
+  async focusSearchCustomer() {
+    this.selectCustomer?.focus();
+  }
+
+  @ViewChild('inputTongTien') inputTongTien!: ElementRef;
+  async focusInputTongTien() {
+    this.inputTongTien?.nativeElement.focus().focus();
+  }
 
   //điểm khach hang
   async onPaymentScoreChange() {
@@ -663,7 +669,16 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       case "F9":
         this.onSave();
         break;
-      case "down":
+      case "F1":
+        let baseUrl = window.location.href.replace(this.router.url, '');
+        const url = new URL("management/note-management/delivery-note-screen", baseUrl).href;
+        window.open(url, '_blank');
+        break;
+      case "F2":
+        this.focusSearchCustomer();
+        break;
+      case "F8":
+        this.focusInputTongTien();
         break;
     }
   }

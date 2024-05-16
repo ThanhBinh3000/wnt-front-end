@@ -78,15 +78,15 @@ export class TransactionHistoryDeliveryItemTableComponent extends BaseComponent 
   getDataLoaiPhieu(data :any){
     switch(data.maLoaiXuatNhap){
       case LOAI_PHIEU.PHIEU_XUAT :
-        return "Phiếu bán hàng"
+        return "Xuất hàng"
       case LOAI_PHIEU.PHIEU_CHUYEN_KHO :
-        return "Phiếu chuyển kho";
+        return "Chuyển kho";
       case LOAI_PHIEU.PHIEU_TRA_LAI_NCC :
-        return "Phiếu trả lại nhà cung cấp";
+        return "Trả lại nhà cung cấp";
       case LOAI_PHIEU.PHIEU_KIEM_KE :
-        return "Phiếu bù xuất";
+        return "Bù xuất";
       case LOAI_PHIEU.PHIEU_XUAT_HUY :
-        return "Phiếu xuất huỷ";
+        return "Xuất huỷ";
       default:
         return "";
     }

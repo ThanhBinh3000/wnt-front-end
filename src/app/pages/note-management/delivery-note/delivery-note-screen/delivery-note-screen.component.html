@@ -73,7 +73,9 @@
                                 </label>
                                 <div class="input-group">
                                     <div class="flex-grow-1 ip-position ng-isolate-scope">
-                                        <ng-select appendTo="body"
+                                        <ng-select 
+                                            #selectCustomer
+                                            appendTo="body"
                                             formControlName="khachHangMaKhachHang"
                                             appendTo="body"
                                             appearance="outline" 
@@ -365,7 +367,7 @@
                                         <label class="control-label ng-binding"
                                             *ngIf="!allowChangeTotalAmountInDeliveryNote">{{formData.value?.tongTien |
                                             number}}</label>
-                                        <input type="text"
+                                        <input #inputTongTien type="text"
                                             class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
                                             style="width: 100%" formControlName="tongTien" awnum="app-int-number"
                                             *ngIf="allowChangeTotalAmountInDeliveryNote"
@@ -548,7 +550,7 @@
                                     title="F9-Ghi phiếu" class="btn btn-primary" class="btn btn-primary"
                                     (click)="onSave()">
                                 <a class="btn btn-default" title="Sao chép phiếu"
-                                    *ngIf="!formData.value?.locked && isDesktop() && (copyId > 0 || formData.value?.id > 0)"
+                                    *ngIf="!formData.value?.locked && isDesktop() && formData.value?.id > 0"
                                     href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
                                     >Copy</a>
                                 <div class="btn-group ng-scope" *ngIf="isDesktop() && isUpdateView()">
