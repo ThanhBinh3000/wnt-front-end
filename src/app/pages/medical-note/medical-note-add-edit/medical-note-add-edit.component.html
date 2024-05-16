@@ -1,9 +1,15 @@
-<div>
+<form [formGroup]="formData">
     <div class="box-group-white">
         <div class="box-group-title">
             <h2 class="text-center">{{title}}</h2>
             <div class="text-center">
-                Ngày: <div class="clickable-text daterange-picker text-link"><input type="text" name="noteDate" id="note-date-id" ng-model="noteDate"><span ng-if="noteModel.Id == 0"></span></div>
+                Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1"
+                        formControlName="ngayTao" type="text" class="form-control"
+                        (dateChange)="onDateChange($event.value)" [matDatepicker]="pickerNoteDate"
+                        (click)="pickerNoteDate.open()">
+                    <mat-datepicker #pickerNoteDate="matDatepicker" disabled="false"></mat-datepicker><span
+                        class="text-link" (click)="pickerNoteDate.open()">{{formData.value.noteDate | appDate}}</span>
+                </div>
             </div>
         </div>
         <!-- Desktop -->
@@ -12,17 +18,33 @@
                 <div class="col-md-12">
                     <div class="d-flex gap-10 flex-wrap justify-content-center">
                         <a class="btn btn-primary" ng-hide="noteModel.Id == 0" href="/NoteMedical/Create">Tiếp tục</a>
-                        <button class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked" ng-click="onSpecifyService(noteModel.Id)" ng-show="permittedFields.NoteService_Create_And_Write">Chỉ định dịch vụ</button>
-                        <button class="btn btn-primary" ng-click="onListServiced(noteModel.Id)" ng-show="permittedFields.NoteService_Read">Dịch vụ đã kê</button>
+                        <button class="btn btn-primary"
+                            ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked"
+                            ng-click="onSpecifyService(noteModel.Id)"
+                            ng-show="permittedFields.NoteService_Create_And_Write">Chỉ định dịch vụ</button>
+                        <button class="btn btn-primary" ng-click="onListServiced(noteModel.Id)"
+                            ng-show="permittedFields.NoteService_Read">Dịch vụ đã kê</button>
                         <button class="btn btn-primary" ng-click="onSampleNote(noteModel.Id)">Đơn thuốc</button>
-                        <button class="btn btn-primary" ng-click="onHistoryCusMedical(noteModel.Customer.CusId)">LS khám chữa bệnh</button>
-                        <button class="btn btn-primary" ng-click="onHistorySampleNote(noteModel.Customer.CusId)">LS kê đơn</button>
-                        <button class="btn btn-danger" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked" ng-click="onEndExam(noteModel.Id,true)">Kết thúc khám</button>
-                        <button class="btn btn-default" ng-disabled="noteModel.StatusExam !=@((int)StatusExa.Examined) || noteModel.Locked" ng-click="onEndExam(noteModel.Id,false)">Hủy kết thúc</button>
-                        <button class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked" ng-hide="action == 'view'" ng-click="SaveData()">Ghi phiếu</button>
-                        <a class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked" ng-hide="action != 'view'">Sửa</a>
-                        <button class="btn btn-default" ng-show="noteModel.Id > 0 && permittedFields.NoteMedical_Print" ng-click="onPrint(noteModel.Id)">In</button>
-                        <a class="btn btn-primary" ng-disabled="action != 'view' || noteModel.IsDebt == false" ng-click="onPaymetNote(noteModel)">Thanh toán</a>
+                        <button class="btn btn-primary" ng-click="onHistoryCusMedical(noteModel.Customer.CusId)">LS khám
+                            chữa bệnh</button>
+                        <button class="btn btn-primary" ng-click="onHistorySampleNote(noteModel.Customer.CusId)">LS kê
+                            đơn</button>
+                        <button class="btn btn-danger"
+                            ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked"
+                            ng-click="onEndExam(noteModel.Id,true)">Kết thúc khám</button>
+                        <button class="btn btn-default"
+                            ng-disabled="noteModel.StatusExam !=@((int)StatusExa.Examined) || noteModel.Locked"
+                            ng-click="onEndExam(noteModel.Id,false)">Hủy kết thúc</button>
+                        <button class="btn btn-primary"
+                            ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked"
+                            ng-hide="action == 'view'" ng-click="SaveData()">Ghi phiếu</button>
+                        <a class="btn btn-primary"
+                            ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined) || noteModel.Locked"
+                            ng-hide="action != 'view'">Sửa</a>
+                        <button class="btn btn-default" ng-show="noteModel.Id > 0 && permittedFields.NoteMedical_Print"
+                            ng-click="onPrint(noteModel.Id)">In</button>
+                        <a class="btn btn-primary" ng-disabled="action != 'view' || noteModel.IsDebt == false"
+                            ng-click="onPaymetNote(noteModel)">Thanh toán</a>
                         <a ng-show="noteModel.Id > 0" ng-click="onLockNote()" title="Mở/Khóa phiếu"><i></i></a>
                         <button class="btn btn-default">Quay lại</button>
                     </div>
@@ -36,37 +58,69 @@
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Bệnh nhân<span class="text-danger">(*)</span></label>
                                     <div class="flex-grow-1">
-                                        <div class="input-group" ng-hide="noteModel.StatusExam ==@((int)StatusExa.Examined)">
-                                            <input class="form-control">
+                                        <div class="input-group"
+                                            *ngIf="formData.value?.statusNote != TRANG_THAI_PHIEU_KHAM.DA_KHAM">
+                                            <div class="flex-grow-1">
+                                                <ng-select [items]="listKhachHang$ | async"
+                                                    [typeahead]="searchKhachHangTerm$" [minTermLength]="2"
+                                                    [trackByFn]="trackByFn" formControlName="idPatient" appendTo="body"
+                                                    appearance="outline" bindLabel="tenKhachHang" bindValue="id"
+                                                    placeholder="Nhập mã, mã vạch hoặc tên..."
+                                                    notFoundText="Không tìm thấy mục nào"
+                                                    typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                                                    (change)="searchKhachHangTerm$.next(''); getPatientDetail($event)">
+                                                    <ng-template ng-option-tmp let-item="item" let-index="index"
+                                                        let-search="searchTerm">
+                                                        <span [ngOptionHighlight]="search">{{ item.tenKhachHang
+                                                            }}</span>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
                                             <div class="input-group-btn">
-                                                <button class="btn btn-primary" ng-click="addCustomer();$event.preventDefault();"><i class="fa-regular fa-plus"></i></button>
+                                                <button class="btn btn-primary" (click)="openCustomerAddEditDialog()"
+                                                    title="Thêm khách hàng mới nếu chưa có">
+                                                    <i class="fa-regular fa-plus"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control mb-0" disabled ng-model="receiverSelectedItem.Name" ng-show="noteModel.StatusExam ==@((int)StatusExa.Examined)" />
+                                        <input type="text" class="form-control mb-0" disabled
+                                            ng-model="receiverSelectedItem.Name"
+                                            *ngIf="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM" />
                                     </div>
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">Địa chỉ</label>
-                                    <input class="form-control mb-0 flex-grow-1" type="text" ng-change="onModifiedInfoCus()" ng-disabled="action == 'view'" ng-model="receiverSelectedItem.Addresses" />
+                                    <input class="form-control mb-0 flex-grow-1" type="text"
+                                        ng-change="onModifiedInfoCus()" ng-disabled="action == 'view'"
+                                        ng-model="receiverSelectedItem.Addresses" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Ngày sinh</label>
                                     <div class="input-group">
-                                        <input class="input-datetime form-control mb-0 text-box single-line" id="birthDate" ng-change="birthDateChange()" ng-disabled="!receiverSelectedItem || action == 'view'" placeholder="dd/mm/yyyy" style="text-align:left" type="text" ng-model="receiverSelectedItem.BirthDate" />
-                                        <span class="input-group-addon flex-grow-width-25" ng-click="onBirthDateClick(); $event.preventDefault(); $event.stopPropagation();"><i class="fa-regular fa-calendar-days"></i></span>
+                                        <input class="input-datetime form-control mb-0 text-box single-line"
+                                            id="birthDate" ng-change="birthDateChange()"
+                                            ng-disabled="!receiverSelectedItem || action == 'view'"
+                                            placeholder="dd/mm/yyyy" style="text-align:left" type="text"
+                                            ng-model="receiverSelectedItem.BirthDate" />
+                                        <span class="input-group-addon flex-grow-width-25"
+                                            ng-click="onBirthDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                class="fa-regular fa-calendar-days"></i></span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">Tuổi</label>
-                                    <input class="form-control mb-0 flex-grow-1" ng-change="birthDateChange()" ng-disabled="!receiverSelectedItem || action == 'view'" ng-model="receiverSelectedItem.OldNumber" type="text" />
+                                    <input class="form-control mb-0 flex-grow-1" ng-change="birthDateChange()"
+                                        ng-disabled="!receiverSelectedItem || action == 'view'"
+                                        ng-model="receiverSelectedItem.OldNumber" type="text" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Giới tính</label>
-                                    <select class="form-control mb-0" ng-change="onModifiedInfoCus()" ng-disabled="action == 'view'" ng-model="receiverSelectedItem.SexId">
+                                    <select class="form-control mb-0" ng-change="onModifiedInfoCus()"
+                                        ng-disabled="action == 'view'" ng-model="receiverSelectedItem.SexId">
                                         <option value="" selected>--Mặc định--</option>
                                         <option value="0">Nam</option>
                                         <option value="1">Nữ</option>
@@ -74,7 +128,9 @@
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">SĐT</label>
-                                    <input class="form-control mb-0" ng-change="onModifiedInfoCus()" ng-disabled="action == 'view'" ng-model="receiverSelectedItem.Phones" type="text" />
+                                    <input class="form-control mb-0" ng-change="onModifiedInfoCus()"
+                                        ng-disabled="action == 'view'" ng-model="receiverSelectedItem.Phones"
+                                        type="text" />
                                 </div>
                             </div>
                         </div>
@@ -85,11 +141,15 @@
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Số phiếu</label>
-                                    <input class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.NoteNumber" type="text" />
+                                    <input class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.NoteNumber" type="text" />
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">Tình trạng</label>
-                                    <select class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.SickCondition">
+                                    <select class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.SickCondition">
                                         <option value="0" selected>Bình thường</option>
                                         <option value="1">Không khỏe</option>
                                         <option value="2">Cấp cứu</option>
@@ -99,7 +159,9 @@
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Tiền khám</label>
-                                    <input class="form-control text-right mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.TotalMoney" type="text" awnum="app-decimal-number" />
+                                    <input class="form-control text-right mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.TotalMoney" type="text" awnum="app-decimal-number" />
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">Loại khám</label>
@@ -118,8 +180,10 @@
                                             <option value="1">Tỉnh đz</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();" style="top:-2px;"
-                                                    title="Thêm bác sỹ mới nếu chưa có">
+                                            <button class="btn btn-primary"
+                                                ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                                ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
+                                                style="top:-2px;" title="Thêm bác sỹ mới nếu chưa có">
                                                 <i class="fa-regular fa-plus"></i>
                                             </button>
                                         </span>
@@ -141,15 +205,21 @@
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Lý do khám</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.ReasonExamination"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.ReasonExamination"></textarea>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Khám lâm sàng</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.ClinicalExamination"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.ClinicalExamination"></textarea>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Bệnh kèm theo</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.IncludingDiseases"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.IncludingDiseases"></textarea>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Chẩn đoán bệnh</label>
@@ -157,69 +227,91 @@
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Chẩn đoán khác</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.DiagnosticOther"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.DiagnosticOther"></textarea>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">KL & HĐT</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Conclude"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.Conclude"></textarea>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <div class="col-md-4">
                                         <div class="form-check align-items-center">
                                             <label class="form-check-label">Tái khám</label>
-                                            <input class="form-check mb-0 mt-0" ng-disabled="action == 'view'" placeholder="dd/mm/yyyy" ng-model="noteModel.Check" type="checkbox">
+                                            <input class="form-check mb-0 mt-0" ng-disabled="action == 'view'"
+                                                placeholder="dd/mm/yyyy" ng-model="noteModel.Check" type="checkbox">
                                         </div>
                                     </div>
-                                    <input ng-show="noteModel.Check == true" ng-change="onReexaminationDateNumChanged()" type="text" min="0" awnum="app-decimal-number" class="form-control mb-0" ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) " style="text-align:left" ng-model="noteModel.ReexaminationDateNum" placeholder="Nhập số ngày hẹn tái khám" />
+                                    <input ng-show="noteModel.Check == true" ng-change="onReexaminationDateNumChanged()"
+                                        type="text" min="0" awnum="app-decimal-number" class="form-control mb-0"
+                                        ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) "
+                                        style="text-align:left" ng-model="noteModel.ReexaminationDateNum"
+                                        placeholder="Nhập số ngày hẹn tái khám" />
                                 </div>
                                 <div class="form-inline-flex" ng-show="noteModel.Check == true">
                                     <label class="col-md-4">Ngày tái khám</label>
                                     <input class="input-datetime form-control mb-0 text-box single-line"
-                                           ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) "
-                                           style="text-align:left" type="text" placeholder="dd/mm/yyyy" ng-model="noteModel.ReexaminationDate"
-                                           ng-change="onReexaminationDateChanged()" />
+                                        ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) "
+                                        style="text-align:left" type="text" placeholder="dd/mm/yyyy"
+                                        ng-model="noteModel.ReexaminationDate"
+                                        ng-change="onReexaminationDateChanged()" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Nhịp tim</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Heartbeat">
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Heartbeat">
                                         <span class="input-group-addon flex-grow-width-30">nhịp/phút</span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Cân nặng</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Weight">
+                                        <input type="text" class="form-control mb-0"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Weight">
                                         <span class="input-group-addon flex-grow-width-25">Kg</span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Nhịp thở</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Breathing">
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Breathing">
                                         <span class="input-group-addon flex-grow-width-30">nhịp/phút</span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Nhiệt độ</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Temperature">
+                                        <input type="text" class="form-control mb-0"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Temperature">
                                         <span class="input-group-addon flex-grow-width-25">&#176C;</span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Huyết áp</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.BloodPressure">
+                                        <input type="text" class="form-control mb-0"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.BloodPressure">
                                         <span class="input-group-addon flex-grow-width-25">mmHg</span>
                                     </div>
                                 </div>
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Chiều cao</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control mb-0" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Height">
+                                        <input type="text" class="form-control mb-0"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Height">
                                         <span class="input-group-addon flex-grow-width-25">cm</span>
                                     </div>
                                 </div>
@@ -227,7 +319,9 @@
                             <div class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Dị ứng thuốc</label>
-                                    <textarea class="form-control mb-0" ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.DrugAllergy"></textarea>
+                                    <textarea class="form-control mb-0"
+                                        ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.DrugAllergy"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -240,12 +334,16 @@
             <b class="msg_view_function_header">Chọn tính năng <span>[+]</span></b>
             <div id="functionSlide" class="form-check">
                 <ul>
-                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-click="onSpecifyService(noteModel.Id)">Chỉ định dịch vụ</span></li>
+                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                            ng-click="onSpecifyService(noteModel.Id)">Chỉ định dịch vụ</span></li>
                     <li><span class="btn btn-link" ng-click="onListServiced(noteModel.Id)">Dịch vụ đã kê</span></li>
                     <li><span class="btn btn-link" ng-click="onSampleNote(noteModel.Id)">Đơn thuốc</span></li>
-                    <li><span class="btn btn-link" ng-click="onHistoryCusMedical(noteModel.Customer.CusId)">Lịch sử khám chữa bệnh</span></li>
-                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-click="onEndExam(noteModel.Id,true)">Kết thúc khám</span></li>
-                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam !=@((int)StatusExa.Examined)" ng-click="onEndExam(noteModel.Id,false)">Hủy kết thúc</span></li>
+                    <li><span class="btn btn-link" ng-click="onHistoryCusMedical(noteModel.Customer.CusId)">Lịch sử khám
+                            chữa bệnh</span></li>
+                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                            ng-click="onEndExam(noteModel.Id,true)">Kết thúc khám</span></li>
+                    <li><span class="btn btn-link" ng-disabled="noteModel.StatusExam !=@((int)StatusExa.Examined)"
+                            ng-click="onEndExam(noteModel.Id,false)">Hủy kết thúc</span></li>
                 </ul>
             </div>
             <div class="col-md-10 border-right">
@@ -256,18 +354,25 @@
                                 <td colspan="12"><label class="control-label">Thông tin bệnh nhân</label></td>
                             </tr>
                             <tr>
-                                <td colspan="2"><label class="control-label">Bệnh nhân<span class="text-danger">(*)</span></label></td>
+                                <td colspan="2"><label class="control-label">Bệnh nhân<span
+                                            class="text-danger">(*)</span></label></td>
                                 <td colspan="10">
-                                    <div class="input-group" ng-hide="noteModel.StatusExam ==@((int)StatusExa.Examined)">
+                                    <div class="input-group"
+                                        ng-hide="noteModel.StatusExam ==@((int)StatusExa.Examined)">
                                         <input type="text" class="form-control">
-                                        <span class="input-group-addon" ng-click="addCustomer();$event.preventDefault();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        <span class="input-group-addon"
+                                            ng-click="addCustomer();$event.preventDefault();"><i class="fa fa-plus"
+                                                aria-hidden="true"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" disabled ng-model="receiverSelectedItem.Name" ng-show="noteModel.StatusExam ==@((int)StatusExa.Examined)" />
+                                    <input type="text" class="form-control" disabled
+                                        ng-model="receiverSelectedItem.Name"
+                                        ng-show="noteModel.StatusExam ==@((int)StatusExa.Examined)" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Địa chỉ</label></td>
-                                <td colspan="10"><input class="form-control" type="text" disabled ng-model="receiverSelectedItem.Addresses" /></td>
+                                <td colspan="10"><input class="form-control" type="text" disabled
+                                        ng-model="receiverSelectedItem.Addresses" /></td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -275,15 +380,20 @@
                                 </td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input class="input-datetime form-control text-box single-line" id="birthDate" disabled placeholder="dd/mm/yyyy" style="text-align:left" type="text" ng-model="receiverSelectedItem.BirthDate" />
-                                        <span class="input-group-addon" ng-click="onBirthDateClick(); $event.preventDefault(); $event.stopPropagation();"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input class="input-datetime form-control text-box single-line" id="birthDate"
+                                            disabled placeholder="dd/mm/yyyy" style="text-align:left" type="text"
+                                            ng-model="receiverSelectedItem.BirthDate" />
+                                        <span class="input-group-addon"
+                                            ng-click="onBirthDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                class="glyphicon glyphicon-calendar"></i></span>
                                     </div>
                                 </td>
                                 <td colspan="1">
                                     <label class="control-label">Tuổi</label>
                                 </td>
                                 <td colspan="5">
-                                    <input class="form-control" disabled ng-model="receiverSelectedItem.OldNumber" type="text" />
+                                    <input class="form-control" disabled ng-model="receiverSelectedItem.OldNumber"
+                                        type="text" />
                                 </td>
                             </tr>
                             <tr>
@@ -301,7 +411,8 @@
                                     <label class="control-label">SĐT</label>
                                 </td>
                                 <td colspan="4">
-                                    <input class="form-control" disabled ng-model="receiverSelectedItem.Phones" type="text" />
+                                    <input class="form-control" disabled ng-model="receiverSelectedItem.Phones"
+                                        type="text" />
                                 </td>
                             </tr>
                             <tr>
@@ -312,7 +423,9 @@
                                     <label class="control-label">Số phiếu khám</label>
                                 </td>
                                 <td colspan="10">
-                                    <input class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.NoteNumber" type="text" />
+                                    <input class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.NoteNumber" type="text" />
                                 </td>
                             </tr>
                             <tr>
@@ -320,7 +433,9 @@
                                     <label class="control-label">Tình trạng bệnh</label>
                                 </td>
                                 <td colspan="10">
-                                    <select class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.SickCondition">
+                                    <select class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.SickCondition">
                                         <option value="0" selected>Bình thường</option>
                                         <option value="1">Không khỏe</option>
                                         <option value="2">Cấp cứu</option>
@@ -340,7 +455,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <label class="control-label">Bác sỹ khám <span class="text-danger">(*)</span></label>
+                                    <label class="control-label">Bác sỹ khám <span
+                                            class="text-danger">(*)</span></label>
                                 </td>
                                 <td colspan="10">
                                     <div class="input-group">
@@ -349,8 +465,10 @@
                                             <option value="1">Tỉnh đz</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();" style="top:-2px;"
-                                                    title="Thêm bác sỹ mới nếu chưa có">
+                                            <button class="btn btn-default"
+                                                ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                                ng-click="onAddDoctor(); $event.preventDefault(); $event.stopPropagation();"
+                                                style="top:-2px;" title="Thêm bác sỹ mới nếu chưa có">
                                                 <i class="glyphicon glyphicon-plus"></i>
                                             </button>
                                         </span>
@@ -362,7 +480,9 @@
                                     <label class="control-label">Tiền khám <span class="text-danger">(*)</span></label>
                                 </td>
                                 <td colspan="5">
-                                    <input class="form-control text-right" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.TotalMoney" type="text" awnum="app-decimal-number" />
+                                    <input class="form-control text-right"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.TotalMoney" type="text" awnum="app-decimal-number" />
                                 </td>
                             </tr>
                             <tr>
@@ -370,31 +490,45 @@
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Lý do khám</label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.ReasonExamination"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.ReasonExamination"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Khám lâm sàng</label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.ClinicalExamination"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.ClinicalExamination"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Bệnh kèm theo</label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.IncludingDiseases"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.IncludingDiseases"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Dị ứng với thuốc</label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.DrugAllergy"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.DrugAllergy"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Nhịp tim </label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Heartbeat"><span class="input-group-addon">nhịp/phút</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Heartbeat"><span
+                                            class="input-group-addon">nhịp/phút</span>
                                     </div>
                                 </td>
                                 <td colspan="2"><label class="control-label">Nhiệt độ</label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Temperature"><span class="input-group-addon">&#176C;</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Temperature"><span
+                                            class="input-group-addon">&#176C;</span>
                                     </div>
                                 </td>
                             </tr>
@@ -402,13 +536,18 @@
                                 <td colspan="2"><label class="control-label">Cân nặng </label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Weight"><span class="input-group-addon">Kg</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Weight"><span class="input-group-addon">Kg</span>
                                     </div>
                                 </td>
                                 <td colspan="2"><label class="control-label">Huyết áp</label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.BloodPressure"><span class="input-group-addon">mmHg</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.BloodPressure"><span
+                                            class="input-group-addon">mmHg</span>
                                     </div>
                                 </td>
                             </tr>
@@ -416,35 +555,51 @@
                                 <td colspan="2"><label class="control-label">Nhịp thở </label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Breathing"><span class="input-group-addon">nhịp/phút</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Breathing"><span
+                                            class="input-group-addon">nhịp/phút</span>
                                     </div>
                                 </td>
                                 <td colspan="2"><label class="control-label">Chiều Cao</label></td>
                                 <td colspan="4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Height"><span class="input-group-addon">Cm</span>
+                                        <input type="text" class="form-control"
+                                            ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                            ng-model="noteModel.Height"><span class="input-group-addon">Cm</span>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Chẩn đoán bệnh </label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Diagnostic"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.Diagnostic"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><label class="control-label">Kết luận và hướng điều trị </label></td>
-                                <td colspan="10"><textarea class="form-control" ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-model="noteModel.Conclude"></textarea></td>
+                                <td colspan="10"><textarea class="form-control"
+                                        ng-disabled="action == 'view' || noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                        ng-model="noteModel.Conclude"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     <div class="form-check mb-2 mr-sm-2">
                                         <label class="form-check-label">
-                                            Hẹn tái khám  <input class="form-check-input" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" style="transform:scale(1.5)" placeholder="dd/mm/yyyy" ng-model="noteModel.Check" type="checkbox">
+                                            Hẹn tái khám <input class="form-check-input"
+                                                ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                                                style="transform:scale(1.5)" placeholder="dd/mm/yyyy"
+                                                ng-model="noteModel.Check" type="checkbox">
                                         </label>
                                     </div>
                                 </td>
                                 <td colspan="10">
                                     <div ng-show="noteModel.Check == true">
-                                        <input ng-change="onReexaminationDateNumChanged()" type="number" class="form-control" ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) " style="text-align:left" ng-model="noteModel.ReexaminationDateNum" placeholder="Nhập số ngày hẹn tái khám" />
+                                        <input ng-change="onReexaminationDateNumChanged()" type="number"
+                                            class="form-control"
+                                            ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) "
+                                            style="text-align:left" ng-model="noteModel.ReexaminationDateNum"
+                                            placeholder="Nhập số ngày hẹn tái khám" />
                                     </div>
                                 </td>
                             </tr>
@@ -458,8 +613,14 @@
                                 </td>
                                 <td colspan="10">
                                     <div class="input-group">
-                                        <input ng-change="onReexaminationDateChanged()" readonly="readonly" class="form-control" ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) " id="reexaminationDate" style="text-align:left" placeholder="dd/mm/yyyy" type="text" ng-model="noteModel.ReexaminationDate" />
-                                        <span class="input-group-addon" ng-click="onDateCheckClick(); $event.preventDefault(); $event.stopPropagation();"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input ng-change="onReexaminationDateChanged()" readonly="readonly"
+                                            class="form-control"
+                                            ng-disabled="action == 'view' ||noteModel.StatusExam ==@((int)StatusExa.Examined) "
+                                            id="reexaminationDate" style="text-align:left" placeholder="dd/mm/yyyy"
+                                            type="text" ng-model="noteModel.ReexaminationDate" />
+                                        <span class="input-group-addon"
+                                            ng-click="onDateCheckClick(); $event.preventDefault(); $event.stopPropagation();"><i
+                                                class="glyphicon glyphicon-calendar"></i></span>
                                     </div>
                                 </td>
                             </tr>
@@ -467,10 +628,15 @@
                     </div>
                 </div>
                 <div class="align-center">
-                    <a class="btn btn-primary" ng-show="noteModel.Id > 0" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" href="/NoteMedical/Create">Tạo mới</a>
-                    <button class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-hide="action == 'view'" ng-click="SaveData()">Ghi phiếu</button>
-                    <a class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" ng-hide="action != 'view'" href="">Sửa</a>
-                    <button class="btn btn-primary" ng-show="noteModel.Id > 0" ng-click="onPrint(noteModel.Id)">In</button>
+                    <a class="btn btn-primary" ng-show="noteModel.Id > 0"
+                        ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)" href="/NoteMedical/Create">Tạo
+                        mới</a>
+                    <button class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                        ng-hide="action == 'view'" ng-click="SaveData()">Ghi phiếu</button>
+                    <a class="btn btn-primary" ng-disabled="noteModel.StatusExam ==@((int)StatusExa.Examined)"
+                        ng-hide="action != 'view'" href="">Sửa</a>
+                    <button class="btn btn-primary" ng-show="noteModel.Id > 0"
+                        ng-click="onPrint(noteModel.Id)">In</button>
                     <button class="btn btn-default">Quay lại</button>
                 </div>
             </div>
@@ -493,14 +659,19 @@
                     </tr>
                     <tr>
                         <td class="text-right"></td>
-                        <td><input class="form-control text-right border-input" type="text" ng-change="onDiscountChange()" ng-model="modelPayment.Discount" awnum="app-decimal-number" /></td>
-                        <td><input class="form-control text-right border-input" type="text" ng-model="modelPayment.TotalAmount" awnum="app-decimal-number" /></td>
+                        <td><input class="form-control text-right border-input" type="text"
+                                ng-change="onDiscountChange()" ng-model="modelPayment.Discount"
+                                awnum="app-decimal-number" /></td>
+                        <td><input class="form-control text-right border-input" type="text"
+                                ng-model="modelPayment.TotalAmount" awnum="app-decimal-number" /></td>
                     </tr>
                 </table>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" ng-disabled="noteFeeId > 0" ng-click="onPayment()">Thanh toán</button>
+                    <button class="btn btn-primary" ng-disabled="noteFeeId > 0" ng-click="onPayment()">Thanh
+                        toán</button>
                     <div class="btn-group" ng-show="action == 'view' || model.Id > 0">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                             In <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
@@ -522,7 +693,8 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="control-label">Lịch sử chẩn đoán bệnh của bệnh nhân </h4>
                         <i class="text-danger">
-                            Bệnh nhân này trước đây đã đến khám bạn có muốn đọc chẩn đoán bệnh ở phiếu khám cũ áp dụng sang phiếu khám hiện tại không.
+                            Bệnh nhân này trước đây đã đến khám bạn có muốn đọc chẩn đoán bệnh ở phiếu khám cũ áp dụng
+                            sang phiếu khám hiện tại không.
                         </i>
                     </div>
                 </div>
@@ -537,7 +709,8 @@
                         <td>
                             <p ng-repeat="ii in i.DiagnosticModel"></p>
                         </td>
-                        <td><input class="btn btn-default" type="button" value="Chọn" ng-click="onMapDiagnostic(i.DiagnosticModel)" /></td>
+                        <td><input class="btn btn-default" type="button" value="Chọn"
+                                ng-click="onMapDiagnostic(i.DiagnosticModel)" /></td>
                     </tr>
                 </table>
                 <div class="modal-footer">
@@ -547,4 +720,4 @@
         </div>
     </div>
 
-</div>
+</form>
