@@ -62,7 +62,7 @@ export class TransactionHistoryReceiptItemTableComponent extends BaseComponent i
   protected readonly RECORD_STATUS = RECORD_STATUS;
 
   getTenNCC(data :any){
-    switch(data.loaiXuatNhapMaLoaiXuatNhap){
+    switch(data.maLoaiXuatNhap){
       case LOAI_PHIEU.PHIEU_NHAP :
         return data.nhaCungCapMaNhaCungCapText ? data.nhaCungCapMaNhaCungCapText : "Hàng nhập lẻ";
       case LOAI_PHIEU.PHIEU_NHAP_TU_KH :
@@ -75,20 +75,22 @@ export class TransactionHistoryReceiptItemTableComponent extends BaseComponent i
   }
 
   getTenLoaiPhieu(data :any){
-    switch(data.loaiXuatNhapMaLoaiXuatNhap){
+    switch(data.maLoaiXuatNhap){
       case LOAI_PHIEU.PHIEU_NHAP :
-        return "Phiếu nhập hàng"
+        return "Nhập kho"
       case LOAI_PHIEU.PHIEU_NHAP_TU_KH :
-        return "Phiếu trả lại hàng";
+        return "Khách hàng trả lại";
       case LOAI_PHIEU.PHIEU_KIEM_KE :
-        return "Phiếu bù nhập";
+        return "Bù nhập";
+      case LOAI_PHIEU.PHIEU_TON_BAN_DAU :
+        return "Tồn đầu kỳ";
       default:
         return "";
     }
   }
 
   getUrlDetail(data : any){
-    switch(data.loaiXuatNhapMaLoaiXuatNhap){
+    switch(data.maLoaiXuatNhap){
       case LOAI_PHIEU.PHIEU_NHAP :
       case LOAI_PHIEU.PHIEU_KIEM_KE :
         return `/management/note-management/receipt-note-detail/${data.phieuXuatMaPhieuXuat}`;
