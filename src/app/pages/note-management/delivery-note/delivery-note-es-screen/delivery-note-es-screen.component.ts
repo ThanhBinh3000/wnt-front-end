@@ -132,7 +132,7 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
   }
   
   ngAfterViewInit() {
-    this.focusSearchDrug();
+    this.focusInpuSearchCode();
   }
 
   expandForm() {
@@ -464,9 +464,9 @@ export class DeliveryNoteESScreenComponent extends BaseComponent implements OnIn
     }
   }
 
-  @ViewChild('inputSearchCode') inputSearchCode!: NgSelectComponent;
+  @ViewChild('inputSearchCode') inputSearchCode!: ElementRef;
   async focusInpuSearchCode() {
-    this.inputSearchCode?.focus();
+    this.inputSearchCode?.nativeElement.focus();
   }
 
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
