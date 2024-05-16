@@ -91,7 +91,6 @@ export class InventoryAddEditComponent extends BaseComponent implements OnInit, 
             this.onDrugChange(x, false);
         });
        }
-       
     }
     this.titleService.setTitle(this.title);
     this.getDataFilter();
