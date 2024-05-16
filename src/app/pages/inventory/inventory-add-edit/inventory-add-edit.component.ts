@@ -82,7 +82,16 @@ export class InventoryAddEditComponent extends BaseComponent implements OnInit, 
       this.title = "Cập nhật phiếu kiểm kê";
     }else{
       this.formData.controls['created'].setValue(this.datePipe.transform(moment().utcOffset(420).endOf('day').toDate(),
-       'dd/MM/yyyy HH:mm:ss') ?? '')
+       'dd/MM/yyyy HH:mm:ss') ?? '');
+       //kiểm tra data truyền từ form thuốc chưa kiểm kê
+       var thuocIds = this.storageService.get("thuocChuaKiemKe");
+       this.storageService.removeItem("thuocChuaKiemKe");
+       if(thuocIds && thuocIds.length > 0){
+        thuocIds.forEach((x: any)=>{
+            this.onDrugChange(x, false);
+        });
+       }
+       
     }
     this.titleService.setTitle(this.title);
     this.getDataFilter();
