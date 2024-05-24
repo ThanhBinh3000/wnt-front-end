@@ -11,6 +11,10 @@ import { KhachHangService } from '../../../services/customer/khach-hang.service'
 import { BacSiesService } from '../../../services/medical/bac-sies.service';
 import { STATUS_API } from '../../../constants/message';
 import { CustomerAddEditDialogComponent } from '../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
+import { ThuocService } from '../../../services/products/thuoc.service';
+import { PhongKhamsService } from '../../../services/medical/phong-khams.service';
+import { DoctorAddEditDialogComponent } from '../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
+import { EsDiagnoseService } from '../../../services/categories/esdiagnose.service';
 
 @Component({
   selector: 'app-medical-note',
@@ -23,8 +27,12 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
   listBacSies: any[] = [];
   listKhachHang$ = new Observable<any[]>;
   searchKhachHangTerm$ = new Subject<string>();
+  listLoaiKham: any[] = [];
+  listPhongKham: any[] = [];
+  listDiagnose$ = new Observable<any[]>;
+  searchDiagnoseTerm$ = new Subject<string>();
   
-  deviceType: number = 0;
+  action: string = 'create';
 
   // Settings
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
@@ -38,21 +46,72 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
     private _service: PhieuKhamService,
     private bacSiesService: BacSiesService,
     private khachHangService: KhachHangService,
+    private thuocService: ThuocService,
+    private phongKhamService: PhongKhamsService,
+    private diagnoseService: EsDiagnoseService,
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
       id: [0],
+      noteNumber: [],
       noteDate: [this.datePipe.transform(moment().utc().startOf('day').toDate(), 'dd/MM/yyyy HH:mm:ss')],
       ngayTao: [],
       statusNote: [TRANG_THAI_PHIEU_KHAM.DANG_KHAM],
       idPatient: [],
-      patient: [{}],
+      customer: this.fb.group({
+        id: [],
+        tenKhachHang: [],
+        diaChi: [''],
+        birthDate: [],
+        age: [],
+        sexId: [''],
+        soDienThoai: ['']
+      }),
+      sickCondition: [0], //tình trạng
+      totalMoney: [0], //tiền khám
+      idServiceExam: [0], //loại khám
+      idDoctor: [0],
+      clinicCode: [0],
+      reasonExamination: [''], //lý do khám
+      clinicalExamination: [''], //khám lâm sàng
+      includingDiseases: [''], //bệnh kèm theo
+      chanDoanIds: [],
+      diagnosticIds: [''],
+      diagnosticOther: [''], //chẩn đoán khác
+      conclude: [''], //KL & HĐT
+      check: [false],
+      heartbeat: [], //nhịp tim
+      weight: [], //cân nặng
+      breathing: [], //nhịp thở
+      temperature: [], //nhiệt độ
+      bloodPressure: [], //huyết áp
+      height: [], //chiều cao
+      drugAllergy: [''], //dị ứng thuốc
+      locked: [false],
+      isDeb: [false], //nợ
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getDataFilter();
     this.titleService.setTitle(this.title);
+  }
+
+  async ngAfterViewInit() {
+    this.route.data.subscribe((data: any) => {
+      this.action = data.action;
+    });
+    this.getId();
+    if(this.idUrl){
+      let data = await this.detail(this.idUrl)
+      console.log(data);
+      data.idServiceExam = data.idServiceExam < 0 ? 0 : data.idServiceExam;
+      data.clinicCode = data.clinicCode < 0 ? 0 : data.clinicCode;
+      if (data.idPatient > 0) {
+        this.listKhachHang$ = of([data.customer]);
+      }
+      this.formData.patchValue(data);
+    }
   }
 
   getDataFilter() {
@@ -81,12 +140,56 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
       }),
       catchError(() => of([]))
     );
+    // Loại khám
+    this.thuocService.searchList({ 
+      maNhaThuoc: this.getMaNhaThuocCha() != '' && this.getMaNhaThuocCha() != null ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
+      typeService: LOAI_SAN_PHAM.DICH_VU,
+      tenNhomThuoc: 'Khám bệnh'
+    }).then((res) => {
+      if (res?.status == STATUS_API.SUCCESS) {
+        // this.listLoaiKham = res.data
+      }
+    });
+    // Phòng khám
+    this.phongKhamService.searchList({ 
+      maNhaThuoc: this.getMaNhaThuoc(),
+    }).then((res) => {
+      if (res?.status == STATUS_API.SUCCESS) {
+        this.listPhongKham = res.data
+      }
+    });
+    // Search Diagnose
+    this.listDiagnose$ = this.searchDiagnoseTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let body = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+          };
+          return from(this.diagnoseService.searchPage(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              console.log(res.data.content);
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
   }
 
   getListBacSies() {
-    this.bacSiesService.searchList({ maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc() }).then((res) => {
+    let body = {
+      maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
+      paggingReq: { limit: 1000, page: 0 },
+    };
+    this.bacSiesService.searchPage(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
-        this.listBacSies = res.data
+        this.listBacSies = res.data.content;
       }
     });
   }
@@ -105,9 +208,19 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
 
   getPatientDetail($event: any) {
     if ($event) {
-      this.formData.patchValue({patient: $event});
-      console.log(this.formData.value?.patient);
+      this.formData.patchValue({customer: $event});
+      console.log($event);
     }
+  }
+
+  createUpdate() {
+    let body = this.formData.value;
+    body.diagnosticIds = body.chanDoanIds.join(',');
+    this.save(body).then(res => {
+      if (res) {
+        //this.router.navigate(['/management/sample-note/list']);
+      }
+    });
   }
 
   async openCustomerAddEditDialog() {
@@ -117,7 +230,19 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
         this.listKhachHang$ = of([result]);
-        this.formData.patchValue({ idPatientId: result.id });
+        this.formData.patchValue({ idPatientId: result.id, customer: result });
+      }
+    });
+  }
+
+  async openDoctorAddEditDialog() {
+    const dialogRef = this.dialog.open(DoctorAddEditDialogComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        this.getListBacSies();
+        this.formData.patchValue({ idDoctor: result.id });
       }
     });
   }

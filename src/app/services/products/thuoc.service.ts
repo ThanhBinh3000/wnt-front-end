@@ -42,4 +42,9 @@ export class ThuocService extends BaseService {
     return weekOfMonth;
   }
 
+  initCreateReserve(body: any) {
+    const url = `/api/wnt-products/thuoc/search-page-hang-du-tru`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
 }

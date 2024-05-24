@@ -36,11 +36,19 @@ const routes: Routes = [
         path: 'add',
         component: MedicalNoteAddEditComponent,
         // canActivate: [AuthGuard],
+        data: { action: 'create' }
       },
       {
         path: 'edit/:id',
         component: MedicalNoteAddEditComponent,
         // canActivate: [AuthGuard],
+        data: { action: 'edit' }
+      },
+      {
+        path: 'detail/:id',
+        component: MedicalNoteAddEditComponent,
+        // canActivate: [AuthGuard],
+        data: { action: 'view' }
       },
     ],
   }
