@@ -128,16 +128,19 @@
         </ng-container>
         <ng-container matColumnDef="mappingStoreId">
           <th mat-header-cell *matHeaderCellDef> Nhà thuốc</th>
-          <td mat-cell *matCellDef="let data">
+          <td mat-cell *matCellDef="let data"  style="width: 15%;">
             <div class="control-group">
               <ng-select [(ngModel)]="data.mappingStoreId" appendTo="body" appearance="outline"
-                [items]="listNhaThuocDongBo" bindLabel="tenNhaThuoc" bindValue="id" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" (search)="searchStoreMapping($event)" (change)="updateMappingStore($event, data.id)">
+              [items]="listNhaThuocDongBo$ | async" bindLabel="tenNhaThuoc" 
+              bindValue="id" 
+              [typeahead]="searchNhaThuocDongBoTerm$"
+              [multiple]="false"
+              placeholder="Tra cứu theo tên..."
+                notFoundText="Không tìm thấy mục nào" 
+                (change)="searchNhaThuocDongBoTerm$.next(''); updateMappingStore($event, data.id);">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span *ngIf="item.id" [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar" />
                     {{item.tenNhaThuoc}}</span>
-                  <span *ngIf="!item.id" class="{{item.id ? '' : 'btn-primary'}}"
-                    (click)="danhSachNhaThuocDongBoPhieu()"> {{item.tenNhaThuoc}}</span>
                 </ng-template>
               </ng-select>
             </div>
@@ -145,15 +148,19 @@
         </ng-container>
         <ng-container matColumnDef="zaloId">
           <th mat-header-cell *matHeaderCellDef> Zalo khách hàng</th>
-          <td mat-cell *matCellDef="let data">
+          <td mat-cell *matCellDef="let data" style="width: 15%;">
             <div class="control-group">
-              <ng-select [(ngModel)]="data.zaloId" appendTo="body" appearance="outline" [items]="listNguoiQuanTamOA"
+              <ng-select [(ngModel)]="data.zaloId" 
+                appendTo="body" 
+                appearance="outline" 
+                [items]="listNguoiQuanTamOA$ | async"
                 bindLabel="userName" bindValue="userId" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" (search)="searchFlowerOA($event)" (change)="updateMappingZaloOA($event, data.id)">
+                notFoundText="Không tìm thấy mục nào" 
+                [typeahead]="searchDSNguoiQuanTamTerm$"
+                [multiple]="false"
+                (change)="searchDSNguoiQuanTamTerm$.next(''); updateMappingZaloOA($event, data.id)">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span *ngIf="item.id" [ngOptionHighlight]="search"><img width="30px;" [src]="item.avatar" />
-                    {{item.userName}}</span>
-                  <span *ngIf="!item.id" class="{{item.id ? '' : 'btn-primary'}}" (click)="danhSachNguoiQuanTamOA()">
                     {{item.userName}}</span>
                 </ng-template>
               </ng-select>

@@ -58,21 +58,23 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
     if (this.idUrl) {
       this.route.data.subscribe((data: any) => {
         this.fromBcScanner = data.fromBcScanner;
-        console.log(this.fromBcScanner);
       });
       this.route.queryParams.subscribe(params => {
        this.isContinue = params['isContinue'] === 'true';
       });
       let data = await this.detail(this.idUrl)
-
+      if(data.maLoaiXuatNhap == LOAI_PHIEU.PHIEU_KIEM_KE){
+        this.title = "Phiếu bù xuất";
+        data.khachHangMaKhachHangText = "Điều chỉnh sau kiểm kê";
+      }
       this.formData.patchValue(data);
       this.dataTable = data.chiTiets;
       this.dataTable.forEach(x=>{
         this.getItemAmount(x);
       });
       this.onGetInforCustomer(data.khachHangMaKhachHang);
-      this.title = this.title + ' #' + this.formData.get('soPhieuXuat')?.value;
-      //console.log(data);
+      
+      this.title = this.idUrl ? this.title + ' #' + this.formData.value?.soPhieuXuat : this.title;
     }
     this.titleService.setTitle(this.title);
   }
@@ -148,6 +150,9 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
     {
       displayedColumns = displayedColumns.filter(x => x !== 'anh');
     }
+    if(this.formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_KIEM_KE){
+      displayedColumns = displayedColumns.filter(x => x !== 'ck' && x !== 'vat' && x !== 'hanDung');
+    }
     return displayedColumns;
   }
 
@@ -158,5 +163,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
     }
     return url;
   }
+
+  protected readonly LOAI_PHIEU = LOAI_PHIEU;
 }
 
