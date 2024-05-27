@@ -11,6 +11,7 @@ import {NhaThuocsService} from '../../../services/system/nha-thuocs.service';
 import {
   RegionInformationEditDialogComponent
 } from '../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'customer-list',
@@ -33,8 +34,11 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     'action'
   ];
   listNhomKhachHang: any[] = [];
-  listNguoiQuanTamOA: any[] = [];
-  listNhaThuocDongBo: any[] = [];
+
+  listNguoiQuanTamOA$ = new Observable<any[]>;
+  searchDSNguoiQuanTamTerm$ = new Subject<string>();
+  listNhaThuocDongBo$ = new Observable<any[]>;
+  searchNhaThuocDongBoTerm$ = new Subject<string>();
   count: any = 1;
   isDeleted: boolean = false;
 
@@ -58,10 +62,8 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     this.titleService.setTitle(this.title);
     this.getDataFilter();
     await this.searchPage();
-    await this.danhSachNguoiQuanTamOA();
-    await this.danhSachNhaThuocDongBoPhieu();
   }
-
+  
   @ViewChild(MatSort) sort?: MatSort;
 
   async ngAfterViewInit() {
@@ -76,32 +78,63 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
         this.listNhomKhachHang.unshift({id: '', tenNhomKhachHang: 'Tất cả'});
       }
     });
-  }
-
-  async danhSachNguoiQuanTamOA(term: any = null) {
-    let body: any = {
-      paggingReq: {
-        limit: this.count * 10,
-        page: 0
-      },
-      textSearch: term
-    };
-    this._service.searchPageNguoiQuanTamOA(body).then((res) => {
-      if (res?.status == STATUS_API.SUCCESS) {
-        this.listNguoiQuanTamOA = res.data.content;
-        if (res.data.totalElements > res.data.size) {
-          this.listNguoiQuanTamOA.push({id: '', userName: 'Tải thêm'});
-          this.count = this.count + 1;
+    
+    //search ngươi quan tam
+    this.listNguoiQuanTamOA$ = this.searchDSNguoiQuanTamTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let body: any = {
+            paggingReq: {
+              limit: 25,
+              page: 0
+            },
+            textSearch: term
+          };
+          return from(this._service.searchPageNguoiQuanTamOA(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
         }
-      }
-    });
+      }),
+      catchError(() => of([]))
+    );
+    //search nha thuoc dong bo
+     //search ngươi quan tam
+     this.listNhaThuocDongBo$ = this.searchNhaThuocDongBoTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let body: any = {
+            paggingReq: {
+              limit: 25,
+              page: 0
+            },
+            textSearch: term
+          };
+          return from(this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
   }
 
-  async updateMappingZaloOA($event: any, customerId: any) {
-    if (!$event.id) return;
+  async updateMappingZaloOA(data: any, customerId: any) {
+    if (!data.id) return;
     let body: any = {
       maKhachHang: customerId,
-      zaloId: $event.userId
+      zaloId: data.userId
     };
     this._service.updateMappingZaloOA(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS && res.data > 0) {
@@ -112,30 +145,11 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
     });
   }
 
-  async danhSachNhaThuocDongBoPhieu(term: any = null) {
-    let body: any = {
-      paggingReq: {
-        limit: this.count * 10,
-        page: 0
-      },
-      textSearch: term
-    };
-    this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res) => {
-      if (res?.status == STATUS_API.SUCCESS) {
-        this.listNhaThuocDongBo = res.data.content;
-        if (res.data.totalElements > res.data.size) {
-          this.listNhaThuocDongBo.push({id: '', tenNhaThuoc: 'Tải thêm'});
-          this.count = this.count + 1;
-        }
-      }
-    });
-  }
-
-  async updateMappingStore($event: any, customerId: any) {
-    if (!$event.id) return;
+  async updateMappingStore(data: any, customerId: any) {
+    if (!data.id) return;
     let body: any = {
       maKhachHang: customerId,
-      mappingStoreId: $event.id
+      mappingStoreId: data.id
     };
     this._service.updateMappingMappingStore(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS && res.data > 0) {
@@ -164,18 +178,5 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       data: { id: data.id, controller: 'khach-hangs' },
       width: '600px',
     });
-  }
-
-  // Tìm kiếm người quan tâm oa
-  async searchFlowerOA($event: any) {
-    if ($event.term.length >= 2) {
-      await this.danhSachNguoiQuanTamOA($event.term);
-    }
-  }
-
-  async searchStoreMapping($event: any) {
-    if ($event.term.length >= 2) {
-      await this.danhSachNhaThuocDongBoPhieu($event.term);
-    }
   }
 }

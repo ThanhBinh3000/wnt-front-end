@@ -2,6 +2,8 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../component/base/base.component';
 import { PhieuKiemKeService } from '../../../services/products/phieu-kiem-ke.service';
+import { DATE_RANGE, STATUS_CODE } from '../../../constants/config';
+import { STATUS_API } from '../../../constants/message';
 
 @Component({
   selector: 'app-drug-not-inventory',
@@ -33,11 +35,36 @@ export class DrugNotInventoryComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.searchPageThuocChuaKiemKe();
+  }
+
+  searchPageThuocChuaKiemKe(){
+    let body = {
+      fromDate : this.fromDate,
+      toDate : this.toDate
+    };
+    console.log(body);
+    this._service.searchPageThuocChuaKiemKe(body).then((res)=>{
+      if(res?.status == STATUS_API.SUCCESS){
+        this.dataTable = res.data;
+      }
+    });
   }
 
   //lưu vào storage
   lapPhieuKiemKe(){
-    this.storageService.set("thuocChuaKiemKe", [{id: 10765959}]);
+    if(this.dataTable.length > 0){
+      this.storageService.set("thuocChuaKiemKe", this.dataTable);
+    }
     this.router.navigate(['/management/inventory/add']);
   }
+
+  async onDelete(item: any) {
+    var index = this.dataTable.indexOf(item);
+    if (index >= 0) {
+      this.dataTable.splice(index, 1);
+    }
+  }
+
+  protected readonly DATE_RANGE = DATE_RANGE;
 }

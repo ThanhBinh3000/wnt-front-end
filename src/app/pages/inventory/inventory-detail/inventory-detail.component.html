@@ -47,7 +47,7 @@
                 <div *ngIf="!data.daCanKho">
                     <a class="btn btn-primary flex-grow-1" href="management/inventory/edit/{{idUrl}}">Sửa/Cân kho</a>
                 </div>
-                <a class="btn flex-grow-1 btn-danger" href="/Inventory/Delete/">Xóa</a>
+                <button class="btn flex-grow-1 btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa phiếu kiểm kê có mã ' + data.id, data)">Xóa</button>
                 <button class="btn btn-primary flex-grow-1" ng-show="InventoryModel.NhaThuoc_MaNhaThuoc == '7892'" ng-click="onExportExcel()">Xuất Excel</button>
             </div>
         </div>
@@ -150,13 +150,14 @@
                     </th>
                     <td mat-cell *matCellDef="let data">
                         <div class="baocao-actions">
-                            <button (click)="1" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash"></i></button>
+                            <button (click)="xacNhanXoaChiTiet(data)" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash"></i></button>
                         </div>
                     </td>
                   </ng-container>
               
                   <ng-container matColumnDef="footer">
-                    <td mat-footer-cell *matFooterCellDef colspan="100">
+                    <td mat-footer-cell *matFooterCellDef colspan="100"
+                    class="hidden">
                       <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
                                       (pageChange)="changePageIndex($event)"
                                       (pageSizeChange)="changePageSize($event)"></app-pagination>
@@ -173,7 +174,7 @@
 
         <br />
 
-        <div ng-if="InventoryModel.DaCanKho">
+        <div *ngIf="data.daCanKho" class="box-group-white">
             <fieldset>
                 <label>Phiếu nhập/xuất sau cân kho</label>
                 <div>
@@ -189,33 +190,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="phieuCanKhoItem in InventoryModel.PhieuCanKhoChiTiet">
+                            <tr *ngFor="let item of phieuBuNhapXuat; index as i">
                                 <td>
-                                    <!-- {{$index + 1}} -->1
+                                    {{i  +1}}
                                 </td>
                                 <td>
-                                    <div ng-if="phieuCanKhoItem.SoLuong <= 0 ">
-                                        <label>N/A</label>
-                                    </div>
-
-                                    <div ng-if="phieuCanKhoItem.LoaiPhieu == 1 && phieuCanKhoItem.SoLuong > 0 ">
-                                        <a href="/PhieuNhaps/Details/" target="_blank">
-                                            <!-- {{phieuCanKhoItem.SoPhieu}} -->1
-                                        </a>
-                                    </div>
-
-                                    <div ng-if="phieuCanKhoItem.LoaiPhieu == 2 && phieuCanKhoItem.SoLuong > 0 ">
-                                        <a href="/PhieuXuats/Details/" target="_blank">
-                                            <!-- {{phieuCanKhoItem.SoPhieu}} -->1
-                                        </a>
+                                    <div>
+                                        <label *ngIf="item.soLuongThuoc == 0">N/A</label>
+                                        <a *ngIf="item.soLuongThuoc > 0" (click)="getDetail(item)">
+                                          {{item.soPhieu}}
+                                      </a>
                                     </div>
                                 </td>
                                 <td>
-                                    <span ng-if="phieuCanKhoItem.LoaiPhieu == 1">Phiếu Nhập</span>
-                                    <span ng-if="phieuCanKhoItem.LoaiPhieu == 2">Phiếu Xuất</span>
+                                    <span>{{item.loaiPhieu}}</span>
                                 </td>
                                 <td style="text-align: right"><span class="chenhlech">
-                                    <!-- {{phieuCanKhoItem.SoLuong}} -->1
+                                    {{item.soLuongThuoc | number}}
                                 </span></td>
                             </tr>
                         </tbody>

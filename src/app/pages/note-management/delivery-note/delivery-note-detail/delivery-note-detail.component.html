@@ -1,5 +1,8 @@
 <div class="card-bg">
-    <h2 class="card-title text-center mt-0"><b>PHIẾU BÁN HÀNG</b></h2>
+    <h2 class="card-title text-center mt-0">
+        <b>{{formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_KIEM_KE? 'PHIẾU BÙ XUẤT' : 'PHIẾU BÁN HÀNG'}}</b>
+        <h3 *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_KIEM_KE">(ĐIỀU CHỈNH SAU KIỂM KÊ)</h3>
+    </h2>
     <div class="text-center card-desc">
         <div class="card-code">
             Mã số: <strong>{{formData.value?.soPhieuXuat}}</strong>
@@ -29,13 +32,13 @@
                         </span>
                     </span>
                 </td>
-                <td style="text-align: left"><span class="control-label"><b>Bác sỹ:</b>
+                <td *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT" style="text-align: left"><span class="control-label"><b>Bác sỹ:</b>
                         {{formData.value?.bacSyMaBacSyText}}</span></td>
-                <td style="text-align: right" ng-show="model.Score > 0"><span class="control-label ng-binding"><b>Tổng
+                <td *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT" style="text-align: right" ng-show="model.Score > 0"><span class="control-label ng-binding"><b>Tổng
                             điểm tích lũy: </b>{{totalScore | number}}</span></td>
-                <td style="text-align: right" ng-show="model.Score > 0"><span class="control-label ng-binding"><b>Tổng
+                <td *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT" style="text-align: right" ng-show="model.Score > 0"><span class="control-label ng-binding"><b>Tổng
                             nợ: </b>{{totalDebtAmount | number}}</span></td>
-                <td style="text-align: right">
+                <td *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT" style="text-align: right">
                     <span class="control-label"><b>Số hóa đơn:</b>{{formData.value?.invoiceNo}}</span>
                 </td>
 
@@ -196,7 +199,7 @@
                                 vạch thuốc</a></li>
                     </ul>
                 </div>
-                <a class="btn btn-default"
+                <a class="btn btn-default" *ngIf="formData.value?.maLoaiXuatNhap !=  LOAI_PHIEU.PHIEU_KIEM_KE"
                 href="/management/note-management/delivery-note-screen/{{formData.value?.id}}">Sửa</a> <span
                     ng-show="model.LinkFile !='' &amp;&amp; !model.IsZaloOA" class="ng-hide">
                     <span class="btn btn-default zalo-share-button" style="width:105px;height:35px"
@@ -204,26 +207,34 @@
                         data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize="true">Chia sẻ
                         Zalo</span>
                 </span>
-                <a class="btn btn-default" href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
+                <a class="btn btn-default" *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT" href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
                     title="Sao chép phiếu">Copy</a> <span
-                    ng-show="model.NoteTypeId == 2 &amp;&amp; !model.IsRefSampleNote &amp;&amp; model.DrugStoreId == '9006'"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     class="ng-hide">
                     <span class="btn btn-default" ng-click="createSampleNote(35432435)" style="height:35px">Tạo đơn liều
                         mẫu</span>
                 </span>
                 <span class="btn btn-default ng-hide"
-                    ng-show="!model.StatusSendZNS &amp;&amp; model.IsSendZNS &amp;&amp; model.TypeSendZNS == 2"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     ng-click="onSendZNS()" style="width:105px;height:35px">Gửi ZNS</span>
                 <a class="btn btn-default"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     href="/DeliveryNote/ConnDeliveryNoteScreen?noteId=35432435&amp;isConnectivity=1">LT</a><a
                     class="btn btn-default"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     href="/DeliveryNote/ManagementDeliveryNoteScreen?noteId=35432435&amp;isManagement=1">QL</a>
-                    <a class="btn btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất bán của khách hàng \'' +
+                    <a class="btn btn-danger"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
+                     (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất bán của khách hàng \'' +
                     formData.value?.khachHangMaKhachHangText + '\' có số phiếu \'' + formData.value?.soPhieuXuat + '\' ?', formData.value?.id)">
                     Xóa</a><a class="btn btn-default"
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     href="/ReceiptNote/CustomerReceiptNoteScreen?noteId=35432435&amp;taskMode=1">Trả hàng</a> <input
+                    *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
                     type="button" class="btn btn-default" ng-click="onExport(35432435)" value="Xuất excel">
-                <input type="button" ng-disabled="connected" class="btn btn-default" value="Phát hành HĐ"
+                <input type="button"
+                *ngIf="formData.value?.maLoaiXuatNhap ==  LOAI_PHIEU.PHIEU_XUAT"
+                 ng-disabled="connected" class="btn btn-default" value="Phát hành HĐ"
                     ng-click="createEInvoice(35432435)">
             </div>
         </div>

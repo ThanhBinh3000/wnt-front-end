@@ -100,7 +100,7 @@
               </th>
               <th style="width:12%; border: none">
                 <div class="input-group">
-                  <input #inputSoLuong type="text" class="form-control mb-0 mousetrap text-right"
+                  <input #inputSoLuongCho type="text" class="form-control mb-0 mousetrap text-right"
                     [(ngModel)]="itemWaiting.thucTe" (keyup.enter)="onAddNew(itemWaiting)" style="width: 100%">
                   <span class="input-group-addon" style="width: 100%;">
                     {{itemWaiting.tenDonViTinhLe}}
@@ -194,7 +194,7 @@
             <ng-container matColumnDef="slThuc">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> SL thực</th>
               <td mat-cell *matCellDef="let data">
-                <input class="form-control text-right" type="text" [(ngModel)]="data.thucTe" />
+                <input #inputSoLuong (keyup.enter)="focusInputSoLuong()" class="form-control text-right" type="text" [(ngModel)]="data.thucTe" />
               </td>
             </ng-container>
 
@@ -209,7 +209,7 @@
             <ng-container matColumnDef="giaKiemKe">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá kiểm kê</th>
               <td mat-cell *matCellDef="let data">
-                <div class="text-right">{{ data.donGia }}</div>
+                <div class="text-right">{{ data.donGia | number}}</div>
               </td>
             </ng-container>
 

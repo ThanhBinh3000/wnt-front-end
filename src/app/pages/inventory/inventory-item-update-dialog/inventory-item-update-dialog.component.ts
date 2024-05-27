@@ -2,7 +2,8 @@ import { Component, Inject, Injector, Input, OnInit, ViewChildren } from '@angul
 import { BaseComponent } from '../../../component/base/base.component';
 import { PhieuKiemKeService } from '../../../services/products/phieu-kiem-ke.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MESSAGE } from '../../../constants/message';
+import { MESSAGE, STATUS_API } from '../../../constants/message';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'inventory-item-update-dialog',
@@ -13,6 +14,7 @@ export class InventoryItemUpdateDialogComponent extends BaseComponent implements
   constructor(
     injector: Injector,
     private _service: PhieuKiemKeService,
+    private datePipe: DatePipe,
     public dialogRef: MatDialogRef<InventoryItemUpdateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public object: any
   ) {
@@ -29,7 +31,25 @@ export class InventoryItemUpdateDialogComponent extends BaseComponent implements
   }
 
   updateDrugBatch(){
-    this.notification.success(MESSAGE.SUCCESS, 'Cập nhật thành công');
-    this.dialogRef.close();
+    console.log(this.object);
+    if(this.object.id > 0){
+      this._service.capNhatHanDung(
+        {
+          donGia : this.object.donGia,
+          id: this.object.id,
+          hanDung: this.object.hanDung ? this.datePipe.transform(this.object.hanDung, 'dd/MM/yyyy HH:mm:ss') : '',
+          soLo : this.object.soLo
+        }
+      ).then((res)=>{
+        if(res?.status == STATUS_API.SUCCESS){
+          this.notification.success(MESSAGE.SUCCESS, 'Cập nhật thành công');
+        }else{
+          this.notification.error(MESSAGE.ERROR, 'Gặp lỗi trong quá trình cập nhật');
+        }
+      });
+    }else{
+      this.notification.success(MESSAGE.SUCCESS, 'Cập nhật thành công');
+    }
+    //this.dialogRef.close();
   }
 }
