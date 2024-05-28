@@ -12,6 +12,7 @@ import {
   RegionInformationEditDialogComponent
 } from '../../utilities/region-information-edit-dialog/region-information-edit-dialog.component';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
+import { SETTING } from '../../../constants/setting';
 
 @Component({
   selector: 'customer-list',
@@ -20,27 +21,17 @@ import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, fr
 })
 export class CustomerListComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Danh sách khách hàng";
-  displayedColumns = [
-    '#',
-    'code',
-    'tenKhachHang',
-    'tenNhomKhachHang',
-    'soDienThoai',
-    'ngaySinh',
-    'barcode',
-    'created',
-    'mappingStoreId',
-    'zaloId',
-    'action'
-  ];
+  
   listNhomKhachHang: any[] = [];
-
   listNguoiQuanTamOA$ = new Observable<any[]>;
   searchDSNguoiQuanTamTerm$ = new Subject<string>();
   listNhaThuocDongBo$ = new Observable<any[]>;
   searchNhaThuocDongBoTerm$ = new Subject<string>();
   count: any = 1;
   isDeleted: boolean = false;
+
+  autoSynchronizeDeliveryNote = this.authService.getSettingByKey(SETTING.AUTO_SYNCHRONIZE_DELIVERY_NOTE);
+  showMappingZaloOA = this.authService.getNhaThuoc().tokenZalo
 
   constructor(
     injector: Injector,
@@ -90,7 +81,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
               limit: 25,
               page: 0
             },
-            textSearch: term
+            userName: term
           };
           return from(this._service.searchPageNguoiQuanTamOA(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -115,7 +106,7 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
               limit: 25,
               page: 0
             },
-            textSearch: term
+            tenNhaThuoc: term
           };
           return from(this.nhaThuocService.searchPageNhaThuocDongBoPhieu(body).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -178,5 +169,28 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       data: { id: data.id, controller: 'khach-hangs' },
       width: '600px',
     });
+  }
+
+  getDisplayColumn(){
+    let displayedColumns = [
+      '#',
+      'code',
+      'tenKhachHang',
+      'tenNhomKhachHang',
+      'soDienThoai',
+      'ngaySinh',
+      'barcode',
+      'created',
+      'mappingStoreId',
+      'zaloId',
+      'action'
+    ];
+    if(!this.autoSynchronizeDeliveryNote.activated){
+      displayedColumns = displayedColumns.filter(x=>x != 'mappingStoreId');
+    }
+    if(!this.showMappingZaloOA){
+      displayedColumns = displayedColumns.filter(x=>x != 'zaloId');
+    }
+    return displayedColumns;
   }
 }
