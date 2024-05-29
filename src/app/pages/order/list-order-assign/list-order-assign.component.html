@@ -1,0 +1,66 @@
+<div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar-bg">
+        <fieldset class="baocao-filter mb-3">
+          <app-date-range-filter [filterType]="DATE_RANGE.BY_DATE"
+                                 [fromDateControl]="'fromDate'"
+                                 [toDateControl]="'toDate'"
+                                 (filterTypeChange)="changeFilterType($event)"
+                                 (fromDateChange)="changeFromDate($event)"
+                                 (toDateChange)="changeToDate($event)"
+          ></app-date-range-filter>
+          <button type="button" class="btn btn-primary w-100" (click)="searchPage()">Xem</button>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="box-group-white">
+        <h2 class="text-center"><b>Gán nhân viên đơn nhặt</b></h2>
+        <div class="table-scroll">
+          <table class="table table-striped table-bordered table-hover tr-ng-grid">
+            <thead>
+            <tr>
+              <th style="width: 10px;">STT</th>
+              <th>Mã số</th>
+              <th>Ngày</th>
+              <th>SL Thuốc</th>
+              <th>Tổng tiền</th>
+              <th>Khách hàng</th>
+              <th>Gán nhân viên</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let item of dataTable , let i = index">
+              <tr>
+                <td>{{(page - 1) * pageSize + i + 1}}</td>
+                <td>{{item.orderNumber}}</td>
+                <td>{{item.orderDate}}</td>
+                <td>{{item.drugCount}}</td>
+                <td>{{item.totalAmount}}</td>
+                <td>{{item.cusName}}</td>
+                <td>
+                  <ng-select (ngModelChange)="assginStaff($event,item)" [(ngModel)]="item.staffAssignId" placeholder="Chọn nhân viên" >
+                    <ng-option *ngFor="let data of item.listUserProfile" [value]="data.id">{{data.tenDayDu}}</ng-option>
+                  </ng-select>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+            <tfoot>
+              <tr id="footerId">
+                <td
+                  colspan="7">
+                  <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                  (pageChange)="changePageIndex($event)"
+                                  (pageSizeChange)="changePageSize($event)"></app-pagination>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
