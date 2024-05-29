@@ -110,4 +110,5 @@ export class DateRangeFilterComponent implements OnInit {
   }
 
   protected readonly DATE_RANGE = DATE_RANGE;
+
 }

@@ -11,6 +11,8 @@ import { PickUpOrderDetailComponent } from './pick-up-order/pick-up-order-detail
 import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/list-order-pick-up.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderListComponent } from './order-list/order-list.component';
+import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
+import {ComponentsModule} from "../../component/base/components.module";
 @NgModule({
   declarations: [
     OrderComponent,
@@ -20,9 +22,14 @@ import { OrderListComponent } from './order-list/order-list.component';
     PickUpOrderDetailComponent,
     ListOrderPickUpComponent,
     CreateOrderComponent,
-    OrderListComponent
+    OrderListComponent,
+    ListOrderAssignComponent
   ],
-  imports: [CommonModule, RouterOutlet, OrderRoutingModule],
+  imports: [
+    CommonModule,
+    ComponentsModule,
+    RouterOutlet,
+    OrderRoutingModule],
   exports: [],
 })
 export class OrderModule {

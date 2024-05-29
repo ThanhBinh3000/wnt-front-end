@@ -262,5 +262,4 @@ export class InOutNoteListComponent extends BaseComponent implements OnInit, Aft
 
   protected readonly RECORD_STATUS = RECORD_STATUS;
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
-  protected readonly DATE_RANGE = DATE_RANGE;
 }

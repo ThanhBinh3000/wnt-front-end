@@ -197,6 +197,5 @@ export class ServiceNoteWaitListComponent extends BaseComponent implements OnIni
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
-  protected readonly DATE_RANGE = DATE_RANGE;
   protected readonly calculateAge = calculateAge;
 }

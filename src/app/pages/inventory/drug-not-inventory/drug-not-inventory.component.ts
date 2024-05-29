@@ -14,10 +14,10 @@ export class DrugNotInventoryComponent extends BaseComponent implements OnInit {
   title: string = "Danh sách thuốc chưa kiểm kê";
 
   displayedColumns = [
-    'stt', 
-    'nhomThuoc', 
-    'maThuoc', 
-    'tenThuoc', 
+    'stt',
+    'nhomThuoc',
+    'maThuoc',
+    'tenThuoc',
     'donVi',
     'action'
   ];
@@ -66,5 +66,4 @@ export class DrugNotInventoryComponent extends BaseComponent implements OnInit {
     }
   }
 
-  protected readonly DATE_RANGE = DATE_RANGE;
 }

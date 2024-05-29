@@ -69,7 +69,7 @@ export class TransactionDetailByObjectDialogComponent extends BaseComponent impl
       this.fromDateTxt = 'fromDateNgayNhap';
       this.toDateTxt = 'toDateNgayNhap';
     }
-    
+
     await this.searchPageHistory();
     console.log(this.dataTable);
     this.getDataFilter();
@@ -167,8 +167,6 @@ export class TransactionDetailByObjectDialogComponent extends BaseComponent impl
   closeModal() {
     this.dialogRef.close();
   }
-
-  protected readonly DATE_RANGE = DATE_RANGE;
 
   getDisplayColumnName() {
     let displayedColumns = [

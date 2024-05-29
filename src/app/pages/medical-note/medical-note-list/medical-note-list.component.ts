@@ -297,7 +297,6 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
-  protected readonly DATE_RANGE = DATE_RANGE;
   protected readonly TRANG_THAI_PHIEU_KHAM = TRANG_THAI_PHIEU_KHAM;
   protected readonly calculateAge = calculateAge;
 }

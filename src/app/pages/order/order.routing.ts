@@ -9,6 +9,7 @@ import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/lis
 import { PickUpOrderDetailComponent } from './pick-up-order/pick-up-order-detail/pick-up-order-detail.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderListComponent } from './order-list/order-list.component';
+import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
 
 const routes: Routes = [
   {
@@ -48,6 +49,11 @@ const routes: Routes = [
       {
         path: 'order-list',
         component: OrderListComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'list-order-assign',
+        component: ListOrderAssignComponent,
         // canActivate: [AuthGuard],
       }
     ],

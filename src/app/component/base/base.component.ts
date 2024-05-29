@@ -579,5 +579,8 @@ export class BaseComponent {
       this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
     }
   }
+
+  protected readonly DATE_RANGE = DATE_RANGE;
+
 }
 

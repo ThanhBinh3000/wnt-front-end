@@ -552,5 +552,4 @@ export class NoteListComponent extends BaseComponent implements OnInit, AfterVie
     }
   }
 
-  protected readonly DATE_RANGE = DATE_RANGE;
 }

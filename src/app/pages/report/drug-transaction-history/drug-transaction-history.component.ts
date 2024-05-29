@@ -25,7 +25,7 @@ export class DrugTransactionHistoryComponent extends BaseComponent implements On
   @ViewChild(TransactionHistoryDeliveryItemTableComponent) transactionHistoryDeliveryItemTableComponent?: TransactionHistoryDeliveryItemTableComponent;
   @ViewChild(TransactionHistoryReceiptItemTableComponent) transactionHistoryReceiptItemTableComponent?: TransactionHistoryReceiptItemTableComponent;
   formDataChange = new EventEmitter();
-  
+
   listThuoc$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
   checkTab: string = 'receipt';
@@ -56,7 +56,7 @@ export class DrugTransactionHistoryComponent extends BaseComponent implements On
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
-    
+
   }
 
   async ngAfterViewInit() {
@@ -122,8 +122,6 @@ export class DrugTransactionHistoryComponent extends BaseComponent implements On
     await this.transactionHistoryReceiptItemTableComponent?.searchPage();
     console.log(this.transactionHistoryReceiptItemTableComponent?.dataTable);
   }
-
-  protected readonly DATE_RANGE = DATE_RANGE;
 
   getTotalInventory(){
     return this.transactionHistoryReceiptItemTableComponent?.getTotalNhap() - this.transactionHistoryDeliveryItemTableComponent?.getTotalXuat()

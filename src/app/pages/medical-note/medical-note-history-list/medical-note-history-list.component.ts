@@ -182,5 +182,4 @@ export class MedicalNoteHistoryListComponent extends BaseComponent implements On
   }
 
   protected readonly LOAI_PHIEU = LOAI_PHIEU;
-  protected readonly DATE_RANGE = DATE_RANGE;
 }

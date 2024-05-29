@@ -123,5 +123,4 @@ export class ReceiptMedicalFeeListComponent extends BaseComponent implements OnI
 
   }
 
-  protected readonly DATE_RANGE = DATE_RANGE;
 }

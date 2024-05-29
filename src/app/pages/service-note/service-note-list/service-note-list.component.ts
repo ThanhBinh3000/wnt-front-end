@@ -223,5 +223,4 @@ export class ServiceNoteListComponent extends BaseComponent implements OnInit, A
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
-  protected readonly DATE_RANGE = DATE_RANGE;
 }
