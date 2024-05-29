@@ -117,7 +117,7 @@ export class BaseComponent {
         limit: this.pageSize,
         page: this.page - 1
       }
-      if(this.filterType == 1){
+      if (this.filterType == 1) {
         body.fromDate = this.fromDate;
         body.toDate = this.toDate;
       }
@@ -186,7 +186,7 @@ export class BaseComponent {
   }
 
   async changeFilterType($event: any) {
-    if($event.filterType === DATE_RANGE.ALL){
+    if ($event.filterType === DATE_RANGE.ALL) {
       this.formData.removeControl($event.fromDateControl);
       this.formData.removeControl($event.toDateControl);
     } else {
@@ -246,10 +246,10 @@ export class BaseComponent {
       onOk: async () => {
         try {
           let body = {
-            id : item.id
+            id: item.id
           }
           this.service.deleteDatabase(body).then(async (res) => {
-            if(res && res.data) {
+            if (res && res.data) {
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
               await this.searchPage();
             }
@@ -296,7 +296,7 @@ export class BaseComponent {
 
   // DELETE 1 multi
   deleteMulti(message?: string) {
-    let dataDelete : any[] = [];
+    let dataDelete: any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
         if (item.checked) {
@@ -565,19 +565,23 @@ export class BaseComponent {
     return this.device.isDesktop();
   }
 
-  async printPreview(loai?: any) {
-    let res = await this.service.preview({
-      loai: loai,
-      id: this.idUrl,
-    });
-    if (res?.data) {
-      this.printSrc = res.data.pdfSrc;
-      this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
-      this.showDlgPreview = true;
-      printJS({printable: this.printSrc, type: 'pdf', base64: true})
-    } else {
-      this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+  async printPreview(loai?: string, id?: number) {
+    const validId = id ?? this.idUrl;
+    if (validId && validId > 0) {
+      let res = await this.service.preview({
+        loai: loai,
+        id: validId,
+      });
+      if (res?.data) {
+        this.printSrc = res.data.pdfSrc;
+        this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
+        this.showDlgPreview = true;
+        printJS({printable: this.printSrc, type: 'pdf', base64: true})
+      } else {
+        this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+      }
     }
+
   }
 
   protected readonly DATE_RANGE = DATE_RANGE;

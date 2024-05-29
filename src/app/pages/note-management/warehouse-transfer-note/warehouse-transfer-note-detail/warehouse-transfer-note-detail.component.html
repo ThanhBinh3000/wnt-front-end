@@ -123,6 +123,17 @@
             <div class="d-flex justify-content-center align-items-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                  In <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a (click)="printPreview()">Phiếu chuyển kho - A4</a></li>
+                  <li class="divider"></li>
+                  <li><a href="">In mã vạch thuốc</a></li>
+                </ul>
+              </div>
                 <a class="btn btn-primary"
                     (click)="goToUrl('/management/note-management/warehouse-transfer-note-screen',this.formData.value?.id)">Sửa</a>
                 <a class="btn btn-danger"

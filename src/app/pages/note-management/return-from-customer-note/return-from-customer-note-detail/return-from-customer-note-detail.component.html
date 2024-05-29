@@ -172,10 +172,11 @@
                     In <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#" ng-click="onPrint(3621741, 3, 3)">Phiếu khách lẻ - 80mm</a></li>
-                    <li><a href="#" ng-click="onPrint(3621741, 3, 1)">Phiếu khách quen - A4</a></li>
-                    <li><a href="#" ng-click="onPrint(3621741, 3, 2)">Phiếu khách lẻ - A5</a></li>
+                    <li><a (click)="printPreview('80mm')">Phiếu khách lẻ - 80mm</a></li>
+                    <li><a (click)="printPreview('A4')">Phiếu khách quen - A4</a></li>
+                    <li><a (click)="printPreview('A5')">Phiếu khách lẻ - A5</a></li>
                 </ul>
+
             </div>
             <a class="btn btn-primary" href="/ReceiptNote/EditReceiptNoteScreen?taskMode=2&amp;noteId=3621741">Sửa</a>
             <span ng-show="model.LinkFile !=''">

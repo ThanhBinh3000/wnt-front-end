@@ -153,8 +153,8 @@
             In <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote')">In 1 liên - A5</a></li>
-            <li><a href="javascript:window.open('/InOutCommingNote/PrintNote?loaiPhieuIn=A4')">In 2 liên - A4</a></li>
+            <li><a (click)="printPreview('A5', data.id)">In 1 liên - A5</a></li>
+            <li><a (click)="printPreview('A4', data.id)">In 2 liên - A4</a></li>
           </ul>
         </div>
         <a ng-show="!createMode &amp;&amp; permittedFields.InOutComingNote_Delete"

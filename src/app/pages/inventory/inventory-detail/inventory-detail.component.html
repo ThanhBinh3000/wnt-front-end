@@ -12,7 +12,7 @@
                             {{data.id}}
                         </td>
                     </tr>
-    
+
                     <tr>
                         <td>
                             <label class="mb-0">Người lập: </label>
@@ -21,7 +21,7 @@
                             {{data.createdByUseText}}
                         </td>
                     </tr>
-    
+
                     <tr>
                         <td>
                             <label class="mb-0">Ngày tạo: </label>
@@ -30,7 +30,7 @@
                             {{data.created | appDate}}
                         </td>
                     </tr>
-    
+
                     <tr>
                         <td>
                             <label class="mb-0">Cân kho: </label>
@@ -43,7 +43,7 @@
             </table>
             <div ng-show="canAction" class="d-flex justify-content-end align-items-center gap-10 flex-wrap mt-3">
                 <a class="btn btn-default flex-grow-1" href="management/inventory/list">Quay lại</a>
-                <a class="btn btn-default flex-grow-1" href="/Inventory/In/" target="_blank">In</a>
+                <a class="btn btn-default flex-grow-1" (click)="printPreview()">In</a>
                 <div *ngIf="!data.daCanKho">
                     <a class="btn btn-primary flex-grow-1" href="management/inventory/edit/{{idUrl}}">Sửa/Cân kho</a>
                 </div>
@@ -71,7 +71,7 @@
                       </div>
                     </td>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="nhomThuoc">
                     <th mat-header-cell *matHeaderCellDef>Nhóm thuốc</th>
                     <td mat-cell *matCellDef="let data">
@@ -103,7 +103,7 @@
                       <div class="text-left">{{ data.tenDonViTinhLe }}</div>
                     </td>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="slHeThong">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> SL hệ thống</th>
                     <td mat-cell *matCellDef="let data">
@@ -125,14 +125,14 @@
                     </td>
                   </ng-container>
 
-              
+
                   <ng-container matColumnDef="giaKiemKe">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá kiểm kê</th>
                     <td mat-cell *matCellDef="let data">
                       <div class="text-right">{{ data.donGia }}</div>
                     </td>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="loHan">
                     <th mat-header-cell *matHeaderCellDef>
                       Giá/Lô/Hạn
@@ -143,7 +143,7 @@
                       </div>
                     </td>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef>
                      Xoá
@@ -154,7 +154,7 @@
                         </div>
                     </td>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="footer">
                     <td mat-footer-cell *matFooterCellDef colspan="100"
                     class="hidden">
@@ -163,11 +163,11 @@
                                       (pageSizeChange)="changePageSize($event)"></app-pagination>
                     </td>
                   </ng-container>
-              
+
                   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="{'background-color': getRowColor(row)}"></tr>
                   <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
-              
+
                 </table>
               </div>
         </div>
