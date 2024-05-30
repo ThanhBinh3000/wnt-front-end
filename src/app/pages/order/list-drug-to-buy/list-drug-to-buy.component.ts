@@ -148,4 +148,11 @@ export class ListDrugToBuyComponent  extends BaseComponent implements OnInit {
     })
   }
 
+  getTongTienMat(){
+    return this.dataTable.filter(item => item.drugToBuys).reduce((prev, cur) => {
+      prev += (cur.drugToBuys.inPrice * cur.drugToBuys.quantity);
+      return prev;
+    }, 0);
+  }
+
 }

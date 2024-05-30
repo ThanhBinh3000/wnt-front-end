@@ -64,6 +64,9 @@
     <div class="col-md-9">
       <div class="box-group-white">
         <h2 class="text-center"><b>Danh sách hàng cần mua</b></h2>
+        <div class="number-value mb-3 d-flex align-items-center justify-content-end gap-10">
+          <strong>Tổng nhập thực tế: <span class="text-danger">{{ getTongTienMat() | number }}</span></strong>
+        </div>
         <div class="table-scroll">
           <table class="table table-striped table-bordered table-hover tr-ng-grid">
             <thead>
@@ -95,8 +98,8 @@
                 <td>{{item.thuocs?.maThuoc}} - {{item.thuocs?.tenThuoc}}</td>
                 <td>
                   <div><span class="font-weight-bold">Đơn vị:</span> {{item.unitName}}</div>
-                  <div><span class="font-weight-bold">Giá nhập:</span> {{item.inPrice}} </div>
-                  <div><span class="font-weight-bold">Giá bán:</span> {{item.price }} </div>
+                  <div><span class="font-weight-bold">Giá nhập:</span> {{item.inPrice | number}} </div>
+                  <div><span class="font-weight-bold">Giá bán:</span> {{item.price | number }} </div>
                   <div><span class="font-weight-bold">SL cần mua:</span> {{item.quantity }} </div>
                 </td>
                 <td>
