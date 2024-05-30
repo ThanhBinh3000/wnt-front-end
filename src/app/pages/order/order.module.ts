@@ -11,6 +11,18 @@ import { PickUpOrderDetailComponent } from './pick-up-order/pick-up-order-detail
 import { ListOrderPickUpComponent } from './pick-up-order/list-order-pick-up/list-order-pick-up.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderListComponent } from './order-list/order-list.component';
+import {NgSelectModule} from "@ng-select/ng-select";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
+import {FormsModule} from "@angular/forms";
 import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
 import {ComponentsModule} from "../../component/base/components.module";
 @NgModule({
@@ -25,11 +37,7 @@ import {ComponentsModule} from "../../component/base/components.module";
     OrderListComponent,
     ListOrderAssignComponent
   ],
-  imports: [
-    CommonModule,
-    ComponentsModule,
-    RouterOutlet,
-    OrderRoutingModule],
+  imports: [CommonModule, RouterOutlet, OrderRoutingModule, NgSelectModule, MatTable, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, NgOptionHighlightModule, FormsModule, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, ComponentsModule],
   exports: [],
 })
 export class OrderModule {
