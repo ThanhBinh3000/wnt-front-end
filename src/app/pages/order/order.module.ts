@@ -13,6 +13,7 @@ import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
 import {ComponentsModule} from "../../component/base/components.module";
+import {ListDrugToBuyComponent} from "./list-drug-to-buy/list-drug-to-buy.component";
 @NgModule({
   declarations: [
     OrderComponent,
@@ -23,7 +24,8 @@ import {ComponentsModule} from "../../component/base/components.module";
     ListOrderPickUpComponent,
     CreateOrderComponent,
     OrderListComponent,
-    ListOrderAssignComponent
+    ListOrderAssignComponent,
+    ListDrugToBuyComponent
   ],
   imports: [
     CommonModule,
