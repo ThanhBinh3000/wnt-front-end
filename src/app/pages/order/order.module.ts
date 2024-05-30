@@ -25,6 +25,7 @@ import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {FormsModule} from "@angular/forms";
 import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
 import {ComponentsModule} from "../../component/base/components.module";
+import {ListDrugToBuyComponent} from "./list-drug-to-buy/list-drug-to-buy.component";
 @NgModule({
   declarations: [
     OrderComponent,
@@ -35,7 +36,8 @@ import {ComponentsModule} from "../../component/base/components.module";
     ListOrderPickUpComponent,
     CreateOrderComponent,
     OrderListComponent,
-    ListOrderAssignComponent
+    ListOrderAssignComponent,
+    ListDrugToBuyComponent
   ],
   imports: [CommonModule, RouterOutlet, OrderRoutingModule, NgSelectModule, MatTable, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, NgOptionHighlightModule, FormsModule, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, ComponentsModule],
   exports: [],
