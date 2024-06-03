@@ -13,9 +13,10 @@ export class PickUpOrderDetailService extends BaseService {
   }
 
 
-  assignStaff(body: any) {
-    const url = `/api/${this.gateway}/${this.controller}/assign-staff`;
+  searchPageConfirmDelivery(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/search-page-confirm-delivery`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
 
 }

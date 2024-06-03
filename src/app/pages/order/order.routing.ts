@@ -11,6 +11,7 @@ import { CreateOrderComponent } from './create-order/create-order.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import {ListOrderAssignComponent} from "./list-order-assign/list-order-assign.component";
 import {ListDrugToBuyComponent} from "./list-drug-to-buy/list-drug-to-buy.component";
+import {ConfirmDeliveryComponent} from "./confirm-delivery/confirm-delivery.component";
 
 const routes: Routes = [
   {
@@ -60,6 +61,11 @@ const routes: Routes = [
       {
         path: 'list-drug-buy',
         component: ListDrugToBuyComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'confirm-delivery',
+        component: ConfirmDeliveryComponent,
         // canActivate: [AuthGuard],
       }
     ],
