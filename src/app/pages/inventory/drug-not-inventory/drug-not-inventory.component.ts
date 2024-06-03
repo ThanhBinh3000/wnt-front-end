@@ -40,8 +40,8 @@ export class DrugNotInventoryComponent extends BaseComponent implements OnInit {
 
   searchPageThuocChuaKiemKe(){
     let body = {
-      fromDate : this.fromDate,
-      toDate : this.toDate
+      // fromDate : this.fromDate,
+      // toDate : this.toDate
     };
     console.log(body);
     this._service.searchPageThuocChuaKiemKe(body).then((res)=>{

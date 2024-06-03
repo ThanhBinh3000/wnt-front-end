@@ -48,10 +48,10 @@ export class ConfirmDeliveryComponent extends BaseComponent implements OnInit  {
         limit: this.pageSize,
         page: this.page - 1
       }
-      if(this.filterType == 1){
-        body.fromDate = this.fromDate;
-        body.toDate = this.toDate;
-      }
+      // if(this.filterType == 1){
+      //   body.fromDate = this.fromDate;
+      //   body.toDate = this.toDate;
+      // }
       let res = await this._service.searchPageConfirmDelivery(body);
       if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
