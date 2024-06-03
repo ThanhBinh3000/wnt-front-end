@@ -17,7 +17,7 @@ import {HelperService} from "../../services/helper.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../services/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {DeviceService} from "../../services/device.service";
 import printJS from "print-js";
@@ -38,9 +38,6 @@ export class BaseComponent {
   dataDetail: any;
   page: number = 1;
   pageSize: number = PAGE_SIZE_DEFAULT;
-  filterType: number = 0;
-  fromDate: string = '';
-  toDate: string = '';
   totalRecord: number = 0;
   totalPages: number = 0;
   fb: FormBuilder = new FormBuilder();
@@ -117,10 +114,6 @@ export class BaseComponent {
         limit: this.pageSize,
         page: this.page - 1
       }
-      if(this.filterType == 1){
-        body.fromDate = this.fromDate;
-        body.toDate = this.toDate;
-      }
       let res = await this.service.searchPage(body);
       if (res?.status == STATUS_API.SUCCESS) {
         let data = res.data;
@@ -186,9 +179,10 @@ export class BaseComponent {
   }
 
   async changeFilterType($event: any) {
-    if($event.filterType === DATE_RANGE.ALL){
+    if ($event.filterType === DATE_RANGE.ALL) {
       this.formData.removeControl($event.fromDateControl);
       this.formData.removeControl($event.toDateControl);
+      this.updateQueryParams($event.fromDateControl, null);
     } else {
       this.formData.addControl($event.fromDateControl, this.fb.control(''));
       this.formData.addControl($event.toDateControl, this.fb.control(''));
@@ -246,10 +240,10 @@ export class BaseComponent {
       onOk: async () => {
         try {
           let body = {
-            id : item.id
+            id: item.id
           }
           this.service.deleteDatabase(body).then(async (res) => {
-            if(res && res.data) {
+            if (res && res.data) {
               this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
               await this.searchPage();
             }
@@ -296,7 +290,7 @@ export class BaseComponent {
 
   // DELETE 1 multi
   deleteMulti(message?: string) {
-    let dataDelete : any[] = [];
+    let dataDelete: any[] = [];
     if (this.dataTable && this.dataTable.length > 0) {
       this.dataTable.forEach((item) => {
         if (item.checked) {
@@ -436,8 +430,7 @@ export class BaseComponent {
     if (id) {
       let res = await this.service.getDetail(id);
       if (res?.status == STATUS_API.SUCCESS) {
-        const data = res.data;
-        return data;
+        return res.data;
       } else {
         return null;
       }
@@ -580,7 +573,24 @@ export class BaseComponent {
     }
   }
 
-  protected readonly DATE_RANGE = DATE_RANGE;
+  async getQueryParams(param: string) {
+    return this.route.snapshot.queryParamMap.get(param);
+  }
 
+  async updateQueryParams(param: string, value: any) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {[param]: value},
+      queryParamsHandling: 'merge'
+    };
+    await this.router.navigate([], navigationExtras);
+  }
+
+  async removeQueryParams(param: string) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {[param]: null},
+      queryParamsHandling: 'merge'
+    };
+    await this.router.navigate([], navigationExtras);
+  }
 }
 

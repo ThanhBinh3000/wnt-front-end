@@ -12,23 +12,23 @@ export class NotificationService {
   ) {
   }
 
-  error(title: string, message: any) {
+  error(title: string, message: any, timeOut: number = 6000) {
     this._toastr.error(message, title, {
-      timeOut: 6000,
+      timeOut: timeOut,
       closeButton: true
     });
   }
 
-  success(title: string, message: any) {
+  success(title: string, message: any, timeOut: number = 3000) {
     this._toastr.success(message, title, {
-      timeOut: 3000,
+      timeOut: timeOut,
       closeButton: true
     });
   }
 
-  info(title: string, message: any) {
+  info(title: string, message: any, timeOut: number = 60000) {
     this._toastr.info(message, title, {
-      timeOut: 60000,
+      timeOut: timeOut,
       closeButton: true
     });
   }

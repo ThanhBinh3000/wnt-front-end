@@ -8,7 +8,9 @@ import {convertDateFormat} from "../../utils/date.utils";
 export class AppDatePipe extends NgDatePipe implements PipeTransform {
 
   override transform(input: any, format?: any, timezone?: any): any {
-    input = convertDateFormat(input);
+    if (!(input instanceof Date)) {
+      input = convertDateFormat(input);
+    }
     if (!format) {
       format = "dd/MM/yyyy"
     }
