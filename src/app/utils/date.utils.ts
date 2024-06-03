@@ -13,6 +13,21 @@ export function convertDateFormat(input: any) {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
 
+export function convertDateObject(input: any) {
+  if (!input) return '';
+  const parts = input.match(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/);
+  if (!parts) throw new Error('Invalid date format');
+
+  const day = parts[1];
+  const month = parts[2] - 1;
+  const year = parts[3];
+  const hours = parts[4];
+  const minutes = parts[5];
+  const seconds = parts[6];
+
+  return new Date(year, month, day, hours, minutes, seconds);
+}
+
 export function calculateAge(dateString: string): number {
   // Chuyển chuỗi ngày sinh sang Date object
   const birthDate = new Date(convertDateFormat(dateString));

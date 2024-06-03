@@ -4,7 +4,7 @@
       <div class="modal-header">
         <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
         <h4 class="modal-title text-capitalize text-center mt-0 mb-0">
-          <b>{{ getTitle() }}</b>
+          <b>Phiếu thu lại nhà cung cấp</b>
           <span *ngIf="isDesktop()" style="padding-bottom: 12px; padding-left: 8px" class="btn tooltip-content-drug">
           <span><i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i></span>
           <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
@@ -30,91 +30,75 @@
       <div class="modal-body">
         <div class="form-group">
           <div class="row">
-            <label class="col-sm-4 control-label">Loại phiếu</label>
+            <label class="col-sm-4 control-label">
+              Nhà cung cấp
+            </label>
             <div class="col-sm-8">
-              <div *ngIf="isCreateView()">
+              <div class="control-group" *ngIf="isCreateView()">
                 <ng-select
-                  class="flex-grow-1"
+                  [items]="listNhaCungCap$ | async"
+                  [typeahead]="searchNhaCungCapTerm$"
+                  [minTermLength]="2"
+                  formControlName="supplierId"
                   appendTo="body"
                   appearance="outline"
-                  [items]="listLoaiPhieu"
-                  formControlName="loaiPhieu"
-                  bindLabel="name"
+                  bindLabel="tenNhaCungCap"
                   bindValue="id"
-                  placeholder="Chọn loại phiếu"
+                  placeholder="Nhập mã, mã vạch hoặc tên..."
                   notFoundText="Không tìm thấy mục nào"
-                  [clearable]="false"
-                  (change)="getSoPhieuThuChi()"
-                >
+                  typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                  class="mb-1"
+                  (change)="onSupplierSelectedChange($event)">
+                  <ng-template ng-label-tmp let-item="item">
+                    <span *ngIf="item.tenNhaCungCap">{{ item.tenNhaCungCap }}</span>
+                    <span *ngIf="!item.tenNhaCungCap">{{ formData.value?.customer.tenNhaCungCap }}</span>
+                  </ng-template>
                   <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                    <span [ngOptionHighlight]="search">{{ item.tenNhaCungCap }}</span>
                   </ng-template>
                 </ng-select>
+                <a (click)="openAddEditOutComingSupplierNoteAddEditDialog()" style="text-decoration: none">
+                  <i class="fas fa-angle-double-right text-success"></i>&nbsp;<b>Phiếu thu lại nhà cung cấp</b>
+                </a>
               </div>
               <div *ngIf="isUpdateView()">
-                <span>{{ getTitle() }}</span>
+                {{ formData.value?.nhaCungCapMaNhaCungCapText }}
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="is9274()">
-          <div class="row">
-            <label class="col-sm-4 control-label">Cơ sở</label>
-            <div class="col-sm-8">
-              <ng-select
-                appendTo="body"
-                appearance="outline"
-                [items]="listNhaThuoc"
-                formControlName="maCoSo"
-                bindLabel="tenNhaThuoc"
-                bindValue="maNhaThuoc"
-                placeholder="Chọn hoặc gõ vào để tìm..."
-                notFoundText="Không tìm thấy mục nào"
-                [clearable]="false"
-                (change)="clearNhanVienId()"
-              >
-                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <span [ngOptionHighlight]="search">{{ item.tenNhaThuoc }}</span>
-                </ng-template>
-              </ng-select>
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
             <label class="col-sm-4 control-label">
-              {{ formData.value?.loaiPhieu == LOAI_THU_CHI.THU_KHAC ? 'Người nộp' : 'Người nhận' }}
+              Phiếu trả lại nhà cung cấp
             </label>
             <div class="col-sm-8">
-              <div *ngIf="is9274()">
-                <ng-select
-                  [items]="listNhanVien$ | async"
-                  [typeahead]="searchNhanVienTerm$"
-                  [minTermLength]="2"
-                  formControlName="nhanVienId"
-                  appendTo="body"
-                  appearance="outline"
-                  bindLabel="tenDayDu"
-                  bindValue="id"
-                  placeholder="Chọn hoặc gõ vào để tìm..."
-                  notFoundText="Không tìm thấy mục nào"
-                  typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
-                  (change)="searchNhanVienTerm$.next('')"
-                >
-                  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                    <span [ngOptionHighlight]="search">{{ item.tenDayDu }}</span>
+              <div class="control-group" *ngIf="isCreateView()">
+                <ng-select appendTo="body"
+                           appearance="outline"
+                           formControlName="receiverNoteId"
+                           [items]="formData.value?.debtNotes"
+                           bindLabel="noteInfo"
+                           bindValue="id"
+                           placeholder="Chọn hoặc gõ vào để tìm..."
+                           notFoundText="Không tìm thấy phiếu nào"
+                           (change)="onNoteSelectedChange($event)">
+                  <ng-template ng-option-tmp let-item="item" let-index="index"
+                               let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item?.noteInfo }}</span>
                   </ng-template>
                 </ng-select>
               </div>
-              <input *ngIf="!is9274()" type="text" formControlName="nguoiNhan" class="form-control mb-0">
+              <div *ngIf="isUpdateView()" [innerHTML]="getChiTiets() | sanitizeHtml">
+              </div>
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="isCreateView()">
           <div class="row">
-            <label class="col-sm-4 control-label">Địa chỉ</label>
+            <label class="col-sm-4 control-label">Tiền nợ</label>
             <div class="col-sm-8">
-              <input type="text" formControlName="diaChi" class="form-control mb-0">
+              {{ formData.value?.debtAmount | number }}
             </div>
           </div>
         </div>
@@ -122,7 +106,12 @@
           <div class="row">
             <label class="col-sm-4 control-label">Số tiền</label>
             <div class="col-sm-8">
-              <input type="text" formControlName="amount" class="form-control mb-0" mask="separator">
+              <div class="input-group">
+                <input type="text" formControlName="amount" class="form-control mb-0" mask="separator">
+                <span class="input-group-btn" (click)="onPayFull()">
+                  <button class="btn btn-primary" title="Trả hết">F</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -145,42 +134,6 @@
                     {{ item.displayName }}
                   </mat-radio-button>
                 </mat-radio-group>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="formData.value?.loaiPhieu == LOAI_THU_CHI.CHI_PHI_KINH_DOANH">
-          <div class="row">
-            <label class="col-sm-4 control-label">Thanh toán theo kỳ</label>
-            <div class="col-sm-8">
-              <mat-checkbox formControlName="isPayByPeriod"></mat-checkbox>
-              <div class="baocao-filter" *ngIf="formData.value?.isPayByPeriod">
-                <div class="radio">
-                  <div class="input-daterange input-group" id="datepicker">
-                    <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Từ ngày.." [matDatepicker]="pickerFromDate"
-                             formControlName="pickerFromDate"
-                             (click)="pickerFromDate.open()">
-                      <mat-datepicker #pickerFromDate></mat-datepicker>
-                      <span class="input-group-btn">
-                      <button class="btn btn-primary" (click)="pickerFromDate.open()">
-                        <i class="fa-regular fa-calendar-days"></i>
-                      </button>
-                    </span>
-                    </div>
-                    <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Đến ngày.." [matDatepicker]="pickerToDate"
-                             formControlName="pickerToDate"
-                             (click)="pickerToDate.open()">
-                      <mat-datepicker #pickerToDate></mat-datepicker>
-                      <span class="input-group-btn">
-                      <button class="btn btn-primary" (click)="pickerToDate.open()">
-                        <i class="fa-regular fa-calendar-days"></i>
-                      </button>
-                    </span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
