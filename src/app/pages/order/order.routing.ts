@@ -49,6 +49,11 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
+        path: 'create-order/:id',
+        component: CreateOrderComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
         path: 'order-list',
         component: OrderListComponent,
         // canActivate: [AuthGuard],
