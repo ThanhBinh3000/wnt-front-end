@@ -69,6 +69,7 @@ export class BaseComponent {
   pdfSrc: any;
   showDlgPreview = false;
   PATH_PDF = 'data:application/pdf;base64,';
+  protected readonly DATE_RANGE = DATE_RANGE;
 
   constructor(
     injector: Injector,
@@ -592,5 +593,7 @@ export class BaseComponent {
     };
     await this.router.navigate([], navigationExtras);
   }
+
+
 }
 
