@@ -1,6 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
-import {PickUpOrderService} from "../../../services/order/pick-up-order.service";
 import {MESSAGE, STATUS_API} from "../../../constants/message";
 import {BaseComponent} from "../../../component/base/base.component";
 import {PickUpOrderDetailService} from "../../../services/order/pick-up-order-detail.service";

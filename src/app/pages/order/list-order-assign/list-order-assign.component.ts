@@ -41,4 +41,31 @@ export class ListOrderAssignComponent extends BaseComponent implements OnInit {
     })
   }
 
+  async searchPageAssignStaff() {
+    try {
+      let body = this.formData.value
+      body.paggingReq = {
+        limit: this.pageSize,
+        page: this.page - 1
+      }
+      if(this.filterType == 1){
+        body.fromDate = this.fromDate;
+        body.toDate = this.toDate;
+      }
+      let res = await this._service.searchPageAssignStaff(body);
+      if (res?.status == STATUS_API.SUCCESS) {
+        let data = res.data;
+        this.dataTable = data.content;
+        this.totalRecord = data.totalElements;
+        this.totalPages = data.totalPages;
+      } else {
+        this.dataTable = [];
+        this.totalRecord = 0;
+      }
+    } catch (e) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    } finally {
+    }
+  }
+
 }
