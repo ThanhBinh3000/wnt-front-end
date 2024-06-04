@@ -1,215 +1,169 @@
 <div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="sidebar-bg">
-                <fieldset>
-                    <label>Trạng thái đơn</label>
-                    <select id="orderStatus" name="orderStatus" class="form-control">
-                        <option>Tất cả</option>
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <label>Tìm theo</label>
-                    <div class="control-group">
-                        <select class="form-control">
-                            <option>Mã sản phẩm</option>
-                        </select>
-                        <input class="form-control" type="text"/>
-                        
-                    </div>
-                </fieldset>
-                <fieldset class="baocao-filter">
-                    <div report-date-rage-filter
-                        display-data-table-id="table-id-orders"
-                        excel-file-name="Orders.xls"
-                        filter-type="filterType"
-                        display-data-callback="onDisplayOrdersData"
-                        export-callback="onExport"
-                        supress-export="true" supress-print="true"
-                        init-date-range-to-current-date="false"
-                        call-callback-after-init="true"></div>
-                </fieldset>
+  <div class="row">
+    <div class="col-md-3">
+      <form [formGroup]="formData">
+        <div class="sidebar-bg">
+          <fieldset>
+            <div class="option mb-3">
+              <label>Trạng thái đơn</label>
+              <ng-select formControlName="orderStatusId" placeholder="Chọn nhân viên">
+                <ng-option *ngFor="let data of listStatus" [value]="data.key">{{data.value}}</ng-option>
+              </ng-select>
             </div>
+
+          </fieldset>
+          <fieldset>
+            <div class="option mb-3">
+              <label>Tìm theo</label>
+              <ng-select formControlName="optionSearch" (ngModelChange)="onChangeOptSr($event)">
+                <ng-option *ngFor="let data of listOptSearch" [value]="data.key">{{data.value}}</ng-option>
+              </ng-select>
+            </div>
+            <div class="control-group">
+              <div class="input-group mb-3" *ngIf="formData.value.optionSearch == 1">
+                <input
+                  type="text"
+                  class="form-control mb-3 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
+                  formControlName="drugIds" placeholder="Nhập mã, mã vạch hoặc tên ...">
+              </div>
+              <div class="input-group mb-3" *ngIf="formData.value.optionSearch == 2">
+                <input
+                  type="text"
+                  class="form-control mb-3 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
+                  formControlName="orderNumber" placeholder="Nhập số đơn vào đây ...">
+              </div>
+              <div class="option mb-3" *ngIf="formData.value.optionSearch == 3">
+                <ng-select formControlName="createdByUserId" placeholder="Chọn nhân viên">
+                  <ng-option *ngFor="let data of listUserProfile" [value]="data.id">{{data.tenDayDu}}</ng-option>
+                </ng-select>
+              </div>
+              <div class="input-group mb-3" *ngIf="formData.value.optionSearch == 4">
+                <input
+                  type="text"
+                  class="form-control mb-3 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
+                  formControlName="description" placeholder="Nhập diễn giải vào đây ...">
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="baocao-filter mb-3">
+            <div class="option mb-3">
+              <app-date-range-filter [filterType]="DATE_RANGE.ALL"
+                                     [fromDateControl]="'fromDate'"
+                                     [toDateControl]="'toDate'"
+                                     (filterTypeChange)="changeFilterType($event)"
+                                     (fromDateChange)="changeFromDate($event)"
+                                     (toDateChange)="changeToDate($event)"
+              ></app-date-range-filter>
+            </div>
+            <button type="button" class="btn btn-primary w-100" (click)="searchPage()">Xem</button>
+          </fieldset>
         </div>
 
-        <div class="col-md-9">
-            <div class="box-group-white">
-                <h2 class="text-center"><b>Tra cứu đơn nhặt hàng</b></h2>
-                <div class="d-flex align-items-center justify-content-end gap-10 mb-3">
-                    <span>Đơn tạo mới: <strong class="text-danger"> 
-                        <!-- {{NewOrderCount | number:0}}  --> 1
-                    </strong> </span>
-                    <span><span class="btn-separator"></span></span>
-                    <span>Đơn đã cập nhật: <strong class="text-danger"> 
-                        <!-- {{UpdateOrderCount | number:0}} --> 1
-                     </strong> </span>
-                    <span><span class="btn-separator"></span></span>
-                    <span>Đơn đã hoàn thành: <strong class="text-danger"> 
-                        <!-- {{CompletedOrderCount | number:0}} -->1
-                     </strong> </span>
-                </div>
-                <div class="table-scroll">
-                    <table  class="table table-striped table-bordered table-hover tr-ng-grid">
-                        <thead>
-                            <tr>
-                                <th display-name="STT" style="width: 10px;">STT</th>
-                                <th field-name="OrderId" display-name="Mã số" enable-sorting="false">Mã số</th>
-                                <th field-name="ItemDate" display-name="Ngày" enable-sorting="true">Ngày</th>
-                                <th field-name="StaffName" display-name="Nhân viên" enable-sorting="false">Nhân viên</th>
-                                <th display-name="SL Thuốc">SL thuốc</th>
-                                <th field-name="Amount" display-name="Tổng tiền" enable-sorting="true">
-                                    <span>Tổng tiền</span>
-                                    <p class="number-value">Σ = 
-                                        <!-- {{TotalAmount | number:0}} --> 1.000
-                                    </p>
-                                </th>
-                                <th field-name="OrderStatusId" display-name="Trạng thái" enable-sorting="false">Trạng thái</th>
-                                <th display-name="Khách hàng">Khách hàng</th>
-                                <th display-name="#" style="width:130px">#</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!--STT-->
-                                <td><div>
-                                    <!-- {{gridItem.Order}} -->1
-                                </div></td>
-
-                                <!--Mã số-->
-                                <td field-name="OrderId">
-                                    <div>
-                                        <!-- {{gridItem.ItemNumber}} -->1
-                                    </div>
-                                </td>
-
-                                <!--Ngày-->
-                                <td field-name="ItemDate">
-                                    <div>
-                                        <!-- {{gridItem.OrderDateTimeText}} --> 1/1/2024
-                                    </div>
-                                </td>
-
-                                <!--Nhân viên-->
-                                <td field-name="StaffName">
-                                    <div>
-                                        <!-- {{gridItem.StaffName}} -->Nguyễn Văn A
-                                    </div>
-                                </td>
-
-                                <!--SL Thuốc-->
-                                <td>
-                                    <div>
-                                        <!-- {{gridItem.DrugCount}} --> 1
-                                    </div>
-                                </td>
-
-                                <!--Tổng tiền-->
-                                <td field-name="Amount">
-                                    <div class="number-value">
-                                        <!-- {{gridItem.Amount | number:0}} -->1.000
-                                    </div>
-                                </td>
-
-                                <!--Trạng thái-->
-                                <td field-name="OrderStatusId">
-                                    <div>
-                                        <!-- {{gridItem.TextStaus}} --> Đã xử lý
-                                    </div>
-                                </td>
-
-                                <!--Khách hàng-->
-                                <td>
-                                    <div>
-                                        <!-- {{gridItem.SupplierStoreName}} -->Nhà cung cấp A
-                                    </div>
-                                </td>
-
-                                <!--Actions-->
-                                <td>
-                                    <div ng-if="gridItem.RecordStatusId === 0">
-                                        <div class="baocao-actions">
-                                            <a class="btn btn-sm btn-primary" href="/management/order/pick-up-order-detail" title="Xem chi tiết đơn" ng-if="permittedFields.View_Pick_Up_Order">
-                                                Xem
-                                            </a>
-                                            <span ng-if="permittedFields.Add_Pick_Up_Order" title="Sửa đơn">
-                                                <a href="/management/order/form-quick" class="btn btn-sm btn-primary">
-                                                    <i class="fa-regular fa-pen-to-square"></i> 
-                                                </a>
-                                            </span>
-                                            <span ng-if="permittedFields.Handl_Pick_Up_Order" title="Xử lý đơn">
-                                                <a href="/management/order/handle-order" class="btn btn-sm btn-primary">
-                                                    Xử lý
-                                                </a>
-                                            </span>
-                                            <span ng-if="permittedFields.Delete_Pick_Up_Order" title="Xóa đơn"> 
-                                                <a href="#" ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();" class="btn btn-sm btn-danger">
-                                                    <i class="fa-regular fa-trash"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr id="footerId">
-                                <td align="center"
-                                    class="ng-scope" colspan="9">
-                                    <div class="tr-ng-grid-footer form-inline">
-                                        <div ng-switch-when="true" class="ng-scope">
-                                            <div ng-transclude=""><span class="form-group pull-left page-size ng-scope">
-                                                    <select id="ddlPageSize"
-                                                        class="form-control ng-pristine ng-untouched ng-valid"
-                                                        ng-model="model.pageSize"
-                                                        ng-options="item.pageSizeKey as item.pageSizeValue for item in pageSizeList"
-                                                        ng-change="changePageSize()">
-                                                        <option label="10" value="number:10" selected="selected">10</option>
-                                                        <option label="20" value="number:20">20</option>
-                                                        <option label="50" value="number:50">50</option>
-                                                        <option label="100" value="number:100">100</option>
-                                                        <option label="--All--" value="number:9000">--All--</option>
-                                                    </select>
-                                                    <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
-                                                </span><span class="pull-right form-group" tr-ng-grid-pager=""
-                                                    style="height:40px;">
-                                                    <ul class="pagination">
-                                                        <li class="ng-scope active">
-                                                            <a href="" ng-click="navigateToPage(pageIndex)"
-                                                                ng-if="pageIndex!==null"
-                                                                class="ng-binding ng-scope" title="Trang">1</a>
-                                                            </li>
-                                                            <li ng-if="pageSelectionActive" class="ng-scope"><a href=""
-                                                                    class="ng-binding ng-scope" title="Trang">2</a> </li>
-                                                            <li class="disabled" style="white-space: nowrap;"> <span
-                                                                    ng-hide="totalItemsCount || !displayTotalItemsCount"
-                                                                    class="ng-binding ng-hide">Không có dữ liệu</span> <span
-                                                                    ng-show="totalItemsCount &amp;&amp; displayTotalItemsCount"
-                                                                    class=""> <span class="ng-binding">Tổng: 2 bản ghi</span>
-                                                                </span> </li>
-                                                        </ul>
-                                                    </span></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                    </table>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-end gap-10 mt-3">
-                    <span>Đơn tạo mới: <strong class="text-danger"> 
-                        <!-- {{NewOrderCount | number:0}} -->1
-                     </strong> </span>
-                    <span><span class="btn-separator"></span></span>
-                    <span>Đơn đã cập nhật: <strong class="text-danger"> 
-                        <!-- {{UpdateOrderCount | number:0}} -->1
-                     </strong> </span>
-                    <span><span class="btn-separator"></span></span>
-                    <span>Đơn đã hoàn thành: <strong class="text-danger"> 
-                        <!-- {{CompletedOrderCount | number:0}} -->1
-                     </strong> </span>
-                </div>
-            </div>
-        </div>
+      </form>
     </div>
+
+    <div class="col-md-9">
+      <div class="box-group-white">
+        <h2 class="text-center"><b>Tra cứu đơn nhặt hàng</b></h2>
+        <div class="d-flex align-items-center justify-content-end gap-10 mb-3">
+                    <span>Đơn tạo mới: <strong class="text-danger">
+                        {{getTotalByStatus(0) | number}}
+                    </strong> </span>
+          <span><span class="btn-separator"></span></span>
+          <span>Đơn đã cập nhật: <strong class="text-danger">
+                        {{getTotalByStatus(102) | number}}
+                     </strong> </span>
+          <span><span class="btn-separator"></span></span>
+          <span>Đơn đã hoàn thành: <strong class="text-danger">
+                        {{getTotalByStatus(40) | number}}
+                     </strong> </span>
+        </div>
+        <div class="table-scroll">
+          <table class="table table-striped table-bordered table-hover tr-ng-grid">
+            <thead>
+            <tr>
+              <th style="width: 10px;">STT</th>
+              <th>Mã số</th>
+              <th>Ngày</th>
+              <th>Nhân viên</th>
+              <th>SL thuốc</th>
+              <th>
+                <span>Tổng tiền</span>
+                <p class="number-value">Σ =
+                  {{getTongTien()|number}}
+                </p>
+              </th>
+              <th>Trạng thái</th>
+              <th>Khách hàng</th>
+              <th style="width:130px">#</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let item of dataTable , let i = index">
+              <tr>
+                <td>{{(page - 1) * pageSize + i + 1}}</td>
+                <td>{{item.orderNumber}}</td>
+                <td>{{item.orderDate}}</td>
+                <td>{{item.createUserName}}</td>
+                <td>{{item.drugCount}}</td>
+                <td>{{item.totalAmount | number}}</td>
+                <td>{{item.orderStatusName}}</td>
+                <td>{{item.cusName}}</td>
+                <td>
+                  <div *ngIf="item.recordStatusId == 0">
+                    <div class="baocao-actions">
+                      <a class="btn btn-sm btn-primary" href="/management/order/pick-up-order-detail"
+                         title="Xem chi tiết đơn" ng-if="permittedFields.View_Pick_Up_Order">
+                        Xem
+                      </a>
+                      <span ng-if="permittedFields.Add_Pick_Up_Order" title="Sửa đơn">
+                          <a href="/management/order/form-quick" class="btn btn-sm btn-primary">
+                              <i class="fa-regular fa-pen-to-square"></i>
+                          </a>
+                      </span>
+                      <span ng-if="permittedFields.Handl_Pick_Up_Order" title="Xử lý đơn">
+                          <a href="/management/order/handle-order" class="btn btn-sm btn-primary">
+                              Xử lý
+                          </a>
+                      </span>
+                      <span ng-if="permittedFields.Delete_Pick_Up_Order" title="Xóa đơn">
+                              <a (click)="delete('Bạn chắc chắn muốn xóa đơn số ' + item.orderNumber +' ?',item)"
+                                 class="btn btn-sm btn-danger">
+                                  <i class="fa-regular fa-trash"></i>
+                              </a>
+                          </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+            <tfoot>
+            <tr id="footerId">
+              <td
+                colspan="9">
+                <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                                (pageChange)="changePageIndex($event)"
+                                (pageSizeChange)="changePageSize($event)"></app-pagination>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="d-flex align-items-center justify-content-end gap-10 mt-3">
+                    <span>Đơn tạo mới: <strong class="text-danger">
+                        {{getTotalByStatus(0) | number}}
+                     </strong> </span>
+          <span><span class="btn-separator"></span></span>
+          <span>Đơn đã cập nhật: <strong class="text-danger">
+                        {{getTotalByStatus(102) | number}}
+                     </strong> </span>
+          <span><span class="btn-separator"></span></span>
+          <span>Đơn đã hoàn thành: <strong class="text-danger">
+                        {{getTotalByStatus(40) | number}}
+                     </strong> </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

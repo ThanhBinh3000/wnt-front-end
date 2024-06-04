@@ -554,11 +554,11 @@
                    class="dropdown-toggle">Thu - Chi
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('revenue-expenditure')">
-                  <li><a href="/management/in-out-note/list?addPhieu={{LOAI_THU_CHI.THU_NO_KHACH_HANG}}">Viết phiếu thu nợ khách hàng</a>
+                  <li><a href="/management/in-out-note/list?loaiPhieu={{LOAI_THU_CHI.THU_NO_KHACH_HANG}}&taoPhieu={{LOAI_THU_CHI.THU_NO_KHACH_HANG}}">Viết phiếu thu nợ khách hàng</a>
                   </li>
-                  <li><a href="/management/in-out-note/list?addPhieu={{LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP}}">Viết phiếu trả nợ nhà cung cấp</a>
+                  <li><a href="/management/in-out-note/list?loaiPhieu={{LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP}}&taoPhieu={{LOAI_THU_CHI.CHI_TRA_NO_NHA_CUNG_CAP}}">Viết phiếu trả nợ nhà cung cấp</a>
                   </li>
-                  <li><a href="/management/in-out-note/list?addPhieu={{LOAI_THU_CHI.THU_KHAC}}">Nhập các khoản thu chi khác</a>
+                  <li><a href="/management/in-out-note/list?loaiPhieu={{LOAI_THU_CHI.THU_KHAC}}&taoPhieu={{LOAI_THU_CHI.THU_KHAC}}">Nhập các khoản thu chi khác</a>
                   </li>
                   <li class="divider"></li>
                   <li><a href="/management/in-out-note/list">Danh sách phiếu Thu-Chi</a></li>
@@ -602,8 +602,8 @@
                   <li><a href="/management/order/list-order-pick-up">Quản lý đơn khách đặt</a></li>
                   <li class="divider"></li>
                   <li><a href="/management/order/list-order-assign">Gán nhân viên đơn nhặt</a></li>
-                  <li><a href="/PickUpOrder/ListDrugToBuy">Danh sách hàng cần mua</a></li>
-                  <li><a href="/PickUpOrder/ConfirmDelivery">Xác nhận hàng giao trong ngày</a></li>
+                  <li><a href="/management/order/list-drug-buy">Danh sách hàng cần mua</a></li>
+                  <li><a href="/management/order/confirm-delivery">Xác nhận hàng giao trong ngày</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('partner', 'block') "

@@ -111,7 +111,7 @@ export class AccountListComponent extends BaseComponent implements OnInit, After
   }
 
   getDisplayedNhaThuocs(nhaThuocs: any) {
-    return nhaThuocs.replace(/,/g, '<br> ');
+    return nhaThuocs?.replace(/,/g, '<br> ');
   }
 
   async openAddEditDialog(userProfile: any) {

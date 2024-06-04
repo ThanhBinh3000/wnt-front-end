@@ -11,16 +11,29 @@ export class PhieuThuChiService extends BaseService {
   constructor(httpClient: HttpClient) {
     super(httpClient, 'wnt-thuchi','phieu-thu-chis');
   }
-  searchListPhieuNhap(body: any) {
-    const url = `/api/wnt-thuchi/phieu-nhap/search-list`;
+
+  getSoPhieuThuChi(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-so-phieu-thu-chi`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-  searchListPhieuXuat(body: any) {
-    const url = `/api/wnt-thuchi/phieu-xuat/search-list`;
+
+  getInComingCustomerDebt(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-in-coming-customer-debt`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-  getMaxNoteNumber(body: any) {
-    const url = `/api/wnt-thuchi/phieu-thu-chis/tao-so-phieu`;
+
+  getOutReturnCustomerDebt(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-out-return-customer-debt`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  getOutComingSupplierDebt(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-out-coming-supplier-debt`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  getInReturnSupplierDebt(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-in-return-supplier-debt`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 }

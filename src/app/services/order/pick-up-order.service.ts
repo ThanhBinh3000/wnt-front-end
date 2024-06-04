@@ -18,4 +18,9 @@ export class PickUpOrderService extends BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
+  searchPageAssignStaff(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/search-page-assign-staff`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
 }

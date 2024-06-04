@@ -3,7 +3,7 @@
     <div class="modal-header">
       <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
       <h4 class="modal-title text-capitalize text-center mt-0 mb-0">
-        <b>{{ getTitle() }}</b>
+        <b>Phiếu thu nợ khách hàng</b>
       </h4>
       <div class="card-desc">
         <div class="card-code">
@@ -16,27 +16,14 @@
       <table class="table table-bordered table-userpicker">
         <tbody>
         <tr>
-          <td><b>Loại phiếu</b></td>
+          <td><b>Khách hàng</b></td>
           <td>
-            <span>{{getTitle()}}</span>
-          </td>
-        </tr>
-        <tr *ngIf="is9274()">
-          <td><b>Cơ sở</b></td>
-          <td>
-            <span>{{ noteDetail?.nhaThuocs?.tenNhaThuoc }}</span>
+            {{noteDetail?.customerText}}
           </td>
         </tr>
         <tr>
-          <td><b>Người nhận</b></td>
-          <td>
-            {{getNguoiNhanData()}}
-          </td>
-        </tr>
-        <tr>
-          <td><b>Địa chỉ</b></td>
-          <td>
-            <span>{{noteDetail?.diaChi}}</span>
+          <td><b>Phiếu xuất</b></td>
+          <td [innerHTML]="getChiTiets() | sanitizeHtml">
           </td>
         </tr>
         <tr>
@@ -50,12 +37,6 @@
         <tr>
           <td><b>Hình thức thanh toán</b></td>
           <td>{{ noteDetail?.paymentTypeId == 0 ? 'Tiền mặt' : 'Chuyển khoản' }}</td>
-        </tr>
-        <tr *ngIf="noteDetail?.loaiPhieu == LOAI_THU_CHI.CHI_PHI_KINH_DOANH && noteDetail?.fromDate && noteDetail?.toDate">
-          <td><b>Thanh toán theo kỳ</b></td>
-          <td>
-            <span><i class="glyphicon-check glyphicon text-success"></i> {{noteDetail?.fromDate | appDate}}</span> - <span>{{noteDetail?.toDate | appDate}}</span>
-          </td>
         </tr>
         <tr>
           <td><b>Người lập</b></td>
@@ -76,8 +57,8 @@
       <button *ngIf="inOutComingNotePrint" class="btn btn-primary" [matMenuTriggerFor]="printMenu"><i
         class="fas fa-print"></i></button>
       <mat-menu #printMenu="matMenu">
-        <button mat-menu-item (click)="onPrint('printType')">In 1 liên - A5</button>
-        <button mat-menu-item (click)="onPrint('printType')">In 2 liên - A4</button>
+        <button mat-menu-item (click)="printPreview('A5', data.id)">In 1 liên - A5</button>
+        <button mat-menu-item (click)="printPreview('A4', data.id)">In 2 liên - A4</button>
       </mat-menu>
       <button *ngIf="inOutComingNoteWrite" (click)="openAddEditDialog(noteDetail?.id)" class="btn btn-primary"><i
         class="fa-regular fa-pen-to-square"></i></button>

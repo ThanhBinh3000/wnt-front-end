@@ -1,16 +1,15 @@
 import {Component, Inject, Injector, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BaseComponent} from "../../../component/base/base.component";
 import {PhieuThuChiService} from "../../../services/thuchi/phieu-thu-chi.service";
-import {InOutNoteAddEditDialogComponent} from "../in-out-note-add-edit-dialog/in-out-note-add-edit-dialog.component";
 import { LOAI_THU_CHI } from '../../../constants/config';
 import {
   OtherInOutNoteAddEditDialogComponent
 } from "../other-in-out-note-add-edit-dialog/other-in-out-note-add-edit-dialog.component";
+import {MESSAGE} from "../../../constants/message";
 
 @Component({
-  selector: 'other-in-out-note-detail-dialog',
+  selector: 'other-customer-in-out-note-detail-dialog',
   templateUrl: './other-in-out-note-detail-dialog.component.html',
   styleUrls: ['./other-in-out-note-detail-dialog.component.css'],
 })
@@ -36,6 +35,14 @@ export class OtherInOutNoteDetailDialogComponent extends BaseComponent implement
     if (this.data.id) {
       this.noteDetail = await this.detail(this.data.id);
     }
+  }
+
+  is9274() {
+    return this.getMaNhaThuoc() == '9274';
+  }
+
+  getNguoiNhanData() {
+    return this.is9274() ? this.noteDetail?.nhanVienText : this.noteDetail?.nguoiNhan;
   }
 
   getTitle() {
@@ -70,8 +77,28 @@ export class OtherInOutNoteDetailDialogComponent extends BaseComponent implement
     this.dialog.open(OtherInOutNoteAddEditDialogComponent, config);
   }
 
-  closeModal() {
-    this.dialogRef.close();
+  override async delete() {
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: 'Bạn thực sự muốn xóa phiếu này?',
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        this.service.delete({id: this.noteDetail?.id}).then(async (res) => {
+          if (res && res.data) {
+            this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+            this.closeModal(this.noteDetail);
+          }
+        });
+      },
+    });
+  }
+
+  closeModal(data: any = null) {
+    this.dialogRef.close(data);
   }
 
   protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
