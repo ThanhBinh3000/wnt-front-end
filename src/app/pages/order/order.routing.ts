@@ -29,6 +29,11 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
+        path: 'form-quick/:id',
+        component: FormQuickComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
         path: 'handle-order',
         component: HandleOrderComponent,
         // canActivate: [AuthGuard],
