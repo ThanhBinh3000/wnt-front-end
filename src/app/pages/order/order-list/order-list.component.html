@@ -1,42 +1,76 @@
 <div>
   <div class="row">
     <div class="col-md-3">
+      <form [formGroup]="formData">
       <div class="sidebar-bg">
         <fieldset>
           <label>Trạng thái đơn</label>
           <div class="control-group">
-            <select id="orderStatus" name="orderStatus" class="form-control">
-              <option>Tất cả</option>
+            <select formControlName="orderStatusId"
+                    class="form-control mb-0 ng-pristine ng-valid ng-touched">
+              <option *ngFor="let item of listOrderStatus;" value="{{item.id}}">
+                {{item.buyerDisplayName}}</option>
             </select>
           </div>
         </fieldset>
         <fieldset>
           <label>Tìm theo</label>
           <div class="control-group">
-            <select class="form-control">
-              <option>Mã-Tên</option>
+            <select formControlName="searchType"
+                    class="form-control mb-0 ng-pristine ng-valid ng-touched" (change)="handleSearchType()">
+              <option *ngFor="let item of searchTypes;" value="{{item.value}}">
+                {{item.name}}</option>
             </select>
-            <input type="text" class="form-control"/>
           </div>
         </fieldset>
         <fieldset ng-if="filterModel.IsGeneralPharmacy">
-          <div>
-            <label>Nhà thuốc</label>
-            <div class="control-group">
-              <input type="text" class="form-control"/>
-            </div>
+          <div *ngIf="formData.value.searchType == 0" class="control-group">
+            <ng-select #selectDrug
+                       class="w-100"
+                       appendTo="body"
+                       formControlName="drugId"
+                       appearance="outline"
+                       [items]="listThuoc$ | async"
+                       [typeahead]="searchThuocTerm$"
+                       bindLabel="tenThuoc"
+                       bindValue="id"
+                       [minTermLength]="2"
+                       appendTo="body"
+                       appearance="outline"
+                       placeholder="Nhập mã, mã vạch hoặc tên..."
+                       notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)">
+              <ng-template ng-label-tmp let-item="item">
+                <span *ngIf="item.maThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+              </ng-template>
+            </ng-select>
           </div>
         </fieldset>
-        <fieldset class="baocao-filter">
-          <div report-date-rage-filter
-               display-data-table-id="table-id-orders"
-               excel-file-name="Orders.xls"
-               filter-type="filterType"
-               display-data-callback="onDisplayOrdersData"
-               export-callback="onExport"
-               supress-export="deviceType!=0" supress-print="true"
-               init-date-range-to-current-date="true"
-               call-callback-after-init="true"></div>
+        <fieldset>
+          <div class="control-group" *ngIf="formData.value.searchType == 1">
+            <input type="text" formControlName="orderNumber" placeholder="Nhập số đơn..." class="form-control"/>
+          </div>
+        </fieldset>
+        <fieldset *ngIf="formData.value.searchType == 2">
+          <div class="control-group">
+            <select formControlName="customerId"
+                    class="form-control mb-0 ng-pristine ng-valid ng-touched">
+              <option *ngFor="let item of listNhanViens;" value="{{item.id}}">
+                {{item.tenDayDu}}</option>
+            </select>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="control-group" *ngIf="formData.value.searchType == 3">
+            <input type="text" formControlName="description" placeholder="Nhập diễn giải..." class="form-control"/>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="control-group">
+            <a (click)="searchPage()"
+               type="button" class="btn btn-primary w-100">Xem</a>
+            <a
+              type="button" class="btn btn-default w-100">Xuất Excel</a>
+          </div>
         </fieldset>
         <hr/>
         <div class="d-flex align-items-center gap-10">
@@ -45,8 +79,8 @@
           <a href="/management/order/search-drug" ng-if="!filterModel.IsGeneralPharmacy"
              type="button" class="btn btn-default w-50">Nhặt hàng</a>
         </div>
-
       </div>
+      </form>
     </div>
 
     <div class="col-md-9">
@@ -319,7 +353,7 @@
 
           <ng-container matColumnDef="nhanVien">
             <th mat-header-cell *matHeaderCellDef> Nhân viên</th>
-            <td mat-cell *matCellDef="let data"> {{ data.customerFullName }}</td>
+            <td mat-cell *matCellDef="let data"> {{ data.staffName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="nhaThuoc">
@@ -329,17 +363,17 @@
 
           <ng-container matColumnDef="slThuoc">
             <th mat-header-cell *matHeaderCellDef> SL thuốc</th>
-            <td mat-cell *matCellDef="let data"> {{ data.totalAmount | number }}</td>
+            <td mat-cell *matCellDef="let data"> {{ slThuoc(data) | number }}</td>
           </ng-container>
 
           <ng-container matColumnDef="tongTien">
             <th mat-header-cell *matHeaderCellDef> Tổng tiền Σ = {{sumAmount | number}}</th>
-            <td mat-cell *matCellDef="let data"> {{ data.paymentAmount | number }}</td>
+            <td mat-cell *matCellDef="let data"> {{ data.totalAmount | number }}</td>
           </ng-container>
 
           <ng-container matColumnDef="tienCk">
             <th mat-header-cell *matHeaderCellDef> Tiền C.K Σ =</th>
-            <td mat-cell *matCellDef="let data"> {{ data.descriptions }}</td>
+            <td mat-cell *matCellDef="let data"> {{ getOrderDiscountAmount(data) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="trangThai">
@@ -385,7 +419,7 @@
                 </span>
                 <span>
                       |
-                      <a href="#">
+                      <a *ngIf="data.orderStatusId == 1" (click)="sendOrder(data.orderNumber, data)">
                       Gửi
                       </a>
                 </span>

@@ -6,10 +6,10 @@ import {ResponseData} from "../../models/response-data";
 @Injectable({
   providedIn: 'root'
 })
-export class PhieuNhapService extends BaseService {
+export class OrderStatusService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-inventory','phieu-nhap');
+    super(httpClient, 'wnt-order','order-status');
   }
 
 
