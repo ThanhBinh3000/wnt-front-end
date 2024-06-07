@@ -7,7 +7,7 @@ import { DonViTinhService } from '../../../../services/products/don-vi-tinh.serv
 import { ThuocService } from '../../../../services/products/thuoc.service';
 import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
 import { DatePipe } from '@angular/common';
-import { MESSAGE } from '../../../../constants/message';
+import { MESSAGE, STATUS_API } from '../../../../constants/message';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SETTING } from '../../../../constants/setting';
 
@@ -45,6 +45,7 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
       storeId: [0],
       createdByUserText: [],
       created: [],
+      locked: [false],
       //trường không dùng
       backPaymentAmount: [0],
       connectivityStatusID: [0],
@@ -256,8 +257,13 @@ export class CancelDeliveryNoteScreenComponent extends BaseComponent implements 
     });
   }
 
-  async onLockNote(){
-
+  async onLockNote() {
+    let locked = this.formData.get('locked')?.value;
+    const res = locked ? await this._service.unlock({ id: this.formData.get('id')?.value }) : await this._service.lock({ id: this.formData.get('id')?.value });
+    if (res && res.status == STATUS_API.SUCCESS) {
+      this.formData.controls['locked'].setValue(res.data.locked);
+      this.notification.success(MESSAGE.SUCCESS, this.formData.get('locked')?.value ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   @HostListener('document:keydown', ['$event'])

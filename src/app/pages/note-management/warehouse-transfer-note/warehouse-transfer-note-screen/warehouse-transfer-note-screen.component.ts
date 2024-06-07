@@ -51,6 +51,7 @@ export class WarehouseTransferNoteScreenComponent extends BaseComponent implemen
       targetStoreId: [],
       createdByUserText: [],
       created: [],
+      locked: [false],
       //trường không dùng
       backPaymentAmount: [0],
       connectivityStatusID: [0],
@@ -302,7 +303,12 @@ export class WarehouseTransferNoteScreenComponent extends BaseComponent implemen
   }
 
   async onLockNote() {
-
+    let locked = this.formData.get('locked')?.value;
+    const res = locked ? await this._service.unlock({ id: this.formData.get('id')?.value }) : await this._service.lock({ id: this.formData.get('id')?.value });
+    if (res && res.status == STATUS_API.SUCCESS) {
+      this.formData.controls['locked'].setValue(res.data.locked);
+      this.notification.success(MESSAGE.SUCCESS, this.formData.get('locked')?.value ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
   }
 
   getBatchNumberAndExpDate(item: any) {

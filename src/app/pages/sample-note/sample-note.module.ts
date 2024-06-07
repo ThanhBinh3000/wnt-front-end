@@ -10,6 +10,7 @@ import { DoctorModule } from '../doctor/doctor.module';
 import { ComponentsModule } from '../../component/base/components.module';
 import { SampleNoteDetailComponent } from './sample-note-detail/sample-note-detail.component';
 import { DrugUpdateInfoUseDialogComponent } from './drug-update-info-use-dialog/drug-update-info-use-dialog.component';
+import { SampleNoteHistoryDialogComponent } from './sample-note-history-dialog/sample-note-history-dialog.component';
 
 
 @NgModule({
@@ -18,10 +19,11 @@ import { DrugUpdateInfoUseDialogComponent } from './drug-update-info-use-dialog/
     SampleNoteListComponent,
     SampleNoteAddEditComponent,
     SampleNoteDetailComponent,
-    DrugUpdateInfoUseDialogComponent
+    DrugUpdateInfoUseDialogComponent,
+    SampleNoteHistoryDialogComponent,
   ],
   imports: [CommonModule, RouterOutlet, SampleNoteRoutingModule, DoctorModule, ComponentsModule],
-  exports: [],
+  exports: [SampleNoteHistoryDialogComponent],
 })
 export class SampleNoteModule {
 }

@@ -1,0 +1,13 @@
+.trans-sample {
+    overflow-y: auto;
+    height: 500px;
+}
+
+    .trans-sample thead th {
+        position: sticky;
+        top: 0;
+    }
+
+.trans-sample table {
+    width: 100%;
+} 
