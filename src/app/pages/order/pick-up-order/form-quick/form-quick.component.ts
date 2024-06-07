@@ -211,13 +211,7 @@ export class FormQuickComponent extends BaseComponent implements OnInit {
   }
 
   async getItemAmount(item: any) {
-    // let discount = (item.giaXuat > 0.05 ? (item.chietKhau / item.giaXuat) : 0) * 100;
-    // discount = discount < 0.5 ? 0 : discount;
-    // let vat = item.vat < 0.5 ? 0 : item.vat;
-    // let price = item.giaXuat * (1 - (discount / 100)) * (1 + (vat / 100));
     item.totalAmount = item.quantity * item.price;
-    // item.retailQuantity = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.soLuong : item.soLuong * item.heSo;
-    // item.retailPrice = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.giaXuat : item.giaXuat / item.heSo;
   }
 
   getMaNhaThuoc() {
