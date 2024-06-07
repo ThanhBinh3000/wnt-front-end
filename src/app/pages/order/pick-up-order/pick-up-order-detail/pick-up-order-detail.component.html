@@ -7,19 +7,19 @@
         <tr>
             <td style="text-align: left">
                 <label class="control-label">Khách hàng:</label>
-                <label class="control-label" style="font-weight: normal"> 
-                    <!-- {{viewModel.Customer.Name}} -->Nguyễn Văn A
+                <label class="control-label" style="font-weight: normal">
+                     {{formData.value.cusName}}
                 </label>
                 <br />
                 <label class="control-label">Địa chỉ:</label>
                 <label class="control-label" style="font-weight: normal">
-                    <!-- {{viewModel.Customer.Addresses}} -->Hà Nội
+<!--                     {{formData.value.cusName}} -->
                 </label>
             </td>
             <td style="text-align: right">
                 <label class="control-label">Số phiếu: </label>
                 <label class="control-label" style="font-weight: normal">
-                <!-- {{viewModel.NoteNumber}} --> 1
+                 {{formData.value.orderNumber}}
             </label>
             </td>
     </table>
@@ -37,54 +37,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="i in viewModel.NoteItems" class="">
-                <td>
-                    <span>
-                        <!-- {{i.Order}} -->1
-                    </span>
-
-                </td>
-                <td>
-                    <span>
-                        <!-- {{i.DrugCode}} --> TH01
-                    </span>
-                </td>
-                <td>
-                    <a ng-show="@ViewBag.DisplayImage == 1 && i.ImageThumbUrl" data-fancybox="" href="" data-caption="Ảnh sản phẩm">
-                        <img ng-src="" alt="" style="width: 40px; height:40px;" />
-                    </a>
-                    <span>
-                        <!-- {{i.DrugName}} --> Thuốc 1
-                    </span>
-                </td>
-                <td>
-                    <span>
-                        <!-- {{i.UnitName}} --> Viên
-                    </span>
-
-                </td>
-                <td>
-                    <span class="display-mode pNumber" style="float:right">
-                        <!-- {{i.Quantity | number : 0}} -->1
-                    </span>
-
-                </td>
-                <td>
-                    <span class="display-mode pNumber" style="float:right">
-                        <!-- {{i.InPrice | number : 0}} --> 2.000
-                    </span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" style="float:right">
-                        <!-- {{i.Price | number : 0}} --> 2.000
-                    </span>
-                </td>
-                <td>
-                    <span class="display-mode pNumber" style="float:right">
-                        <!-- {{i.Price * i.Quantity | number : 0}} --> 4.000
-                    </span>
-                </td>
-            </tr>
+        <ng-container *ngFor="let item of dataTable , let i = index">
+          <tr ng-repeat="i in viewModel.NoteItems" class="">
+            <td>{{i + 1}}</td>
+            <td>{{item.maThuocText}}</td>
+            <td>{{item.tenThuocText}}</td>
+            <td>{{item.tenDonViTinh}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.inPrice | number}} </td>
+            <td>{{item.price | number}} </td>
+            <td>{{item.price * item.quantity | number}} </td>
+          </tr>
+        </ng-container>
         </tbody>
     </table>
     <br />
@@ -92,7 +56,7 @@
     <div class="row">
         <div class="col-md-3">
             <b>Tổng Số Tiền : &nbsp;<span id="spanSumAll"></span></b><span>
-                <!-- {{viewModel.TotalAmount | number : 0}} --> 10000
+                 {{formData.value.totalAmount | number}}
             </span>
         </div>
     </div>
@@ -102,13 +66,13 @@
             <td style="text-align:right; font-weight: normal; color:GrayText">
                 <label class="control-label" style="font-weight: normal">[Người lập: </label>
                 <label class="control-label" style="font-weight: normal">[
-                    <!-- {{viewModel.CreatedBy}} --> Nguyễn Văn A
+                     {{formData.value.createUserName}}
                     ]</label>
             </td>
             <td style="text-align:right; font-weight: normal; color:GrayText">
                 <label class="control-label" style="font-weight: normal">[Ngày lập: </label>
                 <label class="control-label" style="font-weight: normal">[
-                    <!-- {{viewModel.NoteDate | appDate}} --> 01/01/2024
+                     {{formData.value.orderDate | appDate}}
                     ]</label>
             </td>
         </tr>
@@ -117,11 +81,11 @@
     <div class="form-group">
         <div class="">
             <div class="d-flex align-items-center justify-content-center gap-10">
-                <a class="btn btn-primary" title="Tiếp tục" ng-if="permittedFields.Add_Pick_Up_Order" href="/PickUpOrder/FormQuick?noteId=null&taskMode=1&noteTypeId=2">Tiếp tục</a>
-                <a class="btn btn-primary" title="Sửa" ng-if="permittedFields.Add_Pick_Up_Order" href="/PickUpOrder/FormQuick?noteId=&taskMode=1">Sửa</a>
+                <a class="btn btn-primary" title="Tiếp tục" ng-if="permittedFields.Add_Pick_Up_Order" href="/management/order/form-quick">Tiếp tục</a>
+                <a class="btn btn-primary" title="Sửa" ng-if="permittedFields.Add_Pick_Up_Order" href="/management/order/form-quick/{{idUrl}}">Sửa</a>
                 <a class="btn btn-default" title="In" ng-click="onPrint(viewModel.NoteId)">In</a>
-                <a class="btn btn-primary" title="Xử lý" ng-if="permittedFields.Handl_Pick_Up_Order" ng-click="onNoteProcess()">Xử lý</a>
-                <input type="button" value="Quay lại" title="Quay lại" class="btn btn-default" onclick="" />
+                <a class="btn btn-primary" title="Xử lý" ng-if="permittedFields.Handl_Pick_Up_Order" href="/management/order/handle-order/{{idUrl}}">Xử lý</a>
+                <input type="button" value="Quay lại" title="Quay lại" class="btn btn-default" onclick="location.href='/management/order/list-order-pick-up'" />
             </div>
         </div>
     </div>
