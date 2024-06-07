@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { BaseComponent } from '../../../component/base/base.component';
 import { NhomBacSiService } from '../../../services/categories/nhom-bac-si.service';
 import { STATUS_API } from '../../../constants/message';
+import { SETTING } from '../../../constants/setting';
 
 @Component({
   selector: 'doctor-add-edit-dialog',
@@ -15,6 +16,10 @@ export class DoctorAddEditDialogComponent extends BaseComponent implements OnIni
   showMoreForm: boolean = false;
   expandLabel: string = '[+]';
   listNhomBacSy : any[] = [];
+  showPassword: boolean = false;
+
+  //Settings
+  useClinicIntegration = this.authService.getSettingByKey(SETTING.USE_CLINIC_INTEGRATION).activated;
 
   constructor(
     injector: Injector,
@@ -74,4 +79,8 @@ export class DoctorAddEditDialogComponent extends BaseComponent implements OnIni
     this.showMoreForm = !this.showMoreForm;
     this.expandLabel = this.showMoreForm ? '[-]' : '[+]';
   };
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 }

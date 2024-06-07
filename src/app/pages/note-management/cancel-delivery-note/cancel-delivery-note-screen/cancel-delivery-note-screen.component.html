@@ -180,8 +180,8 @@
                                 <a class="btn btn-danger" (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất huỷ có số phiếu \'' + formData.value?.soPhieuXuat + '\' ?', formData.value?.id)">
                                     Xóa</a>
                                 <span>&nbsp;</span>
-                                <a (click)="onLockNote()"
-                                    title="Mở/Khóa phiếu" class="btn btn-default"><i class="fa fa-unlock fa-lg"></i></a>
+                                <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
+                                    class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
                             </span>
                         </div>
                     </td>

@@ -87,6 +87,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       flag: [false],
       tenDonViTinhXuatLe: [],
       tenDonViTinhThuNguyen: [],
+      typeService: [LOAI_SAN_PHAM.THUOC]
     });
   }
 

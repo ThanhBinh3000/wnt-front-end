@@ -9,12 +9,14 @@ import { LOAI_SAN_PHAM, TRANG_THAI_PHIEU_KHAM } from '../../../constants/config'
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
 import { KhachHangService } from '../../../services/customer/khach-hang.service';
 import { BacSiesService } from '../../../services/medical/bac-sies.service';
-import { STATUS_API } from '../../../constants/message';
+import { MESSAGE, STATUS_API } from '../../../constants/message';
 import { CustomerAddEditDialogComponent } from '../../customer/customer-add-edit-dialog/customer-add-edit-dialog.component';
 import { ThuocService } from '../../../services/products/thuoc.service';
 import { PhongKhamsService } from '../../../services/medical/phong-khams.service';
 import { DoctorAddEditDialogComponent } from '../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
 import { EsDiagnoseService } from '../../../services/categories/esdiagnose.service';
+import { SampleNoteHistoryDialogComponent } from '../../sample-note/sample-note-history-dialog/sample-note-history-dialog.component';
+import { calculateAge, convertDateFormat } from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-medical-note',
@@ -31,7 +33,7 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
   listPhongKham: any[] = [];
   listDiagnose$ = new Observable<any[]>;
   searchDiagnoseTerm$ = new Subject<string>();
-  
+
   action: string = 'create';
 
   // Settings
@@ -102,7 +104,7 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
       this.action = data.action;
     });
     this.getId();
-    if(this.idUrl){
+    if (this.idUrl) {
       let data = await this.detail(this.idUrl)
       console.log(data);
       data.idServiceExam = data.idServiceExam < 0 ? 0 : data.idServiceExam;
@@ -141,17 +143,19 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
       catchError(() => of([]))
     );
     // Loại khám
-    this.thuocService.searchList({ 
+    this.thuocService.searchPage({
       maNhaThuoc: this.getMaNhaThuocCha() != '' && this.getMaNhaThuocCha() != null ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
       typeService: LOAI_SAN_PHAM.DICH_VU,
-      tenNhomThuoc: 'Khám bệnh'
+      nhomThuocTenNhomThuoc: "Khám bệnh",
+      paggingReq: { limit: 1000, page: 0 },
+      dataDelete: false,
     }).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
-        // this.listLoaiKham = res.data
+        this.listLoaiKham = res.data.content;
       }
     });
     // Phòng khám
-    this.phongKhamService.searchList({ 
+    this.phongKhamService.searchList({
       maNhaThuoc: this.getMaNhaThuoc(),
     }).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
@@ -208,8 +212,22 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
 
   getPatientDetail($event: any) {
     if ($event) {
-      this.formData.patchValue({customer: $event});
-      console.log($event);
+      $event.age = calculateAge($event.birthDate);
+      $event.birthDate = convertDateFormat($event.birthDate);
+      this.formData.patchValue({ customer: $event });
+      console.log(this.formData.value?.customer);
+    }
+  }
+
+  onHistorySampleNote(customerId: any) {
+    if (customerId > 0) {
+      this.dialog.open(SampleNoteHistoryDialogComponent, {
+        width: '50%',
+        data: this.formData.value?.customer
+      });
+    }
+    else {
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn bệnh nhân.');
     }
   }
 
@@ -247,6 +265,14 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
     });
   }
 
+  birthDateChange() {
+    if (this.formData.value?.customer.value?.birthDate) {
+      this.formData.value?.customer.patchValue({age: calculateAge(this.formData.value?.customer.value?.birthDate)});
+      //this.receiverSelectedItem.LoaiTuoi = age >= 3 ? 0 : 1;
+    }
+  }
+
+  @ViewChildren('pickerBirthDate') pickerBirthDate!: Date;
   @ViewChildren('pickerNoteDate') pickerNoteDate!: Date;
   async onDateChange(date: Date) {
     let ngayTao = this.formData.get('ngayTao')?.value;

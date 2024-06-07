@@ -48,6 +48,28 @@ export function calculateAge(dateString: string): number {
   return age;
 }
 
+export function calculateAgeInMonthsOrYears(dateString: string): number {
+  const ageInYears = calculateAge(dateString);
+
+  if (ageInYears <= 3) {
+    const birthDate = new Date(convertDateFormat(dateString));
+    const today = new Date();
+
+    let months = ageInYears * 12 + today.getMonth() - birthDate.getMonth();
+    if (today.getDate() < birthDate.getDate()) {
+      months--;
+    }
+    return months;
+  } else {
+    return ageInYears;
+  }
+}
+
+export function getAgeUnit(dateString: string): string {
+  const ageInYears = calculateAge(dateString);
+  return ageInYears <= 3 ? 'tháng' : 'tuổi';
+}
+
 export function calculateDayFromDateRange(fromDate: any, toDate: any): number {
   let from = fromDate ? new Date(convertDateFormat(fromDate)) : new Date();
   let to = toDate ? new Date(convertDateFormat(toDate)) : new Date();

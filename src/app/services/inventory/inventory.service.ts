@@ -6,16 +6,14 @@ import {ResponseData} from "../../models/response-data";
 @Injectable({
   providedIn: 'root'
 })
-export class OrdersService extends BaseService {
+export class InventoryService extends BaseService {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'wnt-order','orders');
+    super(httpClient, 'wnt-inventory','inventory');
   }
 
-
-  sendOrder(body: any) {
-    const url = `/api/${this.gateway}/${this.controller}/sendOrder`
+  totalInventory(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/total-inventory`
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-
 }

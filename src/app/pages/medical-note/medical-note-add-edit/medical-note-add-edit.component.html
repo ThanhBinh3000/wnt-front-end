@@ -30,7 +30,7 @@
                             href="/management/medical-note/history-list?customerId={{formData.value?.idPatient}}"
                             target="_blank">LS khám
                             chữa bệnh</a>
-                        <button class="btn btn-primary" ng-click="onHistorySampleNote(noteModel.Customer.CusId)">LS kê
+                        <button class="btn btn-primary" (click)="onHistorySampleNote(formData.value?.idPatient)">LS kê
                             đơn</button>
                         <button class="btn btn-danger"
                             [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.statusNote.locked"
@@ -99,24 +99,29 @@
                                         [attr.disabled]="action == 'view'" formControlName="diaChi" />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div formGroupName="customer" class="col-md-4">
                                 <div class="form-inline-flex mb-3">
                                     <label class="col-md-4">Ngày sinh</label>
                                     <div class="input-group">
-                                        <input class="input-datetime form-control mb-0 text-box single-line"
-                                            id="birthDate" ng-change="birthDateChange()"
-                                            ng-disabled="!receiverSelectedItem || action == 'view'"
-                                            placeholder="dd/mm/yyyy" style="text-align:left" type="text"
-                                            formControlName="receiverSelectedItem.BirthDate" />
-                                        <span class="input-group-addon flex-grow-width-25"
-                                            ng-click="onBirthDateClick(); $event.preventDefault(); $event.stopPropagation();"><i
-                                                class="fa-regular fa-calendar-days"></i></span>
+                                        <input formControlName="birthDate" type="text" class="form-control"
+                                            [matDatepicker]="pickerBirthDate" (click)="pickerBirthDate.open()" (change)="birthDateChange()">
+                                        <mat-datepicker #pickerBirthDate="matDatepicker"
+                                            disabled="false"></mat-datepicker>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" (click)="pickerBirthDate.open()"><i
+                                                    class="fa-regular fa-calendar-days"></i></button>
+                                        </span>
                                     </div>
                                 </div>
-                                <div formGroupName="customer" class="form-inline-flex">
+                                <div class="form-inline-flex">
                                     <label class="col-md-4">Tuổi</label>
-                                    <input class="form-control mb-0 flex-grow-1" formControlName="age" [disabled]="true"
+                                    <div class="input-group">
+                                        <input class="form-control mb-0 flex-grow-1" formControlName="age" [disabled]="true"
                                         type="text" />
+                                        <span class="input-group-addon flex-grow-width-25">
+                                            
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">

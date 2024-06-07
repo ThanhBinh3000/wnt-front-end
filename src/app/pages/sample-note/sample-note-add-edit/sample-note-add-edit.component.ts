@@ -241,9 +241,13 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   getListBacSies() {
-    this.bacSiesService.searchList({ maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc() }).then((res) => {
+    let body = {
+      maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
+      paggingReq: { limit: 1000, page: 0 },
+    };
+    this.bacSiesService.searchPage(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
-        this.listBacSies = res.data
+        this.listBacSies = res.data.content;
       }
     });
   }

@@ -48,7 +48,7 @@ export class ServiceListComponent extends BaseComponent implements OnInit {
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
-    this.searchPage();
+    await this.searchPage();
   }
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;

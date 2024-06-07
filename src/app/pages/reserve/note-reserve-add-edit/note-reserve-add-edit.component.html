@@ -184,7 +184,7 @@
 
                         <ng-container *ngIf="enableViewAllStore" matColumnDef="tonKhoTong">
                             <th mat-header-cell *matHeaderCellDef> Tồn kho tổng</th>
-                            <td class="text-right" mat-cell *matCellDef="let data"> {{ data.tonKho | number }}</td>
+                            <td class="text-right" mat-cell *matCellDef="let data"> {{ data.lastValue | number }}</td>
                         </ng-container>
 
 

@@ -112,17 +112,17 @@
                 <td>
                   <div *ngIf="item.recordStatusId == 0">
                     <div class="baocao-actions">
-                      <a class="btn btn-sm btn-primary" href="/management/order/pick-up-order-detail"
+                      <a class="btn btn-sm btn-primary" href="/management/order/pick-up-order-detail/{{item.id}}"
                          title="Xem chi tiết đơn" ng-if="permittedFields.View_Pick_Up_Order">
                         Xem
                       </a>
                       <span ng-if="permittedFields.Add_Pick_Up_Order" title="Sửa đơn">
-                          <a href="/management/order/form-quick" class="btn btn-sm btn-primary">
+                          <a href="/management/order/form-quick/{{item.id}}" class="btn btn-sm btn-primary">
                               <i class="fa-regular fa-pen-to-square"></i>
                           </a>
                       </span>
                       <span ng-if="permittedFields.Handl_Pick_Up_Order" title="Xử lý đơn">
-                          <a href="/management/order/handle-order" class="btn btn-sm btn-primary">
+                          <a href="/management/order/handle-order/{{item.id}}" class="btn btn-sm btn-primary">
                               Xử lý
                           </a>
                       </span>

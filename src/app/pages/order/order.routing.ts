@@ -29,7 +29,12 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'handle-order',
+        path: 'form-quick/:id',
+        component: FormQuickComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'handle-order/:id',
         component: HandleOrderComponent,
         // canActivate: [AuthGuard],
       },
@@ -39,7 +44,7 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       {
-        path: 'pick-up-order-detail',
+        path: 'pick-up-order-detail/:id',
         component: PickUpOrderDetailComponent,
         // canActivate: [AuthGuard],
       },
