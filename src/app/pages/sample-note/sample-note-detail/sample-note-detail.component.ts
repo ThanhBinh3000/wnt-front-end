@@ -54,7 +54,7 @@ export class SampleNoteDetailComponent extends BaseComponent implements OnInit {
       let data = await this.detail(this.idUrl)
       console.log(data);
       this.data = data;
-      this.data.diagnoseText = this.data.diagnostics.map((item: any) => item.tenChanDoan).join(', ');
+      this.data.diagnoseText = this.data.diagnostics != null ? this.data.diagnostics.map((item: any) => item.tenChanDoan).join(', ') : '';
       this.dataTable = data.chiTiets;
     }
   }
