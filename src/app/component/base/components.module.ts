@@ -1,5 +1,5 @@
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule, DatePipe, DecimalPipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PaginationComponent} from "../pagination/pagination.component";
 import {ModalComponent} from "../modal/modal.component";
@@ -69,6 +69,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     ToastrModule.forRoot(),
     NgxMaskDirective,
     NgxMaskPipe,
+    DecimalPipe,
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
@@ -76,7 +77,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    NgxDropzoneModule
+    NgxDropzoneModule,
   ],
   exports: [
     CommonModule,
@@ -110,6 +111,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     SanitizeHtmlPipe,
     NgxMaskDirective,
     NgxMaskPipe,
+    DecimalPipe,
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
@@ -122,6 +124,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     DatePipe,
     AppDatePipe,
     AppDateTimePipe,
+    DecimalPipe,
     provideEnvironmentNgxMask(),
     { provide: DateAdapter, useClass: CustomDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }
