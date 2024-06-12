@@ -1,0 +1,161 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">
+        <b>
+          Thông tin LT:
+          <span style="color:seagreen">{{ formData.value?.maThuoc }} - </span><span>{{ formData.value?.tenThuoc }}</span>
+        </b>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formData">
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Tham chiếu</label>
+            <div class="col-sm-8">
+              <ng-select
+                [items]="listConnectivityDrug$ | async"
+                [typeahead]="searchConnectivityDrugTerm$"
+                [minTermLength]="2"
+                appendTo="body"
+                appearance="outline"
+                formControlName="connectivityDrugID"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Nhập tên thuốc hoặc số đăng ký..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="onChangeConnectivityDrug($event)"
+              >
+                <ng-template ng-label-tmp let-item="item">
+                  <span *ngIf="item.name">{{item.name}}</span>
+                  <span *ngIf="!item.name">{{(formData.value?.name ?? '') + (formData.value?.contents ? ' - ' + formData.value?.contents : '') + (formData.value?.registeredNo ? ' - ' + formData.value?.registeredNo : '')}}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Số ĐK<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="registeredNo" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Hoạt chất<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="activeSubstance" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Hàm lượng<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="contents" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Hãng SX<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input formControlName="manufacturer" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Quốc gia SX</label>
+            <div class="col-sm-8">
+              <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="listQuocGia"
+                formControlName="countryId"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Chọn hoặc gõ vào để tìm"
+                notFoundText="Không tìm thấy mục nào"
+                [clearable]="false">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.name }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Đóng gói</label>
+            <div class="col-sm-8">
+              <input formControlName="packingWay" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isGeneralStore()">
+          <div class="row">
+            <label class="col-sm-4 control-label">Dạng bào chế</label>
+            <div class="col-sm-8">
+              <input formControlName="dosageForms" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isGeneralStore()">
+          <div class="row">
+            <label class="col-sm-4 control-label">ĐV đóng gói NN</label>
+            <div class="col-sm-8">
+              <input formControlName="smallestPackingUnit" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isGeneralStore()">
+          <div class="row">
+            <label class="col-sm-4 control-label">Giá kê khai</label>
+            <div class="col-sm-8">
+              <input formControlName="declaredPrice" class="form-control mb-0 text-left" type="text" mask="separator"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isGeneralStore()">
+          <div class="row">
+            <label class="col-sm-4 control-label">Giá bán buôn</label>
+            <div class="col-sm-8">
+              <input formControlName="wholesalePrice" class="form-control mb-0 text-left" type="text" mask="separator"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isGeneralStore()">
+          <div class="row">
+            <label class="col-sm-4 control-label">Nhà nhập khẩu</label>
+            <div class="col-sm-8">
+              <input formControlName="importers" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-4 control-label">Mã LT DQG</label>
+            <div class="col-sm-8">
+              <input formControlName="connectivityCode" class="form-control mb-0 text-left" type="text"/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button class="btn btn-primary" (click)="saveEdit()"
+                    [disabled]="formData.invalid">Cập nhật
+            </button>
+    </div>
+  </div>
+</div>

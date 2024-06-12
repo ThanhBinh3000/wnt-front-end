@@ -26,6 +26,7 @@ import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOutCommingDetailsByDay.component";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NzModalModule} from "ng-zorro-antd/modal";
+import {ReportByCustomerComponent} from "./report-by-customer/report-by-customer.component";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
     TransactionHistoryReceiptItemTableComponent,
     RevenueDetailsByDayComponent,
     InOutCommingDetailsByDayComponent,
+    ReportByCustomerComponent
   ],
   imports: [
     CommonModule,

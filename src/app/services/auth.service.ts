@@ -32,7 +32,8 @@ export class AuthService extends BaseService {
   }
 
   getNhaThuoc() {
-    return this.storageService.get(STORAGE_KEY.NHA_THUOC);
+    // return this.storageService.get(STORAGE_KEY.NHA_THUOC);
+    return this.storageService.get(STORAGE_KEY.USER_INFO)?.nhaThuoc;
   }
 
   saveNhaThuoc(data: any) {
