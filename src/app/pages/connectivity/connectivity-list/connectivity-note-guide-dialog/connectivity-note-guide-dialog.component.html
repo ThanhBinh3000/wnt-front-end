@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header border-bottom-header">
+            <div class="modal-title">
+                <button type="button" class="close" (click)="closeModal()">&times;</button>
+                <h4 *ngIf="note.connectivityStatusID == TRANG_THAI_LIEN_THONG.THUOC_CHUA_THIET_LAP_LT" class="control-label">Hướng dẫn lỗi thuốc chưa thiết lập LT</h4>
+                <h4 class="control-label" *ngIf="note.connectivityStatusID != TRANG_THAI_LIEN_THONG.THUOC_CHUA_THIET_LAP_LT">
+                    {{danhSachHDSuaLoi().title}}
+                </h4>
+            </div>
+            <div *ngIf="note.connectivityStatusID == TRANG_THAI_LIEN_THONG.THUOC_CHUA_THIET_LAP_LT">
+                <p>Bấm vào <a href="https://www.youtube.com/watch?v=UtZGAfaCAyU" target="_blank">đây</a> để xem video hướng dẫn thiết lập thuốc LT</p>
+                <p>
+                    Số phiếu
+                    <a href="{{getUrlDetail()}}" target="_blank">
+                        {{note.ItemNumber}}
+                    </a>
+                    có {{note.ConnectivityResult}}
+                </p>
+            </div>
+            <div *ngIf="note.connectivityStatusID != TRANG_THAI_LIEN_THONG.LOI" style="overflow-y: scroll; height: 500px;">
+                <div [innerHTML]="danhSachHDSuaLoi().contents"></div>
+        </div>
+        <div class="modal-footer">
+            <a *ngIf="note.connectivityStatusID == TRANG_THAI_LIEN_THONG.THUOC_CHUA_THIET_LAP_LT" class="btn btn-primary" href="/Thuocs/MappingDrugForConnect" target="_blank">Thiết lập thuốc LT</a>
+            <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>
+</div>
