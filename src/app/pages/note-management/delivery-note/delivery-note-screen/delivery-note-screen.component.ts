@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Injector, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Injector,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../../component/base/base.component';
 import { SETTING } from '../../../../constants/setting';
@@ -22,6 +33,7 @@ import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-di
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, observeOn, of, startWith, switchMap } from 'rxjs';
 import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component';
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
+import {PickUpOrderService} from "../../../../services/order/pick-up-order.service";
 
 @Component({
   selector: 'delivery-note-screen',
@@ -30,6 +42,7 @@ import { TransactionDetailByObjectDialogComponent } from '../../../transaction/t
 })
 export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit, AfterViewInit {
   title: string = "Phiếu bán hàng";
+  @Input() dataListShoppingCart: any;
 
   listBacSys : any[] = [];
   listThuoc$ = new Observable<any[]>;
@@ -64,6 +77,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     private titleService: Title,
     private _service: PhieuXuatService,
     private khachHangService: KhachHangService,
+    private pickUpOrderService: PickUpOrderService,
     private thuocService: ThuocService,
     private bacSiesService: BacSiesService,
     private datePipe: DatePipe,
@@ -83,6 +97,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       id: [0],
       daTra: [0],
       paymentTypeId: [0],
+      pickUpOrderId: [0],
       backPaymentAmount: [0],
       connectivityStatusID: [0],
       discount: [0],
@@ -124,16 +139,16 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     if (this.isUpdateView() || this.copyId > 0) {
       let noteId = !this.idUrl ? this.copyId : this.idUrl;
       let data = await this.detail(noteId);
-      this.getDataUpdate(data , data.chiTiets);
+      await this.getDataUpdate(data , data.chiTiets);
     }
-    
+
     if(!this.isUpdateView()){
       console.log(this.isUpdateView());
       let body = {
         maLoaiXuatNhap: LOAI_PHIEU.PHIEU_XUAT,
         id: this.copyId > 0 ? this.copyId : null
       }
-      this.service.init(body).then((res) => {
+      await this.service.init(body).then((res) => {
         if (res && res.data) {
             this.formData.controls['id'].setValue(0);
              this.formData.controls['createdByUserId'].setValue(0);
@@ -148,7 +163,83 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       });
     }
     this.dataTable.unshift({ isEditingItem: true });
-    this.getDataFilter();
+    await this.getDataFilter();
+    await this.handleOrderData();
+  }
+
+  async handleOrderData() {
+    this.pickUpOrderService.currentHandleOrder.subscribe(order => {
+      this.dataListShoppingCart = order;
+      console.log(this.dataListShoppingCart, "dataListShoppingCart")
+      if (this.dataListShoppingCart) {
+        this.formData.patchValue({
+          createdByUserId: this.dataListShoppingCart.createdByUserId,
+          createdByUserText: this.dataListShoppingCart.createUserName,
+          khachHangMaKhachHang: this.dataListShoppingCart.cusId,
+          pickUpOrderId: this.dataListShoppingCart.id,
+        })
+        this.dataListShoppingCart.chiTiets.forEach((item: any) =>{
+          this.dataTable.push(item)
+        })
+        this.dataTable.filter(x => x.id > 0).forEach(x =>{
+          this.thuocService.getDetail(x.drugId).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              var item = res.data;
+              x.thuocThuocId = item.id;
+              x.giaXuat = item.heSo > 1 ? item.giaBanLe * item.heSo : item.giaBanLe;
+              x.soLuong = x.quantity;
+              x.donViTinhMaDonViTinh = item.heSo > 1 ? item.donViThuNguyenMaDonViTinh : item.donViXuatLeMaDonViTinh;
+              x.donViTinhs = item.listDonViTinhs;
+              x.vat = 0;
+              x.chietKhau = 0;
+              x.retailPrice = item.giaBanLe;
+              // x.tonHT = item.inventory ? item.inventory.lastValue : 0;
+              x.tonHT = x.remainQuantity;
+              x.ton = x.tonHT;
+              x.isModified = false;
+              x.isProdRef = false;
+              x.id = 0;
+              x.heSo = item.heSo;
+              x.maThuocText = item.maThuoc;
+              x.tenThuocText = item.tenThuoc;
+              x.maThuoc = item.maThuoc;
+              x.tenThuoc = item.tenThuoc;
+              x.donViThuNguyenMaDonViTinh = item.donViThuNguyenMaDonViTinh;
+              x.donViXuatLeMaDonViTinh = item.donViXuatLeMaDonViTinh;
+              x.connectivityStatusId = 0;
+              x.referenceId = 0;
+              x.storeId = x.drugStoreId;
+              x.recordStatusId = 0;
+              x.giaBanBuon = item.giaBanBuon;
+              x.giaBanLe = item.giaBanLe;
+              if (this.loaiGiaBan == 1) {
+                x.giaXuat = item.giaBanBuon;
+                x.retailPrice = item.heSo > 1 ? item.giaBanBuon / item.heSo : item.giaBanBuon;
+              }
+              if (item.heSo > 1) {
+                x.tonHT = x.ton / item.heSo;
+              }
+              this.getItemAmount(x);
+              this.focusInputSoLuong();
+            }
+          });
+
+
+
+
+          // x.donViTinhs = x.unitList;
+          // x.tonHT = x.remainQuantity;
+          // x.donViTinhMaDonViTinh = x.unitId
+          // x.maThuoc = x.maThuocText;
+          // x.tenThuoc = x.tenThuocText;
+          // x.giaXuat = x.price;
+          // x.soLuong = x.quantity;
+          // x.tongTien = x.quantity * x.price;
+          // this.getItemAmount(x)
+        })
+        console.log(this.dataTable)
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -174,7 +265,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     return this.authService.getNhaThuoc().maNhaThuoc;
   }
 
-  getDataFilter() {
+  async getDataFilter() {
     let body = { dataDelete: false, maNhaThuoc: this.getMaNhaThuoc() };
     this.bacSiesService.searchList(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {

@@ -596,7 +596,6 @@ export class BaseComponent {
     };
     await this.router.navigate([], navigationExtras);
   }
-
-
+  
 }
 

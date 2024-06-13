@@ -44,6 +44,7 @@ export class HandleOrderComponent extends BaseComponent implements OnInit {
       orderDate : [],
       orderNumber : [],
       createUserName : [],
+      createdByUserId : [],
       totalAmount : [],
       cusName : [],
       cusId : [],
@@ -217,9 +218,10 @@ export class HandleOrderComponent extends BaseComponent implements OnInit {
     }
     body.chiTiets = this.dataTable.filter(x => x.drugId > 0);
     this.save(body).then(data => {
-      if (data) {
+      if (data && !complete) {
         this.router.navigate(['/management/order/list-order-pick-up']);
       }else if(data && complete){
+        this._service.updateHandleOrder(body);
         this.router.navigate(['/management/note-management/delivery-note-screen']);
       }
     });

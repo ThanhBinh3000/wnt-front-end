@@ -4,6 +4,7 @@ import {BaseComponent} from "../../../../component/base/base.component";
 import {PickUpOrderService} from "../../../../services/order/pick-up-order.service";
 import {UserProfileService} from "../../../../services/system/user-profile.service";
 import {reduce} from "rxjs";
+import {MESSAGE} from "../../../../constants/message";
 
 @Component({
   selector: 'app-list-order-pick-up',
@@ -101,6 +102,25 @@ export class ListOrderPickUpComponent extends BaseComponent implements OnInit {
       prev += cur.totalAmount;
       return prev;
     }, 0);
+  }
+
+  onNoteProcess(data: any) {
+    if (data.orderStatusId == 40) {
+      this.modal.confirm({
+        closable: false,
+        title: 'Xác nhận',
+        content: 'Đơn nhặt số ' + data.orderNumber + ' đã được xử lý, bạn có chắc muốn sửa đơn?',
+        okText: 'Đồng ý',
+        cancelText: 'Không',
+        okDanger: true,
+        width: 310,
+        onOk: async () => {
+          await this.router.navigate(['/management/order/handle-order', data.id]);
+        },
+      });
+    }else{
+      this.router.navigate(['/management/order/handle-order', data.id]);
+    }
   }
 
 }
