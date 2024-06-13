@@ -559,18 +559,21 @@ export class BaseComponent {
     return this.device.isDesktop();
   }
 
-  async printPreview(loai?: any) {
-    let res = await this.service.preview({
-      loai: loai,
-      id: this.idUrl,
-    });
-    if (res?.data) {
-      this.printSrc = res.data.pdfSrc;
-      this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
-      this.showDlgPreview = true;
-      printJS({printable: this.printSrc, type: 'pdf', base64: true})
-    } else {
-      this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+  async printPreview(loai?: string, id?: number) {
+    const validId = id ?? this.idUrl;
+    if (validId && validId > 0) {
+      let res = await this.service.preview({
+        loai: loai,
+        id: validId,
+      });
+      if (res?.data) {
+        this.printSrc = res.data.pdfSrc;
+        this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
+        this.showDlgPreview = true;
+        printJS({printable: this.printSrc, type: 'pdf', base64: true})
+      } else {
+        this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+      }
     }
   }
 

@@ -10,23 +10,23 @@
         <span id="" style="width: 10%">Ngày: <strong>{{formData.value?.ngayXuat | appDateTime}}</strong></span>
     </div>
 
-    <input value="25/03/2024 15:44" data-val="true" data-val-date="The field NoteDate must be a date."
-        data-val-required="The NoteDate field is required." id="NoteDate" name="NoteDate" type="hidden">
+  <input value="25/03/2024 15:44" data-val="true" data-val-date="The field NoteDate must be a date."
+         data-val-required="The NoteDate field is required." id="NoteDate" name="NoteDate" type="hidden">
 
 
-    <input value="0" data-val="true" data-val-number="The field NoteId must be a number."
-        data-val-required="The NoteId field is required." id="NoteId" name="NoteId" type="hidden">
+  <input value="0" data-val="true" data-val-number="The field NoteId must be a number."
+         data-val-required="The NoteId field is required." id="NoteId" name="NoteId" type="hidden">
 
-    <input value="2" data-val="true" data-val-number="The field NoteTypeId must be a number."
-        data-val-required="The NoteTypeId field is required." id="NoteTypeId" name="NoteTypeId" type="hidden">
-    <table class="table borderless table-condensed">
-        <tbody>
-            <tr>
-                <td style="text-align: left" class="w-50">
-                    <span class="control-label"><b>Khách hàng:</b> {{formData.value?.khachHangMaKhachHangText}}</span>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="Customer"
-                        data-valmsg-replace="true"></span>
-                    <span ng-show="model.IsZaloOA">
+  <input value="2" data-val="true" data-val-number="The field NoteTypeId must be a number."
+         data-val-required="The NoteTypeId field is required." id="NoteTypeId" name="NoteTypeId" type="hidden">
+  <table class="table borderless table-condensed">
+    <tbody>
+    <tr>
+      <td style="text-align: left" class="w-50">
+        <span class="control-label"><b>Khách hàng:</b> {{ formData.value?.khachHangMaKhachHangText }}</span>
+        <span class="field-validation-valid text-danger" data-valmsg-for="Customer"
+              data-valmsg-replace="true"></span>
+        <span ng-show="model.IsZaloOA">
                         <span class="btn btn-link" ng-click="onSendZalo()" title="Gửi tin Zalo">
                             <img src="/Uploads/Common/Images/zalo2.png" width="30">
                         </span>
@@ -42,23 +42,23 @@
                     <span class="control-label"><b>Số hóa đơn:</b>{{formData.value?.invoiceNo}}</span>
                 </td>
 
-            </tr>
-        </tbody>
-    </table>
-    <table mat-table class="table-condensed table-responsive display table-bordered" [dataSource]="getDataSource()">
-        <ng-container matColumnDef="stt">
-            <th mat-header-cell *matHeaderCellDef style="width: 10px"> STT</th>
-            <td mat-cell *matCellDef="let data; index as i;" class="text-center" style="vertical-align: middle;">
-                <span (click)="openDetailDialog(data.thuocThuocId)" class="btn-link">{{data.itemOrder}}</span>
-            </td>
-        </ng-container>
+    </tr>
+    </tbody>
+  </table>
+  <table mat-table class="table-condensed table-responsive display table-bordered" [dataSource]="getDataSource()">
+    <ng-container matColumnDef="stt">
+      <th mat-header-cell *matHeaderCellDef style="width: 10px"> STT</th>
+      <td mat-cell *matCellDef="let data; index as i;" class="text-center" style="vertical-align: middle;">
+        <span (click)="openDetailDialog(data.thuocThuocId)" class="btn-link">{{ data.itemOrder }}</span>
+      </td>
+    </ng-container>
 
-        <ng-container matColumnDef="maHang">
-            <th mat-header-cell *matHeaderCellDef style="width: 70px">Mã</th>
-            <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
-                <span>{{data.maThuocText}}</span>
-            </td>
-        </ng-container>
+    <ng-container matColumnDef="maHang">
+      <th mat-header-cell *matHeaderCellDef style="width: 70px">Mã</th>
+      <td mat-cell *matCellDef="let data" style="vertical-align: middle;">
+        <span>{{ data.maThuocText }}</span>
+      </td>
+    </ng-container>
 
         <ng-container matColumnDef="anh">
             <th mat-header-cell *matHeaderCellDef style="width: 100px">Hình ảnh </th>
@@ -126,41 +126,45 @@
             <tr>
                 <td style="text-align: left" class="w-50">
                     <span class="control-label">
-                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>{{formData.value?.tongTien |
-                            number}}</span>
+                        <b>Tổng số tiền: &nbsp;<span id="spanSumAll"></span></b><span>{{
+                        formData.value?.tongTien |
+                          number
+                      }}</span>
                     </span>
-                </td>
-                <td style="text-align: left">
+      </td>
+      <td style="text-align: left">
                     <span class="control-label">
-                        <b>C.K (VNĐ): &nbsp;</b><span>{{formData.value?.discount | number}}</span>
+                        <b>C.K (VNĐ): &nbsp;</b><span>{{ formData.value?.discount | number }}</span>
                     </span>
-                </td>
-                <td style="text-align: right">
+      </td>
+      <td style="text-align: right">
                     <span class="control-label">
-                        <b>Điểm trả: &nbsp;</b><span>{{formData.value?.paymentScore | number}}</span>
+                        <b>Điểm trả: &nbsp;</b><span>{{ formData.value?.paymentScore | number }}</span>
                     </span>
-                </td>
-                <td style="text-align: right">
+      </td>
+      <td style="text-align: right">
                     <span class="control-label">
-                        <b>Đã trả: </b><span>{{formData.value?.daTra | number}}</span>
+                        <b>Đã trả: </b><span>{{ formData.value?.daTra | number }}</span>
                     </span>
-                    <span class="d-block mt-2 mb-2"><b>Hình thức thanh toán:</b> {{formData.value?.paymentTypeId == 0 ?
-                        'Tiền mặt' : 'Chuyển khoản'}}</span>
-                    <span id="spDebt" class="text-danger">
-                        <strong>Trả lại:</strong> {{formData.value?.backPaymentAmount | number}}
+        <span class="d-block mt-2 mb-2"><b>Hình thức thanh toán:</b> {{
+            formData.value?.paymentTypeId == 0 ?
+              'Tiền mặt' : 'Chuyển khoản'
+          }}</span>
+        <span id="spDebt" class="text-danger">
+                        <strong>Trả lại:</strong> {{ formData.value?.backPaymentAmount | number }}
                     </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
-    <table class="table table-condensed table-bordered">
-        <tbody>
-            <tr>
-                <td class="text-left">
-                    <span class="control-label"><b>Diễn giải: </b></span>
-                    <span class="control-label">{{formData.value?.dienGiai}}</span>
-                </td>
+  <table class="table table-condensed table-bordered">
+    <tbody>
+    <tr>
+      <td class="text-left">
+        <span class="control-label"><b>Diễn giải: </b></span>
+        <span class="control-label">{{ formData.value?.dienGiai }}</span>
+      </td>
 
                 <td class="text-right">
                     <span class="control-label">[<b>Người lập: </b> </span>
@@ -189,12 +193,16 @@
                         In <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a (click)="printPreview('58mm')">Phiếu khách lẻ - 58mm</a></li>
-                        <li><a (click)="printPreview('80mm')">Phiếu khách lẻ - 80mm</a></li>
-                        <li><a (click)="printPreview('A4')">Phiếu khách quen - A4</a></li>
-                        <li><a href="#" ng-click="onPrint(35432435, 2, 2)">Phiếu khách lẻ - A5</a></li>
-                        <li><a href="#" ng-click="onPrint(35432435, 2, 5)">In liều dùng</a></li>
-                        <li class="divider"></li>
+                      <li><a (click)="printPreview('4')">Phiếu khách lẻ - 58mm</a></li>
+                      <li><a (click)="printPreview('3')">Phiếu khách lẻ - 80mm</a></li>
+                      <li><a (click)="printPreview('8')">Phiếu bán buôn - 80mm</a></li>
+                      <li><a (click)="printPreview('1')">Phiếu khách quen - A4</a></li>
+                      <li><a (click)="printPreview('6')">Phiếu bán buôn - A4</a></li>
+                      <li><a (click)="printPreview('2')">Phiếu khách lẻ - A5</a></li>
+                      <li><a (click)="printPreview('7')">Phiếu bán buôn - A5</a></li>
+                      <li><a (click)="printPreview('thayThe')">Phiếu in tên thay thế - 80mm</a></li>
+                      <li><a (click)="printPreview('lieuDung')">In liều dùng</a></li>
+                      <li class="divider"></li>
                         <li><a href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=35432435&amp;LoaiPhieu=2')">In mã
                                 vạch thuốc</a></li>
                     </ul>

@@ -57,8 +57,8 @@
       <button *ngIf="inOutComingNotePrint" class="btn btn-primary" [matMenuTriggerFor]="printMenu"><i
         class="fas fa-print"></i></button>
       <mat-menu #printMenu="matMenu">
-        <button mat-menu-item (click)="onPrint('printType')">In 1 liên - A5</button>
-        <button mat-menu-item (click)="onPrint('printType')">In 2 liên - A4</button>
+        <button mat-menu-item (click)="printPreview('A5', data.id)">In 1 liên - A5</button>
+        <button mat-menu-item (click)="printPreview('A4', data.id)">In 2 liên - A4</button>
       </mat-menu>
       <button *ngIf="inOutComingNoteWrite" (click)="openAddEditDialog(noteDetail?.id)" class="btn btn-primary"><i
         class="fa-regular fa-pen-to-square"></i></button>

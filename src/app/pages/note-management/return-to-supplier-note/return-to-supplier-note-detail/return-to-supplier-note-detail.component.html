@@ -143,7 +143,7 @@
             <div class="d-flex justify-content-center align-items-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default"
                     onclick="javascript:window.history.go(-1);">
-                <input type="button" class="btn btn-default" value="In" ng-click="onPrint(35155501, 4, 0)">
+                <input type="button" class="btn btn-default" value="In" (click)="printPreview()">
                 <a class="btn btn-default"
                    href="/management/note-management/return-to-supplier-note-screen/{{formData.value?.id}}">Sửa</a><a
                     class="btn btn-default"
