@@ -246,7 +246,7 @@
                                     Xóa</a>
                                 <span>&nbsp;</span>
                                 <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
-                                        class="fa fa-unlock fa-lg"></i></a>
+                                    class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
                             </span>
                         </div>
                     </td>

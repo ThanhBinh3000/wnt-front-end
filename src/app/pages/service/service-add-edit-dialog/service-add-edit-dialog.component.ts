@@ -9,6 +9,7 @@ import { dateValidator } from '../../../validators/date.validator';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import { STATUS_API } from '../../../constants/message';
 import { PhongKhamsService } from '../../../services/medical/phong-khams.service';
+import { DichVuService } from '../../../services/products/dich-vu';
 
 @Component({
   selector: 'service-add-edit-dialog',
@@ -24,7 +25,7 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
   constructor(
     injector: Injector,
     private titleService: Title,
-    private _service: ThuocService,
+    private _service: DichVuService,
     private nhomThuocService: NhomThuocService,
     private phongKhamService: PhongKhamsService,
     public dialogRef: MatDialogRef<ServiceAddEditDialogComponent>,
@@ -40,18 +41,27 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
       giaBanLe: [0],
       contents: [''],
       hangTuVan: [false],
-      discount: [],
+      discount: [0],
       idTypeService: [0],
       checkServiceTherapy: [false],
       scorable: [false],
       typeService: [LOAI_SAN_PHAM.DICH_VU],
-      countNumbers: [0],
+      countNumbers: [1],
       idClinic: [0],
       thongTin: [],
       resultService: [],
       titleResultService: [''],
       typeResultService: [0],
-      isServiceCombo: [false]
+      isServiceCombo: [false],
+      //trường không dùng
+      barCode: [''],
+      heSo: [1],
+      soDuDauKy: [0],
+      giaDauKy: [0],
+      donViXuatLeMaDonViTinh: [0],
+      donViThuNguyenMaDonViTinh: [0],
+      groupIdMapping: [0],
+      flag: [false],
     });
   }
 
@@ -66,13 +76,13 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
 
   getDataFilter() {
     // Nhóm thuốc
-    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.THUOC}).then((res) => {
+    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.DICH_VU}).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomDichVu = res.data
       }
     });
     // Phòng khám
-    this.phongKhamService.searchList({}).then((res) => {
+    this.phongKhamService.searchList({maNhaThuoc: this.getMaNhaThuoc()}).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listPhongKham = res.data
       }
@@ -114,6 +124,14 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
   onCheckServiceTherapy(){
     var value = this.formData.get('checkServiceTherapy')?.value;
     this.formData.get('idTypeService')?.setValue(value ? 1 : 0);
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
   }
 
 }

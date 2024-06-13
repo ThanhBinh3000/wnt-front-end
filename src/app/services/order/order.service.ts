@@ -12,4 +12,10 @@ export class OrdersService extends BaseService {
     super(httpClient, 'wnt-order','orders');
   }
 
+
+  sendOrder(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/sendOrder`
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
 }

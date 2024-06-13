@@ -8,13 +8,13 @@
             <div style="text-align: center;font-size: 15px;padding: 0px;">
                 <div style=" position:absolute;right:10%">
                     Mã số: <strong>
-                        <!-- {{viewModel.NoteNumber}} --> 1
+                         {{formData.value.orderNumber}}
                     </strong>
                 </div>
                 Ngày <div class="clickable-text daterange-picker"><input type="text" name="noteDate" id="note-date-id" ng-model="noteDate"><span>
-                    <!-- {{noteDate}} -->/1/1/2024
+                     {{formData.value.orderDate}}
                 </span> <span ng-if="viewModel.NoteId > 0">
-                    <!-- {{viewModel.NoteTime}} --> 10:00
+                    <!-- {{viewModel.NoteTime}} -->
                 </span></div>
             </div>
             <div>
@@ -25,16 +25,20 @@
                         </td>
                         <td style="text-align: left">
                             <div class="control-group">
-                                <select id="ddlOrderStatus" class="form-control">
-                                    <option>Đang xử lý</option>
+                                <select [disabled]="true" [(ngModel)]="formData.value.orderStatusId" class="form-control">
+                                    <option *ngFor="let item of orderFilterTypes" value="{{item.id}}">
+                                      {{item.label}}
+                                    </option>
                                 </select>
                             </div>
                         </td>
                         <td style="width:95px; text-align:right;">
-                            <label class="control-label">Khách hàng</label>
+                            <label class="control-label">Khách hàng: </label>
                         </td>
                         <td style="width:250px; text-align:left;">
-                            <input type="text" class="form-control"/>
+                          <span>
+                            {{formData.value.cusName}}
+                          </span>
                         </td>
                     </tr>
                 </table>
@@ -55,111 +59,76 @@
                         </tr>
                     </thead>
                     <tbody ng-repeat="gridItem in viewModel.NoteItems">
-                        <tr style="border-bottom: 1px solid #ccc;" class="" ng-if="!gridItem.IsEditingItem || deviceType == 0">
-                            <!--Actions-->
-                            <td>
-                                <div ng-show="!gridItem.IsEditingItem">
-                                    <a class="delete-drug btn btn-danger" title="Xóa" ng-click="onDelete(gridItem); $event.preventDefault(); $event.stopPropagation();" ng-show="isEditing"><i class="fa-regular fa-trash"></i></a>
-                                </div>
-                            </td>
+                    <ng-container *ngFor="let item of dataTable , let i = index">
+                      <tr style="border-bottom: 1px solid #ccc;" class="" ng-if="!gridItem.IsEditingItem || deviceType == 0">
+                        <!--Actions-->
+                        <td>
+                          <div ng-show="!gridItem.IsEditingItem">
+                            <a class="delete-drug btn btn-danger" title="Xóa" (click)="onDelete(item)" ng-show="isEditing"><i class="fa-regular fa-trash"></i></a>
+                          </div>
+                        </td>
 
-                            <!--STT-->
-                            <td>
-                                <a href="#" ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();">
-                                    <!-- {{gridItem.Order}} -->1
-                                </a>
-                            </td>
+                        <!--STT-->
+                        <td>
+                          <a href="#" ng-click="onDrugInfoDetails(gridItem.DrugId); $event.preventDefault(); $event.stopPropagation();">
+                             {{i + 1}}
+                          </a>
+                        </td>
 
-                            <!--Mặt Hàng-->
-                            <td>
-                                <div ng-if="!gridItem.IsEditingItem">
-                                    <div>
-                                        <span style="color:seagreen">
-                                            <!-- {{gridItem.DrugCode}}- -->TH01 -
-                                        </span>
-                                        <!-- {{gridItem.DrugName}} --> Thuốc 1
-                                    </div>
-                                </div>
-                            </td>
+                        <!--Mặt Hàng-->
+                        <td>{{item.maThuocText}} - {{item.tenThuocText}}</td>
 
-                            <!--Số Lượng-->
-                            <td ng-if="deviceType == 0">
-                                <div class="input-group-double">
-                                    <span class="input-group-btn" onclick="event.preventDefault();"><button class="btn btn-primary" ng-click="onDecreaseQuantity($event, gridItem,1); $event.preventDefault(); $event.stopPropagation();" ng-disabled="gridItem.NoteItemId > 0"><i class="glyphicon glyphicon-minus"></i></button></span>
-                                    <input type="text" id="" ng-disabled="gridItem.NoteItemId > 0" class="form-control mousetrap row-item-quantiy mb-0" style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Quantity" awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                                    <span class="input-group-btn" onclick="event.preventDefault();"><button class="btn btn-primary" ng-click="onIncreaseQuantity($event, gridItem,1); $event.preventDefault(); $event.stopPropagation();" ng-disabled=" gridItem.NoteItemId > 0"><i class="glyphicon glyphicon-plus"></i></button></span>
-                                </div>
-                            </td>
+                        <!--Số Lượng-->
+                        <td ng-if="deviceType == 0">
+                          {{item.quantity}}
+                        </td>
 
-                            <!--Số Lượng thực (bên bán)-->
-                            <td ng-if="deviceType == 0">
-                                <div class="input-group-double">
-                                    <span class="input-group-btn" onclick="event.preventDefault();"><button class="btn btn-primary" ng-click="onDecreaseQuantity($event, gridItem,2); $event.preventDefault(); $event.stopPropagation();"><i class="glyphicon glyphicon-minus"></i></button></span>
-                                    <input type="text" id="" class="form-control mousetrap row-item-quantiy mb-0" style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.PreRetailQuantity" awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                                    <span class="input-group-btn" onclick="event.preventDefault();"><button class="btn btn-primary" ng-click="onIncreaseQuantity($event, gridItem,2); $event.preventDefault(); $event.stopPropagation();"><i class="glyphicon glyphicon-plus"></i></button></span>
-                                </div>
-                            </td>
+                        <!--Số luong giao-->
+                        <td ng-if="deviceType == 0">
+                            <input type="text" #inputSoLuong [(ngModel)]="item.preRetailQuantity" (change)="getItemAmount(item)"
+                                   (keyup.enter)="onAddNew(item)" class="form-control text-right">
+                        </td>
 
-                            <!--Giá Nhập-->
-                            <td ng-if="deviceType == 0">
-                                <div>
-                                    <input type="text" class="form-control mousetrap mb-0" style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.InPrice" awnum="app-decimal-number" readonly>
-                                </div>
-                            </td>
+                        <!--Giá Nhập-->
+                        <td ng-if="deviceType == 0">
+                            <input type="text" [(ngModel)]="item.inPrice" class="form-control text-right" style="width: 100%; text-align:right; font-size:14px;" >
+                        </td>
 
-                            <!--Giá Đặt-->
-                            <td ng-if="deviceType == 0">
-                                <div>
-                                    <input type="text" class="form-control mousetrap mb-0" style="width: 100%; text-align:right; font-size:14px;" ng-model="gridItem.Price" awnum="app-decimal-number" ng-blur="onLostFocus($event)">
-                                </div>
-                            </td>
+                        <!--Giá Đặt-->
+                        <td ng-if="deviceType == 0">
+                            <input type="text" [(ngModel)]="item.price" (change)="getItemAmount(item)" class="form-control text-right" style="width: 100%; text-align:right; font-size:14px;">
+                        </td>
 
-                            <!--Đơn Vị-->
-                            <td>
-                                <div>
-                                    <div ng-if="!isEditing">
-                                        <!-- {{ getUnitName(gridItem) }} --> 
-                                    </div>
-                                    <div ng-if="isEditing">
-                                        <select class="form-control" style="width:100%">
-                                            <option>Hộp</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </td>
-                            <!--Số Lượng tồn (bên bán)-->
-                            <td ng-if="enableViewAll" ng-click="onGetDataDetailLastValueWarehouse(gridItem)">
-                                <div class="number-value" ng-disabled="true">
+                        <!--Đơn Vị-->
+                        <td>
+                          <select class="form-control" [(ngModel)]="item.unitId">
+                            <option *ngFor="let h of item.unitList" value="{{h.id}}">
+                              {{h.tenDonViTinh}}
+                            </option>
+                          </select>
+                        </td>
+                        <!--Số Lượng tồn (bên bán)-->
+                        <td ng-if="enableViewAll" ng-click="onGetDataDetailLastValueWarehouse(gridItem)">
+                          <div class="number-value" ng-disabled="true">
                                     <span style="cursor:pointer" class="btn-link">
-                                        <!-- {{gridItem.RemainQuantity}} -->1
+                                         {{item.remainQuantity}}
                                     </span>
-                                </div>
-                            </td>
-                            <!-- <td ng-if="!enableViewAll">
-                                <div class="number-value" ng-disabled="true">
-                                    <label>
-                                        {{gridItem.RemainQuantity}}
-                                    </label>
-                                </div>
-                            </td> -->
-                            <!--Nhóm Hàng-->
-                            <td style="text-align: center">
-                                <div ng-if="gridItem.DrugId > 0">
-                                    <!-- {{gridItem.GroupName}} -->Nhóm 1
-                                </div>
-                                <div ng-if="gridItem.DrugId <= 0">
-                                    N/A
-                                </div>
-                            </td>
-                            <!--Thành Tiền-->
-                            <td>
-                                <div class="number-value">
-                                    <strong>
-                                        <!-- {{gridItem.TotalPreAmount | number:0}} --> 1.000
-                                    </strong>
-                                </div>
-                            </td>
-                        </tr>
+                          </div>
+                        </td>
+                        <!--Nhóm Hàng-->
+                        <td style="text-align: center">
+                             {{item.tenNhomThuoc}}
+                        </td>
+                        <!--Thành Tiền-->
+                        <td>
+                          <div class="number-value">
+                            <strong>
+                               {{item.totalAmount | number}}
+                            </strong>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
                     </tbody>
                 </table>
 
@@ -168,7 +137,7 @@
                     <form class="form-inline">
                         <div class="col-sm-12">
                             <b>Tổng số tiền : &nbsp;<span>
-                                <!-- {{viewModel.PreTotalAmount | number:0}} -->1.000
+                                 {{formData.value.totalAmount | number}}
                             </span></b>
                         </div>
                     </form>
@@ -184,29 +153,29 @@
                         <td style="text-align: left;"><label class="control-label"></label></td>
                         <td>
                             <div class="form-inline">
-                                <input type="button" value="Quay lại" title="Quay lại" class="btn btn-default mg-5" 
-                                ng-click="onBack(); $event.preventDefault(); $event.stopPropagation();" />
-                                
-                                <input type="submit" value="Ghi đơn" title="Ghi đơn" ng-if="viewModel.RecordStatusId != 2 && isEditing && permittedFields.Add_Pick_Up_Order" 
-                                class="btn btn-primary mg-5" ng-click="saveDeliveryNote(1); $event.preventDefault(); $event.stopPropagation();" />
-                                
+                                <input type="button" value="Quay lại" title="Quay lại" class="btn btn-default mg-5"
+                                       onclick="location.href='/management/order/list-order-pick-up'" />
+
+                                <input type="submit" value="Ghi đơn" title="Ghi đơn" ng-if="viewModel.RecordStatusId != 2 && isEditing && permittedFields.Add_Pick_Up_Order"
+                                class="btn btn-primary mg-5" (click)="onSave()" />
+
                                 <a class="btn btn-default mg-5" title="In" ng-click="onPrint(viewModel.NoteId)">In</a>
-                                
-                                <input type="submit" value="Hoàn thành" title="Hoàn thành" ng-if="viewModel.RecordStatusId != 2 && isEditing && permittedFields.DeliveryNote_Create" 
-                                class="btn btn-primary mg-5" ng-click="saveDeliveryNote(2); $event.preventDefault(); $event.stopPropagation();" />
+
+                                <input type="submit" value="Hoàn thành" title="Hoàn thành" ng-if="viewModel.RecordStatusId != 2 && isEditing && permittedFields.DeliveryNote_Create"
+                                class="btn btn-primary mg-5" (click)="onSave(true)" />
 
                             </div>
                         </td>
                         <td style="text-align:right; font-weight: normal; color:GrayText">
                             <label class="control-label" style="font-weight: normal">[Người lập: </label>
                             <label class="control-label" style="font-weight: normal">
-                                <!-- {{viewModel.CreatedBy}} -->Nguyễn Văn A
+                                 {{formData.value.createUserName}}
                                 ]</label>
                         </td>
                         <td style="text-align:right; font-weight: normal; color:GrayText">
                             <label class="control-label" style="font-weight: normal">[Ngày lập: </label>
                             <label class="control-label" style="font-weight: normal">
-                                <!-- {{viewModel.CreatedDate |appDate}} -->2/2/2024
+                                 {{formData.value.orderDate |appDate}}
                                 ]</label>
                         </td>
                     </tr>

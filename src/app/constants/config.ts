@@ -80,6 +80,13 @@ export const DATE_RANGE = {
   BY_DATE: 1,
 };
 
+export const LOAI_THUOC_LIEN_THONG = {
+  TAT_CA: 0,
+  CHUA_LIEN_THONG: 1,
+  DA_LIEN_THONG_QUOC_GIA: 2,
+  DA_LIEN_THONG_CO_SO: 3
+}
+
 export const PAGE_SIZE_DEFAULT = 10;
 
 export const TRANG_THAI_LIEN_THONG = {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Injector, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ElementRef, Injector, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {LOAI_PHIEU} from "../../../constants/config";
 import {BaseComponent} from "../../../component/base/base.component";
@@ -22,6 +22,7 @@ import {Validators} from "@angular/forms";
 export class CreateOrderComponent extends BaseComponent implements OnInit {
   title: string = "Đơn đặt hàng";
   isView: boolean = false;
+  @Input() dataListShoppingCart: any[] = [];
   @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
@@ -114,11 +115,11 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
     this.titleService.setTitle(this.title);
     this.getId();
     debugger
-    // if (this.isUpdateView() || this.copyId > 0) {
-    //   let noteId = !this.idUrl ? this.copyId : this.idUrl;
-    //   let data = await this.getDetail(noteId);
-    //   await this.getDataUpdate(data, data.chiTiets);
-    // }
+    const storedData = sessionStorage.getItem('dataListShoppingCart'); // Lấy dữ liệu từ sessionStorage
+    if (storedData) {
+      this.dataListShoppingCart = JSON.parse(storedData);
+      sessionStorage.removeItem('dataListShoppingCart'); // Xóa dữ liệu sau khi đã sử dụng
+    }
     this.route.queryParamMap.subscribe(params => {
       this.isView = params.get('isView') === 'true';
     });
@@ -150,6 +151,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
       this.dataTable.unshift({ isEditingItem: true });
     }
     this.getDataFilter();
+    this.setDrugShoppingCart(this.dataListShoppingCart);
   }
 
   async getDetail(id: number) {
@@ -245,7 +247,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
           this.dataTable[0].price = item.giaBanLe;
           this.dataTable[0].unitId = 0;
           this.dataTable[0].supplierStoreCode = item.maNhaCungCap;
-          this.dataTable[0].inPrice = item.giaBanLe * this.dataTable[0].quantity;
+          this.dataTable[0].totalAmount = item.giaBanLe * this.dataTable[0].quantity;
           this.dataTable[0].maThuoc = item.maThuoc;
           this.dataTable[0].tenThuoc = item.tenThuoc;
           this.dataTable[0].giaBanLe = item.giaBanLe;
@@ -257,6 +259,22 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
           this.focusInputSoLuong();
         }
       });
+    }
+  }
+
+  setDrugShoppingCart(dataCart: any){
+    if(dataCart.length > 0){
+      dataCart.forEach((item: any) => {
+        item.drugId = item.id;
+        item.price = item.giaBanLe;
+        item.supplierStoreCode = item.maNhaCungCap;
+        item.totalAmount = item.giaBanLe * item.quantity;
+        item.maThuocText = item.maThuoc;
+        item.tenThuocText = item.tenThuoc;
+        item.groupOfGoods = item.tenNhomThuoc;
+      })
+      this.dataTable = dataCart
+      this.dataTable.unshift({ isEditingItem: true });
     }
   }
 
@@ -281,7 +299,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
       let isExsit = false;
       this.dataTable.filter(x => !x.isEditingItem).forEach(x => {
         if (x.drugId == item.drugId) {
-          x.inPrice = x.price + item.quantity;
+          x.totalAmount = x.price + item.quantity;
           isExsit = true;
         }
       });
@@ -343,13 +361,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit {
   }
 
   async getItemAmount(item: any) {
-    // let discount = (item.giaXuat > 0.05 ? (item.chietKhau / item.giaXuat) : 0) * 100;
-    // discount = discount < 0.5 ? 0 : discount;
-    // let vat = item.vat < 0.5 ? 0 : item.vat;
-    // let price = item.giaXuat * (1 - (discount / 100)) * (1 + (vat / 100));
-    item.inPrice = item.quantity * item.price;
-    // item.retailQuantity = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.soLuong : item.soLuong * item.heSo;
-    // item.retailPrice = item.donViTinhMaDonViTinh == item.donViXuatLeMaDonViTinh ? item.giaXuat : item.giaXuat / item.heSo;
+    item.totalAmount = item.quantity * item.price;
     this.updateTotal();
   }
 

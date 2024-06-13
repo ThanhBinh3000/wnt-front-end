@@ -13,6 +13,8 @@ import { DrugUpdateAdditionalInfoDialogComponent } from './drug-update-additiona
 import { DrugSearchPriceInOutDialogComponent } from './drug-search-price-in-out-dialog/drug-search-price-in-out-dialog.component';
 import { DrugMappingCommonDialogComponent } from './drug-mapping-common-dialog/drug-mapping-common-dialog.component';
 import {ComponentsModule} from "../../component/base/components.module";
+import {DrugConnectListComponent} from "./drug-connect-list/drug-connect-list.component";
+import {DrugConnectAddEditDialogComponent} from "./drug-connect-add-edit-dialog/drug-connect-add-edit-dialog.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import {ComponentsModule} from "../../component/base/components.module";
     DrugUpdateInpriceDialogComponent,
     DrugUpdateAdditionalInfoDialogComponent,
     DrugSearchPriceInOutDialogComponent,
-    DrugMappingCommonDialogComponent
+    DrugMappingCommonDialogComponent,
+    DrugConnectListComponent,
+    DrugConnectAddEditDialogComponent
   ],
     imports: [
       CommonModule,

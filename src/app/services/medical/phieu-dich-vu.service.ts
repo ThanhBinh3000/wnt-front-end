@@ -21,4 +21,14 @@ export class PhieuDichVuService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/search-page-cho-thuc-hien`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  generateBarCode(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/bar-code`;
+    return this.httpClient.get<ResponseData>(url, body).toPromise();
+  }
+
+  getServicePackagesByCustomer(body: any){
+    const url = `/api/${this.gateway}/${this.controller}/search-list-by-customer`;
+    return this.httpClient.get<ResponseData>(url, body).toPromise();
+  }
 }

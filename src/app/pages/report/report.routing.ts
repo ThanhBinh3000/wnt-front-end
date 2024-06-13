@@ -4,6 +4,7 @@ import {ReportComponent} from './report.component';
 import {DrugTransactionHistoryComponent} from './drug-transaction-history/drug-transaction-history.component';
 import {RevenueDetailsByDayComponent} from "./RevenueDetailsByDay/RevenueDetailsByDay.component";
 import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOutCommingDetailsByDay.component";
+import {ReportByCustomerComponent} from "./report-by-customer/report-by-customer.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
       {
         path: 'InOutCommingDetailsByDay',
         component: InOutCommingDetailsByDayComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'by-customer',
+        component: ReportByCustomerComponent,
         // canActivate: [AuthGuard],
       },
     ],
