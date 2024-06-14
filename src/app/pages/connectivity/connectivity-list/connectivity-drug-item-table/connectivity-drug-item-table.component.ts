@@ -3,10 +3,11 @@ import { BaseComponent } from '../../../../component/base/base.component';
 import { FormGroup } from '@angular/forms';
 import { PhieuNhapChiTietService } from '../../../../services/inventory/phieu-nhap-chi-tiet.service';
 import { MatSort } from '@angular/material/sort';
-import { LOAI_PHIEU, RECORD_STATUS, TRANG_THAI_LIEN_THONG } from '../../../../constants/config';
+import { LOAI_LIEN_THONG, LOAI_PHIEU, RECORD_STATUS, TRANG_THAI_LIEN_THONG } from '../../../../constants/config';
 import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
 import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
 import { PhieuXuatService } from '../../../../services/inventory/phieu-xuat.service';
+import { ConnectivityDrugService } from '../../../../services/products/connectivity-drug.service';
 
 @Component({
   selector: 'connectivity-drug-item-table',
@@ -23,14 +24,13 @@ export class ConnectivityDrugItemTableComponent extends BaseComponent implements
   'trangThai', 
   'ngayLT',
   'ketQuaLT', 
-  'maThuocQuocGia',
-  'action'
+  'maThuocQuocGia'
   ];
 
 
   constructor(
     injector: Injector,
-    private _service : PhieuXuatService,
+    private _service : ConnectivityDrugService,
   ) {
     super(injector,_service);
   }
@@ -39,17 +39,13 @@ export class ConnectivityDrugItemTableComponent extends BaseComponent implements
     this.formDataChange.subscribe((newValue) => {
       this.formData = this.fb.group({
         ...newValue,
-        fromDateCreated: newValue.fromDate,
-        toDateCreated: newValue.toDate,
-        maLoaiXuatNhaps : [[LOAI_PHIEU.PHIEU_XUAT, 
-          LOAI_PHIEU.PHIEU_TRA_LAI_NCC, 
-          LOAI_PHIEU.PHIEU_KIEM_KE,
-          LOAI_PHIEU.PHIEU_XUAT_HUY
-        ]],
-        soPhieuXuat: newValue.soPhieu
+        drugStoreId : this.authService.getNhaThuoc().maNhaThuoc
       });
     });
+    console.log(this.dataSource);
   }
+
+  protected readonly LOAI_LIEN_THONG = LOAI_LIEN_THONG;
 
   @ViewChild(MatSort) sort?: MatSort;
 
@@ -61,43 +57,9 @@ export class ConnectivityDrugItemTableComponent extends BaseComponent implements
     return this.displayedColumns;
   }
 
-  protected readonly RECORD_STATUS = RECORD_STATUS;
-
-  getTenNCC(data :any){
-    switch(data.maLoaiXuatNhap){
-      case LOAI_PHIEU.PHIEU_NHAP :
-        return data.nhaCungCapMaNhaCungCapText ? data.nhaCungCapMaNhaCungCapText : "Hàng nhập lẻ";
-      case LOAI_PHIEU.PHIEU_NHAP_TU_KH :
-        return data.khachHangMaKhachHangText ? data.khachHangMaKhachHangText : "Khách hàng lẻ";
-      case LOAI_PHIEU.PHIEU_KIEM_KE :
-        return "Điều chỉnh kiểm kê";
-        default:
-          return "";
-    }
-  }
-
-  getTenLoaiPhieu(data :any){
-    switch(data.maLoaiXuatNhap){
-      case LOAI_PHIEU.PHIEU_NHAP :
-        return "Nhập kho"
-      case LOAI_PHIEU.PHIEU_NHAP_TU_KH :
-        return "Khách hàng trả lại";
-      case LOAI_PHIEU.PHIEU_KIEM_KE :
-        return "Bù nhập";
-      case LOAI_PHIEU.PHIEU_TON_BAN_DAU :
-        return "Tồn đầu kỳ";
-      default:
-        return "";
-    }
-  }
-
-  getTotalNhap(){
-    return this.dataTable.reduce((acc, val) => acc += (val.retailQuantity), 0);
-  }
-
   getTrangThaiLabel(data: any){
     let val = "Chưa LT";
-       switch(data.connectivityStatusID){
+       switch(data.connectivityStatusId){
         case TRANG_THAI_LIEN_THONG.KHONG_LT:
           val = "Không LT";
           break;
@@ -116,6 +78,6 @@ export class ConnectivityDrugItemTableComponent extends BaseComponent implements
   }
 
   getRowColor(item : any){
-    return item.connectivityStatusID != 2 ? '#F47DB0' : 'none';
+    return item.connectivityStatusId != 2 ? '#F47DB0' : 'none';
   }
 }
