@@ -69,7 +69,7 @@ export class OrderListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector,_service);
     this.formData = this.fb.group({
-      orderStatusId : [],
+      orderStatusId : null,
       searchType : 0,
       drugId : [],
       orderNumber : [],
