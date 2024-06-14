@@ -96,3 +96,7 @@ export const TRANG_THAI_LIEN_THONG = {
   THUOC_CHUA_THIET_LAP_LT: 4,
   PHIEU_BUON_THANH_CONG: 5
 }
+export const LOAI_LIEN_THONG = {
+  QUOC_GIA : 0,
+  CO_SO: 1,
+}
