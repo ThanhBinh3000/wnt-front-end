@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../component/base/base.component';
 import { BacSiesService } from '../../../services/medical/bac-sies.service';
@@ -12,6 +12,7 @@ import { DoctorAddEditDialogComponent } from '../doctor-add-edit-dialog/doctor-a
   styleUrls: ['./doctor-list.component.css'],
 })
 export class DoctorListComponent extends BaseComponent implements OnInit, AfterViewInit {
+  @ViewChild('importFile', { static: false }) importFile!: ElementRef;
   title: string = "Danh sách bác sỹ";
   displayedColumns = ['#', 'tenBacSy', 'nhomBacSy', 'dienThoai', 'diaChi', 'active', 'action'];
 
@@ -48,5 +49,8 @@ export class DoctorListComponent extends BaseComponent implements OnInit, AfterV
         await this.searchPage();
       }
     });
+  }
+  triggerFileInput() {
+    this.importFile.nativeElement.click();
   }
 }

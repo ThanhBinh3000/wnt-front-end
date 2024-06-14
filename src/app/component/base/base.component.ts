@@ -71,6 +71,10 @@ export class BaseComponent {
   PATH_PDF = 'data:application/pdf;base64,';
   protected readonly DATE_RANGE = DATE_RANGE;
 
+  selectedFile: File | null = null;
+  dataImport: any[] = [];
+  listDataDetail: any[] = [];
+
   constructor(
     injector: Injector,
     service: BaseService
@@ -596,6 +600,47 @@ export class BaseComponent {
     };
     await this.router.navigate([], navigationExtras);
   }
-  
+
+  async onFileSelected(event: any) {
+    await this.spinner.show();
+    this.selectedFile = event.target.files[0] as File;
+    if (await this.isExcelFile(this.selectedFile)) {
+      await this.uploadFile();
+      await this.spinner.hide();
+    } else {
+      await this.spinner.hide();
+      this.notification.error(MESSAGE.ERROR, 'Chọn file đuôi .xlsx');
+    }
+  }
+
+  async isExcelFile(file: File) {
+    const allowedExtensions = ['.xlsx'];
+    const fileName = file.name.toLowerCase();
+
+    return allowedExtensions.some(ext => fileName.endsWith(ext));
+  }
+
+  async uploadFile() {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      Object.keys(this.formData.value).forEach(key => {
+        formData.append(key, this.formData.value[key]);
+      });
+      formData.append('file', this.selectedFile);
+      await this.service.import(formData).then((res: any) => {
+        if (res.msg == MESSAGE.SUCCESS) {
+          console.log(res.data, "res.data")
+          this.dataImport = res.data
+          console.log(this.dataImport, "this.dataImport")
+        }
+      })
+    }
+  }
+
+  async handleSelectFile(event: Event) {
+    await this.onFileSelected(event);
+    await this.searchPage()
+  }
+
 }
 
