@@ -1,0 +1,97 @@
+<div class="mat-table-container">
+    <table mat-table
+           class="table table-striped table-bordered table-hover tr-ng-grid"
+           [dataSource]="getDataSource()" matSort>
+      <ng-container matColumnDef="stt">
+        <th mat-header-cell  *matHeaderCellDef>
+           Stt
+        </th>
+        <td mat-cell *matCellDef="let data; index as i;">
+          <div class="text-center">
+            <div class="text-right">
+                {{ (page - 1) * pageSize + i + 1 }}
+              </div>
+          </div>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="ngay">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="text-left">
+           Ngày
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let data; index as i;">
+          <div class="text-right">
+            {{data.ngayXuat| appDate}}
+          </div>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="soPhieu">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số phiếu</th>
+        <td mat-cell *matCellDef="let data">
+          <div class="text-right">
+            <a href="{{getUrlDetail(data)}}">{{data.soPhieuXuat}}</a>
+          </div>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="trangThai">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái</th>
+        <td mat-cell *matCellDef="let data">
+            {{getTrangThaiLabel(data)}}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="ngayLT">
+        <th mat-header-cell *matHeaderCellDef>Ngày LT</th>
+        <td mat-cell *matCellDef="let data">
+          {{data.connectivityDateTime ? (data.connectivityDateTime | appDate) : ""}}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="ketQuaLT">
+        <th mat-header-cell *matHeaderCellDef>Kết quả LT</th>
+        <td mat-cell *matCellDef="let data">
+          {{ data.connectivityResult }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maPhieuQuocGia">
+        <th mat-header-cell *matHeaderCellDef>Mã phiếu QG</th>
+        <td mat-cell *matCellDef="let data">
+          <div>{{ data.connectivityNoteID }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let data">
+          <button class="btn btn-primary">LT</button>
+        <br />
+        <button class="btn btn-primary mt-2" *ngIf="data.connectivityStatusID == 0"
+          (click)="openDetailDialog(data, 1)">
+          Khắc phục thiếu SDK
+        </button>
+        <br />
+        <button class="btn btn-primary mt-2" *ngIf="data.connectivityStatusID == 0" (click)="openDetailDialog(data, 2)">
+          Khắc phục thiếu SL, HD
+        </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef colspan="100">
+          <app-pagination [currentPage]="page" [totalPages]="totalPages" [totalRecord]="totalRecord"
+                          (pageChange)="changePageIndex($event)"
+                          (pageSizeChange)="changePageSize($event)"></app-pagination>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();" [ngStyle]="{'background-color': getRowColor(row)}"></tr>
+      <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
+  
+    </table>
+  </div>

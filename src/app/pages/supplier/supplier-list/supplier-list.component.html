@@ -8,8 +8,30 @@
                         clear-after-selected="false" only-single-item="true" show-cam-barcode-scanner="false"
                         handle-broadcast="true" search-type="4" class="flex-grow-1 ip-position mb-3 ng-isolate-scope">
                         <div ng-if="!showCamBarcodeScanner" class="">
-                            <input formControlName="textSearch" class="form-control" type="text"
-                                placeholder="Tìm theo mã, mã vạch hoặc tên..." (keyup.enter)="searchPage()" />
+                            <ng-select
+                            appendTo="body"
+                            formControlName="id"
+                            appendTo="body"
+                            appearance="outline" 
+                            [items]="listNhaCungCap$ | async" 
+                            [typeahead]="searchNhaCungCapTerm$"
+                            bindLabel="tenNhaCungCap"
+                            bindValue="id" 
+                            [minTermLength]="2"
+                            appendTo="body" 
+                            appearance="outline"
+                            placeholder="Tra cứu theo tên, mã, mã vạch..."
+                            notFoundText="Không tìm thấy mục nào">
+                            <ng-template ng-label-tmp let-item="item">
+                                <span *ngIf="item.tenNhaCungCap">{{item.tenNhaCungCap}}</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index"
+                                let-search="searchTerm">
+                                <span
+                                    [ngOptionHighlight]="search">{{item.tenNhaCungCap}}-{{item.soDienThoai}}-
+                                    {{item.diaChi}}</span>
+                            </ng-template>
+                        </ng-select>
                         </div>
                     </div>
                 </div>
@@ -66,7 +88,7 @@
                 </ng-container>
                 <ng-container matColumnDef="tenNhomNhaCungCap">
                     <th mat-header-cell *matHeaderCellDef> Nhóm</th>
-                    <td mat-cell *matCellDef="let data"> {{ data.nhomNhaCungCaps.tenNhomNhaCungCap }}</td>
+                    <td mat-cell *matCellDef="let data"> {{ data.nhomNhaCungCaps ? data.nhomNhaCungCaps.tenNhomNhaCungCap : "" }}</td>
                 </ng-container>
                 <ng-container matColumnDef="diaChi">
                     <th mat-header-cell *matHeaderCellDef> Địa chỉ</th>

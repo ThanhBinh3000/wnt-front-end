@@ -27,6 +27,8 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
   searchDSNguoiQuanTamTerm$ = new Subject<string>();
   listNhaThuocDongBo$ = new Observable<any[]>;
   searchNhaThuocDongBoTerm$ = new Subject<string>();
+  listKhachHang$ = new Observable<any[]>;
+  searchKhachHangTerm$ = new Subject<string>();
   count: any = 1;
   isDeleted: boolean = false;
 
@@ -45,7 +47,8 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       textSearch: '',
       dataDelete: [false],
       cusType: [],
-      maNhomKhachHang: ''
+      maNhomKhachHang: '',
+      id: []
     });
   }
 
@@ -70,6 +73,30 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       }
     });
     
+    //search kh
+    this.listKhachHang$ = this.searchKhachHangTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let bodyKhachHang = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            dataDelete: false,
+            maNhaThuoc: this.authService.getNhaThuoc().maNhaThuoc,
+          };
+          return from(this._service.searchPage(bodyKhachHang).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+
     //search ngươi quan tam
     this.listNguoiQuanTamOA$ = this.searchDSNguoiQuanTamTerm$.pipe(
       debounceTime(500),

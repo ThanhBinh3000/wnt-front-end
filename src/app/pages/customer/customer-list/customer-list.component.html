@@ -8,8 +8,32 @@
             only-single-item="true" show-cam-barcode-scanner="false" handle-broadcast="true" search-type="4"
             class="flex-grow-1 ip-position mb-3 ng-isolate-scope">
             <div ng-if="!showCamBarcodeScanner" class="">
-              <input formControlName="textSearch" class="form-control" type="text"
-                placeholder="Tìm theo mã, mã vạch hoặc tên..." (keyup.enter)="searchPage()" />
+              <div class="flex-grow-1 ip-position ng-isolate-scope">
+                <ng-select
+                    appendTo="body"
+                    formControlName="id"
+                    appendTo="body"
+                    appearance="outline" 
+                    [items]="listKhachHang$ | async" 
+                    [typeahead]="searchKhachHangTerm$"
+                    bindLabel="tenKhachHang"
+                    bindValue="id" 
+                    [minTermLength]="2"
+                    appendTo="body" 
+                    appearance="outline"
+                    placeholder="Tra cứu theo tên, mã, mã vạch..."
+                    notFoundText="Không tìm thấy mục nào">
+                    <ng-template ng-label-tmp let-item="item">
+                        <span *ngIf="item.tenKhachHang">{{item.tenKhachHang}}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-index="index"
+                        let-search="searchTerm">
+                        <span
+                            [ngOptionHighlight]="search">{{item.tenKhachHang}}-{{item.soDienThoai}}-
+                            {{item.diaChi}}</span>
+                    </ng-template>
+                </ng-select>
+            </div>
             </div>
           </div>
         </div>

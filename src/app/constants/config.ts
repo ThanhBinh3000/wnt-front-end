@@ -88,3 +88,15 @@ export const LOAI_THUOC_LIEN_THONG = {
 }
 
 export const PAGE_SIZE_DEFAULT = 10;
+
+export const TRANG_THAI_LIEN_THONG = {
+  LOI : 1,
+  PHIEU_LE_THANH_CONG: 2,
+  KHONG_LT: 3,
+  THUOC_CHUA_THIET_LAP_LT: 4,
+  PHIEU_BUON_THANH_CONG: 5
+}
+export const LOAI_LIEN_THONG = {
+  QUOC_GIA : 0,
+  CO_SO: 1,
+}

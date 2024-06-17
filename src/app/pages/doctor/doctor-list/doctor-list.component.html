@@ -21,13 +21,15 @@
                 <label>Nhập/Xuất dữ liệu từ Excel</label>
                 <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
                     method="post">
-                    <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
-                        <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
-                        <input type="button" value="Tải File" title="Tải file"
-                            ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
-                            class="btn btn-default btn-outline" accept="Excel/*.xlsx">
-                        <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
-                    </div>
+                  <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                    <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+                    <a class="btn btn-default btn-outline" (click)="triggerFileInput()">Import File</a>
+                    <input type="file" #importFile id="importFile" (change)="handleSelectFile($event)" style="display: none;">
+
+                  </div>
+                  <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
+                    <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
+                  </div>
                 </form>
             </div>
         </div>
