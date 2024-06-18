@@ -6,185 +6,47 @@
             </h2>
             <div class="text-center card-desc mb-0">
                 <div class="card-code">
-                    Mã số: <strong></strong>
+                    Mã số: <strong>{{data.noteNumber}}</strong>
                 </div>
-                Ngày: <div class="clickable-text daterange-picker text-link"><input type="text" name="noteDate" id="note-date-id" ng-change="onNoteDateChanged()" ng-model="noteDate"><span ng-show="model.Id <=0"><strong></strong></span><span ng-show="model.Id > 0"><strong></strong></span></div>
+                Ngày: {{data.noteDate | appDate}}
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mt-4 bd-right" ng-show="action == 'create'">
-                <div class="row">
-                    <div class="col-md-6">
-                        <fieldset>
-                            <label>Tìm theo</label>
-                            <input type="text" class="form-control">
-                        </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                        <fieldset>
-                            <label>Thanh toán</label>
-                            <div class="form-group">
-                                <select class="form-control" ng-model="selectedPaymentType" ng-change="onPaymentTypeChanged()">
-                                    <option value="" selected>Tất cả</option>
-                                    <option value="1">Theo phiếu</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-                <label>Danh sách bệnh nhân chờ thanh toán</label>
-                <div class="baocao-container scroll-modal-left" style="overflow-y: auto">
-                    <table class="table table-striped table-bordered table-hover tr-ng-grid">
-                        <thead>
-                            <tr>
-                                <th display-name="STT">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> STT </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Bệnh nhân">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Bệnh nhân
-                                                <div class="tr-ng-sort" title="Sort">
-                                                    <div
-                                                        class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Tên dịch vụ">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Tên dịch vụ
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Nhóm DV">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Nhóm DV
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Số lần">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Số lần
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Giá">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Giá
-                                                <div class="tr-ng-sort" title="Sort">
-                                                    <div
-                                                        class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th display-name="Thành tiền">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> Thành tiền
-                                                <div class="tr-ng-sort" title="Sort">
-                                                    <div
-                                                        class="tr-ng-sort-inactive text-muted glyphicon glyphicon-chevron-down">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>                     
-                                <th display-name="#">
-                                    <div class="tr-ng-column-header tr-ng-cell">
-                                        <div>
-                                            <div class="tr-ng-title"> #
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>                      
-                            </tr>
-                        </thead>
-        
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div>1</div>
-                                </td>
-                                <td>
-                                    <div>vũ thị hồng - 1973</div>
-                                </td>
-                                <td>
-                                    <div>Khám bệnh</div>
-                                </td>
-                                <td>
-                                    <div>Dịch vụ</div>
-                                </td>
-                                <td>
-                                    <div>1</div>
-                                </td>
-                                <td>
-                                    <div>200,000</div>
-                                </td>
-                                <td>
-                                    <div>200,000</div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" ng-show="gridItem.Customer.Name !=''" title="Thực hiện thanh toán" ng-click="onPayment(gridItem)">
-                                        <i class="fa-regular fa-dollar-sign"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-6 mt-4">
+            <div class="col-md-12 mt-4">
                 <h4>Thông tin bệnh nhân</h4>
                 <div class="">
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Bệnh nhân</label>
-                        <div class="col-md-9 input-group" style="padding-left: 13px; padding-right: 15px;">
-                            <input class="form-control mb-0" disabled ng-model="model.Customer.Name" placeholder="Tên bệnh nhân..">
-                            <span ng-show="action == 'create' && model.Customer != null" class="btn btn-default input-group-text" ng-click="updateCustomer()">Sửa</span>
+                        <div class="col-md-9">
+                            <input class="form-control mb-0" disabled [(ngModel)]="customer.tenKhachHang"
+                                placeholder="Tên bệnh nhân..">
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Điện thoại</label>
                         <div class="col-md-9">
-                            <input class="form-control mb-0" disabled ng-model="model.Customer.Phones" placeholder="Điện thoại..">
+                            <input class="form-control mb-0" disabled [(ngModel)]="customer.soDienThoai"
+                                placeholder="Điện thoại..">
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Địa chỉ</label>
                         <div class="col-md-9">
-                            <input class="form-control mb-0" disabled ng-model="model.Customer.Addresses" placeholder="Địa chỉ..">
+                            <input class="form-control mb-0" disabled [(ngModel)]="customer.diaChi"
+                                placeholder="Địa chỉ..">
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Tuổi</label>
                         <div class="col-md-9">
-                            <input class="form-control mb-0" disabled ng-model="model.Customer.OldNumber" placeholder="Tuổi..">
+                            <input class="form-control mb-0" disabled [(ngModel)]="customer.age" placeholder="Tuổi..">
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Giới tính</label>
                         <div class="col-md-9">
-                            <input class="form-control mb-0" disabled ng-model="model.Customer.SexId" placeholder="Giới tính..">
+                            <input class="form-control mb-0" disabled [(ngModel)]="customer.sexText"
+                                placeholder="Giới tính..">
                         </div>
                     </div>
                     <hr>
@@ -195,8 +57,8 @@
                             <table style="width:100%">
                                 <tr>
                                     <td style="width: calc(100% - 100px);">
-                                        <input type="text" class="form-control mb-0" ng-model="model.DebtAmount"
-                                               ng-disabled="true" awnum="app-decimal-number">
+                                        <input type="text" class="form-control mb-0" [(ngModel)]="data.debtAmount"
+                                            disabled mask="separator">
                                     </td>
                                 </tr>
                             </table>
@@ -210,8 +72,8 @@
                             <table style="width:100%">
                                 <tr>
                                     <td style="width: calc(100% - 100px);">
-                                        <input type="text" class="form-control" ng-model="model.Discount"
-                                               ng-disabled="action == 'view'" ng-change="onDiscountChange('vnd')" awnum="app-decimal-number">
+                                        <input type="text" class="form-control" [(ngModel)]="data.discount" disabled
+                                            mask="separator">
                                     </td>
                                 </tr>
                             </table>
@@ -226,8 +88,8 @@
                             <table style="width:100%">
                                 <tr>
                                     <td style="width: calc(100% - 100px);">
-                                        <input type="text" class="form-control" ng-model="model.DiscountPercent"
-                                               ng-disabled="action == 'view'" ng-change="onDiscountChange('percent')" awnum="app-decimal-number">
+                                        <input type="text" class="form-control" [(ngModel)]="data.discountPercent"
+                                            disabled ng-change="onDiscountChange('percent')" mask="separator">
                                     </td>
                                 </tr>
                             </table>
@@ -235,29 +97,31 @@
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
-                        <label class="control-label col-md-3"><span ng-show="action == 'create'">Cần thanh toán</span><span ng-show="action != 'create'">Đã thanh toán</span></label>
+                        <label class="control-label col-md-3"><span>Đã thanh toán</span></label>
                         <div class="col-md-9">
                             <table style="width:100%">
                                 <tr>
                                     <td style="width: calc(100% - 100px);">
-                                        <input type="text" class="form-control mb-0" ng-model="model.PaymentAmount"
-                                               ng-disabled="action == 'view'" awnum="app-decimal-number">
+                                        <input type="text" class="form-control mb-0" [(ngModel)]="data.totalMoney"
+                                            disabled mask="separator">
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <div class="form-group" ng-show="action != 'create'">
+                    <div class="form-group">
                         <label class="control-label col-md-3">Phiếu đã thanh toán</label>
                         <div class="col-md-9">
                             <ul>
-                                <li ng-repeat="i in model.Items">
-                                    <a ng-click="onDetailNote(i)">
-                                        <span ng-show="i.TypeNote == @((int)ENoteType.ExaminationCard)">
+                                <li *ngFor="let i of data.chiTiets">
+                                    <a (click)="onDetailNote(i)">
+                                        <span *ngIf="i.typeNote === LOAI_PHIEU.PHIEU_KHAM_BENH">
                                             phiếu khám
                                         </span>
-                                        <span ng-show="i.TypeNote == @((int)ENoteType.NoteService)">phiếu dịch vụ</span>
-                                        số 
+                                        <span *ngIf="i.typeNote === LOAI_PHIEU.PHIEU_DICH_VU">
+                                            phiếu dịch vụ
+                                        </span>
+                                        số {{ i.noteNumber }}
                                     </a>
                                 </li>
                             </ul>
@@ -266,45 +130,48 @@
                     <div class="form-group-flex mb-3">
                         <label class="control-label col-md-3">Diễn giải</label>
                         <div class="col-md-9">
-                            <textarea ng-disabled="action == 'view'" class="form-control mb-0" ng-model="model.Description" style="width:100%;"></textarea>
+                            <textarea disabled class="form-control mb-0" [(ngModel)]="data.descriptNotePay"
+                                style="width:100%;"></textarea>
                         </div>
                     </div>
                     <div class="form-group-flex mb-3">
-                        <label class="msg_payment_header msg_payment_expanded control-label col-md-3">Hình thức thanh toán <span style="cursor: pointer" (click)="expandForm()">{{expandLabel}}</span></label>
+                        <label class="msg_payment_header msg_payment_expanded control-label col-md-3">Hình thức thanh
+                            toán <span style="cursor: pointer" (click)="expandForm()">{{expandLabel}}</span></label>
                         <div class="col-md-3">
-                            <div *ngIf="showMoreForm" class="form-check" style="display: block;">
-                                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
-                                    <input type="radio" ng-disabled="viewMode" class="form-check-input" ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio" checked="checked">Tiền mặt
-                                </p>
-                                <p class="form-check-label ng-binding ng-scope" ng-repeat="item in listPayType">
-                                    <input type="radio" ng-disabled="viewMode" class="form-check-input" ng-checked="model.PaymentTypeId == item.Id" ng-click="changePay(item)" name="optradio">Chuyển khoản
-                                </p>
+                            <div id="paymentSlide" *ngIf="showMoreForm" class="form-check">
+                                <mat-radio-group class="tp-radio-group" [(ngModel)]="data.typePayment">
+                                    <mat-radio-button class="tp-radio-button" disabled
+                                        *ngFor="let item of listPaymentType" [value]="item.id">
+                                        {{item.displayName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
                             </div>
                         </div>
-                        <!-- @if (MedSessionManager.DSSession.Settings.EnablePaymentQR)
-                        {
-                            <div ng-if="model.TypePayment == 1" class="col-md-6">
-                                <ui-select ng-model="bankAccountFilter.selected" theme="selectize" style="width: 100%;">
-                                    <ui-select-match placeholder="Chọn tài khoản ngân hàng">{{getBankCode($select.selected)}} - {{$select.selected.AccountNo}} - {{$select.selected.AccountName}}</ui-select-match>
-                                    <ui-select-choices repeat="b in listBankAccount | propsFilter: {AccountNo: $select.search, AccountName: $select.search}">
-                                        <image image-error-directive="" ng-src="{{getBankLogo(b)}}" height="50px" />
-                                        <span ng-bind-html="(getBankCode(b) + ' - ' + b.AccountNo + ' - ' + b.AccountName) | highlight: $select.search"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                                <button class="btn btn-primary" ng-if="bankAccountFilter.selected" ng-click="displayPaymentQR()">Hiện mã QR</button>
-                                <button class="btn btn-primary" ng-if="isSuperUser || isAdminUser" ng-click="updateBankAccount(); $event.preventDefault(); $event.stopPropagation();">Thêm tài khoản</button>
-                            </div>
-                        } -->
+                        <div *ngIf="data.typePayment == 1 && enablePaymentQR" class="col-md-6">
+                            <!-- <ui-select ng-model="bankAccountFilter.selected" theme="selectize" style="width: 100%;">
+                                <ui-select-match placeholder="Chọn tài khoản ngân hàng">{{getBankCode($select.selected)}} - {{$select.selected.AccountNo}} - {{$select.selected.AccountName}}</ui-select-match>
+                                <ui-select-choices repeat="b in listBankAccount | propsFilter: {AccountNo: $select.search, AccountName: $select.search}">
+                                    <image image-error-directive="" ng-src="{{getBankLogo(b)}}" height="50px" />
+                                    <span ng-bind-html="(getBankCode(b) + ' - ' + b.AccountNo + ' - ' + b.AccountName) | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <button class="btn btn-primary" ng-if="bankAccountFilter.selected" ng-click="displayPaymentQR()">Hiện mã QR</button>
+                            <button class="btn btn-primary" ng-if="isSuperUser || isAdminUser" ng-click="updateBankAccount(); $event.preventDefault(); $event.stopPropagation();">Thêm tài khoản</button> -->
+                        </div>
                     </div>
                     <hr class="mt-0">
                     <div class="d-flex justify-content-center align-items-center gap-10">
-                        <button class="btn btn-default" ng-show="model.RecordStatusId != @((int)RecordStatus.Deleted)">Quay lại</button>
-                        <button class="btn btn-default" ng-show="model.RecordStatusId == @((int)RecordStatus.Deleted)">Quay lại</button>
-                        <button class="btn btn-primary" ng-show="action != 'view'  && model.RecordStatusId != @((int)RecordStatus.Deleted)" ng-click="onSave()">Ghi phiếu</button>
-                        <a class="btn btn-primary" ng-show="action == 'view' && model.RecordStatusId != @((int)RecordStatus.Deleted)" href="">Tiếp tục</a>
-                        <a class="btn btn-primary" ng-show="action == 'view' && model.RecordStatusId != @((int)RecordStatus.Deleted)" href="">Sửa</a>
-                        <div class="btn-group" ng-show="(action == 'view' || model.Id > 0) && model.RecordStatusId != @((int)RecordStatus.Deleted)">
-                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a href="/management/receipt-medical-fee/list" class="btn btn-default"
+                            *ngIf="data.recordStatusId != RECORD_STATUS.DELETED">Quay lại</a>
+                        <a href="/management/note-management/deleted-list?noteTypeId=14" class="btn btn-default"
+                            *ngIf="data.recordStatusId == RECORD_STATUS.DELETED">Quay lại</a>
+                        <a class="btn btn-primary" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
+                            href="/management/receipt-medical-fee/add">Tiếp tục</a>
+                        <a class="btn btn-primary" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
+                            href="/management/receipt-medical-fee/edit/{{data.id}}">Sửa</a>
+                        <div class="btn-group" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
@@ -312,7 +179,8 @@
                                 <li><a href="#" ng-click="onPrint(model.Id,2)">Phiếu In - A5</a></li>
                             </ul>
                         </div>
-                        <button class="btn btn-danger" ng-show="(action == 'view' || model.Id > 0)&& model.RecordStatusId != @((int)RecordStatus.Deleted)" ng-click="onDelete(model.Id, model.NoteNumber)">Xóa</button>
+                        <button class="btn btn-danger" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
+                            (click)="deleteInView('Bạn thực sự muốn xóa phiếu này?', data, '/management/receipt-medical-fee/list')">Xóa</button>
                     </div>
                 </div>
             </div>

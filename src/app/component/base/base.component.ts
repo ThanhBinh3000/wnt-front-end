@@ -232,6 +232,37 @@ export class BaseComponent {
     });
   }
 
+  // DELETE 1 item in view or edit
+  deleteInView(message: string, item: any, url: string) {
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: !message ? 'Bạn có chắc chắn muốn xóa?' : message,
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        try {
+          let body = {
+            id: item.id
+          }
+          this.service.delete(body).then(async (res) => {
+            if (res && res.data) {
+              this.notification.success(MESSAGE.SUCCESS, MESSAGE.DELETE_SUCCESS);
+              await this.router.navigate([url]);
+            }
+          });
+        } catch (e) {
+          console.log('error: ', e);
+          this.spinner.hide();
+          this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+        }
+      },
+    });
+  }
+
+
   deleteDatabase(message: string, item: any) {
     console.log(message, item);
     this.modal.confirm({

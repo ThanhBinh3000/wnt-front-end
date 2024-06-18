@@ -95,7 +95,7 @@
         <a class="btn btn-default" *ngIf="noteServiceCreateAndWrite && data.recordStatusId==0"
             href="/management/service-note/edit/{{data.id}}">Sửa</a>
         <a class="btn btn-danger" *ngIf="noteServiceDelete && data.recordStatusId==0 && !data.isLock && data.isDeb"
-            (click)="delete('Bạn thực sự muốn xóa phiếu này?', data)">Xóa</a>
+            (click)="deleteInView('Bạn thực sự muốn xóa phiếu này?', data, '/management/service-note/list')">Xóa</a>
         <!-- <div class="btn-group"
             ng-show="permittedFields.NoteService_Print && noteModel.RecordStatusId ==@((int)RecordStatus.Activated)">
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"

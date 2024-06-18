@@ -31,4 +31,9 @@ export class PhieuKhamService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/update-note-wait`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  changeStatus(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/change-status`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }
