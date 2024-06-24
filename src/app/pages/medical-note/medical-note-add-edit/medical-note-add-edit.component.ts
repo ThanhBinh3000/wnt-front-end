@@ -16,7 +16,7 @@ import { PhongKhamsService } from '../../../services/medical/phong-khams.service
 import { DoctorAddEditDialogComponent } from '../../doctor/doctor-add-edit-dialog/doctor-add-edit-dialog.component';
 import { EsDiagnoseService } from '../../../services/categories/esdiagnose.service';
 import { SampleNoteHistoryDialogComponent } from '../../sample-note/sample-note-history-dialog/sample-note-history-dialog.component';
-import { calculateAge, convertDateFormat } from '../../../utils/date.utils';
+import { calculateAge, calculateAgeInMonthsOrYears, calculateDayFromDateRange, convertDateFormat, convertDateObject, getAgeUnit } from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-medical-note',
@@ -26,6 +26,8 @@ import { calculateAge, convertDateFormat } from '../../../utils/date.utils';
 export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit {
   title: string = "PHIẾU KHÁM BỆNH";
   TRANG_THAI_PHIEU_KHAM = TRANG_THAI_PHIEU_KHAM;
+  isReexaminationDateNumChanged = false;
+  isReexaminationDateChanged = false;
   listBacSies: any[] = [];
   listKhachHang$ = new Observable<any[]>;
   searchKhachHangTerm$ = new Subject<string>();
@@ -66,6 +68,7 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
         diaChi: [''],
         birthDate: [],
         age: [],
+        ageUnit: [],
         sexId: [''],
         soDienThoai: ['']
       }),
@@ -81,7 +84,6 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
       diagnosticIds: [''],
       diagnosticOther: [''], //chẩn đoán khác
       conclude: [''], //KL & HĐT
-      check: [false],
       heartbeat: [], //nhịp tim
       weight: [], //cân nặng
       breathing: [], //nhịp thở
@@ -89,8 +91,11 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
       bloodPressure: [], //huyết áp
       height: [], //chiều cao
       drugAllergy: [''], //dị ứng thuốc
-      locked: [false],
+      isLock: [false], //khoá phiếu
       isDeb: [false], //nợ
+      reexaminationChecked: [false],
+      reexaminationDateNum: [],
+      reexaminationDate: [], //ngày tái khám
     });
   }
 
@@ -113,6 +118,18 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
         this.listKhachHang$ = of([data.customer]);
       }
       this.formData.patchValue(data);
+    }
+    else {
+      this.service.init({}).then((res) => {
+        if (res && res.data) {
+          const data = res.data;
+          console.log(data);
+          this.formData.patchValue({
+            noteDate: data.noteDate,
+            noteNumber: data.noteNumber,
+          })
+        }
+      });
     }
   }
 
@@ -152,6 +169,7 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
     }).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listLoaiKham = res.data.content;
+        this.listLoaiKham.unshift({ id: 0, tenThuoc: '-Mặc định-' });
       }
     });
     // Phòng khám
@@ -212,8 +230,11 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
 
   getPatientDetail($event: any) {
     if ($event) {
-      $event.age = calculateAge($event.birthDate);
-      $event.birthDate = convertDateFormat($event.birthDate);
+      if ($event.birthDate) {
+        $event.age = calculateAgeInMonthsOrYears($event.birthDate);
+        $event.ageUnit = getAgeUnit($event.birthDate);
+        $event.birthDate = convertDateFormat($event.birthDate);
+      }
       this.formData.patchValue({ customer: $event });
       console.log(this.formData.value?.customer);
     }
@@ -231,12 +252,66 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
     }
   }
 
+  async onLockNote() {
+    let locked = this.formData.get('isLock')?.value;
+    const res = await this._service.lock({ id: this.formData.get('id')?.value, isLock: !locked });
+    if (res && res.status == STATUS_API.SUCCESS) {
+      this.formData.controls['isLock'].setValue(res.data.isLock);
+      this.notification.success(MESSAGE.SUCCESS, this.formData.get('isLock')?.value ? "Phiếu đã được khóa" : "Phiếu đã được mở");
+    }
+  }
+
+  async changeStatus(status: any) {
+    if (this.formData.value?.id <= 0) {
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa tạo phiếu khám.');
+      return;
+    }
+    if (this.formData.value?.idDoctor <= 0) {
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn bác sỹ.');
+      return;
+    }
+    this.modal.confirm({
+      closable: false,
+      title: 'Xác nhận',
+      content: status == TRANG_THAI_PHIEU_KHAM.DA_KHAM ? 'Bạn chắc chắn muốn kết thúc quá trình khám ?' : 'Bạn chắc chắn muốn hủy kết thúc quá trình khám ?',
+      okText: 'Đồng ý',
+      cancelText: 'Không',
+      okDanger: true,
+      width: 310,
+      onOk: async () => {
+        try {
+          this._service.changeStatus({ id: this.formData.value?.id, statusNote: status }).then(async (res) => {
+            if (res && res.data) {
+              this.formData.patchValue({ statusNote: res.data.statusNote });
+              this.notification.success(MESSAGE.SUCCESS, res.data.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM ? 'Kết thúc quá trình khám thành công' : 'Hủy kết thúc quá trình khám thành công');
+            }
+          });
+        } catch (e) {
+          console.log('error: ', e);
+          this.spinner.hide();
+          this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+        }
+      },
+    });
+  }
+
+  idServiceExamChange($event: any) {
+    if ($event.id <= 0) {
+      this.formData.patchValue({ totalMoney: 0 });
+      return;
+    }
+    this.formData.patchValue({ totalMoney: $event.giaBanLe });
+  }
+
   createUpdate() {
     let body = this.formData.value;
+    if(body.reexaminationDateNum > 0){
+      body.reexaminationDate = this.datePipe.transform(body.reexaminationDate, 'dd/MM/yyyy HH:mm:ss');
+    }
     body.diagnosticIds = body.chanDoanIds.join(',');
     this.save(body).then(res => {
       if (res) {
-        //this.router.navigate(['/management/sample-note/list']);
+        this.goToUrl('/management/medical-note/detail', res.id);
       }
     });
   }
@@ -266,12 +341,39 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
   }
 
   birthDateChange() {
-    if (this.formData.value?.customer.value?.birthDate) {
-      this.formData.value?.customer.patchValue({age: calculateAge(this.formData.value?.customer.value?.birthDate)});
-      //this.receiverSelectedItem.LoaiTuoi = age >= 3 ? 0 : 1;
+    if (this.formData.value?.customer.birthDate) {
+      this.formData.get('customer')?.patchValue({ age: calculateAgeInMonthsOrYears(this.formData.value?.customer.birthDate) });
     }
   }
 
+  reexaminationDateNumChanged() {
+    if (this.formData.value?.reexaminationChecked && !this.isReexaminationDateChanged) {
+      this.isReexaminationDateNumChanged = true;
+      var dateNum = this.formData.value?.reexaminationDateNum;
+      var currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + parseInt(dateNum));
+      console.log(currentDate);
+      this.formData.patchValue({ reexaminationDate: currentDate });
+      this.isReexaminationDateNumChanged = false;
+    }
+  }
+
+  reexaminationDateChanged() {
+    if (this.formData.value?.reexaminationChecked && !this.isReexaminationDateNumChanged) {
+      this.isReexaminationDateChanged = true;
+      var fromDate = this.formData.value?.noteDate;
+      var toDate = this.datePipe.transform(this.formData.value?.reexaminationDate, 'dd/MM/yyyy HH:mm:ss');
+      let dateNum = calculateDayFromDateRange(fromDate, toDate);
+      if (dateNum < 0) {
+        this.notification.error(MESSAGE.ERROR, 'Ngày tái khám phải lớn hơn ngày tạo!');
+        return;
+      }
+      this.formData.patchValue({ reexaminationDateNum: dateNum });
+      this.isReexaminationDateChanged = false;
+    }
+  }
+
+  @ViewChildren('pickerReexaminationDate') pickerReexaminationDate!: Date;
   @ViewChildren('pickerBirthDate') pickerBirthDate!: Date;
   @ViewChildren('pickerNoteDate') pickerNoteDate!: Date;
   async onDateChange(date: Date) {

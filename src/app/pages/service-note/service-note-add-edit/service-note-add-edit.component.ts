@@ -109,7 +109,6 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
     }
     else {
       this.service.init({}).then((res) => {
-        console.log(res)
         if (res && res.data) {
           const data = res.data;
           this.formData.patchValue({

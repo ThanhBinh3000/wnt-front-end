@@ -128,7 +128,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
       }
       this.listDiagnose$ = of(data.diagnostics);
       this.formData.patchValue({ chanDoanIds: data.diagnosticIds?.split(',').map(Number) });
-      data.chiTiets.forEach(item => {
+      data.chiTiets.forEach((item: any) => {
         item.listDonViTinhs = item.thuocs.listDonViTinhs;
         item.tenThuoc = item.thuocs.tenThuoc;
         item.maThuoc = item.thuocs.maThuoc;
@@ -241,13 +241,9 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   getListBacSies() {
-    let body = {
-      maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
-      paggingReq: { limit: 1000, page: 0 },
-    };
-    this.bacSiesService.searchPage(body).then((res) => {
+    this.bacSiesService.searchList({ maNhaThuoc: this.useDoctorCommon.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc() }).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
-        this.listBacSies = res.data.content;
+        this.listBacSies = res.data
       }
     });
   }
