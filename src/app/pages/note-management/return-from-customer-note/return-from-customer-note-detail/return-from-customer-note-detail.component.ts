@@ -7,6 +7,8 @@ import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
 import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
+import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
+import { SETTING } from '../../../../constants/setting';
 
 @Component({
   selector: 'return-from-customer-note-detail',
@@ -14,10 +16,12 @@ import {PaymentTypeService} from "../../../../services/categories/payment-type.s
   styleUrls: ['./return-from-customer-note-detail.component.css'],
 })
 export class ReturnFromCustomerNoteDetailComponent extends BaseComponent implements OnInit {
-  title: string = "";
-  listNhaCungCap : any[] = [];
-  listThuoc : any[] = [];
-  rowItem : any = {};
+  title: string = "Phiếu khách hàng trả lại";
+
+  // Settings
+  displayImage = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS).activated;
+  discountByValue = this.authService.getSettingByKey(SETTING.RECEIPT_NOTE_DISCOUNT_BY_VALUE).activated;
+
   constructor(
     private titleService: Title,
     injector: Injector,
@@ -31,21 +35,34 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
     this.formData = this.fb.group({
       id : null,
       soPhieuNhap : [],
-      noteNumber : '',
+      noteNumber : [],
       noteDate : [],
-      nhaCungCapMaNhaCungCap : '',
-      idWarehouseLocation : '',
-      invoiceNo : '',
-      invoiceDate : '',
-      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP,
+      nhaCungCapMaNhaCungCap : [],
+      idWarehouseLocation : [],
+      invoiceNo : [],
+      invoiceDate : [],
+      loaiXuatNhapMaLoaiXuatNhap : LOAI_PHIEU.PHIEU_NHAP_TU_KH,
       tongTien : [0],
-      vat : '',
+      vat : [],
       daTra : [0],
       discount : [0],
       discountWithRatio : [],
-      dienGiai : '',
+      dienGiai : [],
       ngayNhap : [],
+      paymentTypeId : [0],
+      locked: [false],
+      tenKhachHang: [],
+      tenNguoiTao: [],
+      created: []
     });
+  }
+
+  getDisplayedColumns() {
+    var val = ['stt', 'maThuoc', 'img', 'tenThuoc', 'donVi', 'soLuong', 'gia', 'ck', 'thanhTien'];
+    if (!this.displayImage) {
+      val = val.filter(e => e !== 'img');
+    }
+    return val;
   }
 
   async ngOnInit() {
@@ -60,31 +77,10 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
     }
   }
 
-  searchListNhaCungCap($event){
-    this.listNhaCungCap = [];
-    if($event.target.value){
-      let body = {
-        tenNhaCungCap : $event.target.value,
-        maNhaThuoc : this.authService.getNhaThuoc().maNhaThuoc,
-        recordStatusId : RECORD_STATUS.ACTIVE
-      };
-      this.nhaCungCapService.searchList(body).then((res)=>{
-        console.log(res)
-        if(res && res.data){
-          this.listNhaCungCap = res.data;
-        }
-      })
-    }
-  }
-
-  calendarTongTien(){
-    let tongTien = 0
-    this.dataTable.forEach(item => {
-      tongTien += item.tongTien
-    })
-    this.formData.patchValue({
-      tongTien : tongTien
-    })
-    return tongTien;
+  openDetailDialog(drugId: any) {
+    const dialogRef = this.dialog.open(DrugDetailDialogComponent, {
+      data: drugId,
+      width: '600px',
+    });
   }
 }

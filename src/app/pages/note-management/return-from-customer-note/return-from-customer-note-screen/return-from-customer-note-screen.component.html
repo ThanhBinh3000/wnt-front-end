@@ -1,300 +1,282 @@
 <div class="card-bg">
   <h2 class="card-title text-center mb-0">
     <b class="ng-binding">KHÁCH TRẢ LẠI HÀNG</b>
-    <span style="padding-bottom: 12px; padding-left: 8px"
-          class="btn tooltip-content-drug ng-scope">
-            <span >
-                <i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i>
-            </span>
-            <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
-                <b>F1:</b> Thêm mới phiếu trong tab mới<br>
-                <b>F2:</b> Tìm khách hàng/nhà cung cấp<br>
-                <b>F9:</b> Ghi phiếu<br>
-                <b>F11:</b> Toàn màn hình<br>
-                <b>↑ và ↓:</b> Đi từ trên xuống<br>
-            </span>
-        </span>
+    <span style="padding-bottom: 12px; padding-left: 8px" class="btn tooltip-content-drug ng-scope">
+      <span>
+        <i style="font-size:20px; color: black" class="fa fa-info-circle" aria-hidden="true"></i>
+      </span>
+      <span style="font-size:14px; text-transform:none" class="show-tooltip-content-drug">
+        <b>F1:</b> Thêm mới phiếu trong tab mới<br>
+        <b>F2:</b> Tìm khách hàng/nhà cung cấp<br>
+        <b>F9:</b> Ghi phiếu<br>
+        <b>F11:</b> Toàn màn hình<br>
+        <b>↑ và ↓:</b> Đi từ trên xuống<br>
+      </span>
+    </span>
   </h2>
-  <div class="text-center card-desc">
-    <div class="card-code">
-      Mã số: <strong class="ng-binding">{{formData.value.soPhieuNhap}}</strong>
+  <form [formGroup]="formData">
+    <div class="text-center card-desc">
+      <div class="card-code">
+        Mã số: <strong class="ng-binding">{{formData.value?.soPhieuNhap}}</strong>
+      </div>
+      Ngày: <div class="clickable-text daterange-picker font-weight-bold"><input [hidden]="1==1"
+          formControlName="noteDate" type="text" class="form-control" (dateChange)="onDateChange($event.value)"
+          [matDatepicker]="pickerNgayNhap" (click)="pickerNgayNhap.open()">
+        <mat-datepicker #pickerNgayNhap="matDatepicker" disabled="false"></mat-datepicker><span class="text-link"
+          (click)="pickerNgayNhap.open()">{{formData.value.id == 0 ?
+          (formData.value.ngayNhap | appDate) :formData.value.ngayNhap | appDateTime}}</span>
+      </div>
     </div>
-    Ngày: <span class="ng-binding">{{formData.value.ngayNhap}}</span>
-  </div>
+  </form>
   <div>
-    <table class="table borderless table-condensed ng-scope" >
+    <table class="table borderless table-condensed ng-scope">
       <tbody>
-      <tr>
-        <td>
-          <div class="form-inline-flex mb-3 align-items-start">
-            <label class="control-label">
-              <span class="ng-scope">Khách hàng:</span>
-            </label>
-            <div class="input-group flex-direction-column">
-              <div class="input-group ng-scope">
-                <div class="ip-position ip-min-width ng-isolate-scope" id="customerSearchBoxId">
-                  <div class="w-100">
-                    <ng-select formControlName="khachHangMaKhachHang" (keyup.enter)="searchListKhachHang($event)">
-                      <ng-option *ngFor="let item of listKhachHang"
-                                 [value]="item.id">{{item.tenKhachHang}}</ng-option>
-                    </ng-select>
+        <tr>
+          <td>
+            <form [formGroup]="formData">
+              <div class="form-inline-flex mb-3 align-items-start">
+                <label class="control-label">
+                  <span class="ng-scope">Khách hàng:</span>
+                </label>
+                <div class="input-group flex-direction-column">
+                  <div class="input-group ng-scope">
+                    <div class="ip-position ip-min-width ng-isolate-scope" id="customerSearchBoxId">
+                      <div class="w-100">
+                        <ng-select [items]="listKhachHang$ | async" [typeahead]="searchKhachHangTerm$" [minTermLength]="2"
+                          formControlName="khachHangMaKhachHang" appendTo="body" appearance="outline"
+                          bindLabel="tenKhachHang" bindValue="id" placeholder="Nhập mã, mã vạch hoặc tên..."
+                          notFoundText="Không tìm thấy mục nào" typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                          (change)="searchKhachHangTerm$.next(''); onChangeCustomer($event)">
+                          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                            <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="input-group-btn">
+                      <button class="btn btn-primary" (click)="openCustomerAddEditDialog()" title="Thêm mới nếu chưa có">
+                        <i class="fa-regular fa-plus"></i>
+                      </button>
+                      <input type="button" value="LS" title="Chi tiết lịch sử giao dịch"
+                        class="btn btn-no-radius btn-primary" (click)="openTransaction()">
+                    </div>
                   </div>
                 </div>
-                <div class="input-group-btn">
-                  <button class="btn btn-primary"
-                          ng-click="addCustomer(); $event.preventDefault(); $event.stopPropagation();"
-                          title="Thêm mới nếu chưa có">
-                    <i class="fa-regular fa-plus"></i>
-                  </button>
-                  <input type="button" value="LS" title="Chi tiết lịch sử giao dịch"
-                         class="btn btn-primary"
-                         ng-click="onTransByObjectDetails(4); $event.preventDefault(); $event.stopPropagation();">
-                </div>
               </div>
-            </div>
-          </div>
-        </td>
-      </tr>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table class="table table-condensed table-responsive display dataTable no-footer" style="font-size:14px;">
-      <thead>
-      <tr>
-        <th style="width: 3%">#</th>
-        <th style="width: 3%">STT</th>
-        <th style="width: 6%" class="ng-scope">Ảnh</th>
-        <th style="width: 40%;">Mặt hàng <span class="ng-scope"> [Mã-Tên]</span></th>
-        <th style="width: 10%;"><span class="ng-scope">Đơn vị</span></th>
-        <th style="width: 9%;">SL</th>
-        <th style="width: 17%"  class="ng-scope">Giá bán</th>
-        <th style="width: 3%">C.K(%)</th>
-        <th style="text-align:right;" class="ng-scope"><span  class="ng-scope">Thành tiền</span></th>
-      </tr>
-      </thead>
-      <tbody class="ng-scope">
-      <tr style="border-bottom: 1px solid #ccc; font-size: 14px">
-        <td>
-          <div class="ng-scope">
-            <a class="btn btn-primary" title="Thêm mới" (click)="addDrugToTable()"><i class="fa-regular fa-plus"></i></a>
+    <table mat-table class="table table-striped table-hover tr-ng-grid" [dataSource]="getDataSource()" matSort>
+
+      <ng-container matColumnDef="#">
+        <th style="width: 3%;" mat-header-cell *matHeaderCellDef> #</th>
+        <td mat-cell *matCellDef="let data; index as i;">
+          <div *ngIf="!data.isEditing">
+            <a class="delete-drug btn btn-danger" title="Xóa" (click)="onDelete(data)"><i
+                class="fa-regular fa-trash"></i></a>
+          </div>
+          <div *ngIf="data.isEditing">
+            <a class="btn btn-primary" title="Thêm mới" (click)="onAddNew(data)"><i class="fa-regular fa-plus"></i></a>
           </div>
         </td>
-        <td class="ng-scope">
-        </td>
-        <td class="ng-scope">
-        </td>
-        <td>
-          <div class="ng-scope ng-isolate-scope">
-            <div class="input-group">
-              <div class="w-100">
-                <ng-select [(ngModel)]="rowItem.a" (keyup.enter)="searchListThuoc($event)"
-                           (ngModelChange)="onChangeThuoc($event)">
-                  <ng-option *ngFor="let item of listThuoc"
-                             [value]="item.id">{{item.tenThuoc}}</ng-option>
-                </ng-select>
-              </div>
-              <span class="input-group-btn ng-scope">
-                  <a (click)="addNewDrug();" class="btn btn-primary btn-radius"
-                     title="Thêm mới">
-                      <i class="fa-regular fa-plus"></i>
-                  </a>
-              </span>
-            </div>
-            <span id="Logo" style="display:none;"></span>
-          </div>
-        </td>
-        <td>
-          <div class="ng-scope">
-            <ng-select [(ngModel)]="rowItem.donViTinhMaDonViTinh" (ngModelChange)="onChangeDviTinh($event)"
-                       [clearable]="false">
-              <ng-option *ngFor="let item of rowItem.listDonViTinhs"
-                         [value]="item.id">{{item.tenDonViTinh}}</ng-option>
-            </ng-select>
-          </div>
-        </td>
-        <!--Số Lượng-->
-        <td>
-          <div class="ng-scope">
-            <input type="text" id="tbxQuantityId" [(ngModel)]="rowItem.soLuong" (ngModelChange)="onChangeSoLuong()"
-                   class="form-control mb-0  mousetrap row-item-quantiy"
-                   style="width: 100%; text-align:right; font-size:14px;">
-          </div>
-        </td>
-        <!--Giá Bán Lẻ-->
-        <td class="ng-scope">
-          <div class="input-group mb-3 ">
-            <input type="text" [(ngModel)]="rowItem.giaBanLe" (ngModelChange)="onChangeSoLuong()"
-                   class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope">
-            <input type="text"
-                   class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;">
-          </div>
-        </td>
-        <!--C.K-->
-        <td class="ng-scope">
-          <input id="tbxDiscountId" type="text" [(ngModel)]="rowItem.chietKhau" (ngModelChange)="onChangeSoLuong()"
-                 class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                 style="width: 100%; text-align:right;">
-        </td>
-        <!--Thành Tiền-->
-        <td>
-          <div class="number-value">
-            <strong
-              class="ng-binding ng-scope">{{rowItem.tongTien}}</strong>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-      <tbody class="ng-scope">
-      <tr *ngFor="let data of dataTable; index as i;" style="border-bottom: 1px solid #ccc; font-size: 14px">
-        <!--Actions-->
-        <td>
-          <div class="ng-scope">
-            <a class="btn btn-danger delete-drug" title="Xóa" (click)="onDelete(data);">
-              <i class="fa-regular fa-trash"></i></a>
-          </div>
-        </td>
-        <!--STT-->
-        <td class="ng-scope">
-          <a ng-click="onDrugInfoDetails(gridItem.DrugId);">
-            {{i + 1}}
+      </ng-container>
+
+      <ng-container *ngIf="!isMobile()" matColumnDef="stt">
+        <th style="width: 3%;" mat-header-cell *matHeaderCellDef> STT</th>
+        <td style="text-align: center; vertical-align: middle;" mat-cell *matCellDef="let data; index as i;">
+          <a *ngIf="!data.isEditing" (click)="openDetailDialog(data.thuocThuocId)">
+            {{ (page - 1) * pageSize + i }}
           </a>
         </td>
-        <!--Hình ảnh-->
-        <td class="ng-scope">
+      </ng-container>
 
+      <ng-container *ngIf="displayImageProduct && !isMobile()" matColumnDef="img">
+        <th style="width: 6%;" mat-header-cell *matHeaderCellDef> Ảnh</th>
+        <td mat-cell *matCellDef="let data">
+          <app-preview-image [heigh]="'50px'" [width]="'50px'" [pathImage]="data.imagePreviewUrl"></app-preview-image>
         </td>
-        <td>
-          <div class="ng-scope">
-                <span class="ng-scope">
-                      <span style="color:seagreen; padding:0;" class="btn-link">
-                          <span class="btn-link ng-binding"
-                                style="background:lightgreen"
-                          >{{data.maThuoc}}</span>
-                      </span>
-                      <span>-</span>
-                      <span class="btn-link tooltip-content-drug ng-binding" style="background:lightgreen"
-                            title="Tra cứu giá thị trường">
-                          {{data.tenThuoc}}
-                      </span>
-                <p class="btn-link tooltip-content-drug"
-                   style="color: seagreen; font-style: italic; padding-left: 10px; cursor: pointer"
-                   ng-click="onSearchPriceInOut(gridItem)" title="Tra cứu giá thị trường">
-                  <i class="fa fa-line-chart" style="color: #FD7A42"></i> Check giá nhé!
-                </p>
-                </span>
-          </div>
-        </td>
-        <!--Đơn Vị-->
-        <td>
-          <div>
-            <div class="ng-scope">
-              <ng-select [(ngModel)]="data.donViTinhMaDonViTinh">
-                <ng-option *ngFor="let item of data.listDonViTinhs" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
-              </ng-select>
+      </ng-container>
+
+      <ng-container matColumnDef="tenThuoc">
+        <th [style.width]="isMobile() ? '35%;' : '40%;'" mat-header-cell *matHeaderCellDef> Mặt Hàng [Mã-Tên]</th>
+        <td style="vertical-align: middle;" mat-cell *matCellDef="let data">
+          <div *ngIf="data.isEditing" class="w-100">
+            <div class="input-group">
+              <div class="flex-grow-1">
+                <ng-select #selectDrug [items]="listThuoc$ | async" [typeahead]="searchThuocTerm$" [minTermLength]="2"
+                  [trackByFn]="trackByFn" appendTo="body" appearance="outline" bindLabel="tenThuoc" bindValue="id"
+                  placeholder="Nhập mã, mã vạch hoặc tên..." notFoundText="Không tìm thấy mục nào"
+                  typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                  (change)="searchThuocTerm$.next(''); onChangeThuoc($event)">
+                  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <span [ngOptionHighlight]="search">{{ item.tenThuoc }}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="input-group-btn">
+
+                <button class="btn btn-primary" title="Thêm mới mặt hàng nếu chưa có" (click)="openAddDrugDialog()">
+                  <i class="fa-regular fa-plus"></i>
+                </button>
+              </div>
             </div>
-          </div>
-        </td>
-        <!--Số Lượng-->
-        <td>
-          <div class="ng-scope">
-            <input type="text" [(ngModel)]="data.soLuong" (ngModelChange)="onChangeSoLuong(data)"
-                   class="form-control mb-0  mousetrap row-item-quantiy"
-                   style="width: 100%; text-align:right; font-size:14px;">
-          </div>
-        </td>
 
-        <!--Giá Bán Lẻ-->
+          </div>
+          <div *ngIf="!data.isEditing">
+            <span style="color:seagreen">
+              <span>{{data.maThuoc}}-</span>
+            </span>
+            <span class="btn-link tooltip-content-drug">
+              <span (click)="openDetailDialog(data.thuocThuocId)"
+                title="xem thông tin chi tiết">{{data.tenThuoc}}</span>
+            </span>
+          </div>
+        </td>
+      </ng-container>
 
-        <td class="ng-scope">
-          <div class="input-group mb-3 ">
-            <input type="text" [(ngModel)]="data.giaBanLe" (ngModelChange)="onChangeSoLuong(data)"
-                   class="form-control mb-0 mousetrap inline ng-pristine ng-untouched ng-valid ng-isolate-scope">
-            <input type="text" [(ngModel)]="data.rateRevenue"
-                   class="form-control ng-pristine ng-untouched ng-valid ng-scope" style="width: 66%;">
+      <ng-container matColumnDef="donVi">
+        <th [style.width]="isMobile() ? '25%;' : '10%;'" mat-header-cell *matHeaderCellDef>
+          {{isMobile() ? 'ĐV' : 'Đơn vị'}}</th>
+        <td mat-cell *matCellDef="let data">
+          <ng-select appendTo="body" [(ngModel)]="data.donViTinhMaDonViTinh" (ngModelChange)="onChangeUnit(data)"
+            [clearable]="false">
+            <ng-option *ngFor="let item of data.listDonViTinhs" [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+          </ng-select>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="soLuong">
+        <th [style.width]="isMobile() ? '20%;' : '9%;'" mat-header-cell *matHeaderCellDef> SL</th>
+        <td mat-cell *matCellDef="let data">
+          <input #inputSoLuong type="text" id="tbxQuantityId" mask="separator" [(ngModel)]="data.soLuong"
+            (ngModelChange)="getItemAmount(data)" class="form-control mb-0 mousetrap row-item-quantiy"
+            (keyup.enter)="onAddNew(data)" style="width: 100%; text-align:right;" [ngClass]="getInputSize()"
+            [style.font-size]="getInputFontSize()">
+        </td>
+      </ng-container>
+
+      <ng-container *ngIf="!isMobile()" matColumnDef="giaBan">
+        <th style="width: 17%;" mat-header-cell *matHeaderCellDef>
+          Giá bán
+        </th>
+        <td mat-cell *matCellDef="let data">
+          <input type="text" [(ngModel)]="data.giaBanLe" mask="separator" (ngModelChange)="getItemAmount(data)"
+            (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap inline" style="text-align:right;">
+        </td>
+      </ng-container>
+
+      <ng-container *ngIf="!isMobile()" matColumnDef="ck">
+        <th style="width: 3%;" mat-header-cell *matHeaderCellDef> C.K(%)</th>
+        <td mat-cell *matCellDef="let data">
+          <input type="text" [(ngModel)]="data.chietKhau" mask="separator" (ngModelChange)="getItemAmount(data)"
+            (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap inline" style="text-align:right;">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="thanhTien">
+        <th mat-header-cell *matHeaderCellDef> {{isMobile() ? 'TT' : 'Thành tiền'}}</th>
+        <td style="text-align: right; vertical-align: middle;" mat-cell *matCellDef="let data">
+          <div>
+            <strong>{{data.tongTien | number}}</strong>
           </div>
         </td>
-        <td class="ng-scope">
-            <input id="tbxDiscountId1" type="text"
-                   class="form-control mb-0 mousetrap ng-pristine ng-untouched ng-valid ng-isolate-scope"
-                   style="width: 100%; text-align:right;" [(ngModel)]="data.chietKhau" (ngModelChange)="onChangeSoLuong(data)">
-        </td>
-        <!--Thành Tiền-->
-        <td>
-          <div class="number-value"><strong  class="ng-binding ng-scope">{{data.tongTien}}</strong>
-          </div>
-        </td>
-      </tr>
-      </tbody>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
     </table>
     <div class="row mt-3 mb-3">
       <form [formGroup]="formData" class="form-inline ng-pristine ng-valid" novalidate="novalidate">
         <div class="col-sm-3">
           <b>
             Tổng số tiền:
-            <span class="ng-binding ng-scope">{{calendarTongTien()}}</span>
+            <span class="ng-binding ng-scope">{{formData.value?.tongTien | number}}</span>
           </b>
         </div>
-        <div class="col-sm-3 ng-scope"
-             style="z-index:0">
+        <div class="col-sm-3 ng-scope" style="z-index:0">
           <table>
             <tbody>
-            <tr>
-              <td>
-                <div class="form-inline-flex mb-2">
-                  <label>Trả: </label>
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      id="tbxPaymentAmount"
-                      class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
-                      style="width:50%;" formControlName="daTra">
-                    <input class="btn btn-primary btn-group" type="button" value="F"
-                           title="Ấn vào đây để trả đủ số tiền" id="btnFull"
-                           (click)="onPayFull();">
+              <tr>
+                <td>
+                  <div class="form-inline-flex mb-2">
+                    <label>Trả: </label>
+                    <div class="input-group">
+                      <input type="text" id="tbxPaymentAmount"
+                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-scope ng-isolate-scope"
+                        style="width:50%;" formControlName="daTra" mask="separator">
+                      <input class="btn btn-primary btn-group" type="button" value="F"
+                        title="Ấn vào đây để trả đủ số tiền" id="btnFull" (click)="onPaymentFull();">
+                    </div>
                   </div>
-                </div>
-                <div class="msg_payment_header">Hình thức thanh toán <span (click)="showOption()">[+]</span></div>
-                <div id="paymentSlide" class="form-check" style="{{ isShow ? 'display: none;' : ''}}">
-                    <mat-radio-group formControlName="paymentType" class="example-radio-group">
-                        <mat-radio-button *ngFor="let item of listPaymentType" class="example-radio-button" [value]="item.id">{{item.displayName}}</mat-radio-button>
+                  <div class="msg_payment_header">Hình thức thanh toán <span (click)="showOption()">[+]</span></div>
+                  <div id="paymentSlide" class="form-check" style="{{ isShow ? 'display: none;' : ''}}">
+                    <mat-radio-group formControlName="paymentTypeId" class="example-radio-group">
+                      <mat-radio-button *ngFor="let item of listPaymentType" class="example-radio-button"
+                        [value]="item.id">{{item.displayName}}</mat-radio-button>
                     </mat-radio-group>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span class="text-danger ng-binding ng-scope">Còn nợ: {{formData.value.tongTien - formData.value.daTra}}</span>
-              </td>
-            </tr>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="text-danger">{{debtLabel}}:
+                    {{getDebtAmount() | number}}</span>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </form>
     </div>
     <table class="table borderless table-condensed">
-      <form [formGroup]="formData">
         <tbody>
-        <tr>
-          <td>
-            <div class="d-flex gap-10 text-left">
-              <label for="">Diễn giải:</label>
-              <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
-                        formControlName="dienGiai"></textarea>
-            </div>
-          </td>
-        </tr>
+          <tr>
+            <td>
+              <form [formGroup]="formData">
+                <div class="d-flex gap-10 text-left">
+                  <label for="">Diễn giải:</label>
+                  <textarea class="form-control mb-0 ng-pristine ng-untouched ng-valid" style="width: 100%"
+                    formControlName="dienGiai"></textarea>
+                </div>
+              </form>
+            </td>
+          </tr>
         </tbody>
-      </form>
     </table>
     <table class="table borderless table-condensed">
       <tbody>
+        <tr *ngIf="formData.value?.id > 0" class="ng-scope">
+          <td style="width: 50%;"></td>
+          <td>
+            <div class="d-flex justify-content-between">
+              <div class="flex-grow-1 text-left">
+                <span>[Người lập: </span>
+                <span class="ng-binding">{{formData.value.tenNguoiTao}}]</span>
+              </div>
+              <div class="flex-grow-1 text-right">
+                <span>[Ngày lập: </span>
+                <span class="ng-binding">{{formData.value.ngayNhap | appDate}}]</span>
+              </div>
+            </div>
+          </td>
         <tr>
           <td colspan="3">
             <div class="d-flex align-items-center justify-content-center gap-10">
-              <input type="button" value="Quay lại" class="btn btn-default"
-                     ng-click="onBack();">
-              <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
-                     class="btn btn-primary btn btn-default"
-                     (click)="createUpdate();">
+              <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
+              <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu" class="btn btn-primary"
+                (click)="createUpdate()">
+              <span *ngIf="formData.value?.id > 0">
+                <span>
+                  <button class="btn btn-danger" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
+                    (click)="delete('Bạn có chắc chắn muốn xóa phiếu xuất nhập lại từ khách hàng \'' +
+                   khachHang?.tenKhachHang + '\' có số phiếu \'' + formData.value?.soPhieuNhap + '\' ?', formData.value?.id)">
+                    Xóa phiếu</button>
+                </span>
+                <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
+                    class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
+              </span>
             </div>
           </td>
         </tr>
