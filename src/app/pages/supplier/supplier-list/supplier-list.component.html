@@ -12,13 +12,13 @@
                             appendTo="body"
                             formControlName="id"
                             appendTo="body"
-                            appearance="outline" 
-                            [items]="listNhaCungCap$ | async" 
+                            appearance="outline"
+                            [items]="listNhaCungCap$ | async"
                             [typeahead]="searchNhaCungCapTerm$"
                             bindLabel="tenNhaCungCap"
-                            bindValue="id" 
+                            bindValue="id"
                             [minTermLength]="2"
-                            appendTo="body" 
+                            appendTo="body"
                             appearance="outline"
                             placeholder="Tra cứu theo tên, mã, mã vạch..."
                             notFoundText="Không tìm thấy mục nào">
@@ -54,9 +54,12 @@
                         enctype="multipart/form-data" method="post">
                         <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
                             <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
-                            <input type="button" value="Tải File" title="Tải file"
-                                ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"
-                                class="btn btn-default btn-outline" accept="Excel/*.xlsx">
+<!--                            <input type="button" value="Tải File" title="Tải file"-->
+<!--                                ng-click="openFileDialog(); $event.preventDefault(); $event.stopPropagation();"-->
+<!--                                class="btn btn-default btn-outline" accept="Excel/*.xlsx">-->
+                          <a class="btn btn-default btn-outline" (click)="triggerFileInput()">Tải file</a>
+                          <input class="btn btn-default btn-outline" type="file" #importFile id="importFile" (change)="handleSelectFile($event)" style="display: none;">
+
                             <a class="btn btn-default btn-outline" href="/Supplyer/ExportToExcel">Xuất File</a>
                         </div>
                     </form>
@@ -107,9 +110,9 @@
                     <td mat-cell *matCellDef="let data">
                         <div class="baocao-actions">
                             <button *ngIf="isDeleted" class="btn btn-sm btn-primary"><i
-                                class="fa-regular fa-arrows-rotate" 
+                                class="fa-regular fa-arrows-rotate"
                                 (click)="restore('Bạn có chắc chắn muốn khôi phục nhà cung cấp \'' +data.tenNhaCungCap + '\' ?', data)">
-                                
+
                             </i></button>
                             <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
