@@ -22,7 +22,7 @@
                             <div class="control-group">
                                 <ng-select *ngIf="enableCustomerToSupplier" [items]="listKhachHang$ | async"
                                     [typeahead]="searchKhachHangTerm$" [minTermLength]="2"
-                                    formControlName="nhaCungCapMaNhaCungCap" appendTo="body" appearance="outline"
+                                    formControlName="maNhaCungCap" appendTo="body" appearance="outline"
                                     bindLabel="tenKhachHang" bindValue="id" placeholder="Nhập mã, mã vạch hoặc tên..."
                                     notFoundText="Không tìm thấy mục nào"
                                     typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
