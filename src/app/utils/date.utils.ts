@@ -76,3 +76,9 @@ export function calculateDayFromDateRange(fromDate: any, toDate: any): number {
   const diffTime = to.getTime() - from.getTime();
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
+
+export function extractYear(birthDate: string): number {
+  const datePart = birthDate.split(' ')[0];
+  const [day, month, year] = datePart.split('/');
+  return parseInt(year, 10);
+}

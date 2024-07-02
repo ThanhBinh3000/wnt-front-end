@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Injector, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {KhachHangService} from '../../../services/customer/khach-hang.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -219,5 +219,10 @@ export class CustomerListComponent extends BaseComponent implements OnInit, Afte
       displayedColumns = displayedColumns.filter(x=>x != 'zaloId');
     }
     return displayedColumns;
+  }
+  
+  @ViewChild('importFile', { static: false }) importFile!: ElementRef;
+  triggerFileInput() {
+    this.importFile.nativeElement.click();
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from '../../../component/base/base.component';
 import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
@@ -14,6 +14,7 @@ import { STATUS_API } from '../../../constants/message';
   styleUrls: ['./supplier-list.component.css'],
 })
 export class SupplierListComponent extends BaseComponent implements OnInit, AfterViewInit {
+  @ViewChild('importFile', { static: false }) importFile!: ElementRef;
   title: string = "Danh sách nhà cung cấp";
   displayedColumns = [
     '#',
@@ -54,7 +55,7 @@ export class SupplierListComponent extends BaseComponent implements OnInit, Afte
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
   }
-  
+
   getDataFilter(){
     this.listNhaCungCap$ = this.searchNhaCungCapTerm$.pipe(
       debounceTime(500),
@@ -100,5 +101,8 @@ export class SupplierListComponent extends BaseComponent implements OnInit, Afte
         await this.searchPage();
       }
     });
+  }
+  triggerFileInput() {
+    this.importFile.nativeElement.click();
   }
 }
