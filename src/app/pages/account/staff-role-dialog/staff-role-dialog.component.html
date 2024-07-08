@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title">Phân quyền nhân viên</h4>
+    </div>
+    <div class="modal-body">
+      <ul>
+          <li *ngFor="let item of getListRoles(); index as i;">
+            <mat-checkbox [checked]="item.selected" (change)="updateRoles($event.checked, item)">
+              <a (click)="openEditRoleDialog(item)">{{ item.roleName }} </a>
+              &nbsp;
+              <button *ngIf="!item.isDefault" class="btn btn-sm btn-danger" title="Xoá"
+                      (click)="deleteRole('Bạn có chắc chắn muốn xóa quyền \'' + item.roleName + '\' ?', item)"><i
+                class="fas fa-trash"></i></button>
+            </mat-checkbox>
+          </li>
+      </ul>
+<!--        <mat-checkbox *ngFor="let item of getListRoles()" [checked]="item.selected"-->
+<!--                      (change)="updateRoles($event,item)">-->
+<!--          <a (click)="openEditRoleDialog(item)">{{ item.roleName }}</a>-->
+<!--          &nbsp;-->
+<!--          <button *ngIf="!item.isDefault" class="btn btn-sm btn-danger" title="Xoá"-->
+<!--                  (click)="deleteRole('Bạn có chắc chắn muốn xóa quyền \'' + item.roleName + '\' ?', item)"><i-->
+<!--            class="fas fa-trash"></i></button>-->
+<!--        </mat-checkbox>-->
+      <button class="btn btn-sm btn-primary" title="Thêm quyền"
+              (click)="openAddRoleDialog()"><i class="fa-solid fa-plus"></i></button>
+      &nbsp;
+      <button class="btn btn-sm btn-primary" title="Lưu quyền"
+              (click)="saveRole()"><i class="fa-solid fa-floppy-disk"></i></button>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+      <button type="button" class="btn btn-primary" (click)="saveRole()">Cập nhật</button>
+    </div>
+  </div>
+</div>

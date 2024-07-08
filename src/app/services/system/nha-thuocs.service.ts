@@ -41,4 +41,9 @@ export class NhaThuocsService extends BaseService {
     const url = `/api/wnt-system/nha-thuocs/search-page-nha-thuoc-trien-khai`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  searchListByNv(body: any) {
+    const url = `/api/wnt-system/nha-thuocs/search-list-by-nv`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

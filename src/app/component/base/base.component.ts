@@ -29,7 +29,7 @@ import printJS from "print-js";
 })
 export class BaseComponent {
   // User Info
-  userInfo: UserLogin;
+  userInfo: any;
   department: Department;
   // @ts-ignore
   formData: FormGroup;
@@ -90,10 +90,10 @@ export class BaseComponent {
     this.device = this.injector.get(DeviceService);
     this.helperService = this.injector.get(HelperService);
     // get user info login
-    this.userInfo = this.userService.getUserLogin();
+    this.authService = this.injector.get(AuthService);
+    this.userInfo = this.authService.getUser();
     this.department = this.userInfo.department;
     this.dialog = this.injector.get(MatDialog);
-    this.authService = this.injector.get(AuthService);
     this.router = this.injector.get(Router);
     this.route = this.injector.get(ActivatedRoute);
     this.location = this.injector.get(Location);
@@ -673,5 +673,12 @@ export class BaseComponent {
     await this.searchPage()
   }
 
+  havePermissions(permissions: string[]){
+    return permissions.some((code:any) => this.userInfo.authorities.some((auth:any) => auth.authority === code));
+  }
+
+  haveRoles(roles: string[]){
+    return roles.some((code:any) => this.userInfo.roles.some((role:any) => role.roleName === code));
+  }
 }
 

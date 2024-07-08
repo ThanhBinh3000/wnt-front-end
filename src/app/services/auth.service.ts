@@ -36,6 +36,14 @@ export class AuthService extends BaseService {
     return this.storageService.get(STORAGE_KEY.USER_INFO)?.nhaThuoc;
   }
 
+  getMaNhaThuoc() {
+    return this.getNhaThuoc()?.maNhaThuoc;
+  }
+
+  getUserId() {
+    return this.getUser()?.id;
+  }
+
   saveNhaThuoc(data: any) {
     return this.storageService.set(STORAGE_KEY.NHA_THUOC, data);
   }
@@ -52,10 +60,12 @@ export class AuthService extends BaseService {
     const url = `/api/wnt-security/login`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
   profile() {
     const url = `/api/wnt-security/profile`;
     return this.httpClient.get<ResponseData>(url).toPromise();
   }
+
   chooseNhaThuoc(body: any) {
     const url = `/api/wnt-security/choose-nha-thuoc`;
     return this.httpClient.put<ResponseData>(url, body).toPromise();
