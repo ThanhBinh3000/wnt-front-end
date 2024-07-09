@@ -138,6 +138,10 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('../pages/transaction/transaction.module').then((m) => m.TransactionModule),
       },
+      {
+        path: 'Thuocs',
+        loadChildren: () => import('../pages/Thuocs/Thuocs.module').then((m) => m.ThuocsModule),
+      },
     ],
   }
 ];

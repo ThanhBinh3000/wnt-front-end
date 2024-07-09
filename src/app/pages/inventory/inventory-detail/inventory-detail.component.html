@@ -43,7 +43,7 @@
             </table>
             <div ng-show="canAction" class="d-flex justify-content-end align-items-center gap-10 flex-wrap mt-3">
                 <a class="btn btn-default flex-grow-1" href="management/inventory/list">Quay lại</a>
-                <a class="btn btn-default flex-grow-1" (click)="printPreview()">In</a>
+                <a class="btn btn-default flex-grow-1" (click)="printPreview('1')">In</a>
                 <div *ngIf="!data.daCanKho">
                     <a class="btn btn-primary flex-grow-1" href="management/inventory/edit/{{idUrl}}">Sửa/Cân kho</a>
                 </div>

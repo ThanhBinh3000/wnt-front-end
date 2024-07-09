@@ -594,12 +594,13 @@ export class BaseComponent {
     return this.device.isDesktop();
   }
 
-  async printPreview(loai?: string, id?: number) {
+  async printPreview(loai?: string, id?: number, amountPrint?: number) {
     const validId = id ?? this.idUrl;
     if (validId && validId > 0) {
       let res = await this.service.preview({
         loai: loai,
         id: validId,
+        amountPrint: amountPrint
       });
       if (res?.data) {
         this.printSrc = res.data.pdfSrc;

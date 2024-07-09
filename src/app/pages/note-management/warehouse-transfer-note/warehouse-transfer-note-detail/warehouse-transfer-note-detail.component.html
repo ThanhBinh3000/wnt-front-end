@@ -123,6 +123,20 @@
             <div class="d-flex justify-content-center align-items-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default"
                     (click)="goBack()">
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                  In <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a (click)="printPreview('1')">In chuyển kho - A4</a></li>
+                  <li>
+                    <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: formData.value.id, loaiPhieu: LOAI_PHIEU.PHIEU_CHUYEN_KHO}">
+                      In mã vạch thuốc
+                    </a>
+                  </li>
+                </ul>
+              </div>
                 <a class="btn btn-primary"
                     (click)="goToUrl('/management/note-management/warehouse-transfer-note-screen',this.formData.value?.id)">Sửa</a>
                 <a class="btn btn-danger"
