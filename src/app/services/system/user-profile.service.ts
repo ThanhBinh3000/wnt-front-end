@@ -61,4 +61,14 @@ export class UserProfileService extends BaseService {
     const url = `/api/wnt-system/nguoi-dung/reset-password`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  changeRoleSystem(body: any) {
+    const url = `/api/wnt-system/nguoi-dung/change-role-system`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  changeRole(body: any) {
+    const url = `/api/wnt-system/nguoi-dung/change-role`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

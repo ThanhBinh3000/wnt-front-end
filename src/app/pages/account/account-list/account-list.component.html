@@ -3,68 +3,66 @@
     <div class="col-md-3 baocao-filter">
       <div class="sidebar-bg">
         <form [formGroup]="formData">
-        <fieldset>
-          <label>Tên tài khoản</label>
-          <div class="control-group">
+          <fieldset>
+            <label>Tên tài khoản</label>
+            <div class="control-group">
               <input formControlName="userName" type="text" class="form-control" placeholder="Tên tài khoản"
                      (keyup.enter)="searchPage()"/>
-          </div>
-        </fieldset>
-        <fieldset>
-          <label>Nhà thuốc</label>
-          <div class="control-group">
-            <ng-select
-              [items]="listNhaThuoc$ | async"
-              [typeahead]="searchNhaThuocTerm$"
-              [minTermLength]="2"
-              [trackByFn]="trackByFn"
-              formControlName="maNhaThuoc"
-              appendTo="body"
-              appearance="outline"
-              bindLabel="tenNhaThuoc"
-              bindValue="maNhaThuoc"
-              placeholder="Tra cứu theo tên, địa chỉ..."
-              notFoundText="Không tìm thấy mục nào"
-              typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
-              (change)="searchNhaThuocTerm$.next('')"
-            >
-              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                <span [ngOptionHighlight]="search">{{ item.tenNhaThuoc }}</span>
-              </ng-template>
-            </ng-select>
-          </div>
-        </fieldset>
-        <fieldset>
-          <label>Nhóm quyền</label>
-          <div class="control-group">
-            <select class="form-control" formControlName="roleName">
-              <option [ngValue]="null">--Tất cả--</option>
-              <option value="Admin">Quản lý</option>
-              <option value="SuperUser">Quyền hệ thống</option>
-              <option value="User">Nhân viên</option>
-            </select>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="control-group d-flex justify-content-between gap-10">
-            <input type="button" value="Xem" title="Xem" class="btn btn-primary w-50"
-                   (click)="searchPage()"/>
-            <a (click)="openAddEditDialog(null)" class="btn btn-primary w-50">Thêm</a>
-          </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <label>Nhà thuốc</label>
+            <div class="control-group">
+              <ng-select
+                [items]="listNhaThuoc$ | async"
+                [typeahead]="searchNhaThuocTerm$"
+                [minTermLength]="2"
+                [trackByFn]="trackByFn"
+                formControlName="maNhaThuoc"
+                appendTo="body"
+                appearance="outline"
+                bindLabel="tenNhaThuoc"
+                bindValue="maNhaThuoc"
+                placeholder="Tra cứu theo tên, địa chỉ..."
+                notFoundText="Không tìm thấy mục nào"
+                typeToSearchText="Nhập 2 hoặc nhiều kí tự hơn để tìm kiếm"
+                (change)="searchNhaThuocTerm$.next('')"
+              >
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <span [ngOptionHighlight]="search">{{ item.tenNhaThuoc }}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </fieldset>
+          <fieldset>
+            <label>Nhóm quyền</label>
+            <div class="control-group">
+              <select class="form-control" formControlName="roleName" (change)="onChangeRoleType($event)">
+                <option [ngValue]="null">--Tất cả--</option>
+                <option *ngFor="let role of roleTypes" [value]="role.id">{{ role.descripition }}</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="control-group d-flex justify-content-between gap-10">
+              <input type="button" value="Xem" title="Xem" class="btn btn-primary w-50"
+                     (click)="searchPage()"/>
+              <a (click)="openAddEditDialog(null)" class="btn btn-primary w-50">Thêm</a>
+            </div>
 
-          <div class="control-group d-flex justify-content-between gap-10">
-            <div style="display: none"><input name="uploadFile" type="file"/></div>
-            <input type="button" value="Tải File" title="Tải file" class="btn btn-default w-50"/>
-            <input type="button" value="Xuất File" title="Tải file" class="btn btn-default w-50"/>
-          </div>
-        </fieldset>
+            <div class="control-group d-flex justify-content-between gap-10">
+              <div style="display: none"><input name="uploadFile" type="file"/></div>
+              <input type="button" value="Tải File" title="Tải file" class="btn btn-default w-50"/>
+              <input type="button" value="Xuất File" title="Tải file" class="btn btn-default w-50"/>
+            </div>
+          </fieldset>
         </form>
       </div>
     </div>
 
     <div class="col-md-9">
       <div class="baocao-container box-group-white">
-        <h2 class="text-center"><b>{{title}}</b></h2>
+        <h2 class="text-center"><b>{{ title }}</b></h2>
         <div class="mat-table-container">
           <table mat-table
                  class="table table-striped table-bordered table-hover tr-ng-grid"
@@ -130,52 +128,28 @@
               <td mat-cell *matCellDef="let data">
                 <form class="ng-pristine ng-valid ng-scope">
                   <div class="multiselect">
-                    <div class="selectBox" ng-click="showCheckboxes(gridItem)">
+                    <div class="selectBox" (click)="showCheckboxes(data)">
                       <select class="form-control" style="border: none">
                         <option value="Lựa chọn nhóm quyền">Lựa chọn nhóm quyền</option>
                       </select>
                       <div class="overSelect"></div>
                     </div>
-                    <div id="webnt2" style="display: block;">
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Cập nhật thanh toán nhà thuốc
+                    <div id="webnt2" style="display: block;" *ngIf="isShow(data)">
+                      <p class="ng-binding ng-scope">
+                        <mat-checkbox *ngFor="let item of getListRoles(data)" [checked]="item.selected"
+                                      (change)="updateRoles($event,item, data)">
+                          <a (click)="openEditRoleDialog(item, data)">{{ item.roleName }}</a>
+                          &nbsp;
+                          <button *ngIf="!item.isDefault" class="btn btn-sm btn-danger" title="Xoá"
+                                  (click)="deleteRole('Bạn có chắc chắn muốn xóa quyền \'' + item.roleName + '\' ?', item)"><i
+                            class="fas fa-trash"></i></button>
+                        </mat-checkbox>
                       </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Xóa dữ liệu nhà thuốc
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Xuất excel danh sách nhà thuốc
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Xóa nhà thuốc
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Cập nhật tiêu chí triển khai
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Đánh giá triển khai
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions"
-                         class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Xác thực điện thoại
-                      </p>
-                      <p ng-repeat="i in gridItem.Permissions" class="ng-binding ng-scope">
-                        <input type="checkbox" ng-change="onCheckAuthen(i)" ng-model="i.Active"
-                               class="ng-pristine ng-untouched ng-valid"> Xoá yêu cầu tiếp nhận
-                      </p>
+                      <button class="btn btn-sm btn-primary" title="Thêm quyền"
+                              (click)="openAddRoleDialog(data)"><i class="fa-solid fa-plus"></i></button>
+                      &nbsp;
+                      <button class="btn btn-sm btn-primary" title="Lưu quyền"
+                              (click)="saveRole(data)"><i class="fa-solid fa-floppy-disk"></i></button>
                     </div>
                   </div>
                 </form>
@@ -185,7 +159,8 @@
             <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let data">
-                <div class="baocao-actions" style="justify-content: start;" *ngIf="!data.nhomQuyens.includes('Hệ thống') || data.id == getUserId()">
+                <div class="baocao-actions" style="justify-content: start;"
+                     *ngIf="!data.nhomQuyens.includes('Hệ thống') || data.id == getUserId()">
                   <button class="btn btn-sm btn-primary" title="Cập nhật thông tin người dùng"
                           (click)="openAddEditDialog(data)"><i class="fas fa-pen-to-square"></i></button>
                   <button class="btn btn-sm btn-danger" title="Xoá tài khoản"

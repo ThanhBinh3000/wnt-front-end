@@ -11,7 +11,7 @@ import {
   AccountResetPasswordDialogComponent
 } from "../account-reset-password-dialog/account-reset-password-dialog.component";
 import {StaffAddEditDialogComponent} from "../staff-add-edit-dialog/staff-add-edit-dialog.component";
-import {StaffPermissionDialogComponent} from "../staff-permission-dialog/staff-permission-dialog.component";
+import {StaffRoleDialogComponent} from "../staff-role-dialog/staff-role-dialog.component";
 import {MatSort} from "@angular/material/sort";
 
 @Component({
@@ -79,9 +79,14 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
   }
 
   async openPermissionDialog(userProfile: any) {
-    this.dialog.open(StaffPermissionDialogComponent, {
+    const dialogRef = this.dialog.open(StaffRoleDialogComponent, {
       data: userProfile,
       width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.searchPage();
+      }
     });
   }
   async openResetPasswordDialog(userProfile: any) {
