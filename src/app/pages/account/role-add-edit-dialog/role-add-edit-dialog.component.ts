@@ -126,7 +126,7 @@ export class RoleAddEditDialogComponent extends BaseComponent implements OnInit 
   }
 
   updatePrivileges($event: any, item: any) {
-    item.selected = true;
+    item.selected = !item.selected;
   }
 
   openViewPrivilegeDialog(event: MouseEvent, item: any) {
