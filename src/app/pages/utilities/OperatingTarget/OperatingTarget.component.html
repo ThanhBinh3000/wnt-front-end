@@ -1,0 +1,207 @@
+<div class="baocao-container box-group-white">
+    <h2 class="text-center"><b>{{title}}</b></h2>
+      <div style="font-size: 25px">
+        <div style="font-size: 30px">
+          <span class="icon"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
+          <label>Đánh giá hiệu quả vận hành: </label>
+          {{getTextIcon(3)}}
+          <span class="icon" title="{{getTooltipIcon(3)}}">
+            <i [ngStyle]="{'color': getStyleColorIcon(3)}" [class]="getClassIcon(3)" aria-hidden="true"></i>
+          </span>
+        </div>
+        <br />
+        <span class="icon"><i style="color: red" class="fa fa-times-circle" aria-hidden="true"></i> Cần phải cải thiện</span>
+        <span class="icon"><i style="color: orange" class="fa fa-exclamation-circle" aria-hidden="true"></i> Nên cải thiện</span>
+        <span class="icon"><i style="color: green" class="fa fa-check-circle" aria-hidden="true"></i> Hiệu quả</span>
+      </div>
+      <hr style="margin-top:0px" />
+      <table class="" style="font-size: 25px; width: 100%">
+        <tr class="spaceUnder">
+          <td class="text-right" style="width: 50%">
+            <label>
+              <i title="Số lượng hàng tư vấn trên tổng danh mục hàng hóa" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết" ng-click="showProductStructureChart()">Cơ cấu danh mục</a>
+              <span class="msg_head" ng-click="onOpenRuler(1)" id="msg_head_1" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td style="width: 50%">
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.ProductStructureValue, model.ProductRate, 1)}}">{{viewModel.ProductTarget}}</div>-->
+            </div>
+            <div id="trSlide_1" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:35%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:55%">
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Áp dụng tích điểm cho khách hàng" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <span>Chăm sóc sau bán hàng</span>
+              <span class="msg_head" ng-click="onOpenRuler(7)" id="msg_head_7" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.CustomerCareValue, viewModel.CustomerCareRate, 2)}}">{{viewModel.CustomerCareTarget}}</div>-->
+            </div>
+            <div id="trSlide_7" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:80%">
+              </div>
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.CustomerCareRate)}}"><i style="color: {{getStyleColorIcon(viewModel.CustomerCareRate)}}" class="{{getClassIcon(viewModel.CustomerCareRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Áp dụng chiết khấu hàng tư vấn cho nhân viên" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <span>Thúc đẩy năng lực tư vấn của nhân viên</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(null, viewModel.AdviseStaffRate, 7)}}">{{viewModel.AdviseStaffTarget}}</div>-->
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.AdviseStaffRate)}}"><i style="color: {{getStyleColorIcon(viewModel.AdviseStaffRate)}}" class="{{getClassIcon(viewModel.AdviseStaffRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Số lượng khách hàng trong 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết từng ngày" ng-click="showCustomerChart()">Lượt khách trung bình trong 30 ngày</a>
+              <span class="msg_head" ng-click="onOpenRuler(2)" id="msg_head_2" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.NumberOfCustomerValue, viewModel.NumberOfCustomerRate, 3)}}">{{viewModel.NumberOfCustomerTarget}}</div>-->
+            </div>
+            <div id="trSlide_2" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:40%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
+              </div>
+            </div>
+          </td>
+<!--          <span class="icon" title="{{getTooltipIcon(viewModel.NumberOfCustomerRate)}}"><i style="color: {{getStyleColorIcon(viewModel.NumberOfCustomerRate)}}" class="{{getClassIcon(viewModel.NumberOfCustomerRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Doanh thu trung bình đơn trong 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết từng ngày" ng-click="showRevenueChart()">Doanh thu trung bình đơn trong 30 ngày</a>
+              <span class="msg_head" ng-click="onOpenRuler(3)" id="msg_head_3" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.RevenueValue, viewModel.RevenueRate, 4)}}">{{viewModel.RevenueTarget}}</div>-->
+            </div>
+            <div id="trSlide_3" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:30%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:30%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:40%">
+              </div>
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.RevenueRate)}}"><i style="color: {{getStyleColorIcon(viewModel.RevenueRate)}}" class="{{getClassIcon(viewModel.RevenueRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Tỉ lệ lợi nhuận/doanh thu trong 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết từng ngày" ng-click="showProfitMarginChart()">Tỷ suất lợi nhuận trong 30 ngày</a>
+              <span class="msg_head" ng-click="onOpenRuler(4)" id="msg_head_4" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.ProfitMarginValue, viewModel.ProfitMarginRate, 1)}}">{{viewModel.ProfitMarginTarget}}</div>-->
+            </div>
+            <div id="trSlide_4" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:8%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:72%">
+              </div>
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.ProfitMarginRate)}}"><i style="color: {{getStyleColorIcon(viewModel.ProfitMarginRate)}}" class="{{getClassIcon(viewModel.ProfitMarginRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr>
+        <td><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span></td>
+        <td>
+          <label>
+            <a title="xem chi tiết từng ngày" ng-click="showGrossProfitChart()">Lợi nhuận gộp trong 30 ngày</a>
+            <i title="Lợi nhuận gộp trong 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+          </label>
+        </td>
+        <td>
+<!--          <p ng-if="permittedFields.Report_ViewProfit" style="margin-left: 60px">{{viewModel.GrossProfitTarget}}</p>-->
+        </td>
+<!--        <td><span class="icon" title="{{getTooltipIcon(viewModel.GrossProfitRate)}}"><i style="color: {{getStyleColorIcon(viewModel.GrossProfitRate)}}" class="{{getClassIcon(viewModel.GrossProfitRate)}}" aria-hidden="true"></i></span></td>-->
+      </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Giá trị tồn kho/ doanh thu 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết" ng-click="showInventoryChart()">Tồn kho hàng hóa</a>
+              <span class="msg_head" ng-click="onOpenRuler(5)" id="msg_head_5" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div ng-if="permittedFields.Drug_ViewInventory" class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.InventoryValue, viewModel.InventoryRate, 5)}}">{{viewModel.InventoryTarget}}</div>-->
+            </div>
+            <div id="trSlide_5" class="progress">
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:40%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:50%">
+              </div>
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.InventoryRate)}}"><i style="color: {{getStyleColorIcon(viewModel.InventoryRate)}}" class="{{getClassIcon(viewModel.InventoryRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+        <tr class="spaceUnder">
+          <td class="text-right">
+            <label>
+              <i title="Thu - chi trong 30 ngày gần nhất" style="font-size:20px; margin-left: 5px" class="fa fa-info-circle" aria-hidden="true"></i>
+              <a title="xem chi tiết từng ngày" ng-click="showInOutCommingChart()">Dòng tiền trong vòng 30 ngày</a>
+              <span class="msg_head" ng-click="onOpenRuler(6)" id="msg_head_6" style="cursor: pointer">[+]</span>
+            </label>
+          </td>
+          <td>
+            <div class="progress">
+<!--              <div class="progress-bar" style="{{onGetStyleBar(viewModel.CashFlowValue, viewModel.CashFlowRate, 6)}}">{{viewModel.CashFlowTarget}}</div>-->
+            </div>
+            <div id="trSlide_6" class="progress">
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:10%">
+              </div>
+              <div class="progress-bar progress-bar-warning" role="progressbar" style="width:15%">
+              </div>
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:75%">
+              </div>
+            </div>
+          </td>
+<!--          <td><span class="icon" title="{{getTooltipIcon(viewModel.CashFlowRate)}}"><i style="color: {{getStyleColorIcon(viewModel.CashFlowRate)}}" class="{{getClassIcon(viewModel.CashFlowRate)}}" aria-hidden="true"></i></span></td>-->
+        </tr>
+      </table>
+  </div>

@@ -184,7 +184,7 @@
                     <div class="d-flex justify-content-end align-items-center gap-10">
                         <a href="/management/sample-note/list" class="btn btn-default flex-grow-1">Quay
                             lại</a>
-                        <input type="button" (click)="createUpdate()"
+                        <input *ngIf="haveRoles(['KDL_THEM'])" type="button" (click)="createUpdate()"
                             value="{{ formData.value?.id > 0 ? 'Cập nhật' : 'Lưu đơn'}}"
                             class="btn btn-primary flex-grow-1">
                         <input *ngIf="useClinicIntegration.activated && formData.value?.isConnect" type="button"
@@ -192,22 +192,19 @@
                             value="Lưu đơn và LT" class="btn btn-primary flex-grow-1">
                         <a href="" *ngIf="formData.value?.id > 0" title="Xuất bán"
                             class="btn btn-primary flex-grow-1">Xuất bán</a>
-                        <input *ngIf="formData.value?.id > 0" type="button"
+                        <input *ngIf="formData.value?.id > 0 && haveRoles(['KDL_IN'])" type="button"
                             ng-click="fnOpenForPrint(); $event.preventDefault(); $event.stopPropagation();" value="In"
                             class="btn btn-default flex-grow-1">
-
-                        <div class="btn-group"
-                            ng-if="receiverSelectedItem !=null && SampleNote.NoteID > 0 && permittedFields.SampleNote_Print">
+                        <div  class="btn-group">
                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="javascript:;" ng-click="printNoteDrug(4)">In đơn/liều - 58mm</a></li>
-                                <li><a href="javascript:;" ng-click="printNoteDrug(3)">In đơn/liều - 80mm</a></li>
-                                <li><a href="javascript:;" ng-click="onPrintGroupByGroupDrugId(2)">In đơn/liều - A5</a>
-                                </li>
-                                <li><a href="javascript:;" ng-click="onPrintGroupByGroupDrugId(1)">In đơn/liều - A4</a>
+                                <li><a (click)="printPreview('4')">In đơn/liều - 58mm</a></li>
+                                <li><a (click)="printPreview('3')">In đơn/liều - 80mm</a></li>
+                                <li><a (click)="printPreview('2')">In đơn/liều - A5</a></li>
+                                <li><a (click)="printPreview('1')">In đơn/liều - A4</a>
                                 </li>
                                 <!-- <li><a href="javascript:;" ng-click="printNoteDrug(2)">In đơn/liều - A5</a></li>
                                         <li><a href="javascript:;" ng-click="printNoteDrug(1)">In đơn/liều - A4</a></li> -->

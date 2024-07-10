@@ -131,7 +131,7 @@ const routes: Routes = [
         loadChildren: () => import('../pages/sample-note/sample-note.module').then((m) => m.SampleNoteModule),
       },
       {
-        path: '',
+        path: 'Utilities',
         loadChildren: () => import('../pages/utilities/utilities.module').then((m) => m.UtilitiesModule),
       },
       {

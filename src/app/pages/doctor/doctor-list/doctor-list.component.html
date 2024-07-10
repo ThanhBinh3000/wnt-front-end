@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="haveRoles(['BS_DS'])">
     <div class="col-md-3">
         <div class="sidebar-bg">
             <div>
@@ -13,7 +13,7 @@
                 </form>
                 <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
                     <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
-                    <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+                    <button *ngIf="haveRoles(['BS_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
                 </div>
                 <hr style="margin-top:10px" />
             </div>
@@ -78,9 +78,9 @@
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let data">
                         <div *ngIf="data.recordStatusId == 0" class="baocao-actions">
-                            <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                            <button *ngIf="haveRoles(['BS_SUA'])" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
-                            <button class="btn btn-sm btn-danger"
+                            <button *ngIf="haveRoles(['BS_XOA'])" class="btn btn-sm btn-danger"
                                 (click)="delete('Bạn có chắc chắn muốn xóa bác sỹ \'' +data.tenBacSy + '\' ?', data)">
                                 <i class="fa-regular fa-trash"></i></button>
                         </div>

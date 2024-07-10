@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="haveRoles(['NKH_DS'])">
   <div class="col-md-3">
     <div class="sidebar-bg">
       <label>Nhóm khách hàng</label>
@@ -8,7 +8,7 @@
       </form>
       <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
         <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
-        <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+        <button *ngIf="haveRoles(['NKH_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
       </div>
     </div>
   </div>
@@ -48,9 +48,9 @@
             <th mat-header-cell *matHeaderCellDef style="width:15%"></th>
             <td mat-cell *matCellDef="let data" style="width:15%">
               <div class="baocao-actions">
-                <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                <button *ngIf="haveRoles(['NKH_SUA'])"  class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                   class="fa-regular fa-pen-to-square"></i></button>
-                <button class="btn btn-sm btn-danger"
+                <button *ngIf="haveRoles(['NKH_XOA'])" class="btn btn-sm btn-danger"
                         (click)="delete('Bạn có chắc chắn muốn xóa nhóm khách hàng \'' +data.tenNhomKhachHang + '\' ?', data)">
                   <i class="fa-regular fa-trash"></i></button>
               </div>

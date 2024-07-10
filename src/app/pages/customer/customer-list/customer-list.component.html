@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="haveRoles(['KH_DS'])">
   <div class="col-md-3">
     <form [formGroup]="formData">
       <div class="sidebar-bg">
@@ -13,13 +13,13 @@
                     appendTo="body"
                     formControlName="id"
                     appendTo="body"
-                    appearance="outline" 
-                    [items]="listKhachHang$ | async" 
+                    appearance="outline"
+                    [items]="listKhachHang$ | async"
                     [typeahead]="searchKhachHangTerm$"
                     bindLabel="tenKhachHang"
-                    bindValue="id" 
+                    bindValue="id"
                     [minTermLength]="2"
-                    appendTo="body" 
+                    appendTo="body"
                     appearance="outline"
                     placeholder="Tra cứu theo tên, mã, mã vạch..."
                     notFoundText="Không tìm thấy mục nào">
@@ -69,7 +69,7 @@
 
         <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
           <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
-          <button class="btn btn-primary w-50" data-toggle="modal" data-target="#customer-add-edit-dialog"
+          <button *ngIf="haveRoles(['KH_THEM'])" class="btn btn-primary w-50" data-toggle="modal" data-target="#customer-add-edit-dialog"
             (click)="openAddEditDialog({})">Thêm</button>
         </div>
         <div class="control-group btn-fullwidth flex-grow-1">
@@ -155,12 +155,12 @@
           <td mat-cell *matCellDef="let data"  style="width: 15%;">
             <div class="control-group">
               <ng-select [(ngModel)]="data.mappingStoreId" appendTo="body" appearance="outline"
-              [items]="listNhaThuocDongBo$ | async" bindLabel="tenNhaThuoc" 
-              bindValue="id" 
+              [items]="listNhaThuocDongBo$ | async" bindLabel="tenNhaThuoc"
+              bindValue="id"
               [typeahead]="searchNhaThuocDongBoTerm$"
               [multiple]="false"
               placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" 
+                notFoundText="Không tìm thấy mục nào"
                 (change)="searchNhaThuocDongBoTerm$.next(''); updateMappingStore($event, data.id);">
                 <ng-template ng-label-tmp let-item="item" let-index="index" let-search="searchTerm">
                   <span *ngIf="data.nhaThuoc" [ngOptionHighlight]="search">
@@ -180,12 +180,12 @@
           <th mat-header-cell *matHeaderCellDef> Zalo khách hàng</th>
           <td mat-cell *matCellDef="let data" style="width: 15%;">
             <div class="control-group">
-              <ng-select [(ngModel)]="data.zaloId" 
-                appendTo="body" 
-                appearance="outline" 
+              <ng-select [(ngModel)]="data.zaloId"
+                appendTo="body"
+                appearance="outline"
                 [items]="listNguoiQuanTamOA$ | async"
                 bindLabel="userName" bindValue="userId" placeholder="Tra cứu theo tên..."
-                notFoundText="Không tìm thấy mục nào" 
+                notFoundText="Không tìm thấy mục nào"
                 [typeahead]="searchDSNguoiQuanTamTerm$"
                 [multiple]="false"
                 (change)="searchDSNguoiQuanTamTerm$.next(''); updateMappingZaloOA($event, data.id)">
@@ -204,16 +204,16 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="action">
+        <ng-container matColumnDef="action" >
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let data">
             <div class="baocao-actions">
               <button *ngIf="isDeleted" class="btn btn-sm btn-primary"><i class="fa-regular fa-arrows-rotate"
                   (click)="restore('Bạn có chắc chắn muốn khôi phục khách hàng \'' +data.tenKhachHang+ '\' ?', data)">
                 </i></button>
-              <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data)"><i
+              <button *ngIf="!isDeleted && haveRoles(['KH_SUA'])" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data)"><i
                   class="fa-regular fa-pen-to-square"></i></button>
-              <button class="btn btn-sm btn-danger"
+              <button *ngIf="!isDeleted && haveRoles(['KH_XOA'])" class="btn btn-sm btn-danger"
                 (click)="delete('Bạn có chắc chắn muốn xóa khách hàng \'' +data.tenKhachHang + '\' ?', data)">
                 <i class="fa-regular fa-trash"></i></button>
             </div>

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="haveRoles(['NCC_DS'])">
     <div class="col-md-3">
         <form [formGroup]="formData">
             <div class="sidebar-bg">
@@ -45,7 +45,7 @@
 
                 <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
                     <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
-                    <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+                    <button *ngIf="haveRoles(['NCC_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
                 </div>
                 <hr style="margin-top:0px" />
                 <div>
@@ -114,9 +114,9 @@
                                 (click)="restore('Bạn có chắc chắn muốn khôi phục nhà cung cấp \'' +data.tenNhaCungCap + '\' ?', data)">
 
                             </i></button>
-                            <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                            <button *ngIf="!isDeleted && haveRoles(['NCC_SUA'])" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
-                            <button class="btn btn-sm btn-danger"
+                            <button *ngIf="haveRoles(['NCC_XOA'])" class="btn btn-sm btn-danger"
                                 (click)="delete('Bạn có chắc chắn muốn xóa nhà cung cấp \'' +data.tenNhaCungCap + '\' ?', data)">
                                 <i class="fa-regular fa-trash"></i></button>
                                 <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" title="Quản lý trả thưởng" (click)="openChuongTrinhKMDialog(data)"><i

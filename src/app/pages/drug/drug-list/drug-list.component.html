@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="haveRoles(['THUOC_DS'])">
   <div class="col-md-3">
     <div class="sidebar-bg">
       <form class="mb-3" [formGroup]="formData">
@@ -30,7 +30,7 @@
       <fieldset class="baocao-filter">
         <div class="d-flex justify-content-between gap-10">
           <input type="button" value="Xem" (click)="searchPage()" class="btn btn-primary w-50">
-          <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+          <button *ngIf="haveRoles(['THUOC_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
         </div>
         <hr style="margin-top:10px" />
       </fieldset>
@@ -64,10 +64,10 @@
           </b>
         </h2>
         <div class="baocao-actions">
-          <button *ngIf="!this.formData.value.dataDelete" (click)="deleteMulti()"
+          <button *ngIf="!this.formData.value.dataDelete && haveRoles(['THUOC_XOA'])" (click)="deleteMulti()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa thuốc đã chọn
           </button>
-          <button *ngIf="this.formData.value.dataDelete" (click)="deleteMultiDatabase()"
+          <button *ngIf="this.formData.value.dataDelete && haveRoles(['THUOC_XOA'])" (click)="deleteMultiDatabase()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa vĩnh viễn
           </button><!-- end ngIf: isSuperUser -->
           <button *ngIf="this.formData.value.dataDelete" (click)="restoreMulti()"
@@ -207,19 +207,19 @@
             <div ng-if="!ownerPricesSettingActivated">
               <div *ngIf="data.recordStatusId == 0" class="baocao-actions baocao-actions-row">
                 <div class="baocao-actions-item">
-                  <span title="sửa" ng-if="permittedFields.Drug_Write">
+                  <span *ngIf="haveRoles(['THUOC_SUA'])" title="sửa" ng-if="permittedFields.Drug_Write">
                     <a (click)="openAddEditDialog(data.id)" class="btn btn-primary btn-sm">
                       <i class="fa-regular fa-pen-to-square"></i>
                     </a>
                   </span>
-                  <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
+                  <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs" *ngIf="haveRoles(['THUOC_XOA'])">
                     <a (click)="delete('Bạn có chắc chắn muốn xóa thuốc '+data.maThuoc + '-' + data.tenThuoc + ' ?',data)"
                       class="btn btn-danger btn-sm">
                       <i class="fa-regular fa-trash"></i>
                     </a>
                   </span>
                 </div>
-                <div class="baocao-actions-item">
+                <div class="baocao-actions-item" *ngIf="haveRoles(['THUOC_LSDG'])">
                   <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}" class="btn btn-primary btn-sm">
                     LS
                   </a>

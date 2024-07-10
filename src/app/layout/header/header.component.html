@@ -574,15 +574,15 @@
                   <li><a href="/management/drug-unit/list">Đơn vị tính</a></li>
                   <li><a href="/management/drug-group/list">Nhóm thuốc</a></li>
                   <li class="divider"></li>
-                  <li><a href="/management/drug/list">Danh sách thuốc</a></li>
-                  <li><a data-toggle="modal" data-target="#drug-add-edit-header-dialog">Thêm mới thuốc</a></li>
+                  <li *ngIf="haveRoles(['THUOC_MENU'])"><a href="/management/drug/list">Danh sách thuốc</a></li>
+                  <li *ngIf="haveRoles(['THUOC_THEM'])"><a data-toggle="modal" data-target="#drug-add-edit-header-dialog">Thêm mới thuốc</a></li>
                   <li><a href="/management/Thuocs/InMaVach">In mã vạch thuốc, liều dùng</a></li>
 
                   <li><a href="/management/report/drug-transaction-history">Lịch sử giao dịch</a></li>
 
                   <li class="divider"></li>
-                  <li><a href="management/reserve/add">Lập dự trù thuốc</a></li>
-                  <li><a href="/management/sample-note/list">Kê đơn/Liều mẫu</a></li>
+                  <li *ngIf="haveRoles(['LDT_MENU'])"><a href="management/reserve/add">Lập dự trù thuốc</a></li>
+                  <li *ngIf="haveRoles(['KDL_MENU'])"><a href="/management/sample-note/list">Kê đơn/Liều mẫu</a></li>
                   <li><a href="/management/connectivity/sample-note-list">Quản lý đơn thuốc LT</a></li>
                   <li><a href="/management/inventory/list">Kiểm kê kho</a></li>
                   <li class="divider"></li>
@@ -613,14 +613,14 @@
                    class="dropdown-toggle">Đối Tác
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('partner')">
-                  <li><a href="/management/customer-group/list">Nhóm khách hàng</a></li>
-                  <li><a href="/management/customer/list">Khách hàng</a></li>
+                  <li *ngIf="haveRoles(['NKH_MENU'])"><a href="/management/customer-group/list">Nhóm khách hàng</a></li>
+                  <li *ngIf="haveRoles(['KH_MENU'])"><a href="/management/customer/list">Khách hàng</a></li>
                   <li class="divider"></li>
-                  <li><a href="/management/supplier-group/list">Nhóm nhà cung cấp</a></li>
-                  <li><a href="/management/supplier/list">Nhà cung cấp</a></li>
+                  <li *ngIf="haveRoles(['NNCC_MENU'])"><a href="/management/supplier-group/list">Nhóm nhà cung cấp</a></li>
+                  <li *ngIf="haveRoles(['NCC_MENU'])"><a href="/management/supplier/list">Nhà cung cấp</a></li>
                   <li class="divider"></li>
                   <li><a href="/management/doctor-group/list">Nhóm bác sỹ</a></li>
-                  <li><a href="/management/doctor/list">Danh sách bác sỹ</a></li>
+                  <li *ngIf="haveRoles(['BS_MENU'])"><a href="/management/doctor/list">Danh sách bác sỹ</a></li>
                 </ul>
               </li>
               <li class="dropdown menu" (mouseenter)="mouseEnter('report', 'block') "
@@ -656,9 +656,11 @@
                    class="dropdown-toggle">Tiện Ích
                   <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="dropdown-menu" role="menu" [style.display]="isDisplay('addons')">
-                  <li><a href="/Utilities/DrugInventoryWarning">Danh sách hàng hết</a></li>
-                  <li><a href="/Utilities/NearExpiredDrugWarning">Danh sách hàng hết hạn</a></li>
-                  <li><a href="/Utilities/NegativeRevenueWarning">Danh sách hàng lợi nhuận âm</a></li>
+                  <li><a href="/management/Utilities/OperatingTarget">Các chỉ tiêu vận hàng nhà thuốc</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/management/Utilities/DrugInventoryWarning">Danh sách hàng hết</a></li>
+                  <li><a href="/management/Utilities/NearExpiredDrugWarning">Danh sách hàng hết hạn</a></li>
+                  <li><a href="/management/Utilities/NegativeRevenueWarning">Danh sách hàng lợi nhuận âm</a></li>
                   <li class="divider"></li>
                   <li><a href="/BookMan/BookListing">Bộ sổ GPP</a></li>
                   <li class="divider"></li>

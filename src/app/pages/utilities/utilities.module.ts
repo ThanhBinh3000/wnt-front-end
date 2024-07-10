@@ -14,6 +14,7 @@ import {
 import {
   ConfirmPaymentSendZnsDialogComponent
 } from "./zalo/confirm-payment-send-zns-dialog/confirm-payment-send-zns-dialog.component";
+import {OperatingTargetComponent} from "./OperatingTarget/OperatingTarget.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {
     RegionInformationEditDialogComponent,
     BankAccountAddEditDialogComponent,
     BankAccountListDialogComponent,
-    ConfirmPaymentSendZnsDialogComponent
+    ConfirmPaymentSendZnsDialogComponent,
+    OperatingTargetComponent
   ],
   imports: [CommonModule, RouterOutlet, UtilitiesRoutingModule, ComponentsModule],
   exports: [],
