@@ -114,7 +114,7 @@ export class StaffRoleAddEditDialogComponent extends BaseComponent implements On
   }
 
   updatePrivileges($event: any, item: any) {
-    item.selected = true;
+    item.selected = !item.selected;
   }
 
   openViewPrivilegeDialog(event: MouseEvent, item: any) {
