@@ -184,7 +184,7 @@
                     <div class="d-flex justify-content-end align-items-center gap-10">
                         <a href="/management/sample-note/list" class="btn btn-default flex-grow-1">Quay
                             lại</a>
-                        <input *ngIf="haveRoles(['KDL_THEM'])" type="button" (click)="createUpdate()"
+                        <input type="button" (click)="createUpdate()"
                             value="{{ formData.value?.id > 0 ? 'Cập nhật' : 'Lưu đơn'}}"
                             class="btn btn-primary flex-grow-1">
                         <input *ngIf="useClinicIntegration.activated && formData.value?.isConnect" type="button"
@@ -192,7 +192,7 @@
                             value="Lưu đơn và LT" class="btn btn-primary flex-grow-1">
                         <a href="" *ngIf="formData.value?.id > 0" title="Xuất bán"
                             class="btn btn-primary flex-grow-1">Xuất bán</a>
-                        <input *ngIf="formData.value?.id > 0 && haveRoles(['KDL_IN'])" type="button"
+                        <input *ngIf="formData.value?.id > 0" type="button"
                             ng-click="fnOpenForPrint(); $event.preventDefault(); $event.stopPropagation();" value="In"
                             class="btn btn-default flex-grow-1">
                         <div  class="btn-group">

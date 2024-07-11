@@ -1,4 +1,4 @@
-<div class="row" *ngIf="haveRoles(['KH_DS'])">
+<div class="row">
   <div class="col-md-3">
     <form [formGroup]="formData">
       <div class="sidebar-bg">
@@ -69,7 +69,7 @@
 
         <div class="control-group d-flex justify-content-between gap-10 btn-group-flex">
           <button class="btn btn-primary w-50" (click)="searchPage()">Xem</button>
-          <button *ngIf="haveRoles(['KH_THEM'])" class="btn btn-primary w-50" data-toggle="modal" data-target="#customer-add-edit-dialog"
+          <button class="btn btn-primary w-50" data-toggle="modal" data-target="#customer-add-edit-dialog"
             (click)="openAddEditDialog({})">Thêm</button>
         </div>
         <div class="control-group btn-fullwidth flex-grow-1">
@@ -211,9 +211,9 @@
               <button *ngIf="isDeleted" class="btn btn-sm btn-primary"><i class="fa-regular fa-arrows-rotate"
                   (click)="restore('Bạn có chắc chắn muốn khôi phục khách hàng \'' +data.tenKhachHang+ '\' ?', data)">
                 </i></button>
-              <button *ngIf="!isDeleted && haveRoles(['KH_SUA'])" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data)"><i
+              <button *ngIf="!isDeleted" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data)"><i
                   class="fa-regular fa-pen-to-square"></i></button>
-              <button *ngIf="!isDeleted && haveRoles(['KH_XOA'])" class="btn btn-sm btn-danger"
+              <button *ngIf="!isDeleted" class="btn btn-sm btn-danger"
                 (click)="delete('Bạn có chắc chắn muốn xóa khách hàng \'' +data.tenKhachHang + '\' ?', data)">
                 <i class="fa-regular fa-trash"></i></button>
             </div>

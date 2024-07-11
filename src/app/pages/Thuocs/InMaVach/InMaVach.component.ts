@@ -4,7 +4,6 @@ import {BaseComponent} from "../../../component/base/base.component";
 import {MESSAGE, STATUS_API} from "../../../constants/message";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {ThuocService} from "../../../services/products/thuoc.service";
-import {PhieuNhapService} from "../../../services/thuchi/phieu-nhap.service";
 import printJS from "print-js";
 import {PrintAddEditDialogComponent} from "../print-add-edit-dialog/print-add-edit-dialog.component";
 
@@ -34,7 +33,6 @@ export class InMaVachComponent extends BaseComponent implements OnInit {
     private titleService: Title,
     injector: Injector,
     private _service: ThuocService,
-    private phieuNhapService: PhieuNhapService,
     private nhomThuocService: NhomThuocService,
   ) {
     super(injector, _service);
