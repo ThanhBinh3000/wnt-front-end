@@ -93,9 +93,9 @@
           <td class="vertical-align-top" style="width: 250px;">
             <div class="text-right">
               <span class="control-label d-block"><strong>Tổng nợ:</strong> <span class="text-danger">
-                  <!-- {{debtAmountSup | number:0}} -->
-                  0
-                </span></span>
+                  {{nhaCungCap.debtAmount}}
+                </span>
+              </span>
             </div>
           </td>
         </tr>
@@ -318,10 +318,15 @@
           </td>
         </ng-container>
 
-        <ng-container *ngIf="!isMobile()" matColumnDef="ton">
+        <ng-container *ngIf="!isMobile() && permittedFields.drug_ViewInventory" matColumnDef="ton">
           <th style="width: 3%;" mat-header-cell *matHeaderCellDef> Tồn</th>
           <td style="text-align: right; vertical-align: middle;" mat-cell *matCellDef="let data">
-            <a>{{data.tonKho | number}}</a>
+            <div *ngIf="!enableDeliveryPickUp" class="number-value">
+              {{data.tonKho | number}}
+            </div>
+            <div (click)="onGetDataDetailLastValueWarehouse(data)" *ngIf="enableDeliveryPickUp" class="number-value">
+              <span style="cursor:pointer" class="btn-link">{{data.tonKho | number}}</span>
+          </div>
           </td>
         </ng-container>
 

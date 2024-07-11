@@ -1,7 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {NhaCungCapService} from "../../../../services/categories/nha-cung-cap.service";
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
@@ -9,6 +8,7 @@ import {LOAI_PHIEU, RECORD_STATUS} from "../../../../constants/config";
 import {PaymentTypeService} from "../../../../services/categories/payment-type.service";
 import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
 import { SETTING } from '../../../../constants/setting';
+import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
 
 @Component({
   selector: 'return-from-customer-note-detail',

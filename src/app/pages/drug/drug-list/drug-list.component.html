@@ -1,9 +1,10 @@
-<div class="row" *ngIf="haveRoles(['THUOC_DS'])">
+<div class="row">
   <div class="col-md-3">
     <div class="sidebar-bg">
       <form class="mb-3" [formGroup]="formData">
         <label>Tìm theo</label>
-        <input formControlName="tenThuoc" (keyup.enter)="searchPage()" class="form-control" type="text" id="searchTen" name="searchTen" placeholder="Tìm thuốc theo tên..." />
+        <input formControlName="tenThuoc" (keyup.enter)="searchPage()" class="form-control" type="text" id="searchTen"
+          name="searchTen" placeholder="Tìm thuốc theo tên..." />
 
         <div class="control-group d-flex gap-5 align-items-center">
           <input type="checkbox" formControlName="dataDelete" (ngModelChange)="searchPage()"
@@ -30,7 +31,7 @@
       <fieldset class="baocao-filter">
         <div class="d-flex justify-content-between gap-10">
           <input type="button" value="Xem" (click)="searchPage()" class="btn btn-primary w-50">
-          <button *ngIf="haveRoles(['THUOC_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+          <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
         </div>
         <hr style="margin-top:10px" />
       </fieldset>
@@ -40,10 +41,9 @@
           method="post">
           <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
             <div style="display: none"><input id="uploadFile" name="uploadFile" type="file"><br></div>
-            <input type="button" value="Tải File" title="Tải file"
-                   (click)="export('drug-list.xlsx')"
+            <input type="button" value="Tải File" title="Tải file" (click)="export('drug-list.xlsx')"
               class="btn btn-default btn-outline" accept="Excel/*.xlsx">
-            <a class="btn btn-default btn-outline" (click)="export('drug-list.xlsx')">Xuất File</a>
+            <a class="btn btn-default btn-outline" (click)="export('danh-sach-thuoc.xlsx')">Xuất File</a>
           </div>
         </form>
       </fieldset>
@@ -56,7 +56,7 @@
         <h2 style="margin-bottom: 0px;">
           <b ng-if="typeItem == 0 || typeItem == null">
             <span class="text-uppercase">{{title}} </span>
-            <span class="form-inline" style="font-size: 14px" ng-show="filterModel.DrugStoreId == '0012'">
+            <span class="form-inline" style="font-size: 14px" *ngIf="getMaNhaThuoc() == '0012'">
               <i class="fas fa-sign-out-alt" style="color: green"></i> Đi tới trang
               <input type="number" class="form-control mb-0" value="1" style="width: 75px" min="1" max="totalPages"
                 (keyup.enter)=goToPage($event)>
@@ -64,10 +64,10 @@
           </b>
         </h2>
         <div class="baocao-actions">
-          <button *ngIf="!this.formData.value.dataDelete && haveRoles(['THUOC_XOA'])" (click)="deleteMulti()"
+          <button *ngIf="!this.formData.value.dataDelete" (click)="deleteMulti()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa thuốc đã chọn
           </button>
-          <button *ngIf="this.formData.value.dataDelete && haveRoles(['THUOC_XOA'])" (click)="deleteMultiDatabase()"
+          <button *ngIf="this.formData.value.dataDelete" (click)="deleteMultiDatabase()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa vĩnh viễn
           </button><!-- end ngIf: isSuperUser -->
           <button *ngIf="this.formData.value.dataDelete" (click)="restoreMulti()"
@@ -104,12 +104,12 @@
               <div ng-switch-when="true">
                 <div ng-transclude="">
                   <div class="text-center ng-scope">
-                    <app-preview-image [heigh]="'50px'" [width]="'50px'" [pathImage]="data.imagePreviewUrl" ></app-preview-image>
+                    <app-preview-image [heigh]="'50px'" [width]="'50px'"
+                      [pathImage]="data.imagePreviewUrl"></app-preview-image>
                   </div>
                   <div class="d-flex gap-5 mt-3 ng-scope">
                     <div onclick="event.preventDefault();" class="flex-grow-1">
-                      <button class="btn btn-primary btn-sm "
-                        (click)="onUploadImageDialog(data);"><i
+                      <button class="btn btn-primary btn-sm " (click)="onUploadImageDialog(data);"><i
                           class="fa-regular fa-folder-arrow-up"></i></button>
                     </div>
                     <div class="flex-grow-1" onclick="event.preventDefault();" title="">
@@ -204,65 +204,74 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let data">
-            <div ng-if="!ownerPricesSettingActivated">
+            <div *ngIf="!(ownerPrices && isSlaveDrugStore())">
               <div *ngIf="data.recordStatusId == 0" class="baocao-actions baocao-actions-row">
                 <div class="baocao-actions-item">
-                  <span *ngIf="haveRoles(['THUOC_SUA'])" title="sửa" ng-if="permittedFields.Drug_Write">
+                  <span title="sửa" *ngIf="permittedFields.drug_Write">
                     <a (click)="openAddEditDialog(data.id)" class="btn btn-primary btn-sm">
                       <i class="fa-regular fa-pen-to-square"></i>
                     </a>
                   </span>
-                  <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs" *ngIf="haveRoles(['THUOC_XOA'])">
-                    <a (click)="delete('Bạn có chắc chắn muốn xóa thuốc '+data.maThuoc + '-' + data.tenThuoc + ' ?',data)"
+                  <span *ngIf="permittedFields.drug_Write && !isChildDrugStore()">
+                    <a (click)="delete('Bạn có chắc chắn muốn xóa thuốc '+ data.maThuoc + '-' + data.tenThuoc + ' ?',data)"
                       class="btn btn-danger btn-sm">
                       <i class="fa-regular fa-trash"></i>
                     </a>
                   </span>
                 </div>
-                <div class="baocao-actions-item" *ngIf="haveRoles(['THUOC_LSDG'])">
-                  <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}" class="btn btn-primary btn-sm">
+                <div class="baocao-actions-item">
+                  <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                    class="btn btn-primary btn-sm">
                     LS
                   </a>
                 </div>
               </div>
 
               <div *ngIf="data.recordStatusId == 2" class="baocao-actions baocao-actions-row">
+                <span *ngIf="isChildDrugStore()" class="btn btn-primary btn-sm">
+                  <a title="xem" (click)="openDetailDialog(data.id)">
+                    <i class="fa-regular fa-eye"></i>
+                  </a>
+                </span>
                 <div class="baocao-actions-item">
-                  <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs" class="btn btn-warning btn-sm"
+                  <span *ngIf="permittedFields.drug_Write && !isChildDrugStore()" class="btn btn-warning btn-sm"
                     (click)="restore('',data)">
                     Khôi phục
                   </span>
                 </div>
                 <div class="baocao-actions-item">
-                  <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
+                  <span *ngIf="permittedFields.drug_Write && !isChildDrugStore()">
                     <a title="xóa"
                       (click)="deleteDatabase('Bạn có muốn xóa vĩnh viễn thuốc có mã ' + '\'' + data.maThuoc  + '\''  ,data)"
                       class="btn btn-danger btn-sm">
                       <i class="fa-regular fa-trash"></i>
                     </a>
                   </span>
-                  <a title="lịch sử giao dịch" href="/Report/DrugTransHistories?drugId=" class="btn btn-primary btn-sm">
+                  <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                    class="btn btn-primary btn-sm">
                     LS
                   </a>
                 </div>
               </div>
             </div>
-            <div ng-if="ownerPricesSettingActivated" class="ng-hide">
-              <div ng-if="gridItem.RecordStatusId == 0" class="baocao-actions">
+            <div *ngif="ownerPrices && isSlaveDrugStore()">
+              <div *ngIf="data.recordStatusId == 0" class="baocao-actions">
                 <a title="sửa" class="btn btn-primary btn-sm" href="#"
                   ng-click="onQuickUpdateDrugInfos(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
                     class="fa-regular fa-pen-to-square"></i></a>
-                <a title="lịch sử giao dịch" href="/Report/DrugTransHistories?drugId=" class="btn btn-primary btn-sm">
+                <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                  class="btn btn-primary btn-sm">
                   LS
                 </a>
               </div>
-              <div ng-if="gridItem.RecordStatusId == 2" class="baocao-actions">
-                <span ng-if="filterModel.IsSlaveDs">
-                  <a title="xem" href="/Thuocs/Details/" class="btn btn-primary btn-sm">
+              <div *ngIf="data.recordStatusId == 2" class="baocao-actions">
+                <span *ngif="isChildDrugStore()">
+                  <a title="xem" (click)="openAddEditDialog(data.id)" class="btn btn-primary btn-sm">
                     <i class="fa-regular fa-eye"></i>
                   </a>
                 </span>
-                <a title="lịch sử giao dịch" href="/Report/DrugTransHistories?drugId=" class="btn btn-primary btn-sm">
+                <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                  class="btn btn-primary btn-sm">
                   LS
                 </a>
               </div>

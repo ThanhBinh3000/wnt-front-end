@@ -11,4 +11,9 @@ export class PhieuNhapService extends BaseService {
   constructor(httpClient: HttpClient) {
     super(httpClient, 'wnt-inventory','phieu-nhap');
   }
+
+  getDebtSupplier(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/get-debt-payment-amount`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

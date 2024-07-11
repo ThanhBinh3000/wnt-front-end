@@ -15,6 +15,7 @@ import { DrugMappingCommonDialogComponent } from './drug-mapping-common-dialog/d
 import {ComponentsModule} from "../../component/base/components.module";
 import {DrugConnectListComponent} from "./drug-connect-list/drug-connect-list.component";
 import {DrugConnectAddEditDialogComponent} from "./drug-connect-add-edit-dialog/drug-connect-add-edit-dialog.component";
+import { MultipleWarehouseInventoryDialogComponent } from './multiple-warehouse-inventory-dialog/multiple-warehouse-inventory-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {DrugConnectAddEditDialogComponent} from "./drug-connect-add-edit-dialog/
     DrugSearchPriceInOutDialogComponent,
     DrugMappingCommonDialogComponent,
     DrugConnectListComponent,
-    DrugConnectAddEditDialogComponent
+    DrugConnectAddEditDialogComponent,
+    MultipleWarehouseInventoryDialogComponent
   ],
     imports: [
       CommonModule,
@@ -43,7 +45,8 @@ import {DrugConnectAddEditDialogComponent} from "./drug-connect-add-edit-dialog/
     DrugUpdateInpriceDialogComponent,
     DrugUpdateAdditionalInfoDialogComponent,
     DrugSearchPriceInOutDialogComponent,
-    DrugMappingCommonDialogComponent
+    DrugMappingCommonDialogComponent,
+    MultipleWarehouseInventoryDialogComponent
   ],
 })
 export class DrugModule {
