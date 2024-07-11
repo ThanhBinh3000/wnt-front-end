@@ -1,7 +1,6 @@
 import {Component, ElementRef, Injector, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {NhaCungCapService} from "../../../../services/categories/nha-cung-cap.service";
 import {ThuocService} from "../../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../../services/products/don-vi-tinh.service";
@@ -17,6 +16,7 @@ import { CustomerAddEditDialogComponent } from '../../../customer/customer-add-e
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
 import { DrugDetailDialogComponent } from '../../../drug/drug-detail-dialog/drug-detail-dialog.component';
 import { DatePipe } from '@angular/common';
+import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
 
 @Component({
   selector: 'return-from-customer-note-screen',

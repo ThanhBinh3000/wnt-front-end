@@ -1,7 +1,6 @@
 import { Component, ElementRef, Injector, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from "../../../../component/base/base.component";
-import { PhieuNhapService } from "../../../../services/thuchi/phieu-nhap.service";
 import { LOAI_PHIEU, LOAI_SAN_PHAM, RECORD_STATUS } from "../../../../constants/config";
 import { NhaCungCapService } from "../../../../services/categories/nha-cung-cap.service";
 import { DrugAddEditDialogComponent } from "../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component";
@@ -20,6 +19,8 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import moment from 'moment';
 import { DrugUpdateBatchDialogComponent } from '../../../drug/drug-update-batch-dialog/drug-update-batch-dialog.component';
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
+import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
+import { MultipleWarehouseInventoryDialogComponent } from '../../../drug/multiple-warehouse-inventory-dialog/multiple-warehouse-inventory-dialog.component';
 
 @Component({
   selector: 'receipt-note-screen',
@@ -47,10 +48,13 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   enableElectronicInvoice = this.authService.getSettingByKey(SETTING.ENABLE_ELECTRONIC_INVOICE).activated;
   displayImageProduct = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS).activated;
   enableVATOnNoteItem = this.authService.getSettingByKey(SETTING.ENABLE_VAT_ON_NOTE_ITEM).activated;
+  enableDeliveryPickUp = this.authService.getSettingByKey(SETTING.ENABLE_DELIVERY_PICK_UP).activated;
+  refStoreForProducts = this.authService.getSettingByKey(SETTING.REF_STORE_FOR_PRODUCTS);
 
   //Permit
   permittedFields = {
     drug_ViewInputPrice: true,
+    drug_ViewInventory: true,
   }
 
   constructor(
@@ -99,6 +103,9 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     }
     if (!this.enableVATOnNoteItem) {
       val = val.filter(e => e !== 'vat');
+    }
+    if (!this.permittedFields.drug_ViewInventory) {
+      val = val.filter(e => e !== 'ton');
     }
     return val;
   }
@@ -286,7 +293,8 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
           this.dataTable[0].chietKhau = 0;
           this.dataTable[0].vat = 0;
           this.dataTable[0].connectivityStatusId = 0;
-          this.dataTable[0].tonKho = data.heSo > 1 ? data.inventory?.lastValue / data.heSo : data.inventory?.lastValue;
+          this.dataTable[0].tonKho = data.inventory != null ? (data.heSo > 1 ? data.inventory?.lastValue / data.heSo : data.inventory?.lastValue) : 0;
+          console.log(data);
           console.log(this.dataTable[0]);
           this.getItemAmount(this.dataTable[0]);
           this.focusInputSoLuong();
@@ -470,14 +478,14 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     if (!item) return '';
 
     var retVal = '';
-    if (item.expiredDate != null && item.expiredDate.length > 0) {
-      retVal = moment(item.expiredDate).format('DD/MM/YYYY');
+    if (item.hanDung != null && item.hanDung.length > 0) {
+      retVal = moment(item.hanDung).format('DD/MM/YYYY');
     }
-    if (item.batchNumber != null && item.batchNumber.length > 0) {
+    if (item.soLo != null && item.soLo.length > 0) {
       if (retVal.length == 0) {
-        retVal = item.batchNumber;
+        retVal = item.soLo;
       } else {
-        retVal = retVal.concat("\n(", item.batchNumber, ")");
+        retVal = retVal.concat("\n(", item.soLo, ")");
       }
     }
 
@@ -529,12 +537,17 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     }
   }
 
-  async onChangeSupplier($event: any){
-    if($event){
+  async onChangeSupplier($event: any) {
+    if ($event) {
       let res = this.enableCustomerToSupplier ? await this.khachHangService.getDetail($event.id) : await this.nhaCungCapService.getDetail($event.id);
       if (res?.status == STATUS_API.SUCCESS) {
         this.nhaCungCap = res.data;
         this.nhaCungCap.maSoThue = this.enableCustomerToSupplier ? res.data.taxCode : res.data.maSoThue;
+        this._service.getDebtSupplier(this.formData.value).then((i) => {
+          if (i) {
+            this.nhaCungCap.debtAmount = i.data;
+          }
+        });
         console.log(this.nhaCungCap);
       }
     }
@@ -616,7 +629,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   }
 
   openUpdateBatchDialog(drug: any) {
-    if(drug.thuocThuocId > 0){
+    if (drug.thuocThuocId > 0) {
       const dialogRef = this.dialog.open(DrugUpdateBatchDialogComponent, {
         data: drug,
         width: '600px',
@@ -628,7 +641,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
         }
       });
     }
-    else{
+    else {
       this.notification.error(MESSAGE.ERROR, 'Hãy chọn thuốc muốn cập nhật số lô/hạn dùng.');
     }
   }
@@ -638,7 +651,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       var data = {
         id: this.nhaCungCap?.id,
         name: this.enableCustomerToSupplier ? this.nhaCungCap?.tenKhachHang : this.nhaCungCap?.tenNhaCungCap,
-        typeId : LOAI_PHIEU.PHIEU_NHAP
+        typeId: LOAI_PHIEU.PHIEU_NHAP
       };
       const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
         data: data,
@@ -650,8 +663,25 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   }
 
-  updateInPrice($event: any, data: any) {
+  async updateInPrice($event: any, data: any) {
+    if (data == null || data.thuocThuocId <= 0) {
+      this.notification.error(MESSAGE.ERROR, 'Hãy chọn thuốc muốn cập nhật giá.');
+      return;
+    }
+    if (data.isProdRef && this.refStoreForProducts.activated && this.refStoreForProducts.value != '' && this.refStoreForProducts.value != null
+      && (this.refStoreForProducts.value == '0012' || this.refStoreForProducts.value == 'DQG' || this.refStoreForProducts.value == 'DQGB')) {
 
+    }
+    else{
+
+    }
+  }
+
+  async onGetDataDetailLastValueWarehouse(data: any) {
+    this.dialog.open(MultipleWarehouseInventoryDialogComponent, {
+      data: {thuocId: data.thuocThuocId, tenThuoc: data.tenThuoc},
+      width: '600px',
+    });
   }
 
 }
