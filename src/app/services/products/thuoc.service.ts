@@ -47,4 +47,9 @@ export class ThuocService extends BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
+  getDataDetailLastValueWarehouse(id: number) {
+    const url = `/api/wnt-products/thuoc/get-data-detail-last-value-warehouse/${id}`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
+
 }

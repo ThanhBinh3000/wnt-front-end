@@ -1,0 +1,28 @@
+<!-- Chi tiết số tồn tại các kho -->
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header border-bottom-header">
+            <div class="modal-title">
+                <button type="button" class="close" (click)="closeModal()">&times;</button>
+                <h4 class="control-label">Chi tiết tồn tại các kho của thuốc: {{data.tenThuoc}}</h4>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Kho</th>
+                <th>Tồn kho <br />(&Sigma;= {{ lastValueAll | number }})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of lstLastValue">
+                <td>{{ i.nameStore }}</td>
+                <td class="text-right">{{ i.value | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        <div class="modal-footer">
+            <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>

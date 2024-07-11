@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
 import {UploadImageComponent} from "../../../component/upload-image/upload-image.component";
 import {UploadFileService} from "../../../services/file/upload-file.service";
+import { SETTING } from '../../../constants/setting';
 @Component({
   selector: 'drug-list',
   templateUrl: './drug-list.component.html',
@@ -27,6 +28,14 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   listDonViTinh : any[] = []
   listWarehouse : any[] = []
   listProductTypes : any[] = []
+
+  //Permitted
+  permittedFields = {
+    drug_Write: true,
+  }
+
+  // Settings
+  ownerPrices = this.authService.getSettingByKey(SETTING.SETTING_OWNER_PRICES).activated;
 
   constructor(
     injector: Injector,
@@ -115,6 +124,22 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     });
   }
 
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
+  }
+
+  isSlaveDrugStore(){
+    return this.authService.getNhaThuoc().isSlaveDrugStore;
+  }
+
+  isChildDrugStore(){
+    return this.authService.getNhaThuoc().isChildDrugStore;
+  }
+
   openAddEditDialog($event:any){
     console.log($event);
     const dialogRef = this.dialog.open(DrugAddEditDialogComponent, {
@@ -135,7 +160,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     });
   }
 
-  async getUrl(path){
+  async getUrl(path: any){
     if(path){
       console.log(path);
       console.log(this.uploadFileService.getUrl(path));

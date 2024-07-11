@@ -2,7 +2,6 @@ import {Component, ElementRef, Injector, Input, OnInit, QueryList, ViewChild, Vi
 import { Title } from '@angular/platform-browser';
 import {LOAI_PHIEU} from "../../../constants/config";
 import {BaseComponent} from "../../../component/base/base.component";
-import {PhieuNhapService} from "../../../services/thuchi/phieu-nhap.service";
 import {NhaCungCapService} from "../../../services/categories/nha-cung-cap.service";
 import {ThuocService} from "../../../services/products/thuoc.service";
 import {DonViTinhService} from "../../../services/products/don-vi-tinh.service";

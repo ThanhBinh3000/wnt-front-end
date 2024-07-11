@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
 import {RECORD_STATUS, TRANG_THAI_PHIEU_KHAM} from '../../../../constants/config';
 import {SETTING} from "../../../../constants/setting";
 import {MatSort} from "@angular/material/sort";

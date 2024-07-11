@@ -1,7 +1,7 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {BaseComponent} from "../../../../component/base/base.component";
-import {PhieuNhapService} from "../../../../services/thuchi/phieu-nhap.service";
+import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
 
 @Component({
   selector: 'receipt-note-detail',
