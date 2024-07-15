@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
+import {Component, Inject, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import { STATUS_API } from "../../../constants/message";
 import { BaseComponent } from "../../../component/base/base.component";
 import { Title } from "@angular/platform-browser";
@@ -14,6 +14,8 @@ import {
 import { Validators } from '@angular/forms';
 import { dateValidator } from '../../../validators/date.validator';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
+import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
+import {NgSelectComponent} from "@ng-select/ng-select";
 
 @Component({
   selector: 'drug-add-edit-dialog',
@@ -21,12 +23,18 @@ import { LOAI_SAN_PHAM } from '../../../constants/config';
   styleUrls: ['./drug-add-edit-dialog.component.css'],
 })
 export class DrugAddEditDialogComponent extends BaseComponent implements OnInit {
-
+  @ViewChild('selectDrug') selectDrug!: NgSelectComponent;
   checkTab: string = 'main-information';
   listNhomThuoc: any[] = []
+  listThuoc$ = new Observable<any[]>;
+  drugDefault: any = {};
+  searchThuocTerm$ = new Subject<string>();
   listDonViTinh: any[] = []
   listWarehouse: any[] = []
   listProductTypes: any[] = []
+  dataThayThe: any[] = [];
+  dataBanKem: any[] = [];
+
 
 
   constructor(
@@ -35,6 +43,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     private _service: ThuocService,
     private nhomThuocService: NhomThuocService,
     private donViTinhService: DonViTinhService,
+    private thuocService : ThuocService,
     private warehouseLocationService: WarehouseLocationService,
     private productTypesService: ProductTypesService,
     public dialogRef: MatDialogRef<DrugAddEditDialogComponent>,
@@ -84,6 +93,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       nhaThuocMaNhaThuoc: [],
       productTypeId: [1],
       groupIdMapping: [0],
+      noted: [],
       flag: [false],
       tenDonViTinhXuatLe: [],
       tenDonViTinhThuNguyen: [],
@@ -96,6 +106,8 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     if (this.drugId) {
       const data = await this.detail(this.drugId);
       this.formData.patchValue(data);
+      this.dataThayThe = data.replaceGoods;
+      this.dataBanKem = data.bundleGoods;
     }
     else {
       // Generate mã thuốc
@@ -134,11 +146,43 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
         this.listProductTypes = res.data;
       }
     });
+
+    this.listThuoc$ = this.searchThuocTerm$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        if (term.length >= 2) {
+          let bodyThuoc = {
+            textSearch: term,
+            paggingReq: { limit: 25, page: 0 },
+            recordStatusId: 0,
+            searchInfoType: 0,
+            searchType: 5,
+            ignoreLoadingIndicator: true,
+            typeService: 0
+          };
+          return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              return res.data.content;
+            }
+          }));
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([]))
+    );
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
   }
 
   async createUpdate() {
     let body = this.formData.value;
-    //console.log(body);
+    body.replaceGoods = this.dataThayThe;
+    body.bundleGoods = this.dataBanKem;
+    console.log(body, "body");
     let res = await this.save(body);
     if (res) {
       this.dialogRef.close(res);
@@ -191,5 +235,40 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
       }
     });
   }
+
+  async onDrugChange(data: any) {
+    if (data && data.id > 0) {
+      this.thuocService.getDetail(data.id).then((res) => {
+        if (res?.status == STATUS_API.SUCCESS) {
+          var item = res.data;
+          let object = {
+            drugId: item.id,
+            maThuoc: item.maThuoc,
+            tenThuoc: item.tenThuoc,
+          }
+          this.dataThayThe.push(object)
+          console.log(this.dataThayThe, "000")
+        }
+      });
+    }
+  }
+
+  async onDrugChangeBanKem(data: any) {
+    if (data && data.id > 0) {
+      this.thuocService.getDetail(data.id).then((res) => {
+        if (res?.status == STATUS_API.SUCCESS) {
+          var item = res.data;
+          let object = {
+            drugId: item.id,
+            maThuoc: item.maThuoc,
+            tenThuoc: item.tenThuoc,
+          }
+          this.dataBanKem.push(object)
+          console.log(this.dataBanKem, "000")
+        }
+      });
+    }
+  }
+
 
 }

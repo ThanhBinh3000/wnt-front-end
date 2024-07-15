@@ -22,4 +22,9 @@ export class ReportService extends BaseService {
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
 
+  getInventoryWarehouseData(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/getInventoryWarehouseData`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
 }

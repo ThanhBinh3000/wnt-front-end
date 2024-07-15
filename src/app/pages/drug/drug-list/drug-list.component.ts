@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {BaseComponent} from "../../../component/base/base.component";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
@@ -20,6 +20,7 @@ import { SETTING } from '../../../constants/setting';
   styleUrls: ['./drug-list.component.css'],
 })
 export class DrugListComponent extends BaseComponent implements OnInit {
+  @ViewChild('importFile', { static: false }) importFile!: ElementRef;
   title: string = "Danh sách thuốc";
   displayedColumns = ['checkbox', '#', 'upload', 'tenThuoc', 'tenNhomThuoc', 'donVi', 'gia', 'discount', 'gioiHan', 'tonKho', 'tuKho', 'action'];
   drugID: number = 0;
@@ -77,7 +78,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     }
   }
 
-  onUploadImageDialog(data){
+  onUploadImageDialog(data: any){
     const dialogRef = this.dialog.open(UploadImageComponent, {
       width: '50%',
       height : '300px'
@@ -172,6 +173,10 @@ export class DrugListComponent extends BaseComponent implements OnInit {
     }else{
       return null;
     }
+  }
+
+  triggerFileInput() {
+    this.importFile.nativeElement.click();
   }
 
 }
