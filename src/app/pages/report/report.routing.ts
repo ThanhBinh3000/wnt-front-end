@@ -5,6 +5,7 @@ import {DrugTransactionHistoryComponent} from './drug-transaction-history/drug-t
 import {RevenueDetailsByDayComponent} from "./RevenueDetailsByDay/RevenueDetailsByDay.component";
 import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOutCommingDetailsByDay.component";
 import {ReportByCustomerComponent} from "./report-by-customer/report-by-customer.component";
+import {InventoryWarehouseDataComponent} from "./InventoryWarehouseData/InventoryWarehouseData.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
       {
         path: 'InOutCommingDetailsByDay',
         component: InOutCommingDetailsByDayComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'InventoryWarehouseReport',
+        component: InventoryWarehouseDataComponent,
         // canActivate: [AuthGuard],
       },
       {

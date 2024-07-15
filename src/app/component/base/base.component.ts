@@ -72,7 +72,7 @@ export class BaseComponent {
   protected readonly DATE_RANGE = DATE_RANGE;
 
   selectedFile: File | null = null;
-  dataImport: any[] = [];
+  dataImport: any;
   listDataDetail: any[] = [];
 
   constructor(
@@ -660,7 +660,7 @@ export class BaseComponent {
       });
       formData.append('file', this.selectedFile);
       await this.service.import(formData).then((res: any) => {
-        if (res.msg == MESSAGE.SUCCESS) {
+        if (res.message == MESSAGE.SUCCESS) {
           console.log(res.data, "res.data")
           this.dataImport = res.data
           console.log(this.dataImport, "this.dataImport")
