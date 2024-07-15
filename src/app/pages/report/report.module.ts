@@ -27,6 +27,7 @@ import {InOutCommingDetailsByDayComponent} from "./InOutCommingDetailsByDay/InOu
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {ReportByCustomerComponent} from "./report-by-customer/report-by-customer.component";
+import {InventoryWarehouseDataComponent} from "./InventoryWarehouseData/InventoryWarehouseData.component";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {ReportByCustomerComponent} from "./report-by-customer/report-by-customer
     TransactionHistoryReceiptItemTableComponent,
     RevenueDetailsByDayComponent,
     InOutCommingDetailsByDayComponent,
+    InventoryWarehouseDataComponent,
     ReportByCustomerComponent
   ],
   imports: [

@@ -40,10 +40,14 @@
         <form action="/Supplyer/Upload" class="upload-form ng-pristine ng-valid" enctype="multipart/form-data"
           method="post">
           <div class="mb-3 d-flex align-items-center gap-10 btn-group-flex">
-            <div style="display: none"><input id="uploadFile" name="uploadFile" type="file"><br></div>
-            <input type="button" value="Tải File" title="Tải file" (click)="export('drug-list.xlsx')"
-              class="btn btn-default btn-outline" accept="Excel/*.xlsx">
-            <a class="btn btn-default btn-outline" (click)="export('danh-sach-thuoc.xlsx')">Xuất File</a>
+<!--            <div style="display: none"><input id="uploadFile" name="uploadFile" type="file"><br></div>-->
+<!--            <input type="button" value="Tải File" title="Tải file"-->
+<!--                   (click)="export('drug-list.xlsx')"-->
+<!--              class="btn btn-default btn-outline" accept="Excel/*.xlsx">-->
+            <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
+            <a class="btn btn-default btn-outline" (click)="triggerFileInput()">Tải file</a>
+            <input class="btn btn-default btn-outline" type="file" #importFile id="importFile" (change)="handleSelectFile($event)" style="display: none;">
+            <a class="btn btn-default btn-outline" (click)="export('drug-list.xlsx')">Xuất File</a>
           </div>
         </form>
       </fieldset>

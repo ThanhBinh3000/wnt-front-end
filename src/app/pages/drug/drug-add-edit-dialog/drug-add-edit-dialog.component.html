@@ -684,39 +684,34 @@
           <div class="row">
             <div class="col-md-6">
               <label>Danh sách hàng thay thế</label>
-              <div item-search-filter="" mousetrap="" select-changed-callback="onReplaceDrugSelectChanged"
-                clear-after-selected="true" only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
-                cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId" class="">
-                <div ng-if="!showCamBarcodeScanner" class="">
-                  <div class="w-100">
-                    <div
-                      class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
-                      formControlName="data.selected" theme="bootstrap" id="itemSearchId"
-                      reset-search-input="clearAfterSelected" forward-enter-key="forwardEnterKey"
-                      ng-disabled="disabledMode">
-                      <div><span class="text-truncate-line ui-select-match ui-select-match"
-                          placeholder="Nhập mã, mã vạch hoặc tên..." id="itemSearchUISelectID"></span><input
-                          type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                          class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
-                          placeholder="Nhập mã, mã vạch hoặc tên..." ng-disabled="$select.disabled"
-                          ng-click="$select.activate()" formControlName="$select.search" role="combobox"
-                          aria-expanded="false" aria-label="Select box" ng-class="{'spinner': $select.refreshing}"
-                          ondrop="return false;" style="width: 686px;"></div>
-                      <ul
-                        class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                        ng-show="$select.open &amp;&amp; $select.items.length > 0" refresh="fetch($select)"
-                        refresh-delay="500" repeat="item in items" id="selectChoiceId"
-                        style="display: block; opacity: 0.013815;">
-                        <li class="ui-select-choices-group" id="ui-select-choices-30">
-                          <div class="divider ng-hide" ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                          <div ng-show="$select.isGrouped"
-                            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                            ng-bind="$group.name"></div>
-                        </li>
-                      </ul>
-                      <div class="ui-select-no-choice"></div>
-                    </div>
+              <div>
+                <div class="w-100">
+                  <div class="input-group">
+                    <ng-select #selectDrug
+                               class="w-100"
+                               appendTo="body"
+                               appearance="outline"
+                               [items]="listThuoc$ | async"
+                               [typeahead]="searchThuocTerm$"
+                               bindLabel="tenThuoc"
+                               bindValue="id"
+                               [minTermLength]="2"
+                               appendTo="body"
+                               appearance="outline"
+                               placeholder="Tra cứu theo tên, mã, mã vạch..."
+                               notFoundText="Không tìm thấy mục nào"
+                               (change)="searchThuocTerm$.next(''); onDrugChange($event)">
+                      <ng-template ng-label-tmp let-item="item">
+                        <span *ngIf="item.maThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                        <span *ngIf="!item.maThuoc">{{drugDefault.maThuoc}} - {{drugDefault.tenThuoc}}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index"
+                                   let-search="searchTerm">
+                                            <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
+                                              {{item.tenDonViTinhXuatLe}} - Gián bán : {{item.giaBanLe
+                                                |number}}</span>
+                      </ng-template>
+                    </ng-select>
                   </div>
                 </div>
               </div>
@@ -727,9 +722,9 @@
                     <th>Mã - Tên thuốc</th>
                     <th>#</th>
                   </tr>
-                  <tr ng-repeat="i in viewModel.ReplaceGoods" class="ng-scope">
-                    <td class="ng-binding">1</td>
-                    <td class="ng-binding">TH503- levoth</td>
+                  <tr ng-repeat="i in viewModel.ReplaceGoods" class="ng-scope" *ngFor="let item of dataThayThe, index as i">
+                    <td class="ng-binding">{{i + 1}}</td>
+                    <td class="ng-binding">{{item.maThuoc}} - {{item.tenThuoc}}</td>
                     <td>
                       <a title="Xóa khỏi danh sách"
                         ng-click="onDelete(1,i); $event.preventDefault(); $event.stopPropagation();"
@@ -743,63 +738,55 @@
             </div>
             <div class="col-md-6">
               <label>Danh sách hàng bán kèm</label>
-              <div item-search-filter="" mousetrap="" select-changed-callback="onBundledDrugSelectChanged"
-                clear-after-selected="true" only-single-item="true" show-cam-barcode-scanner="deviceType == 1"
-                cam-barcode-scanned-callback="onCamBarcodeScanned" record-status-id="0"
-                inventory-viewable="permittedFields.Drug_ViewInventory" search-type="5" id="drugSearchBoxId" class="">
-                <div ng-if="!showCamBarcodeScanner" class="">
-                  <div class="w-100">
-                    <div
-                      class="ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control ng-valid ng-dirty ng-touched"
-                      ng-class="{open: $select.open}" formControlName="data.selected" theme="bootstrap"
-                      id="itemSearchId" reset-search-input="clearAfterSelected" forward-enter-key="forwardEnterKey"
-                      ng-disabled="disabledMode">
-                      <div><span class="text-truncate-line ui-select-match ui-select-match"
-                          placeholder="Nhập mã, mã vạch hoặc tên..." id="itemSearchUISelectID"></span><input
-                          type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                          class="ui-select-search input-xs ng-valid ng-dirty ng-touched"
-                          placeholder="Nhập mã, mã vạch hoặc tên..." ng-disabled="$select.disabled"
-                          ng-click="$select.activate()" ng-model="$select.search" role="combobox" aria-expanded="false"
-                          aria-label="Select box" ng-class="{'spinner': $select.refreshing}" ondrop="return false;"
-                          style="width: 686px;"></div>
-                      <ul
-                        class="itemSelectChoices ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-hide"
-                        ng-show="$select.open &amp;&amp; $select.items.length > 0" refresh="fetch($select)"
-                        refresh-delay="500" repeat="item in items" id="selectChoiceId"
-                        style="display: block; opacity: 0;">
-                        <li class="ui-select-choices-group" id="ui-select-choices-31">
-                          <div class="divider ng-hide" ng-show="$select.isGrouped &amp;&amp; $index > 0"></div>
-                          <div ng-show="$select.isGrouped"
-                            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
-                            ng-bind="$group.name"></div>
-                        </li>
-                      </ul>
-                      <div class="ui-select-no-choice"></div>
-                    </div>
+              <div>
+                <div class="w-100">
+                  <div class="input-group">
+                    <ng-select #selectDrug
+                               class="w-100"
+                               appendTo="body"
+                               appearance="outline"
+                               [items]="listThuoc$ | async"
+                               [typeahead]="searchThuocTerm$"
+                               bindLabel="tenThuoc"
+                               bindValue="id"
+                               [minTermLength]="2"
+                               appendTo="body"
+                               appearance="outline"
+                               placeholder="Tra cứu theo tên, mã, mã vạch..."
+                               notFoundText="Không tìm thấy mục nào"
+                               (change)="searchThuocTerm$.next(''); onDrugChangeBanKem($event)">
+                      <ng-template ng-label-tmp let-item="item">
+                        <span *ngIf="item.maThuoc">{{item.maThuoc}}-{{item.tenThuoc}}</span>
+                        <span *ngIf="!item.maThuoc">{{drugDefault.maThuoc}} - {{drugDefault.tenThuoc}}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index"
+                                   let-search="searchTerm">
+                                            <span [ngOptionHighlight]="search">{{item.maThuoc}}-{{item.tenThuoc}}-
+                                              {{item.tenDonViTinhXuatLe}} - Gián bán : {{item.giaBanLe
+                                                |number}}</span>
+                      </ng-template>
+                    </ng-select>
                   </div>
                 </div>
-                <span id="Logo" style="display:none;"></span>
               </div>
               <table class="table table-bordered w-100">
                 <tbody>
-                  <tr>
-                    <th>STT</th>
-                    <th>Mã - Tên thuốc</th>
-                    <th>#</th>
-                  </tr>
-                  <tr ng-repeat="i in viewModel.BundleGoods" class="ng-scope">
-                    <td class="ng-binding">1</td>
-                    <td class="ng-binding">TH0484- BĂNG KEO CÁ NHÂN KIDS BAND (PORORO - HỘP
-                      THIẾC) 2 SIZE 25 MIẾNG
-                    </td>
-                    <td>
-                      <a title="Xóa khỏi danh sách"
-                        ng-click="onDelete(2,i); $event.preventDefault(); $event.stopPropagation();"
-                        class="btn btn-danger btn-sm">
-                        <i class="fa-regular fa-trash"></i>
-                      </a>
-                    </td>
-                  </tr>
+                <tr>
+                  <th>STT</th>
+                  <th>Mã - Tên thuốc</th>
+                  <th>#</th>
+                </tr>
+                <tr ng-repeat="i in viewModel.ReplaceGoods" class="ng-scope" *ngFor="let item of dataBanKem, index as i">
+                  <td class="ng-binding">{{i + 1}}</td>
+                  <td class="ng-binding">{{item.maThuoc}} - {{item.tenThuoc}}</td>
+                  <td>
+                    <a title="Xóa khỏi danh sách"
+                       ng-click="onDelete(1,i); $event.preventDefault(); $event.stopPropagation();"
+                       class="btn btn-danger btn-sm">
+                      <i class="fa-regular fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
                 </tbody>
               </table>
             </div>
