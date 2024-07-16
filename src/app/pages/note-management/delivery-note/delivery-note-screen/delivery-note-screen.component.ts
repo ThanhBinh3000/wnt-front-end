@@ -33,7 +33,7 @@ import { DoctorAddEditDialogComponent } from '../../../doctor/doctor-add-edit-di
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, forkJoin, from, observeOn, of, startWith, switchMap } from 'rxjs';
 import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component';
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
-import {PickUpOrderService} from "../../../../services/order/pick-up-order.service";
+import { PickUpOrderService } from "../../../../services/order/pick-up-order.service";
 
 @Component({
   selector: 'delivery-note-screen',
@@ -44,7 +44,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   title: string = "Phiếu bán hàng";
   @Input() dataListShoppingCart: any;
 
-  listBacSys : any[] = [];
+  listBacSys: any[] = [];
   listThuoc$ = new Observable<any[]>;
   listKhachHang$ = new Observable<any[]>;
   searchThuocTerm$ = new Subject<string>();
@@ -61,7 +61,8 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   isAdminUser: boolean = true;
   loaiGiaBan: number = 0;
   drugDefault: any = {};
-  copyId = 0;
+  copyId: number = 0;
+  sampleNoteId: number = 0;
 
 
   notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
@@ -120,7 +121,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       doctorComments: [''],
       locked: [],
       khachHang: [{}],
-      uId:[],
+      uId: [],
       modified: [],
       modifiedByUserId: [0]
     });
@@ -134,15 +135,75 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
     this.loadDataOpt();
     this.route.queryParams.subscribe(params => {
       this.copyId = Number(params['copyId']);
+      this.sampleNoteId = Number(params['sampleNoteId']);
     });
     this.getId();
     if (this.isUpdateView() || this.copyId > 0) {
       let noteId = !this.idUrl ? this.copyId : this.idUrl;
       let data = await this.detail(noteId);
-      await this.getDataUpdate(data , data.chiTiets);
+      await this.getDataUpdate(data, data.chiTiets);
+    }
+    else if (this.sampleNoteId > 0) {
+      let data: any = {};
+      let res = await this._service.convertSampleNoteToDeliveryNote(this.sampleNoteId);
+      if (res?.status == STATUS_API.SUCCESS) {
+        data = res.data;
+        this.formData.patchValue(data);
+        this.listKhachHang$ = of([{ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText }]);
+        this.onCustomerChange({ id: data.khachHangMaKhachHang, tenKhachHang: data.khachHangMaKhachHangText });
+        console.log(data);
+      }
+      var order = 0;
+      data.chiTiets.forEach((i: any) => {
+        if (i.thuocThuocId > 0) {
+          this.thuocService.getDetail(i.thuocThuocId).then((res) => {
+            if (res?.status == STATUS_API.SUCCESS) {
+              var item = res.data;
+              order++;
+              item.itemOrder = order;
+              item.thuocThuocId = i.thuocThuocId;
+              item.soLuong = i.soLuong;
+              item.donViTinhMaDonViTinh = i.donViTinhMaDonViTinh;
+              item.isEditingItem = false;
+              item.giaXuat = item.heSo > 1 ? item.giaBanLe * item.heSo : item.giaBanLe;
+              item.donViTinhs = item.listDonViTinhs;
+              item.vat = 0;
+              item.chietKhau = 0;
+              item.retailPrice = item.giaBanLe;
+              item.tonHT = item.inventory ? item.inventory.lastValue : 0;
+              item.ton = item.tonHT;
+              item.isModified = false;
+              item.isProdRef = false;
+              item.id = 0;
+              item.heSo = item.heSo;
+              item.maThuocText = item.maThuoc;
+              item.tenThuocText = item.tenThuoc;
+              item.maThuoc = item.maThuoc;
+              item.tenThuoc = item.tenThuoc;
+              item.donViThuNguyenMaDonViTinh = item.donViThuNguyenMaDonViTinh;
+              item.donViXuatLeMaDonViTinh = item.donViXuatLeMaDonViTinh;
+              item.connectivityStatusId = 0;
+              item.referenceId = 0;
+              item.storeId = 0;
+              item.recordStatusId = 0;
+              item.giaBanBuon = item.giaBanBuon;
+              item.giaBanLe = item.giaBanLe;
+              if (this.loaiGiaBan == 1) {
+                item.giaXuat = item.giaBanBuon;
+                item.retailPrice = item.heSo > 1 ? item.giaBanBuon / item.heSo : item.giaBanBuon;
+              }
+              if (item.heSo > 1) {
+                item.tonHT = item.ton / item.heSo;
+              }
+              this.getItemAmount(item);
+              this.dataTable.push(item);
+            }
+          });
+        }
+      })
     }
 
-    if(!this.isUpdateView()){
+    if (!this.isUpdateView()) {
       console.log(this.isUpdateView());
       let body = {
         maLoaiXuatNhap: LOAI_PHIEU.PHIEU_XUAT,
@@ -150,15 +211,15 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       }
       await this.service.init(body).then((res) => {
         if (res && res.data) {
-            this.formData.controls['id'].setValue(0);
-             this.formData.controls['createdByUserId'].setValue(0);
-             this.formData.controls['modifiedByUserId'].setValue(0);
-             this.formData.controls['created'].setValue(null);
-             this.formData.controls['modified'].setValue(null);
-             this.formData.controls['soPhieuXuat'].setValue(res.data.soPhieuXuat);
-             this.formData.controls['ngayXuat'].setValue(res.data.ngayXuat);
-             this.formData.controls['khachHangMaKhachHang'].setValue(res.data.khachHangMaKhachHang);
-             this.formData.controls['khachHang'].setValue({ id: res.data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ" });
+          this.formData.controls['id'].setValue(0);
+          this.formData.controls['createdByUserId'].setValue(0);
+          this.formData.controls['modifiedByUserId'].setValue(0);
+          this.formData.controls['created'].setValue(null);
+          this.formData.controls['modified'].setValue(null);
+          this.formData.controls['soPhieuXuat'].setValue(res.data.soPhieuXuat);
+          this.formData.controls['ngayXuat'].setValue(res.data.ngayXuat);
+          this.formData.controls['khachHangMaKhachHang'].setValue(res.data.khachHangMaKhachHang);
+          this.formData.controls['khachHang'].setValue({ id: res.data.khachHangMaKhachHang, tenKhachHang: "Khách hàng lẻ" });
         }
       });
     }
@@ -178,10 +239,10 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           khachHangMaKhachHang: this.dataListShoppingCart.cusId,
           pickUpOrderId: this.dataListShoppingCart.id,
         })
-        this.dataListShoppingCart.chiTiets.forEach((item: any) =>{
+        this.dataListShoppingCart.chiTiets.forEach((item: any) => {
           this.dataTable.push(item)
         })
-        this.dataTable.filter(x => x.id > 0).forEach(x =>{
+        this.dataTable.filter(x => x.id > 0).forEach(x => {
           this.thuocService.getDetail(x.drugId).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
               var item = res.data;
@@ -720,7 +781,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       var data = {
         id: this.formData.get('khachHang')?.value.id,
         name: this.formData.get('khachHang')?.value.tenKhachHang,
-        typeId : LOAI_PHIEU.PHIEU_XUAT
+        typeId: LOAI_PHIEU.PHIEU_XUAT
       };
       const dialogRef = this.dialog.open(TransactionDetailByObjectDialogComponent, {
         data: data,
@@ -732,7 +793,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
 
   }
 
-  async getDataUpdate(data: any, chiTiets : any[]) {
+  async getDataUpdate(data: any, chiTiets: any[]) {
     this.formData.patchValue(data);
     this.dataTable = chiTiets;
     this.dataTable.filter(x => x.id > 0).forEach(x => {
