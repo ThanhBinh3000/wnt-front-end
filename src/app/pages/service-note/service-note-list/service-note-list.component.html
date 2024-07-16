@@ -258,10 +258,10 @@
                   <button *ngIf="noteServicePrint" class="btn btn-sm btn-primary" [matMenuTriggerFor]="printMenu"><i
                     class="fas fa-print"></i></button>
                   <mat-menu #printMenu="matMenu">
-                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In - A4</button>
-                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In - A5</button>
-                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In theo phòng TH - A4</button>
-                    <button mat-menu-item (click)="onPrint('printType')">Phiếu In theo phòng TH - A5</button>
+                    <button mat-menu-item (click)="printPreview('1', data.id)">Phiếu In - A4</button>
+                    <button mat-menu-item (click)="printPreview('2', data.id)">Phiếu In - A5</button>
+                    <button mat-menu-item (click)="printPreview('1', data.id)">Phiếu In theo phòng TH - A4</button>
+                    <button mat-menu-item (click)="printPreview('2', data.id)">Phiếu In theo phòng TH - A5</button>
                   </mat-menu>
 
                   <button *ngIf="noteServiceDelete" class="btn btn-sm btn-danger"

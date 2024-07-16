@@ -52,4 +52,8 @@ export class ThuocService extends BaseService {
     return this.httpClient.get<ResponseData>(url).toPromise();
   }
 
+  getDataBarcode(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/preview-print`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

@@ -112,4 +112,8 @@ export class HeaderComponent implements OnInit {
   }
 
     protected readonly LOAI_THU_CHI = LOAI_THU_CHI;
+
+  haveRoles(roles: string[]){
+    return roles.some((code:any) => this.authService.getUser().roles.some((role:any) => role.roleName === code));
+  }
 }

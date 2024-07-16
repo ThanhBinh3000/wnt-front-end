@@ -64,4 +64,6 @@ export class WarehouseTransferNoteDetailComponent extends BaseComponent implemen
     }
     return val;
   }
+
+  protected readonly LOAI_PHIEU = LOAI_PHIEU;
 }

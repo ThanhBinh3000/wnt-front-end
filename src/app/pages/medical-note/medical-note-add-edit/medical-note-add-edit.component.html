@@ -45,8 +45,7 @@
                     <button class="btn btn-primary"
                         [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock || action != 'view'"
                         *ngIf="action == 'view'">Sửa</button>
-                    <button class="btn btn-default" ng-show="noteModel.Id > 0 && permittedFields.NoteMedical_Print"
-                        ng-click="onPrint(noteModel.Id)">In</button>
+                    <button class="btn btn-default" (click)="printPreview('1')">In</button>
                     <button class="btn btn-primary" [disabled]="action != 'view' || !formData.value?.isDeb"
                         ng-click="onPaymetNote(noteModel)">Thanh toán</button>
                     <a *ngIf="formData.value?.id > 0" (click)="onLockNote()" title="Mở/Khóa phiếu"

@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="modal-content" *ngIf="kieuIn === 'InLieuDung'">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title"> In liều dùng</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formData">
+        <fieldset>
+          <div class="mb-3">
+            <label>Loại in tem</label>
+            <select class="form-control" formControlName="loaiIn">
+              <option value="In2Tem">In 2 tem</option>
+              <option value="In3Tem">In 3 tem</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Nhập số lượng in</label>
+            <input type="number" class="form-control" formControlName="slTem" min="1" max="totalPages"
+                   placeholder="Nhập số lượng cần in">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="print()"> In</button>
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+    </div>
+  </div>
+  <div class="modal-content" *ngIf="kieuIn === 'InHuongDan'">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      <h4 class="modal-title"> In hướng dẫn sử dụng</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formData">
+        <fieldset>
+          <div class="form-inline-flex mb-3">
+            <label class="col-md-2" for="hoatChat">Chọn hoạt chất</label>
+            <select class="form-control mb-0" id="chat" formControlName="chat" [(ngModel)]="selectedHoatChat" (ngModelChange)="onChange()">
+              <option *ngFor="let hoatChat of hoatChatList; let i = index" [value]="i" [selected]="hoatChat.selected">
+                {{ hoatChat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-inline-flex mb-3">
+            <label class="col-md-2">Cách pha</label>
+            <textarea class="form-control w-100 ng-pristine ng-untouched ng-valid" style="height: 100px;" formControlName="cachPha"></textarea>
+          </div>
+          <div class="form-inline-flex mb-3">
+            <label class="col-md-2">Cách uống</label>
+            <textarea class="form-control mb-0" formControlName="cachUong"></textarea>
+          </div>
+          <div class="form-inline-flex mb-3">
+            <label class="col-md-2">Số lượng cần in</label>
+            <input type="number" class="form-control mb-0" formControlName="slTem" min="1" max="totalPages">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="print()"> In</button>
+      <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>

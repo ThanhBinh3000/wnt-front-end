@@ -176,11 +176,14 @@
           In <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a (click)="printPreview()">In phiếu</a></li>
-          <li><a href="#" ng-click="onOpenFormPrint(3648150,'ipn')">In khác</a></li>
-          <li><a href="#" ng-click="onOpenFormPrint(3648150,'bbkn')">In biên bản</a></li>
-          <li><a href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=3648150&amp;LoaiPhieu=1',target = '_blank')">In
-              mã vạch thuốc</a></li>
+          <li><a (click)="printPreview('1')">In phiếu</a></li>
+          <li><a (click)="printPreview('ipn')">In khác</a></li>
+          <li><a (click)="printPreview('bbkn')">In biên bản</a></li>
+          <li>
+            <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: dataDetail.id, loaiPhieu: dataDetail.loaiXuatNhapMaLoaiXuatNhap}">
+              In mã vạch thuốc
+            </a>
+          </li>
         </ul>
       </div>
       <a class="btn btn-primary"

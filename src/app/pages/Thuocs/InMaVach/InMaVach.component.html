@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="sidebar-bg">
+      <form class="mb-3" [formGroup]="formData">
+        <fieldset>
+          <div class="input-group mb-3">
+            <select class="form-control" formControlName="idNhomThuoc">
+              <option value="0">Chọn nhóm thuốc</option>
+              <ng-container *ngFor="let item of listNhomThuoc">
+                <option [value]="item.id">{{ item.tenNhomThuoc }}</option>
+              </ng-container>
+            </select>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button" (click)="searchNhomThuoc()">Thêm</button>
+            </span>
+          </div>
+          <div class="mb-3">
+            <label> Thêm thông tin in ra </label>
+            <select class="form-control" formControlName="loaiIn">
+              <option value="Gia">In thêm giá</option>
+              <option value="Ten">In thêm tên</option>
+              <option value="TenGia" selected>In thêm tên/giá</option>
+              <option value="TenGiaDC">In thêm địa chỉ/tên/giá</option>
+              <option value="GiaDoi">In 2 giá</option>
+              <option value="In3Tem">In 3 tem</option>
+            </select>
+          </div>
+        </fieldset>
+        <div class="control-group d-flex gap-5 align-items-center">
+          <input type="checkbox" class="form-checkbox mb-0 mt-0" formControlName="khongInTenNhaThuoc">
+          <label class="mb-0"> Không in tên nhà thuốc</label>
+        </div>
+        <fieldset>
+          <div class="control-group d-flex justify-content-between gap-10">
+            <input type="button" value="In" title="In" class="btn btn-default w-50"
+                   (click)="print()"/>
+            <input type="button" value="Xóa hết" title="Xóa" class="btn btn-danger w-50"
+                   (click)="deleteData()"/>
+          </div>
+          <div class="control-group d-flex justify-content-between gap-10">
+            <input type="button" value="In liều dùng" title="In" class="btn btn-primary w-50"
+                   (click)="openAddEditDialog('InLieuDung')"/>
+            <input type="button" value="Xuất Excel" title="Xuất" class="btn btn-primary w-50"/>
+          </div>
+          <div class="btn-group-flex gap-10 mt-3">
+            <input type="button" value="In hướng dẫn sử dụng" title="In" class="btn btn-primary w-100"
+                   (click)="openAddEditDialog('InHuongDan')"/>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="box-group-white">
+      <div class="box-group-title">
+        <h2 class="text-center"><b>{{ title }}</b></h2>
+      </div>
+      <div style="margin-bottom: 10px;"> <!-- Điều chỉnh khoảng cách bằng margin-bottom -->
+        <div class="input-group mt-3">
+          <input maxlength="50" type="text" class="form-control" placeholder="Nhập mã, mã vạch hoặc tên..."/>
+          <span class="input-group-btn">
+      <button class="btn btn-primary btn-finduser" type="button">Thêm</button>
+    </span>
+        </div>
+      </div>
+      <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid" [dataSource]="getDataSource()"
+             matSort>
+        <ng-container matColumnDef="stt">
+          <th mat-header-cell *matHeaderCellDef style="width:3%">#</th>
+          <td mat-cell *matCellDef="let data; index as i;" style="width:3%">{{ (page - 1) * pageSize + i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="maThuoc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã thuốc</th>
+          <td mat-cell *matCellDef="let data"> {{ data.maThuoc }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tenThuoc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên thuốc</th>
+          <td mat-cell *matCellDef="let data"> {{ data.tenThuoc }}</td>
+        </ng-container>
+        <ng-container matColumnDef="donVi">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Đơn vị</th>
+          <td mat-cell *matCellDef="let data"> {{ data.donViTinhLe }}</td>
+        </ng-container>
+        <ng-container matColumnDef="giaBan">
+          <th mat-header-cell *matHeaderCellDef>Giá bán</th>
+          <td mat-cell *matCellDef="let data">
+            <input type="text" [(ngModel)]="data.giaBanLe" class="form-control text-right">
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="maVach">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã vạch</th>
+          <td mat-cell *matCellDef="let data"> {{ data.maVach }}</td>
+        </ng-container>
+        <ng-container matColumnDef="slTem">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>SL tem</th>
+          <td mat-cell *matCellDef="let data">
+            <input type="text" [(ngModel)]="data.slTem" class="form-control text-right">
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+          <td mat-cell *matCellDef="let data; index as i" style="width:5%">
+            <a class="btn btn-sm btn-danger" (click)="deleteRow(i)">X</a>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

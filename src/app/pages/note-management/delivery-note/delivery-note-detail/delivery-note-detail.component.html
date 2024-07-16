@@ -200,11 +200,14 @@
                       <li><a (click)="printPreview('6')">Phiếu bán buôn - A4</a></li>
                       <li><a (click)="printPreview('2')">Phiếu khách lẻ - A5</a></li>
                       <li><a (click)="printPreview('7')">Phiếu bán buôn - A5</a></li>
-                      <li><a (click)="printPreview('thayThe')">Phiếu in tên thay thế - 80mm</a></li>
-                      <li><a (click)="printPreview('lieuDung')">In liều dùng</a></li>
+                      <li><a (click)="printPreview('3')">Phiếu in tên thay thế - 80mm</a></li>
+                      <li><a (click)="printPreview('5')">In liều dùng</a></li>
                       <li class="divider"></li>
-                        <li><a href="javascript:window.open('/Thuocs/InMaVach?MaPhieu=35432435&amp;LoaiPhieu=2')">In mã
-                                vạch thuốc</a></li>
+                        <li>
+                          <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: formData.value.id, loaiPhieu: LOAI_PHIEU.PHIEU_XUAT}">
+                            In mã vạch thuốc
+                          </a>
+                        </li>
                     </ul>
                 </div>
                 <a class="btn btn-default" *ngIf="formData.value?.maLoaiXuatNhap !=  LOAI_PHIEU.PHIEU_KIEM_KE"

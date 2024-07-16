@@ -1,16 +1,19 @@
-import { Component, HostListener, Injector, Input, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { BaseComponent } from '../../../component/base/base.component';
-import { PhieuDuTruService } from '../../../services/products/phieu-du-tru.service';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap } from 'rxjs';
-import { LOAI_SAN_PHAM } from '../../../constants/config';
-import { MESSAGE, STATUS_API } from '../../../constants/message';
-import { ThuocService } from '../../../services/products/thuoc.service';
-import { NhaCungCapService } from '../../../services/categories/nha-cung-cap.service';
-import { NhomThuocService } from '../../../services/products/nhom-thuoc.service';
-import { KhachHangService } from '../../../services/customer/khach-hang.service';
-import { SETTING } from '../../../constants/setting';
-import { DrugDetailDialogComponent } from '../../drug/drug-detail-dialog/drug-detail-dialog.component';
+import {Component, HostListener, Injector, Input, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {BaseComponent} from '../../../component/base/base.component';
+import {PhieuDuTruService} from '../../../services/products/phieu-du-tru.service';
+import {Observable, Subject, catchError, debounceTime, distinctUntilChanged, from, of, switchMap} from 'rxjs';
+import {LOAI_PHIEU, LOAI_SAN_PHAM} from '../../../constants/config';
+import {MESSAGE, STATUS_API} from '../../../constants/message';
+import {ThuocService} from '../../../services/products/thuoc.service';
+import {NhaCungCapService} from '../../../services/categories/nha-cung-cap.service';
+import {NhomThuocService} from '../../../services/products/nhom-thuoc.service';
+import {KhachHangService} from '../../../services/customer/khach-hang.service';
+import {SETTING} from '../../../constants/setting';
+import {DrugDetailDialogComponent} from '../../drug/drug-detail-dialog/drug-detail-dialog.component';
+import _ from 'lodash';
+import printJS from "print-js";
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-note-reserve-add-edit',
@@ -28,10 +31,10 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
   searchKhachHangTerm$ = new Subject<string>();
 
   searchTypes = [
-    { name: "Tất cả", value: 0 },
-    { name: "Theo nhà cung cấp", value: 1 },
-    { name: "Nhóm thuốc", value: 2 },
-    { name: "Tên thuốc", value: 3 },
+    {name: "Tất cả", value: 0},
+    {name: "Theo nhà cung cấp", value: 1},
+    {name: "Nhóm thuốc", value: 2},
+    {name: "Tên thuốc", value: 3},
   ]
 
   // Quyền
@@ -61,13 +64,14 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
       id: [],
       tongTien: [0],
       soPhieu: [],
-      ngayTao:[],
+      ngayTao: [],
       //filter
       searchType: [0],
       checkOutStock: [false],
       maNhaCungCap: [''],
       maNhomThuoc: [''],
-      thuocId: ['']
+      thuocId: [''],
+      loaiIn: [''],
     });
   }
 
@@ -89,9 +93,8 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
 
   async ngAfterViewInit() {
     this.getId();
-    if(this.idUrl){
+    if (this.idUrl) {
       let data = await this.detail(this.idUrl)
-      console.log(data);
       this.formData.patchValue(data);
       this.dataTable = data.chiTiets;
     }
@@ -101,7 +104,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
     // Danh sách nhóm thuốc
     let body = {
       maNhaThuoc: this.getMaNhaThuocCha() != '' && this.getMaNhaThuocCha() != null ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
-      paggingReq: { limit: 1000, page: 0 },
+      paggingReq: {limit: 1000, page: 0},
     };
     this.nhomThuocService.searchPage(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
@@ -116,7 +119,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
         if (term.length >= 2) {
           let body = {
             textSearch: term,
-            paggingReq: { limit: 25, page: 0 },
+            paggingReq: {limit: 25, page: 0},
             dataDelete: false,
             nhaThuocMaNhaThuoc: this.getMaNhaThuocCha() != '' && this.getMaNhaThuocCha() != null ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
             typeService: LOAI_SAN_PHAM.THUOC
@@ -140,7 +143,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
         if (term.length >= 2) {
           let body = {
             textSearch: term,
-            paggingReq: { limit: 25, page: 0 },
+            paggingReq: {limit: 25, page: 0},
             dataDelete: false,
             maNhaThuoc: this.getMaNhaThuoc(),
           };
@@ -163,7 +166,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
         if (term.length >= 2) {
           let body = {
             textSearch: term,
-            paggingReq: { limit: 25, page: 0 },
+            paggingReq: {limit: 25, page: 0},
             dataDelete: false,
             maNhaThuoc: this.useCustomerCommon ? this.getMaNhaThuocCha() : this.getMaNhaThuoc(),
           };
@@ -194,8 +197,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
         if (this.formData.value?.maNhaCungCap == "") {
           this.notification.error(MESSAGE.ERROR, 'Chọn 1 nhà cung cấp.');
           return;
-        }
-        else {
+        } else {
         }
         break;
       case 2:
@@ -217,7 +219,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
       nhomThuocMaNhomThuoc: this.formData.value?.maNhomThuoc,
       nhaCungCapMaNhaCungCap: this.formData.value?.maNhaCungCap,
       checkOutStock: this.formData.value?.checkOutStock,
-      paggingReq: { limit: 1000, page: 0 },
+      paggingReq: {limit: 1000, page: 0},
     };
     this.thuocsService.initCreateReserve(body).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
@@ -254,7 +256,7 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
 
   removeAllItem() {
     this.dataTable = [];
-    this.formData.patchValue({ tongTien: 0 });
+    this.formData.patchValue({tongTien: 0});
   }
 
   updateTotal() {
@@ -275,10 +277,35 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
     });
   }
 
-  onGetDrugOutOfStock(){
-    this.formData.patchValue({ checkOutStock: true });
+  async createUpdateNhaCC() {
+    const validDataTable = this.dataTable.filter(x => x.duTru > 0);
+    if (validDataTable.length === 0) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.DATA_EMPTY);
+      return;
+    }
+    const dataGroup = _.chain(validDataTable).groupBy('maNhaCungCap').map((value, key) => ({
+      supplierId: key,
+      tongTien: value.reduce((acc, val) => acc + (val.duTru * val.donGia), 0),
+      chiTiets: value
+    })).value();
+    if (dataGroup) {
+      this.markFormGroupTouched(dataGroup);
+      const res = await this._service.createNhaCC(dataGroup);
+      if (res?.status === STATUS_API.SUCCESS && res?.data) {
+        if (res.data.length === 1) {
+          this.router.navigate(['/management/reserve/detail', res.data[0].id]);
+        } else {
+          this.router.navigate(['/management/note-management/list'],
+            {queryParams: {noteTypeId: LOAI_PHIEU.PHIEU_DU_TRU}});
+        }
+      }
+    }
+  }
+
+  onGetDrugOutOfStock() {
+    this.formData.patchValue({checkOutStock: true});
     this.addItemReserve();
-    this.formData.patchValue({ checkOutStock: false });
+    this.formData.patchValue({checkOutStock: false});
   }
 
   clearSearchTypeValue() {
@@ -307,6 +334,39 @@ export class NoteReserveAddEditComponent extends BaseComponent implements OnInit
         const url = new URL("management/reserve/add", baseUrl).href;
         window.open(url, '_blank');
         break;
+    }
+  }
+
+  async print(loaiIn?: any) {
+    this.formData.patchValue({
+      loaiIn: loaiIn
+    })
+    const body = {
+      ...this.formData.value,
+      chiTiets: this.dataTable
+    };
+    let res = await this._service.preview(body)
+    if (res?.data) {
+      this.printSrc = res.data.pdfSrc;
+      this.pdfSrc = this.PATH_PDF + res.data.pdfSrc;
+      this.showDlgPreview = true;
+      printJS({printable: this.printSrc, type: 'pdf', base64: true})
+    } else {
+      this.notification.error(MESSAGE.ERROR, "Lỗi trong quá trình tải file.");
+    }
+  }
+
+  exportData(fileName: string) {
+    if (this.dataTable && this.dataTable.length > 0) {
+      const body = {
+        ...this.formData.value,
+        chiTiets: this.dataTable
+      };
+      this.service.export(body).subscribe((blob) =>
+        saveAs(blob, fileName),
+      );
+    } else {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.DATA_EMPTY);
     }
   }
 }
