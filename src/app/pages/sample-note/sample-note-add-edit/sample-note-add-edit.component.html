@@ -190,7 +190,7 @@
                         <input *ngIf="useClinicIntegration.activated && formData.value?.isConnect" type="button"
                             ng-click="fnSave(SampleNoteForm.$valid , 'yes'); $event.preventDefault(); $event.stopPropagation();"
                             value="Lưu đơn và LT" class="btn btn-primary flex-grow-1">
-                        <a href="" *ngIf="formData.value?.id > 0" title="Xuất bán"
+                        <a href="/management/note-management/delivery-note-screen?sampleNoteId={{formData.value?.id}}" *ngIf="formData.value?.id > 0" title="Xuất bán"
                             class="btn btn-primary flex-grow-1">Xuất bán</a>
                         <input *ngIf="formData.value?.id > 0" type="button"
                             ng-click="fnOpenForPrint(); $event.preventDefault(); $event.stopPropagation();" value="In"

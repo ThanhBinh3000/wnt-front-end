@@ -48,6 +48,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
 
   isConnect: boolean = false;
   deviceType: number = 0;
+  copyId: number = 0;
 
   // Settings
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
@@ -118,11 +119,21 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
         isConnect: data.isConnect,
       });
     });
+    this.route.queryParams.subscribe(params => {
+      this.copyId = Number(params['copyId']);
+    });
     this.getId();
-    if (this.idUrl) {
-      let data = await this.detail(this.idUrl)
+    if (this.idUrl || this.copyId > 0) {
+      let noteId = !this.idUrl ? this.copyId : this.idUrl;
+      let data = await this.detail(noteId);
       console.log(data);
       this.formData.patchValue(data);
+      if (!this.idUrl) {
+        this.formData.patchValue({
+          id: 0,
+          noteDate: this.datePipe.transform(moment().utc().startOf('day').toDate(), 'dd/MM/yyyy HH:mm:ss'),
+        });
+      }
       if (data.patientId > 0) {
         this.listKhachHang$ = of([{ id: data.patientId, tenKhachHang: data.patientName }]);
       }
@@ -352,7 +363,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
       return;
     }
     let body = this.formData.value;
-    body.diagnosticIds = body.chanDoanIds.join(',');
+    body.diagnosticIds = body.chanDoanIds != null ? body.chanDoanIds.join(',') : '';
     body.chiTiets = this.dataTable;
     this.save(body).then(res => {
       if (res) {

@@ -26,4 +26,9 @@ export class PhieuXuatService extends BaseService {
     const url = `/api/wnt-inventory/phieu-xuats/get-total-debt-amount-customer`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  convertSampleNoteToDeliveryNote(sampleNoteId: number) {
+    const url = `/api/wnt-inventory/phieu-xuats/convert-sample-note-to-delivery-note/${sampleNoteId}`;
+    return this.httpClient.get<ResponseData>(url).toPromise();
+  }
 }

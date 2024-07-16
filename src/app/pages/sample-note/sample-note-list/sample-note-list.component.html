@@ -121,19 +121,41 @@
           <td mat-cell *matCellDef="let data">
             <div class="baocao-actions baocao-actions-row">
               <div class="baocao-actions-item">
-                <a href="/management/sample-note/edit/{{data.id}}"
-                  class="btn btn-sm btn-primary flex-grow-1" title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
-                <a ng-if="permittedFields.SampleNote_Delete" href="javascript:;"
-                  class="btn btn-sm btn-danger flex-grow-1"
+                <a href="/management/sample-note/edit/{{data.id}}" class="btn btn-sm btn-primary flex-grow-1"
+                  title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
+                <a *ngIf="permittedFields.sampleNote_Delete" class="btn btn-sm btn-danger flex-grow-1"
                   (click)="delete('Bạn có chắc chắn muốn đơn liều mẫu: ' + data.noteName + ' ?', data.id)"
                   title="Xóa"><i class="fa-regular fa-trash"></i></a>
-                <a href="" class="btn btn-sm btn-primary flex-grow-1" title="Copy"><i
+                <a href="/management/sample-note/add?copyId={{data.id}}" class="btn btn-sm btn-primary flex-grow-1" title="Copy"><i
                     class="fa-regular fa-copy"></i></a>
               </div>
               <div class="baocao-actions-item">
                 <div class="btn-group flex-grow-1">
-
+                  <a class="dropdown-toggle btn btn-sm btn-default" href="javascript:void(0)" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    In <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="javascript:void(0);"
+                        ng-if=" gridItem.Customer.CusId <= 0 && gridItem.Doctor.MaBacSy<= 0"
+                        ng-click="fnOpenForPrint(gridItem); $event.preventDefault(); $event.stopPropagation();"
+                        style="cursor: pointer;" title="In">In đơn/liều</a>
+                      <a href="javascript:void(0);" ng-if=" gridItem.Customer.CusId > 0 || gridItem.Doctor.MaBacSy> 0"
+                        ng-click="printNoteDrug(gridItem.Doctor.MaBacSy,gridItem.Customer.CusId,gridItem.NoteId)"
+                        style="cursor: pointer;" title="In">In đơn/liều</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0);" title="In mã vạch" ng-click="onOpenFormPrint(gridItem)">In mã vạch
+                        đơn/liều</a>
+                    </li>
+                  </ul>
                 </div>
+                <a href="/management/note-management/delivery-note-screen?sampleNoteId={{data.id}}"
+                  class="btn btn-sm btn-primary flex-grow-1" title="Xuất">Xuất</a>
+                <input [disabled]="data.isConnect" [ngStyle]="{'cursor': data.isConnect ? 'no-drop' : 'pointer'}"
+                  (click)="onGetConnectivity(data.id)" type="button" class="btn btn-sm btn-primary flex-grow-1"
+                  [title]="onTitleConnect(data.isConnect)" value="LT" />
               </div>
             </div>
           </td>
