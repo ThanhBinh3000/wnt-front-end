@@ -178,7 +178,12 @@ export class MedicalNoteHistoryListComponent extends BaseComponent implements On
   }
 
   async onExport() {
-
+    if(this.formData.get('noteTypeId')?.value == LOAI_PHIEU.PHIEU_KHAM_BENH){
+      this.medicalNoteHistoryTableComponent?.export('danh-sach-phieu-kham-benh.xlsx');
+    }
+    if(this.formData.get('noteTypeId')?.value == LOAI_PHIEU.PHIEU_DICH_VU){
+      this.serviceNoteHistoryTableComponent?.export('danh-sach-phieu-dich-vu.xlsx');
+    }
   }
 
   protected readonly LOAI_PHIEU = LOAI_PHIEU;
