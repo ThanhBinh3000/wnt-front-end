@@ -73,18 +73,18 @@
                                 </label>
                                 <div class="input-group">
                                     <div class="flex-grow-1 ip-position ng-isolate-scope">
-                                        <ng-select 
+                                        <ng-select
                                             #selectCustomer
                                             appendTo="body"
                                             formControlName="khachHangMaKhachHang"
                                             appendTo="body"
-                                            appearance="outline" 
-                                            [items]="listKhachHang$ | async" 
+                                            appearance="outline"
+                                            [items]="listKhachHang$ | async"
                                             [typeahead]="searchKhachHangTerm$"
                                             bindLabel="tenKhachHang"
-                                            bindValue="id" 
+                                            bindValue="id"
                                             [minTermLength]="2"
-                                            appendTo="body" 
+                                            appendTo="body"
                                             appearance="outline"
                                             placeholder="Tra cứu theo tên, mã, mã vạch..."
                                             notFoundText="Không tìm thấy mục nào" (change)="searchKhachHangTerm$.next(''); onCustomerChange($event)">
@@ -247,17 +247,17 @@
                         <div>
                             <div class="w-100">
                                 <div class="input-group">
-                                    <ng-select #selectDrug 
+                                    <ng-select #selectDrug
                                         class="w-100"
-                                        appendTo="body" 
+                                        appendTo="body"
                                         [(ngModel)]="data.thuocThuocId"
-                                        appearance="outline" 
-                                        [items]="listThuoc$ | async" 
+                                        appearance="outline"
+                                        [items]="listThuoc$ | async"
                                         [typeahead]="searchThuocTerm$"
                                         bindLabel="tenThuoc"
-                                        bindValue="id" 
+                                        bindValue="id"
                                         [minTermLength]="2"
-                                        appendTo="body" 
+                                        appendTo="body"
                                         appearance="outline"
                                         placeholder="Tra cứu theo tên, mã, mã vạch..."
                                         notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)">
@@ -545,15 +545,15 @@
                             <div class="d-flex justify-content-center align-items-center gap-10">
                                 <input type="button" value="Quay lại" class="btn btn-default"
                                     (click)="onReturnListing()">
-                                <input type="submit" value="Ghi Phiếu - F9"
+                                <input *ngIf="havePermissions(['PX_THEM', 'PX_SUA'])" type="submit" value="Ghi Phiếu - F9"
                                     disabled="{{formData.value?.locked ? 'disabled' : ''}}" id="save-note-btn-id"
                                     title="F9-Ghi phiếu" class="btn btn-primary" class="btn btn-primary"
                                     (click)="onSave()">
                                 <a class="btn btn-default" title="Sao chép phiếu"
-                                    *ngIf="!formData.value?.locked && isDesktop() && formData.value?.id > 0"
+                                    *ngIf="havePermissions(['PX_THEM', 'PX_SUA']) && !formData.value?.locked && isDesktop() && formData.value?.id > 0"
                                     href="/management/note-management/delivery-note-screen?copyId={{formData.value?.id}}"
                                     >Copy</a>
-                                <div class="btn-group ng-scope" *ngIf="isDesktop() && isUpdateView()">
+                                <div class="btn-group ng-scope" *ngIf="isDesktop() && isUpdateView() && havePermissions(['PX_IN'])">
                                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         In <span class="caret"></span>
@@ -572,7 +572,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <span *ngIf="isUpdateView()" class="ng-scope">
+                                <span *ngIf="isUpdateView() && havePermissions(['PX_XOA'])" class="ng-scope">
                                     <span>&nbsp;</span>
                                     <button class="btn btn-danger"
                                         disabled="{{formData.value?.locked ? 'disabled' : ''}}"

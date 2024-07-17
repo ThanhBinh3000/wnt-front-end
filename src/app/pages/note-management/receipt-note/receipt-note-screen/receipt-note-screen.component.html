@@ -476,9 +476,9 @@
             <td colspan="3">
               <div class="d-flex align-items-center justify-content-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
-                <input type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
+                <input *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
                   class="btn btn-primary" (click)="createUpdate()">
-                <div class="btn-group" *ngIf="formData.value?.id > 0 && isDesktop()">
+                <div class="btn-group" *ngIf="formData.value?.id > 0 && isDesktop() && havePermissions(['PN_IN'])">
                   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     In <span class="caret"></span>
@@ -510,12 +510,12 @@
                 </div>
                 <span *ngIf="formData.value?.id > 0">
                   <span>
-                    <button class="btn btn-danger" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
+                    <button *ngIf="havePermissions(['PN_XOA'])" class="btn btn-danger" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
                       (click)="delete('Bạn có chắc chắn muốn xóa phiếu nhập của nhà cung cấp \'' +
                     (enableCustomerToSupplier ? nhaCungCap.tenKhachHang : nhaCungCap.tenNhaCungCap) + '\' có số phiếu \'' + formData.value?.soPhieuNhap + '\' ?', formData.value?.id)">
                       Xóa phiếu</button>
                   </span>
-                  <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
+                  <a *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
                       class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
                 </span>
                 <span *ngIf="enableElectronicInvoice">

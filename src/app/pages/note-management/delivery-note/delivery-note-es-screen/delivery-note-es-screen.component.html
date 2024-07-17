@@ -72,7 +72,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             <tr *ngFor="let item of formData.value?.thongTinDon.thongTinDonThuoc;" class="ng-scope">
                                 <td class="ng-binding">{{item.maThuoc}}</td>
                                 <td class="ng-binding">{{item.bietDuoc}}</td>
@@ -83,11 +83,11 @@
                                 <td class="ng-binding">{{item.soLuongBan}}</td>
                             </tr>
                         </tbody>
-        
+
                     </table>
                 </div>
             </form>
-            
+
             <div class="col-md-8">
                 <label class="control-label">Thực bán</label>
                 <table mat-table class="table table-striped table-hover tr-ng-grid" [dataSource]="getDataSource()">
@@ -100,7 +100,7 @@
                                     class="fa-regular fa-trash"></i></button>
                         </td>
                     </ng-container>
-        
+
                     <ng-container matColumnDef="maThuoc">
                         <th mat-header-cell *matHeaderCellDef style="width:15%"> Mã thuốc theo đơn </th>
                         <td mat-cell *matCellDef="let data" class="text-right">
@@ -110,7 +110,7 @@
                              </select>
                         </td>
                     </ng-container>
-        
+
                     <ng-container matColumnDef="matHang">
                         <th mat-header-cell *matHeaderCellDef style="width:25%">Mặt Hàng [Mã-Tên]</th>
                         <td mat-cell *matCellDef="let data">
@@ -118,17 +118,17 @@
                                 <div>
                                     <div class="w-100">
                                         <div class="input-group">
-                                            <ng-select #selectDrug 
+                                            <ng-select #selectDrug
                                                 class="w-100"
-                                                appendTo="body" 
+                                                appendTo="body"
                                                 [(ngModel)]="data.thuocThuocId"
-                                                appearance="outline" 
-                                                [items]="listThuoc$ | async" 
+                                                appearance="outline"
+                                                [items]="listThuoc$ | async"
                                                 [typeahead]="searchThuocTerm$"
                                                 bindLabel="tenThuoc"
-                                                bindValue="id" 
+                                                bindValue="id"
                                                 [minTermLength]="2"
-                                                appendTo="body" 
+                                                appendTo="body"
                                                 appearance="outline"
                                                 placeholder="Tra cứu theo tên, mã, mã vạch..."
                                                 notFoundText="Không tìm thấy mục nào" (change)="searchThuocTerm$.next(''); onDrugChange($event)"
@@ -193,10 +193,10 @@
                             {{ data.tongTien | number}}
                         </td>
                     </ng-container>
-        
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
+
                 </table>
             </div>
         </div>
@@ -265,7 +265,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                 </td>
                             </tr>
                             <tr class="ng-scope">
@@ -285,7 +285,7 @@
                                                 </mat-radio-group>
                                             </div>
                                         </div>
-        
+
                                     </div>
                                 </td>
                             </tr><!-- end ngIf: viewModel.NoteTypeId==2 || viewModel.NoteTypeId == 4 -->
@@ -294,13 +294,13 @@
                 </div>
             </div>
         </form>
-   
+
     <div class="col-md-12 d-flex justify-content-center align-items-center gap-10">
         <input type="button" value="Quay lại" class="btn btn-default"
             (click)="onReturnListing();">
-        <input type="button" *ngIf="action != 'view'" value="F9-Ghi phiếu"
+        <input type="button" *ngIf="action != 'view' && havePermissions(['PX_THEM', 'PX_SUA'])" value="F9-Ghi phiếu"
             id="save-note-btn-id" title="F9-Ghi phiếu" class="btn btn-primary" (click)="onSave()">
-        <input type="button" *ngIf="action == 'view' && isUpdateView()"
+        <input type="button" *ngIf="action == 'view' && isUpdateView() && havePermissions(['PX_THEM', 'PX_SUA'])"
             value="Sửa" id="save-note-btn-id" title="Sửa" class="btn btn-primary" (click)="editDeliveryNote()">
     </div>
 </div>

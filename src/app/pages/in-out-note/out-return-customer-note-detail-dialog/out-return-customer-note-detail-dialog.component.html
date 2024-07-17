@@ -60,9 +60,9 @@
         <button mat-menu-item (click)="onPrint('printType')">In 1 liên - A5</button>
         <button mat-menu-item (click)="onPrint('printType')">In 2 liên - A4</button>
       </mat-menu>
-      <button *ngIf="inOutComingNoteWrite" (click)="openAddEditDialog(noteDetail?.id)" class="btn btn-primary"><i
+      <button *ngIf="havePermissions(['PTC_THEM'])" (click)="openAddEditDialog(noteDetail?.id)" class="btn btn-primary"><i
         class="fa-regular fa-pen-to-square"></i></button>
-      <button *ngIf="inOutComingNoteDelete" class="btn btn-danger"
+      <button *ngIf="havePermissions(['PTC_XOA'])" class="btn btn-danger"
               (click)="delete()">
         <i class="fa-regular fa-trash"></i>
       </button>
