@@ -559,16 +559,16 @@
                                         In <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#" ng-click="onPrint(4)">Phiếu khách lẻ - 58mm</a></li>
-                                        <li><a href="#" ng-click="onPrint(3)">Phiếu khách lẻ - 80mm</a></li>
-                                        <li><a href="#" ng-click="onPrint(2)">Phiếu khách lẻ - A5</a></li>
-                                        <li><a href="#" ng-click="onPrint(1)">Phiếu khách quen - A4</a></li>
-                                        <li><a href="#" ng-click="onPrint(5)">In liều dùng</a></li>
+                                      <ng-container *ngFor="let item of menuItems">
+                                        <li *ngIf="item.condition">
+                                          <a (click)="printPreview(item.loaiIn)">{{ item.label }}</a>
+                                        </li>
+                                      </ng-container>
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="/Thuocs/InMaVach?MaPhieu=35432435&amp;LoaiPhieu=2" target="_blank">
-                                                In mã vạch thuốc
-                                            </a>
+                                          <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: this.idUrl ? this.copyId : this.idUrl, loaiPhieu: LOAI_PHIEU.PHIEU_XUAT}">
+                                            In mã vạch thuốc
+                                          </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -608,3 +608,4 @@
         </form>
     </div>
 </div>
+

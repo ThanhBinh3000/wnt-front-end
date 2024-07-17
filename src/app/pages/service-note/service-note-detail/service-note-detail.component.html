@@ -96,33 +96,30 @@
             href="/management/service-note/edit/{{data.id}}">Sửa</a>
         <a class="btn btn-danger" *ngIf="noteServiceDelete && data.recordStatusId==0 && !data.isLock && data.isDeb"
             (click)="deleteInView('Bạn thực sự muốn xóa phiếu này?', data, '/management/service-note/list')">Xóa</a>
-        <!-- <div class="btn-group"
+        <div class="btn-group"
             ng-show="permittedFields.NoteService_Print && noteModel.RecordStatusId ==@((int)RecordStatus.Activated)">
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false" ng-disabled="noteModel.NoteId <= 0">
                 In <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#" ng-click="onPrint(noteModel.NoteId,1)">Phiếu In - A4</a></li>
-                <li><a href="#" ng-click="onPrint(noteModel.NoteId,2)">Phiếu In - A5</a></li>
+                <li><a (click)="printPreview('1')">Phiếu In - A4</a></li>
+                <li><a (click)="printPreview('2')">Phiếu In - A5</a></li>
             </ul>
         </div>
-        <div class="btn-group"
-            ng-show="permittedFields.NoteService_Print && noteModel.RecordStatusId ==@((int)RecordStatus.Activated)">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" ng-disabled="noteModel.NoteId <= 0">
+        <div class="btn-group">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 In theo phòng TH<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#" ng-click="onPrintByClinic(noteModel.NoteId,1)">Phiếu In - A4</a></li>
-                <li><a href="#" ng-click="onPrintByClinic(noteModel.NoteId,2)">Phiếu In - A5</a></li>
-                <li ng-hide="true"><a href="#" id="merge-file-pdf">Merge</a></li>
+              <li><a (click)="printPreview('1')">Phiếu In - A4</a></li>
+              <li><a (click)="printPreview('2')">Phiếu In - A5</a></li>
             </ul>
         </div>
-        <a class="btn btn-primary" href="/ReceiptMedicalFee/Create?id=null&idCus={{noteModel.Customer.CusId}}"
-            ng-disabled="noteModel.NoteId <= 0 || noteModel.IsDebt == false"
-            ng-if="permittedFields.ReceiptMedicalFee_Create_And_Write && noteModel.RecordStatusId ==@((int)RecordStatus.Activated)">Thanh
-            toán</a> -->
+<!--        <a class="btn btn-primary" href="/ReceiptMedicalFee/Create?id=null&idCus={{noteModel.Customer.CusId}}"-->
+<!--            ng-disabled="noteModel.NoteId <= 0 || noteModel.IsDebt == false"-->
+<!--            ng-if="permittedFields.ReceiptMedicalFee_Create_And_Write && noteModel.RecordStatusId ==@((int)RecordStatus.Activated)">Thanh-->
+<!--            toán</a>-->
         <a (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
                 class="fa {{data.isLock ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
         <a type="button" class="btn btn-primary" id="btnContinue" href="/management/service-note/add" value="Tiếp tục"

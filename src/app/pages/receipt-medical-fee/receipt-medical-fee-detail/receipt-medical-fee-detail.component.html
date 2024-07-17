@@ -175,8 +175,8 @@
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#" ng-click="onPrint(model.Id,1)">Phiếu In - A4</a></li>
-                                <li><a href="#" ng-click="onPrint(model.Id,2)">Phiếu In - A5</a></li>
+                                <li><a (click)="printPreview('1')">Phiếu In - A4</a></li>
+                                <li><a (click)="printPreview('2')">Phiếu In - A5</a></li>
                             </ul>
                         </div>
                         <button class="btn btn-danger" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"

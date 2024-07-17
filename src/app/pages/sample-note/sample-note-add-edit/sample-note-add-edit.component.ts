@@ -49,6 +49,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   isConnect: boolean = false;
   deviceType: number = 0;
   copyId: number = 0;
+  menuItems: any[] = []
 
   // Settings
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
@@ -114,6 +115,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   async ngOnInit() {
+    this.print();
     this.route.data.subscribe((data: any) => {
       this.formData.patchValue({
         isConnect: data.isConnect,
@@ -464,4 +466,14 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
       }
     });
   }
+
+  print(){
+    this.menuItems = [
+      { loaiIn: '4', label: 'In đơn/liều - 58mm', condition: true },
+      { loaiIn: '3', label: 'In đơn/liều - 80mm', condition: true },
+      { loaiIn: '2', label: 'In đơn/liều - A5', condition: true },
+      { loaiIn: '1', label: 'In đơn/liều - A4', condition: true },
+    ];
+  }
 }
+

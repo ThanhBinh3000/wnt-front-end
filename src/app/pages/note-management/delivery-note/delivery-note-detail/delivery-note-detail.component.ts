@@ -20,6 +20,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
   isContinue = false;
   fromBcScanner= false;
   updateImagesForProducts = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS);
+  menuItems: any[] = []
 
   constructor(
     injector: Injector,
@@ -55,6 +56,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
 
   async ngOnInit() {
     this.getId();
+    this.print();
     if (this.idUrl) {
       this.route.data.subscribe((data: any) => {
         this.fromBcScanner = data.fromBcScanner;
@@ -73,7 +75,7 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
         this.getItemAmount(x);
       });
       this.onGetInforCustomer(data.khachHangMaKhachHang);
-      
+
       this.title = this.idUrl ? this.title + ' #' + this.formData.value?.soPhieuXuat : this.title;
     }
     this.titleService.setTitle(this.title);
@@ -162,6 +164,27 @@ export class DeliveryNoteDetailComponent extends BaseComponent implements OnInit
       url = '/management/note-management/delivery-note-barcode-screen';
     }
     return url;
+  }
+
+  print(){
+    this.menuItems = [
+      { loaiIn: '4', label: 'Phiếu khách lẻ - 58mm', condition: true },
+      { loaiIn: '3', label: 'Phiếu khách lẻ - 80mm', condition: true },
+      { loaiIn: '8', label: 'Phiếu bán buôn - 80mm', condition: this.authService.getMaNhaThuoc() == '13021' },
+      { loaiIn: '1', label: 'Phiếu khách quen - A4', condition: true },
+      { loaiIn: '6', label: 'Phiếu bán buôn - A4', condition: this.authService.getMaNhaThuoc() == '13021' },
+      { loaiIn: '2', label: 'Phiếu khách lẻ - A5', condition: true },
+      { loaiIn: '7', label: 'Phiếu bán buôn - A5', condition: this.authService.getMaNhaThuoc() == '13021' },
+      { loaiIn: '3', label: 'Phiếu in tên thay thế - 80mm', condition: this.authService.getMaNhaThuoc() != '13462' },
+      { loaiIn: '4', label: 'Phiếu cắt liều khách lẻ - 58mm', condition: this.checkNhaThuoc() },
+      { loaiIn: '3', label: 'Phiếu cắt liều khách lẻ - 80mm', condition: this.checkNhaThuoc() },
+      { loaiIn: '5', label: 'In liều dùng', condition: this.authService.getMaNhaThuoc() != '13462' }
+    ];
+  }
+
+  checkNhaThuoc() : boolean {
+    const allowedNhaThuoc = ['9274', '9275', '9977', '10037', '10038', '10039', '10040', '10041', '10042'];
+    return allowedNhaThuoc.includes(this.authService.getMaNhaThuoc());
   }
 
   protected readonly LOAI_PHIEU = LOAI_PHIEU;

@@ -10,6 +10,7 @@ import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.serv
 })
 export class ReceiptNoteDetailComponent extends BaseComponent implements OnInit {
   title: string = "Phiếu nhập hàng #123";
+  menuItems: any[] = []
 
   constructor(
     injector: Injector,
@@ -21,6 +22,7 @@ export class ReceiptNoteDetailComponent extends BaseComponent implements OnInit 
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.print();
     this.getId();
     if(this.idUrl){
       this.dataDetail = await this.detail(this.idUrl);
@@ -47,5 +49,18 @@ export class ReceiptNoteDetailComponent extends BaseComponent implements OnInit 
   calendarRateRevenue(rowItem){
     let rateRevenue = (rowItem.giaBanLe - rowItem.giaNhap) / rowItem.giaNhap * 100 ;
     return Math.round(rateRevenue * 100) / 100;
+  }
+
+  print(){
+    this.menuItems = [
+      { loaiIn: '1', label: 'In phiếu', condition: true },
+      { loaiIn: 'ipn', label: 'In khác', condition: this.checkNhaThuoc() },
+      { loaiIn: 'bbkn', label: 'In biên bản', condition: this.checkNhaThuoc() },
+    ];
+  }
+
+  checkNhaThuoc() : boolean {
+    const allowedNhaThuoc = ['0010', '3214', '3220', '3780', '13202'];
+    return allowedNhaThuoc.includes(this.authService.getMaNhaThuoc());
   }
 }

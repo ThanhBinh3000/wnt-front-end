@@ -262,7 +262,7 @@
                 </button>
                 <button
                   *ngIf="waitNotePrint && ((isWaitList && data.statusNote != TRANG_THAI_PHIEU_KHAM.DA_HUY) || (!isWaitList && data.statusNote == TRANG_THAI_PHIEU_KHAM.DANG_KHAM))"
-                  (click)="onPrint(data)"
+                  (click)="printPreview('1', data.id)"
                   class="btn btn-sm btn-primary"><i class="fas fa-print"></i></button>
                 <a *ngIf="noteMedicalRead"
                    href="/management/medical-note/history-list?customerId={{data.customer.id}}"
