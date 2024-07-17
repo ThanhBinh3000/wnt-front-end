@@ -27,6 +27,12 @@ export class SampleNoteListComponent extends BaseComponent implements OnInit {
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
   useCustomerCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
   useSampleNoteFromParent = this.authService.getSettingByKey(SETTING.USE_SAMPLE_NOTE_FROM_PARENT);
+  useClinicIntegration = this.authService.getSettingByKey(SETTING.USE_CLINIC_INTEGRATION);
+
+  //Permit
+  permittedFields = {
+    sampleNote_Delete: true,
+  };
 
   constructor(
     injector: Injector,
@@ -111,6 +117,15 @@ export class SampleNoteListComponent extends BaseComponent implements OnInit {
 
   trackByFn(item: any) {
     return item.id;
+  }
+
+  onTitleConnect(isConnect: boolean): string {
+    return isConnect ? "Đã tạo đơn LT" : "Liên thông";
+  }
+
+  onGetConnectivity(noteId: number): void {
+    // Logic để xử lý kết nối
+    console.log('Connectivity for Note ID:', noteId);
   }
 
   async openDoctorDetailDialog(doctorId: any) {
