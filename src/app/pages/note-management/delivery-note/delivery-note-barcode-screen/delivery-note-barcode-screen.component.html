@@ -208,17 +208,17 @@
               <td>
                 <div class="input-group">
                   <div class="flex-grow-1 ip-position ng-isolate-scope">
-                    <ng-select 
-                          appendTo="body" 
+                    <ng-select
+                          appendTo="body"
                           formControlName="khachHangMaKhachHang"
-                          appearance="outline" 
-                          [items]="listKhachHang$ | async" 
-                          [typeahead]="searchKhachHangTerm$"
-                          bindLabel="tenKhachHang" 
-                          bindValue="id" 
-                          [minTermLength]="2" 
                           appearance="outline"
-                          placeholder="Tra cứu theo tên, mã, mã vạch..." 
+                          [items]="listKhachHang$ | async"
+                          [typeahead]="searchKhachHangTerm$"
+                          bindLabel="tenKhachHang"
+                          bindValue="id"
+                          [minTermLength]="2"
+                          appearance="outline"
+                          placeholder="Tra cứu theo tên, mã, mã vạch..."
                           notFoundText="Không tìm thấy mục nào"
                           (change)="searchKhachHangTerm$.next(''); onCustomerChange($event)">
                       <ng-template ng-label-tmp let-item="item">
@@ -366,7 +366,7 @@
         <hr class="mt-0">
         <div class="d-flex justify-content-end align-items-center gap-10">
           <input type="button" value="Quay lại" class="btn btn-default" onclick="javascript:window.history.go(-1);">
-          <input type="submit" value="Ghi Phiếu - F9" (click)="onSave()" class="btn btn-primary" id="save-note-btn-id"
+          <input *ngIf="havePermissions(['PX_THEM', 'PX_SUA'])" type="submit" value="Ghi Phiếu - F9" (click)="onSave()" class="btn btn-primary" id="save-note-btn-id"
             ng-disabled="canSaveDeliveryNote()">
         </div>
       </form>

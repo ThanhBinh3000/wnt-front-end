@@ -153,15 +153,15 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-default" (click)="closeModal()">Đóng</button>
-        <button class="btn btn-primary" (click)="saveEdit()">Ghi phiếu</button>
-        <button *ngIf="isUpdateView() && inOutComingNotePrint" class="btn btn-primary" [matMenuTriggerFor]="printMenu">
+        <button *ngIf="havePermissions(['PTC_THEM'])" class="btn btn-primary" (click)="saveEdit()">Ghi phiếu</button>
+        <button *ngIf="isUpdateView() && havePermissions(['PTC_IN'])" class="btn btn-primary" [matMenuTriggerFor]="printMenu">
           <i class="fas fa-print"></i>
         </button>
         <mat-menu #printMenu="matMenu">
           <button mat-menu-item (click)="onPrint('printType')">In 1 liên - A5</button>
           <button mat-menu-item (click)="onPrint('printType')">In 2 liên - A4</button>
         </mat-menu>
-        <button *ngIf="isUpdateView() && inOutComingNoteDelete" class="btn btn-danger"
+        <button *ngIf="isUpdateView() && havePermissions(['PTC_XOA'])" class="btn btn-danger"
                 (click)="delete()">
           <i class="fa-regular fa-trash"></i>
         </button>

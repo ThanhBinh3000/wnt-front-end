@@ -170,7 +170,7 @@
     <div class="d-flex justify-content-center align-items-center gap-10">
       <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
 
-      <div class="btn-group">
+      <div class="btn-group" *ngIf="havePermissions(['PN_IN'])">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
           In <span class="caret"></span>
@@ -186,7 +186,7 @@
           </li>
         </ul>
       </div>
-      <a class="btn btn-primary"
+      <a *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" class="btn btn-primary"
         (click)="goToUrl('/management/note-management/receipt-note-screen',this.dataDetail.id)">Sửa</a>
       <span ng-show="model.LinkFile !=''">
         <span class="btn btn-default zalo-share-button" style="width:105px;height:35px"
@@ -194,11 +194,11 @@
           data-oaid="1356962617348157464" data-layout="2" data-color="blue" data-customize="true">Chia sẻ
           Zalo</span>
       </span>
-      <a class="btn btn-danger" (click)="delete('Bạn có muốn xóa phiếu nhập ?',this.dataDetail)">Xóa</a>
+      <a *ngIf="havePermissions(['PN_XOA'])" class="btn btn-danger" (click)="delete('Bạn có muốn xóa phiếu nhập ?',this.dataDetail)">Xóa</a>
       <a class="btn btn-default" href="/ReceiptNote/ConnReceiptNoteScreen?noteId=3648150&amp;isConnectivity=1">LT</a>
       <a class="btn btn-default"
         href="/ReceiptNote/ManagementReceiptNoteScreen?noteId=3648150&amp;isManagement=1">QL</a>
-      <a class="btn btn-default" href="/DeliveryNote/SupplierDeliveryNoteScreen?noteId=3648150&amp;taskMode=1">Trả
+      <a *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" class="btn btn-default" href="/DeliveryNote/SupplierDeliveryNoteScreen?noteId=3648150&amp;taskMode=1">Trả
         hàng</a>
       <input type="button" class="btn btn-default" ng-click="onExport(3648150)" value="Xuất excel">
     </div>
