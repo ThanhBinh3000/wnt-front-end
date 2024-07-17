@@ -4,6 +4,7 @@ import { AuthGuard } from "../../guard/auth.guard";
 import { DrugComponent } from './drug.component';
 import { DrugListComponent } from './drug-list/drug-list.component';
 import {DrugConnectListComponent} from "./drug-connect-list/drug-connect-list.component";
+import {DrugBarCodePrintingComponent} from "./drug-bar-code-printing/drug-bar-code-printing.component";
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +25,10 @@ const routes: Routes = [
         component: DrugConnectListComponent,
         // canActivate: [AuthGuard],
       },
+      {
+        path: 'DrugBarCode',
+        component: DrugBarCodePrintingComponent,
+      }
     ],
   }
 ];

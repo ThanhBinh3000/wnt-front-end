@@ -16,6 +16,10 @@ import {ComponentsModule} from "../../component/base/components.module";
 import {DrugConnectListComponent} from "./drug-connect-list/drug-connect-list.component";
 import {DrugConnectAddEditDialogComponent} from "./drug-connect-add-edit-dialog/drug-connect-add-edit-dialog.component";
 import { MultipleWarehouseInventoryDialogComponent } from './multiple-warehouse-inventory-dialog/multiple-warehouse-inventory-dialog.component';
+import {DrugBarCodePrintingComponent} from "./drug-bar-code-printing/drug-bar-code-printing.component";
+import {
+  DrugBarCodePrintingDialogComponent
+} from "./drug-bar-cade-printing-dialog/drug-bar-code-printing-dialog.component";
 
 @NgModule({
   declarations: [
@@ -30,7 +34,9 @@ import { MultipleWarehouseInventoryDialogComponent } from './multiple-warehouse-
     DrugMappingCommonDialogComponent,
     DrugConnectListComponent,
     DrugConnectAddEditDialogComponent,
-    MultipleWarehouseInventoryDialogComponent
+    MultipleWarehouseInventoryDialogComponent,
+    DrugBarCodePrintingComponent,
+    DrugBarCodePrintingDialogComponent
   ],
     imports: [
       CommonModule,

@@ -19,7 +19,7 @@
             <fieldset class="baocao-filter">
                 <div class="d-flex justify-content-between gap-10">
                     <input type="button" value="Xem" (click)="searchPage()" class="btn btn-primary w-50">
-                    <button class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
+                    <button *ngIf="havePermissions(['THUOC_THEM'])" class="btn btn-primary w-50" (click)="openAddEditDialog(null)">Thêm</button>
                 </div>
                 <hr style="margin-top:10px" />
             </fieldset>
@@ -135,12 +135,12 @@
                         <div ng-if="!ownerPricesSettingActivated">
                             <div *ngIf="data.recordStatusId == 0" class="baocao-actions baocao-actions-row">
                                 <div class="baocao-actions-item">
-                                    <span title="sửa" ng-if="permittedFields.Drug_Write">
+                                    <span *ngIf="havePermissions(['THUOC_SUA'])" title="sửa" ng-if="permittedFields.Drug_Write">
                                         <a (click)="openAddEditDialog(data.id)" class="btn btn-primary btn-sm">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
                                     </span>
-                                    <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
+                                    <span *ngIf="havePermissions(['THUOC_XOA'])">
                                         <a (click)="delete('Bạn có chắc chắn muốn xóa dịch vụ '+data.maThuoc + '-' + data.tenThuoc + ' ?',data)"
                                             class="btn btn-danger btn-sm">
                                             <i class="fa-regular fa-trash"></i>
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="baocao-actions-item">
                                     <span ng-if="permittedFields.Drug_Write && !filterModel.IsSlaveDs">
-                                        <a title="xóa"
+                                        <a *ngIf="havePermissions(['THUOC_XOA'])" title="xóa"
                                             (click)="deleteDatabase('Bạn có muốn xóa vĩnh viễn dịch vụ có mã ' + '\'' + data.maThuoc  + '\''  ,data)"
                                             class="btn btn-danger btn-sm">
                                             <i class="fa-regular fa-trash"></i>

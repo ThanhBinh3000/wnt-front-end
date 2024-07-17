@@ -5,14 +5,16 @@ import {MESSAGE, STATUS_API} from "../../../constants/message";
 import {NhomThuocService} from "../../../services/products/nhom-thuoc.service";
 import {ThuocService} from "../../../services/products/thuoc.service";
 import printJS from "print-js";
-import {PrintAddEditDialogComponent} from "../print-add-edit-dialog/print-add-edit-dialog.component";
+import {
+  DrugBarCodePrintingDialogComponent
+} from "../drug-bar-cade-printing-dialog/drug-bar-code-printing-dialog.component";
 
 @Component({
   selector: 'InMaVach',
-  templateUrl: './InMaVach.component.html',
-  styleUrls: ['./InMaVach.component.css'],
+  templateUrl: './drug-bar-code-printing.component.html',
+  styleUrls: ['./drug-bar-code-printing.component.css'],
 })
-export class InMaVachComponent extends BaseComponent implements OnInit {
+export class DrugBarCodePrintingComponent extends BaseComponent implements OnInit {
   title: string = "In mã vạch thuốc";
   idPhieu: number | null = null;
   loaiPhieu: number | null = null;
@@ -115,7 +117,7 @@ export class InMaVachComponent extends BaseComponent implements OnInit {
 
   async openAddEditDialog(type: any) {
     const width = (type === 'InHuongDan') ? '800px' : '600px';
-    const dialogRef = this.dialog.open(PrintAddEditDialogComponent, {
+    const dialogRef = this.dialog.open(DrugBarCodePrintingDialogComponent, {
       data: type,
       width: width,
     });

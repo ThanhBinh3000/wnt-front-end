@@ -208,8 +208,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-            <button type="button" class="btn btn-primary" (click)="createUpdate()">{{serviceId > 0 ? 'Cập nhật' : 'Thêm
-                mới'}}</button>
+            <button *ngIf="havePermissions(['THUOC_THEM', 'THUOC_SUA'])" type="button" class="btn btn-primary" (click)="createUpdate()">{{serviceId > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
         </div>
     </div>
 </div>

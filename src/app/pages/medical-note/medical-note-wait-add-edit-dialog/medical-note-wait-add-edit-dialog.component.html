@@ -148,7 +148,7 @@
     <div class="modal-footer">
       <button class="btn btn-default" (click)="closeModal()">Đóng</button>
       <button *ngIf="waitNotePrint && data.id"
-              (click)="onPrint()"
+              (click)="printPreview('1', data.id)"
               class="btn btn-primary"><i class="fas fa-print"></i></button>
       <button class="btn btn-primary" (click)="saveEdit()"
               [disabled]="formData.invalid">Ghi phiếu

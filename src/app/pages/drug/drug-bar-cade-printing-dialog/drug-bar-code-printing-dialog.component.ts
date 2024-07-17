@@ -7,10 +7,10 @@ import printJS from "print-js";
 
 @Component({
   selector: 'account-add-edit-dialog',
-  templateUrl: './print-add-edit-dialog.component.html',
-  styleUrl: './print-add-edit-dialog.component.css'
+  templateUrl: './drug-bar-code-printing-dialog.component.html',
+  styleUrl: './drug-bar-code-printing-dialog.component.css'
 })
-export class PrintAddEditDialogComponent extends BaseComponent implements OnInit {
+export class DrugBarCodePrintingDialogComponent extends BaseComponent implements OnInit {
 
   selectedHoatChat: number = 2;
   hoatChatList = [
@@ -24,7 +24,7 @@ export class PrintAddEditDialogComponent extends BaseComponent implements OnInit
   constructor(
     injector: Injector,
     private _service: ThuocService,
-    public dialogRef: MatDialogRef<PrintAddEditDialogComponent>,
+    public dialogRef: MatDialogRef<DrugBarCodePrintingDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public kieuIn: any) {
     super(injector, _service);
     this.formData = this.fb.group({
