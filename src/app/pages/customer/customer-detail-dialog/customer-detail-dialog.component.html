@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-            <a class="btn btn-primary" (click)="openAddEditDialog(customerDetail?.id)">Sửa</a>
+            <a *ngIf="havePermissions(['DV_SUA'])" class="btn btn-primary" (click)="openAddEditDialog(customerDetail?.id)">Sửa</a>
         </div>
     </div>
 </div>

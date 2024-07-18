@@ -154,9 +154,11 @@
                     In <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a (click)="printPreview('3')">Phiếu khách lẻ - 80mm</a></li>
-                    <li><a (click)="printPreview('1')">Phiếu khách quen - A4</a></li>
-                    <li><a (click)="printPreview('2')">Phiếu khách lẻ - A5</a></li>
+                  <ng-container *ngFor="let item of menuItems">
+                    <li *ngIf="item.condition">
+                      <a (click)="printPreview(item.loaiIn)">{{ item.label }}</a>
+                    </li>
+                  </ng-container>
                 </ul>
 
             </div>

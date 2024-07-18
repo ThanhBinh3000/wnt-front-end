@@ -21,6 +21,7 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
   // Settings
   displayImage = this.authService.getSettingByKey(SETTING.UPDATE_IMAGES_FOR_PRODUCTS).activated;
   discountByValue = this.authService.getSettingByKey(SETTING.RECEIPT_NOTE_DISCOUNT_BY_VALUE).activated;
+  menuItems: any[] = []
 
   constructor(
     private titleService: Title,
@@ -68,6 +69,7 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getId();
+    this.print();
     console.log(this.idUrl);
     if(this.idUrl){
       let data = await this.detail(this.idUrl)
@@ -82,5 +84,13 @@ export class ReturnFromCustomerNoteDetailComponent extends BaseComponent impleme
       data: drugId,
       width: '600px',
     });
+  }
+
+  print(){
+    this.menuItems = [
+      { loaiIn: '3', label: 'Phiếu khách lẻ - 80mm', condition: true },
+      { loaiIn: '1', label: 'Phiếu khách quen - A4', condition: true },
+      { loaiIn: '2', label: 'Phiếu khách lẻ - A5', condition: true },
+    ];
   }
 }

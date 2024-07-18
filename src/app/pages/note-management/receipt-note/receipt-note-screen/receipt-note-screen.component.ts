@@ -684,4 +684,10 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     });
   }
 
+  checkNhaThuoc() : boolean {
+    const allowedNhaThuoc = ['0010', '3214', '3220', '3780', '13202'];
+    return allowedNhaThuoc.includes(this.authService.getNhaThuoc().maNhaThuoc);
+  }
+
+  protected readonly LOAI_PHIEU = LOAI_PHIEU;
 }

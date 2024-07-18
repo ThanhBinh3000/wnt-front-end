@@ -32,7 +32,7 @@
                       <span [ngOptionHighlight]="search">{{ item.tenKhachHang }}</span>
                     </ng-template>
                   </ng-select>
-                  <span *ngIf="isWaitList" class="input-group-btn">
+                  <span *ngIf="isWaitList && havePermissions(['PCK_THEM', 'PCK_SUA'])" class="input-group-btn">
                   <button class="btn btn-primary" type="button" (click)="openAddEditCustomerDialog(null)">
                     <i class="fa-regular fa-plus"></i>
                   </button>
@@ -59,7 +59,7 @@
                href="/management/medical-note/history-list?customerId={{formData.value?.customer?.id}}"
                title="Lịch sử khám chữa bệnh">LS khám
             </a>
-            <button class="btn btn-primary flex-grow-1" (click)="openAddEditCustomerDialog(formData.value?.customer)"
+            <button *ngIf="havePermissions(isWaitList ? ['PCK_THEM', 'PCK_SUA'] : ['PK_THEM', 'PK_SUA'])" class="btn btn-primary flex-grow-1" (click)="openAddEditCustomerDialog(formData.value?.customer)"
                     title="Sửa thông tin bệnh nhân">Sửa
             </button>
           </div>
@@ -127,7 +127,7 @@
                  class="btn btn-primary w-100" (click)="searchPage()">
         </fieldset>
         <fieldset class="mb-3">
-        <span *ngIf="isWaitList && waitNoteCreateAndWrite" (click)="openAddEditNoteWaitDialog(null)" type="button"
+        <span *ngIf="isWaitList && waitNoteCreateAndWrite && havePermissions(['PCK_THEM'])" (click)="openAddEditNoteWaitDialog(null)" type="button"
               class="btn btn-primary w-100">Thêm phiếu chờ khám</span>
         </fieldset>
       </div>
@@ -247,8 +247,7 @@
             </div>
             <div class="baocao-actions baocao-actions-row" *ngIf="getStatusNote() != TRANG_THAI_PHIEU_KHAM.LIEU_TRINH">
               <div class="baocao-actions-item">
-                <a
-                  *ngIf="noteMedicalRead && [TRANG_THAI_PHIEU_KHAM.DANG_KHAM, TRANG_THAI_PHIEU_KHAM.DA_KHAM].includes(data.statusNote)"
+                <a *ngIf="noteMedicalRead && [TRANG_THAI_PHIEU_KHAM.DANG_KHAM, TRANG_THAI_PHIEU_KHAM.DA_KHAM].includes(data.statusNote)"
                   class="btn btn-sm btn-primary"
                   href="/management/medical-note/detail/{{data.id}}">Phiếu khám</a>
                 <a *ngIf="noteMedicalCreateAndWrite && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
@@ -256,13 +255,13 @@
                    href="/management/medical-note/add/{{data.id}}">Khám bệnh</a>
               </div>
               <div class="baocao-actions-item">
-                <button *ngIf="waitNoteCreateAndWrite"
+                <button *ngIf="waitNoteCreateAndWrite && havePermissions(isWaitList ? ['PCK_THEM', 'PCK_SUA'] : ['PK_THEM', 'PK_SUA'])"
                         (click)="openAddEditNoteWaitDialog(data)"
                         class="btn btn-sm btn-primary">Phiếu chờ
                 </button>
                 <button
-                  *ngIf="waitNotePrint && ((isWaitList && data.statusNote != TRANG_THAI_PHIEU_KHAM.DA_HUY) || (!isWaitList && data.statusNote == TRANG_THAI_PHIEU_KHAM.DANG_KHAM))"
-                  (click)="onPrint(data)"
+                  *ngIf="waitNotePrint && ((isWaitList && data.statusNote != TRANG_THAI_PHIEU_KHAM.DA_HUY) || (!isWaitList && data.statusNote == TRANG_THAI_PHIEU_KHAM.DANG_KHAM)) && havePermissions(isWaitList ? ['PCK_IN'] : ['PK_IN'])"
+                  (click)="printPreview('1', data.id)"
                   class="btn btn-sm btn-primary"><i class="fas fa-print"></i></button>
                 <a *ngIf="noteMedicalRead"
                    href="/management/medical-note/history-list?customerId={{data.customer.id}}"
@@ -271,7 +270,7 @@
                    title="Lịch sử khám chữa bệnh">LS</a>
               </div>
               <div class="baocao-actions-item">
-                <button *ngIf="waitNoteDeleteAndCancel" class="btn btn-sm btn-danger"
+                <button *ngIf="waitNoteDeleteAndCancel && havePermissions(isWaitList ? ['PCK_XOA'] : ['PK_XOA'])" class="btn btn-sm btn-danger"
                         (click)="delete('Bạn có chắc chắn muốn xóa phiếu số \'' + data.orderWait + '\' ?', data)">
                   <i class="fa-regular fa-trash"></i></button>
                 <button *ngIf="waitNoteDeleteAndCancel && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
@@ -296,7 +295,6 @@
         <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"
             [ngStyle]="{'background-color': getRowColor(row)}"></tr>
         <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
-
       </table>
     </div>
   </div>

@@ -63,6 +63,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
   drugDefault: any = {};
   copyId: number = 0;
   sampleNoteId: number = 0;
+  menuItems: any[] = []
 
 
   notAllowDeliverOverQuantity = this.authService.getSettingByKey(SETTING.NOT_ALLOW_DELIVER_OVER_QUANTITY);
@@ -132,6 +133,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
+    this.print();
     this.loadDataOpt();
     this.route.queryParams.subscribe(params => {
       this.copyId = Number(params['copyId']);
@@ -834,4 +836,16 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
         break;
     }
   }
+
+  print(){
+    this.menuItems = [
+      { loaiIn: '4', label: 'Phiếu khách lẻ - 58mm', condition: true },
+      { loaiIn: '3', label: 'Phiếu khách lẻ - 80mm', condition: true },
+      { loaiIn: '2', label: 'Phiếu khách lẻ - A5', condition: true },
+      { loaiIn: '1', label: 'Phiếu khách quen - A4', condition: true },
+      { loaiIn: '5', label: 'In liều dùng', condition: true },
+    ];
+  }
+
+  protected readonly LOAI_PHIEU = LOAI_PHIEU;
 }

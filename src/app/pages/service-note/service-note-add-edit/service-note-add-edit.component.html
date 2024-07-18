@@ -396,22 +396,22 @@
                 <hr />
                 <div class="d-flex justify-content-center align-items-center gap-10">
                     <a href="/management/service-note/list" class="btn btn-default">Quay lại</a>
-                    <div class="btn-group" ng-show="permittedFields.NoteService_Print">
+                    <div *ngIf="havePermissions(['DV_IN'])" class="btn-group" ng-show="permittedFields.NoteService_Print">
                         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false" ng-disabled="noteModel.NoteId <= 0">
                             In <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="onPrint(noteModel.NoteId,1)">Phiếu In - A4</a></li>
-                            <li><a href="#" ng-click="onPrint(noteModel.NoteId,2)">Phiếu In - A5</a></li>
+                            <li><a (click)="printPreview('1')" >Phiếu In - A4</a></li>
+                            <li><a (click)="printPreview('2')" >Phiếu In - A5</a></li>
                         </ul>
                     </div>
-                    <span ng-show="permittedFields.NoteService_Delete"><button class="btn btn-danger"
+                    <span *ngIf="havePermissions(['DV_XOA'])" ng-show="permittedFields.NoteService_Delete"><button class="btn btn-danger"
                             [disabled]="formData.value?.id <= 0 || formData.value?.id.isLock"
                             (click)="delete('Bạn có chắc chắn muốn xóa phiếu dịch vụ có số phiếu \'' + formData.value?.noteNumber + '\' ?', formData.value?.id)">Xóa</button></span>
                     <a class="btn btn-primary" href="" title="{{onTitleSave()}}"
                         [attr.disabled]="formData.value?.id <= 0 || formData.value?.isDeb == false">Thanh toán</a>
-                    <button class="btn btn-primary" [disabled]="formData.value?.id.isLock" title="{{onTitleSave()}}"
+                    <button *ngIf="havePermissions(['DV_THEM', 'DV_SUA'])" class="btn btn-primary" [disabled]="formData.value?.id.isLock" title="{{onTitleSave()}}"
                         (click)="createUpdate()">Ghi
                         phiếu</button>
                     <a *ngIf="formData.value?.id > 0" (click)="onLockNote()" title="Mở/Khóa phiếu"

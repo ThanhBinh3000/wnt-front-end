@@ -176,11 +176,14 @@
           In <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a (click)="printPreview('1')">In phiếu</a></li>
-          <li><a (click)="printPreview('ipn')">In khác</a></li>
-          <li><a (click)="printPreview('bbkn')">In biên bản</a></li>
+          <ng-container *ngFor="let item of menuItems">
+            <li *ngIf="item.condition">
+              <a (click)="printPreview(item.loaiIn)">{{ item.label }}</a>
+            </li>
+          </ng-container>
+          <li class="divider"></li>
           <li>
-            <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: dataDetail.id, loaiPhieu: dataDetail.loaiXuatNhapMaLoaiXuatNhap}">
+            <a [routerLink]="['/management/drug/DrugBarCode']" [queryParams]="{id: dataDetail.id, loaiPhieu: dataDetail.loaiXuatNhapMaLoaiXuatNhap}">
               In mã vạch thuốc
             </a>
           </li>

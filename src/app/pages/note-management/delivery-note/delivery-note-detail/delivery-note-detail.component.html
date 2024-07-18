@@ -165,7 +165,6 @@
         <span class="control-label"><b>Diễn giải: </b></span>
         <span class="control-label">{{ formData.value?.dienGiai }}</span>
       </td>
-
                 <td class="text-right">
                     <span class="control-label">[<b>Người lập: </b> </span>
                     <span class="control-label ng-binding">{{formData.value?.createdByUserText}}]</span>
@@ -192,23 +191,18 @@
                         aria-haspopup="true" aria-expanded="false">
                         In <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
-                      <li><a (click)="printPreview('4')">Phiếu khách lẻ - 58mm</a></li>
-                      <li><a (click)="printPreview('3')">Phiếu khách lẻ - 80mm</a></li>
-                      <li><a (click)="printPreview('8')">Phiếu bán buôn - 80mm</a></li>
-                      <li><a (click)="printPreview('1')">Phiếu khách quen - A4</a></li>
-                      <li><a (click)="printPreview('6')">Phiếu bán buôn - A4</a></li>
-                      <li><a (click)="printPreview('2')">Phiếu khách lẻ - A5</a></li>
-                      <li><a (click)="printPreview('7')">Phiếu bán buôn - A5</a></li>
-                      <li><a (click)="printPreview('3')">Phiếu in tên thay thế - 80mm</a></li>
-                      <li><a (click)="printPreview('5')">In liều dùng</a></li>
-                      <li class="divider"></li>
-                        <li>
-                          <a [routerLink]="['/management/Thuocs/InMaVach']" [queryParams]="{id: formData.value.id, loaiPhieu: LOAI_PHIEU.PHIEU_XUAT}">
-                            In mã vạch thuốc
-                          </a>
-                        </li>
-                    </ul>
+                  <ul class="dropdown-menu">
+                    <ng-container *ngFor="let item of menuItems">
+                      <li *ngIf="item.condition">
+                        <a (click)="printPreview(item.loaiIn)">{{ item.label }}</a>
+                      </li>
+                    </ng-container>
+                    <li>
+                      <a [routerLink]="['/management/drug/DrugBarCode']" [queryParams]="{id: formData.value.id, loaiPhieu: LOAI_PHIEU.PHIEU_XUAT}">
+                        In mã vạch thuốc
+                      </a>
+                    </li>
+                  </ul>
                 </div>
                 <a class="btn btn-default" *ngIf="formData.value?.maLoaiXuatNhap !=  LOAI_PHIEU.PHIEU_KIEM_KE && havePermissions(['PX_THEM', 'PX_SUA'])"
                 href="/management/note-management/delivery-note-screen/{{formData.value?.id}}">Sửa</a> <span

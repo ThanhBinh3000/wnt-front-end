@@ -485,24 +485,16 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a ng-click="onPrint(viewModel.NoteId, 1, 1)">
-                        In
-                      </a>
+                      <a (click)="printPreview('1')">In</a>
                     </li>
-                    <li
-                      ng-if="(viewModel.DrugStoreId == '0010' || viewModel.DrugStoreId == '3214' || viewModel.DrugStoreId == '3220' || viewModel.DrugStoreId == '3780' || viewModel.DrugStoreId == '13202') && viewModel.NoteTypeId == 1">
-                      <a href="#" ng-click="onOpenFormPrint(viewModel.NoteId,'ipn')">
-                        In Khác
-                      </a>
+                    <li *ngIf="checkNhaThuoc()">
+                      <a (click)="printPreview('ipn')">In khác</a>
                     </li>
-                    <li
-                      ng-if="(viewModel.DrugStoreId == '0010' || viewModel.DrugStoreId == '3214' || viewModel.DrugStoreId == '3220' || viewModel.DrugStoreId == '3780' || viewModel.DrugStoreId == '13202') && viewModel.NoteTypeId == 1">
-                      <a href="#" ng-click="onOpenFormPrint(viewModel.NoteId,'bbkn')">
-                        In biên bản
-                      </a>
+                    <li *ngIf="checkNhaThuoc()">
+                      <a (click)="printPreview('bbkn')">In biên bản</a>
                     </li>
                     <li>
-                      <a target="_blank">
+                      <a [routerLink]="['/management/drug/DrugBarCode']" [queryParams]="{id: idUrl, loaiPhieu: LOAI_PHIEU.PHIEU_NHAP}">
                         In mã vạch thuốc
                       </a>
                     </li>

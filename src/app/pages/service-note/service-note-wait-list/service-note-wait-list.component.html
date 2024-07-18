@@ -221,7 +221,7 @@
             <td mat-cell *matCellDef="let data">
               <div class="baocao-actions baocao-actions-row">
                 <div class="baocao-actions-item">
-                  <button *ngIf="noteServiceCreateAndWrite && !data.idStatus" (click)="openUpdateStatusServiceDialog(data)" class="btn btn-sm btn-primary" style="width: 70px">Cập nhật</button>
+                  <button *ngIf="noteServiceCreateAndWrite && !data.idStatus && havePermissions(['DV_SUA', 'DV_THEM'])" (click)="openUpdateStatusServiceDialog(data)" class="btn btn-sm btn-primary" style="width: 70px">Cập nhật</button>
                   <button *ngIf="noteServiceCreateAndWrite && data.idStatus" (click)="openCancelServiceDialog(data)" class="btn btn-sm btn-primary" style="width: 70px">Huỷ</button>
                 </div>
                 <div class="baocao-actions-item">

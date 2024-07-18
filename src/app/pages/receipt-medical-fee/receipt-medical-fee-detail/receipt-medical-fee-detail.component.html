@@ -167,19 +167,19 @@
                             *ngIf="data.recordStatusId == RECORD_STATUS.DELETED">Quay lại</a>
                         <a class="btn btn-primary" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
                             href="/management/receipt-medical-fee/add">Tiếp tục</a>
-                        <a class="btn btn-primary" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
+                        <a class="btn btn-primary" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED && havePermissions(['PTT_SUA'])"
                             href="/management/receipt-medical-fee/edit/{{data.id}}">Sửa</a>
-                        <div class="btn-group" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED">
+                        <div class="btn-group" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED && havePermissions(['PTT_IN'])">
                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#" ng-click="onPrint(model.Id,1)">Phiếu In - A4</a></li>
-                                <li><a href="#" ng-click="onPrint(model.Id,2)">Phiếu In - A5</a></li>
+                                <li><a (click)="printPreview('1')">Phiếu In - A4</a></li>
+                                <li><a (click)="printPreview('2')">Phiếu In - A5</a></li>
                             </ul>
                         </div>
-                        <button class="btn btn-danger" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED"
+                        <button class="btn btn-danger" *ngIf="data.recordStatusId != RECORD_STATUS.DELETED && havePermissions(['PTT_XOA'])"
                             (click)="deleteInView('Bạn thực sự muốn xóa phiếu này?', data, '/management/receipt-medical-fee/list')">Xóa</button>
                     </div>
                 </div>

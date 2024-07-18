@@ -259,7 +259,8 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
     let dialogRef = this.dialog.open(MedicalNoteWaitAddEditDialogComponent,
       {
         data: {
-          id: data?.id
+          id: data?.id,
+          isWaitList: this.isWaitList,
         },
         width: '600px',
       });
@@ -272,7 +273,7 @@ export class MedicalNoteListComponent extends BaseComponent implements OnInit, A
 
   async openAddEditCustomerDialog(customer: any) {
     const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
-      data: {...customer, isMinimized: true},
+      data: {...customer, isMinimized: true, isWaitList: this.isWaitList},
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(async result => {

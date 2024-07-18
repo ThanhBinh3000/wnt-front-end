@@ -23,6 +23,7 @@ export class MedicalNoteWaitAddEditDialogComponent extends BaseComponent impleme
   // Settings
   // Authorities
   waitNotePrint = true;
+  isWaitList: boolean = false;
 
   constructor(
     injector: Injector,
@@ -55,6 +56,7 @@ export class MedicalNoteWaitAddEditDialogComponent extends BaseComponent impleme
 
   async ngOnInit() {
     this.getDataFilter();
+    this.isWaitList = this.data.isWaitList;
     if (this.data.id) {
       const data = await this.detail(this.data.id);
       if (data) {

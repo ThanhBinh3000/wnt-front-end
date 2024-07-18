@@ -11,7 +11,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-10">
                     <input type="button" class="btn btn-primary flex-grow-1" value="Tìm" (click)="searchPage()" />
-                    <span type="button" class="btn btn-primary flex-grow-1" (click)="openAddEditDialog(null)"
+                    <span *ngIf="havePermissions(['QLPK_THEM'])" type="button" class="btn btn-primary flex-grow-1" (click)="openAddEditDialog(null)"
                         ng-if="permittedFields.Clinic_Create_And_Write">Thêm</span>
                 </div>
             </div>
@@ -44,9 +44,9 @@
                             <th mat-header-cell *matHeaderCellDef style="width:15%">Thao tác</th>
                             <td mat-cell *matCellDef="let data" style="width:15%">
                                 <div class="baocao-actions">
-                                    <button class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
+                                    <button *ngIf="havePermissions(['QLPK_THEM', 'QLPK_SUA'])" class="btn btn-sm btn-primary" (click)="openAddEditDialog(data.id)"><i
                                             class="fa-regular fa-pen-to-square"></i></button>
-                                    <button class="btn btn-sm btn-danger"
+                                    <button *ngIf="havePermissions(['QLPK_XOA'])" class="btn btn-sm btn-danger"
                                         (click)="delete('Bạn có chắc chắn muốn xóa phòng khám \'' + data.tenPhongKham + '\' ?', data)">
                                         <i class="fa-regular fa-trash"></i></button>
                                 </div>

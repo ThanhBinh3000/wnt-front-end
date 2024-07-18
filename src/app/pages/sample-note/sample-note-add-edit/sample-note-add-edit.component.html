@@ -201,11 +201,11 @@
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a (click)="printPreview('4')">In đơn/liều - 58mm</a></li>
-                                <li><a (click)="printPreview('3')">In đơn/liều - 80mm</a></li>
-                                <li><a (click)="printPreview('2')">In đơn/liều - A5</a></li>
-                                <li><a (click)="printPreview('1')">In đơn/liều - A4</a>
+                              <ng-container *ngFor="let item of menuItems">
+                                <li *ngIf="item.condition">
+                                  <a (click)="printPreview(item.loaiIn)">{{ item.label }}</a>
                                 </li>
+                              </ng-container>
                                 <!-- <li><a href="javascript:;" ng-click="printNoteDrug(2)">In đơn/liều - A5</a></li>
                                         <li><a href="javascript:;" ng-click="printNoteDrug(1)">In đơn/liều - A4</a></li> -->
                             </ul>

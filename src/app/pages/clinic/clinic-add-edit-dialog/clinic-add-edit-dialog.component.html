@@ -27,11 +27,11 @@
                         </div>
                     </div>
                 </div>
-            </form>      
+            </form>
         </div>
         <div class="modal-footer d-flex align-items-center gap-10 justify-content-end">
             <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
-            <button type="button" class="btn btn-primary" (click)="saveEdit()"
+            <button *ngIf="havePermissions(['QLPK_SUA', 'QLPK_THEM'])" type="button" class="btn btn-primary" (click)="saveEdit()"
             [disabled]="formData.invalid">{{clinicID > 0 ? 'Cập nhật' : 'Thêm mới'}}</button>
         </div>
     </div>
