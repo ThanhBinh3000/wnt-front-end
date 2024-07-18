@@ -180,18 +180,18 @@
                 <td mat-cell *matCellDef="let data">
                   <div class="baocao-actions baocao-actions-row">
                     <div class="baocao-actions-item">
-                      <a *ngIf="receiptMedicalFeeCreateAndWrite"
+                      <a *ngIf="receiptMedicalFeeCreateAndWrite && havePermissions(['PTT_SUA'])"
                          class="btn btn-sm btn-primary"
                          href="/management/receipt-medical-fee/edit/{{data.id}}"><i class="fa-regular fa-pen-to-square"></i></a>
 
-                      <button *ngIf="receiptMedicalFeePrint" class="btn btn-sm btn-primary" [matMenuTriggerFor]="printMenu"><i
+                      <button *ngIf="receiptMedicalFeePrint && havePermissions(['PTT_IN'])" class="btn btn-sm btn-primary" [matMenuTriggerFor]="printMenu"><i
                         class="fas fa-print"></i></button>
                       <mat-menu #printMenu="matMenu">
                         <button mat-menu-item (click)="printPreview('1', data.id)">Phiếu In - A4</button>
                         <button mat-menu-item (click)="printPreview('2', data.id)">Phiếu In - A5</button>
                       </mat-menu>
 
-                      <button *ngIf="receiptMedicalFeeDelete" class="btn btn-sm btn-danger"
+                      <button *ngIf="receiptMedicalFeeDelete && havePermissions(['PTT_XOA'])" class="btn btn-sm btn-danger"
                               (click)="delete('Bạn có chắc chắn muốn xóa phiếu số \'' + data.noteNumber + '\' ?', data)">
                         <i class="fa-regular fa-trash"></i></button>
                     </div>

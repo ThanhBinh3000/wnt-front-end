@@ -155,7 +155,7 @@
                         <div class="col-md-9 input-group" style="padding-left: 13px; padding-right: 15px;">
                             <input class="form-control mb-0" disabled [(ngModel)]="customer.tenKhachHang"
                                 placeholder="Tên bệnh nhân..">
-                            <span *ngIf="customer != null" class="btn btn-default input-group-text"
+                            <span *ngIf="customer != null && havePermissions(['PTT_THEM', 'PTT_SUA'])" class="btn btn-default input-group-text"
                                 (click)="openAddEditDialog(customer)">Sửa</span>
                         </div>
                     </div>
@@ -309,18 +309,18 @@
                     <hr class="mt-0">
                     <div class="d-flex justify-content-center align-items-center gap-10">
                         <a href="/management/receipt-medical-fee/list" class="btn btn-default">Quay lại</a>
-                        <button class="btn btn-primary" (click)="createUpdate()">Ghi phiếu</button>
-                        <div *ngIf="formData.value?.id > 0" class="btn-group">
+                        <button *ngIf="havePermissions(['PTT_THEM'])" class="btn btn-primary" (click)="createUpdate()">Ghi phiếu</button>
+                        <div *ngIf="formData.value?.id > 0 && havePermissions(['PTT_IN'])" class="btn-group">
                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 In <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#" ng-click="onPrint(model.Id,1)">Phiếu In - A4</a></li>
-                                <li><a href="#" ng-click="onPrint(model.Id,2)">Phiếu In - A5</a></li>
+                                <li><a (click)="printPreview('1')">Phiếu In - A4</a></li>
+                                <li><a (click)="printPreview('2')">Phiếu In - A5</a></li>
                             </ul>
                         </div>
-                        <button *ngIf="formData.value?.id > 0" class="btn btn-danger"
+                        <button *ngIf="formData.value?.id > 0 && havePermissions(['PTT_XOA'])" class="btn btn-danger"
                             (click)="deleteInView('Bạn thực sự muốn xóa phiếu này?', formData, '/management/receipt-medical-fee/list')">Xóa</button>
                     </div>
                 </div>

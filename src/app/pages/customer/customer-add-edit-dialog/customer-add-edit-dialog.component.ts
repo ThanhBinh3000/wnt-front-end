@@ -19,6 +19,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   expandLabel: string = '[+]';
   listNhomKhachHang: any[] = [];
   isMinimized : boolean = false;
+  isWaitList: boolean = false;
 
   constructor(
     injector: Injector,
@@ -79,6 +80,7 @@ export class CustomerAddEditDialogComponent extends BaseComponent implements OnI
   async ngOnInit() {
     this.getDataFilter();
     this.isMinimized = this.customer.isMinimized;
+    this.isWaitList = this.customer.isWaitList;
     if (this.customer.id > 0) {
       const data = await this.detail(this.customer.id);
       if (data) {
