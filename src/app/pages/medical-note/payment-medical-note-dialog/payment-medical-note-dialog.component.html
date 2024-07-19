@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header border-bottom-header">
+            <div class="modal-title">
+                <button type="button" class="close" (click)="closeModal()">&times;</button>
+                <h4 class="control-label">Thanh toán phiếu khám số : {{data.noteNumber}}</h4>
+            </div>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered w-100">
+                <thead>
+                    <tr>
+                        <th width="40%">Tiền cần thanh toán(VNĐ)</th>
+                        <th>Tiền CK(VNĐ)</th>
+                        <th>Tiền thực thu(VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-right">{{data.totalMoney | number}}</td>
+                        <td>
+                            <input 
+                              class="form-control text-right border-input" 
+                              type="text" 
+                              (input)="onDiscountChange()" 
+                              [(ngModel)]="data.discount" 
+                              app-decimal-number />
+                          </td>
+                          <td>
+                            <input 
+                              class="form-control text-right border-input" 
+                              type="text" 
+                              [(ngModel)]="data.totalAmount" 
+                              app-decimal-number />
+                          </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" [disabled]="noteFeeId > 0" (click)="onPayment()">Thanh toán</button>
+            <div class="btn-group" *ngIf="data.action == 'view' && noteFeeId > 0">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    In <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" ng-click="onPrintNotePayment(1)">Phiếu In - A4</a></li>
+                    <li><a href="#" ng-click="onPrintNotePayment(2)">Phiếu In - A5</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>

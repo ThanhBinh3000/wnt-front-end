@@ -26,6 +26,7 @@ import {
 import {
   ServiceNoteHistoryTableComponent
 } from "./medical-note-history-list/service-note-history-table/service-note-history-table.component";
+import { PaymentMediCalNoteDialogComponent } from './payment-medical-note-dialog/payment-medical-note-dialog.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {
     ServiceNoteHistoryTableComponent,
     MedicalNoteHistoryListComponent,
     MedicalNoteAddEditComponent,
-    MedicalNoteWaitAddEditDialogComponent
+    MedicalNoteWaitAddEditDialogComponent,
+    PaymentMediCalNoteDialogComponent
   ],
   imports: [CommonModule, RouterOutlet, MedicalNoteRoutingModule, ComponentsModule, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatSort, MatSortHeader, MatTable],
   exports: [],

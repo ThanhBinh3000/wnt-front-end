@@ -252,7 +252,7 @@
                   href="/management/medical-note/detail/{{data.id}}">Phiếu khám</a>
                 <a *ngIf="noteMedicalCreateAndWrite && data.statusNote == TRANG_THAI_PHIEU_KHAM.CHO_KHAM"
                    class="btn btn-sm btn-primary"
-                   href="/management/medical-note/add/{{data.id}}">Khám bệnh</a>
+                   href="/management/medical-note/edit/{{data.id}}">Khám bệnh</a>
               </div>
               <div class="baocao-actions-item">
                 <button *ngIf="waitNoteCreateAndWrite && havePermissions(isWaitList ? ['PCK_THEM', 'PCK_SUA'] : ['PK_THEM', 'PK_SUA'])"

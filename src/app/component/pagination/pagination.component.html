@@ -1,12 +1,8 @@
 <div *ngIf="this.totalRecord > 0" class="tr-ng-grid-footer form-inline">
     <span class="form-group pull-left page-size">
-        <select class="form-control" (change)="onPageSizeChange($event.target)">
-            <option label="10" value="10">10</option>
-            <option label="20" value="20">20</option>
-            <option label="50" value="50">50</option>
-            <option label="100" value="100">100</option>
-            <option label="--All--" value="9000">--All--</option>
-        </select>
+        <select id="pageSize" class="form-control" (change)="onPageSizeChange($event.target)">
+            <option *ngFor="let option of pageSizeOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
         <span class="page-size-label">&nbsp;&nbsp;Dòng / Trang</span>
     </span>
     <span class="pull-right form-group" style="height:40px">

@@ -1,4 +1,4 @@
-import {Component, Inject, Injector, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { STATUS_API } from "../../../constants/message";
 import { BaseComponent } from "../../../component/base/base.component";
 import { Title } from "@angular/platform-browser";
@@ -14,8 +14,9 @@ import {
 import { Validators } from '@angular/forms';
 import { dateValidator } from '../../../validators/date.validator';
 import { LOAI_SAN_PHAM } from '../../../constants/config';
-import {catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap} from "rxjs";
-import {NgSelectComponent} from "@ng-select/ng-select";
+import { catchError, debounceTime, distinctUntilChanged, from, Observable, of, Subject, switchMap } from "rxjs";
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { SETTING } from '../../../constants/setting';
 
 @Component({
   selector: 'drug-add-edit-dialog',
@@ -35,7 +36,13 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
   dataThayThe: any[] = [];
   dataBanKem: any[] = [];
 
+  //Permitted
+  permittedFields = {
+    drug_ViewInPrice: this.havePermissions(['THUOC_XEMGN']),
+  }
 
+  // Settings
+  enableTrainingStaff = this.authService.getSettingByKey(SETTING.ENABLE_TRAINING_STAFF).activated;
 
   constructor(
     injector: Injector,
@@ -43,7 +50,7 @@ export class DrugAddEditDialogComponent extends BaseComponent implements OnInit 
     private _service: ThuocService,
     private nhomThuocService: NhomThuocService,
     private donViTinhService: DonViTinhService,
-    private thuocService : ThuocService,
+    private thuocService: ThuocService,
     private warehouseLocationService: WarehouseLocationService,
     private productTypesService: ProductTypesService,
     public dialogRef: MatDialogRef<DrugAddEditDialogComponent>,

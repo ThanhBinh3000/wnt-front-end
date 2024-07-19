@@ -17,7 +17,7 @@
             [ngClass]="checkTab == 'additional-information' ? 'tab-check-color' : 'tab-uncheck-color'"
             (click)="checkTab = 'additional-information'">Thông tin bổ sung</a>
         </li>
-        <li [ngClass]="{'active' : checkTab == 'replace-together'}">
+        <li *ngIf="enableTrainingStaff" [ngClass]="{'active' : checkTab == 'replace-together'}">
           <a href="javascript:void(0);"
             [ngClass]="checkTab == 'replace-together' ? 'tab-check-color' : 'tab-uncheck-color'"
             (click)="checkTab = 'replace-together'">Hàng thay thế - Hàng bán kèm</a>
@@ -113,7 +113,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 form-group">
+              <div *ngIf="permittedFields.drug_ViewInPrice" class="col-md-6 form-group">
                 <div class="row">
                   <label class="col-sm-4 control-label">Giá nhập lẻ</label>
                   <div class="col-sm-8">

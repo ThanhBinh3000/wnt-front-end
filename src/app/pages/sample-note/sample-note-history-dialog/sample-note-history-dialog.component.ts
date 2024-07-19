@@ -8,7 +8,7 @@ import { BacSiesService } from '../../../services/medical/bac-sies.service';
 import { SampleNoteService } from '../../../services/products/sample-note.service';
 import { ThuocService } from '../../../services/products/thuoc.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MESSAGE } from '../../../constants/message';
+import { MESSAGE, STATUS_API } from '../../../constants/message';
 import { SETTING } from '../../../constants/setting';
 
 
@@ -18,8 +18,16 @@ import { SETTING } from '../../../constants/setting';
   styleUrls: ['./sample-note-history-dialog.component.css'],
 })
 export class SampleNoteHistoryDialogComponent extends BaseComponent implements OnInit {
-  listData = [];
+  listData: any = [];
   displayedColumns = ['stt', 'id', 'noteDate', 'doctor', 'noteName', 'description', 'tenThuoc', 'donVi', 'soLuong', 'ghiChuThuoc', 'action'];
+  override pageSize: number = 3;
+  pageSizeOptions: { label: string, value: number }[] = [
+    { label: '3', value: 3 },
+    { label: '10', value: 10 },
+    { label: '50', value: 50 },
+    { label: '100', value: 100 },
+    { label: '--All--', value: 1000 }
+  ];
 
   // Settings
   useSampleNoteFromParent = this.authService.getSettingByKey(SETTING.USE_SAMPLE_NOTE_FROM_PARENT);
@@ -35,16 +43,61 @@ export class SampleNoteHistoryDialogComponent extends BaseComponent implements O
     this.formData = this.fb.group({
       maNhaThuoc: [this.useSampleNoteFromParent.activated ? this.getMaNhaThuocCha() : this.getMaNhaThuoc()],
       patientId: [],
+      noteName: [],
     });
   }
 
   async ngOnInit() {
-    console.log(this.data);
-    this.formData.patchValue({patientId: this.data.id});
-    this.searchPage();
-    this.dataTable.forEach(i=>{
-      i.chiTiets
+    await this.searchPage();
+  }
+
+  override async searchPage() {
+    this.formData.patchValue({ patientId: this.data.id });
+    try {
+      let body = this.formData.value
+      body.paggingReq = {
+        limit: this.pageSize,
+        page: this.page - 1
+      }
+      let res = await this._service.getTranSampleNotes(body);
+      if (res?.status == STATUS_API.SUCCESS) {
+        let data = res.data;
+        this.listData = data.content;
+        this.dataTable = [];
+        this.totalRecord = data.totalElements;
+        this.totalPages = data.totalPages;
+      } else {
+        this.dataTable = [];
+        this.totalRecord = 0;
+      }
+    } catch (e) {
+      this.notification.error(MESSAGE.ERROR, MESSAGE.SYSTEM_ERROR);
+    }
+    //console.log(this.listData);
+    var order = 0;
+    this.listData.forEach((i: any) => {
+      order++;
+      var index = 0;
+      if(i.chiTiets != null && i.chiTiets.length > 0){
+        i.chiTiets.forEach((ii: any) => {
+          var item = {
+            order: index == 0 ? order : '',
+            id: index == 0 ? i.id : '',
+            noteDate: index == 0 ? i.noteDate : '',
+            doctorName: index == 0 ? i.doctorName : '',
+            noteName: index == 0 ? i.noteName : '',
+            description: index == 0 ? i.description : '',
+            drugNameText: ii.drugNameText,
+            drugUnitText: ii.drugUnitText,
+            quantity: ii.quantity,
+            comment: ii.comment,
+          };
+          this.dataTable.push(item);
+          index++;
+        });
+      }
     });
+    //console.log(this.dataTable);
   }
 
   getMaNhaThuoc() {
