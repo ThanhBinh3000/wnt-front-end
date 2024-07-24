@@ -17,6 +17,7 @@ import { DoctorAddEditDialogComponent } from '../../doctor/doctor-add-edit-dialo
 import { EsDiagnoseService } from '../../../services/categories/esdiagnose.service';
 import { SampleNoteHistoryDialogComponent } from '../../sample-note/sample-note-history-dialog/sample-note-history-dialog.component';
 import { calculateAge, calculateAgeInMonthsOrYears, calculateDayFromDateRange, convertDateFormat, convertDateObject, getAgeUnit } from '../../../utils/date.utils';
+import { PaymentMediCalNoteDialogComponent } from '../payment-medical-note-dialog/payment-medical-note-dialog.component';
 
 @Component({
   selector: 'app-medical-note',
@@ -236,7 +237,7 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
         $event.birthDate = convertDateFormat($event.birthDate);
       }
       this.formData.patchValue({ customer: $event });
-      console.log(this.formData.value?.customer);
+      //console.log(this.formData.value?.customer);
     }
   }
 
@@ -305,15 +306,19 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
 
   createUpdate() {
     let body = this.formData.value;
-    if(body.reexaminationDateNum > 0){
+    if (body.reexaminationDateNum > 0) {
       body.reexaminationDate = this.datePipe.transform(body.reexaminationDate, 'dd/MM/yyyy HH:mm:ss');
     }
-    body.diagnosticIds = body.chanDoanIds.join(',');
+    body.diagnosticIds = body.chanDoanIds != null ? body.chanDoanIds.join(',') : '';
     this.save(body).then(res => {
       if (res) {
         this.goToUrl('/management/medical-note/detail', res.id);
       }
     });
+  }
+
+  openFormEdit(){
+    if(this.formData.value?.id > 0) this.goToUrl('/management/medical-note/edit', this.formData.value?.id);
   }
 
   async openCustomerAddEditDialog() {
@@ -337,6 +342,15 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
         this.getListBacSies();
         this.formData.patchValue({ idDoctor: result.id });
       }
+    });
+  }
+
+  async openPaymentMedicalNoteDialog() {
+    var data = this.formData.value;
+    data.action = this.action;
+    this.dialog.open(PaymentMediCalNoteDialogComponent, {
+      data: data,
+      width: '600px',
     });
   }
 

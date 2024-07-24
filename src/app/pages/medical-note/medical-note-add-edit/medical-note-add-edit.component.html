@@ -42,12 +42,11 @@
                     <button *ngIf="havePermissions(['PK_THEM'])" class="btn btn-primary"
                         [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock || action == 'view'"
                         (click)="createUpdate()">Ghi phiếu</button>
-                    <button *ngIf="havePermissions(['PK_SUA']) && action == 'view'" class="btn btn-primary"
-                        [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock || action != 'view'"
-                    >Sửa</button>
+                    <button class="btn btn-primary" (click)="openFormEdit()"
+                        [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock || action != 'view' || havePermissions(['PK_SUA'])">Sửa</button>
                     <button *ngIf="havePermissions(['PK_IN '])" class="btn btn-default" (click)="printPreview('1')">In</button>
                     <button class="btn btn-primary" [disabled]="action != 'view' || !formData.value?.isDeb"
-                        ng-click="onPaymetNote(noteModel)">Thanh toán</button>
+                        (click)="openPaymentMedicalNoteDialog()">Thanh toán</button>
                     <a *ngIf="formData.value?.id > 0" (click)="onLockNote()" title="Mở/Khóa phiếu"
                         class="btn btn-default"><i
                             class="fa {{formData.value?.isLock ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
@@ -173,7 +172,7 @@
                                     <label class="col-md-4">Tiền khám</label>
                                     <input class="form-control text-right mb-0"
                                         [attr.disabled]="action == 'view' || formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM"
-                                        formControlName="totalMoney" type="text" mask="separator"/>
+                                        formControlName="totalMoney" type="text" mask="separator" />
                                 </div>
                                 <div class="form-inline-flex">
                                     <label class="col-md-4">Loại khám</label>
@@ -288,13 +287,16 @@
                                         <div class="form-check align-items-center">
                                             <label class="form-check-label">Tái khám</label>
                                             <input class="form-check mb-0 mt-0" [attr.disabled]="action == 'view'"
-                                                placeholder="dd/mm/yyyy" formControlName="reexaminationChecked" type="checkbox">
+                                                placeholder="dd/mm/yyyy" formControlName="reexaminationChecked"
+                                                type="checkbox">
                                         </div>
                                     </div>
-                                    <input *ngIf="formData.value?.reexaminationChecked" ng-change="onReexaminationDateNumChanged()"
-                                        type="text" min="0" class="form-control mb-0"
+                                    <input *ngIf="formData.value?.reexaminationChecked"
+                                        ng-change="onReexaminationDateNumChanged()" type="text" min="0"
+                                        class="form-control mb-0"
                                         [attr.disabled]="action == 'view' || formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM"
-                                        style="text-align:left" formControlName="reexaminationDateNum" (ngModelChange)="reexaminationDateNumChanged()"
+                                        style="text-align:left" formControlName="reexaminationDateNum"
+                                        (ngModelChange)="reexaminationDateNumChanged()"
                                         placeholder="Nhập số ngày hẹn tái khám" />
                                 </div>
                                 <div class="form-inline-flex" *ngIf="formData.value?.reexaminationChecked">
@@ -696,48 +698,7 @@
         </div>
     </div>
 </div>
-<!-- <div id="model-payment" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-header">
-                    <div class="modal-title">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="control-label">Thanh toán phiếu khám số : </h4>
-                    </div>
-                </div>
-                <table class="table table-bordered">
-                    <tr>
-                        <th width="40%">Tiền cần thanh toán(VNĐ)</th>
-                        <th>Tiền CK(VNĐ)</th>
-                        <th>Tiền thực thu(VNĐ)</th>
-                    </tr>
-                    <tr>
-                        <td class="text-right"></td>
-                        <td><input class="form-control text-right border-input" type="text"
-                                ng-change="onDiscountChange()" formControlName="modelPayment.Discount"
-                                awnum="app-decimal-number" /></td>
-                        <td><input class="form-control text-right border-input" type="text"
-                                formControlName="modelPayment.TotalAmount" awnum="app-decimal-number" /></td>
-                    </tr>
-                </table>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" ng-disabled="noteFeeId > 0" ng-click="onPayment()">Thanh
-                        toán</button>
-                    <div class="btn-group" ng-show="action == 'view' || model.Id > 0">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            In <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="onPrintNotePayment(1)">Phiếu In - A4</a></li>
-                            <li><a href="#" ng-click="onPrintNotePayment(2)">Phiếu In - A5</a></li>
-                        </ul>
-                    </div>
-                    <button class="btn btn-default" data-dismiss="modal">Đóng</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
+
 <!-- lịch sử khám bệnh gần nhất -->
 <div id="model-diagnostic" class="modal fade" role="dialog">
     <div class="modal-dialog">

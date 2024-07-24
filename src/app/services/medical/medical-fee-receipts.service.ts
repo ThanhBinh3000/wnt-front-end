@@ -19,5 +19,8 @@ export class MedicalFeeReceiptsService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/get-list-customer-debt`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
-
+  paymentMedicalNote(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/payment-medical-note`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

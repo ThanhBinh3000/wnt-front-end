@@ -45,9 +45,9 @@
 <!--                   (click)="export('drug-list.xlsx')"-->
 <!--              class="btn btn-default btn-outline" accept="Excel/*.xlsx">-->
             <div style="display: none"> <input id="uploadFile" name="uploadFile" type="file"><br></div>
-            <a class="btn btn-default btn-outline" (click)="triggerFileInput()">Tải file</a>
+            <a *ngIf="permittedFields.drug_ImportExcel" class="btn btn-default btn-outline" (click)="triggerFileInput()">Tải file</a>
             <input class="btn btn-default btn-outline" type="file" #importFile id="importFile" (change)="handleSelectFile($event)" style="display: none;">
-            <a class="btn btn-default btn-outline" (click)="export('drug-list.xlsx')">Xuất File</a>
+            <a *ngIf="permittedFields.drug_ExportExcel" class="btn btn-default btn-outline" (click)="export('drug-list.xlsx')">Xuất File</a>
           </div>
         </form>
       </fieldset>
@@ -73,10 +73,10 @@
           </button>
           <button *ngIf="this.formData.value.dataDelete" (click)="deleteMultiDatabase()"
             class="btn btn-sm btn-danger pull-right ng-scope" ng-if="isSuperUser">Xóa vĩnh viễn
-          </button><!-- end ngIf: isSuperUser -->
+          </button>
           <button *ngIf="this.formData.value.dataDelete" (click)="restoreMulti()"
             class="btn btn-sm btn-warning pull-right ng-scope" ng-if="isSuperUser">Khôi phục
-          </button><!-- end ngIf: isSuperUser -->
+          </button>
         </div>
       </div>
       <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid" [dataSource]="getDataSource()"
@@ -101,7 +101,7 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="upload">
+        <ng-container *ngIf="displayImage" matColumnDef="upload">
           <th mat-header-cell *matHeaderCellDef> Upload</th>
           <td mat-cell *matCellDef="let data">
             <div class="tr-ng-cell text-left">
@@ -112,7 +112,7 @@
                       [pathImage]="data.imagePreviewUrl"></app-preview-image>
                   </div>
                   <div class="d-flex gap-5 mt-3 ng-scope">
-                    <div onclick="event.preventDefault();" class="flex-grow-1">
+                    <div *ngIf="permittedFields.drug_UpdateImage" class="flex-grow-1">
                       <button class="btn btn-primary btn-sm " (click)="onUploadImageDialog(data);"><i
                           class="fa-regular fa-folder-arrow-up"></i></button>
                     </div>
@@ -179,9 +179,9 @@
         <ng-container matColumnDef="gia">
           <th mat-header-cell *matHeaderCellDef> Giá</th>
           <td mat-cell *matCellDef="let data">
-            <p>- Giá nhập: {{ data.giaNhap | number }}</p>
-            <p>- Giá bán lẻ: {{ data.giaBanLe | number }}</p>
-            <p>- Giá bán sỉ: {{ data.giaBanBuon | number }}</p>
+            <p *ngIf="permittedFields.drug_ViewInPrice">- Giá nhập: {{ data.giaNhap | number }}</p>
+            <p>- Giá bán lẻ: {{ data.giaBanLe | number }}/{{ data.tenDonViTinhXuatLe }}</p>
+            <p>- Giá bán sỉ: {{ data.giaBanBuon | number }}/{{ data.heSo > 1 ? data.tenDonViTinhThuNguyen : data.tenDonViTinhXuatLe }}</p>
           </td>
         </ng-container>
 
@@ -195,9 +195,9 @@
           <td mat-cell *matCellDef="let data"> {{ data.gioiHan }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="tonKho">
+        <ng-container *ngIf="permittedFields.drug_ViewInventory" matColumnDef="tonKho">
           <th mat-header-cell *matHeaderCellDef> Tồn</th>
-          <td mat-cell *matCellDef="let data"> 0</td>
+          <td mat-cell *matCellDef="let data"> {{ data.tonKho }}</td>
         </ng-container>
 
         <ng-container matColumnDef="tuKho">
@@ -224,7 +224,7 @@
                   </span>
                 </div>
                 <div class="baocao-actions-item">
-                  <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                  <a *ngIf="permittedFields.drug_ViewHistory" title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
                     class="btn btn-primary btn-sm">
                     LS
                   </a>
@@ -251,7 +251,7 @@
                       <i class="fa-regular fa-trash"></i>
                     </a>
                   </span>
-                  <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                  <a *ngIf="permittedFields.drug_ViewHistory" title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
                     class="btn btn-primary btn-sm">
                     LS
                   </a>
@@ -263,7 +263,7 @@
                 <a title="sửa" class="btn btn-primary btn-sm" href="#"
                   ng-click="onQuickUpdateDrugInfos(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
                     class="fa-regular fa-pen-to-square"></i></a>
-                <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                <a *ngIf="permittedFields.drug_ViewHistory" title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
                   class="btn btn-primary btn-sm">
                   LS
                 </a>
@@ -274,7 +274,7 @@
                     <i class="fa-regular fa-eye"></i>
                   </a>
                 </span>
-                <a title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
+                <a *ngIf="permittedFields.drug_ViewHistory" title="lịch sử giao dịch" href="/management/report/drug-transaction-history?drugId={{data.id}}"
                   class="btn btn-primary btn-sm">
                   LS
                 </a>

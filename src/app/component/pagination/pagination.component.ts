@@ -7,6 +7,13 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
 
+  @Input() pageSizeOptions: { label: string, value: number }[] = [
+    { label: '10', value: 10 },
+    { label: '20', value: 20 },
+    { label: '50', value: 50 },
+    { label: '100', value: 100 },
+    { label: '--All--', value: 9000 }
+  ];
   @Input() currentPage: number = 0;
   @Input() totalPages: number = 0;
   @Input() totalRecord: number = 0;

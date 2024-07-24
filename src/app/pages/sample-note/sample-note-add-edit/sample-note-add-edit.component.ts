@@ -115,6 +115,8 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
   }
 
   async ngOnInit() {
+    this.titleService.setTitle(this.title);
+    this.getDataFilter();
     this.print();
     this.route.data.subscribe((data: any) => {
       this.formData.patchValue({
@@ -157,8 +159,6 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
     }
     this.displayedColumns = this.getDisplayedColumns();
     this.title = this.formData.value?.isConnect ? 'Thông tin chung đơn/liều mẫu LT' : 'Thông tin chung đơn/liều mẫu';
-    this.titleService.setTitle(this.title);
-    this.getDataFilter();
   }
 
   getDataFilter() {
@@ -338,7 +338,7 @@ export class SampleNoteAddEditComponent extends BaseComponent implements OnInit 
     var price = data.retailPrice;
     var unitId = parseInt(data.drugUnitID);
     if (unitId !== data.retailUnitId) {
-      price *= data.heSo;
+      price *= data.thuocs ? data.thuocs.heSo : data.heSo;
     }
     return price;
   }
