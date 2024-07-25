@@ -356,7 +356,7 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
             nhaThuocMaNhaThuoc: this.getMaNhaThuoc(),
             typeService: 0
           };
-          return from(this.thuocService.searchPage(bodyThuoc).then((res) => {
+          return from(this.thuocService.searchPageSell(bodyThuoc).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
               return res.data.content;
             }

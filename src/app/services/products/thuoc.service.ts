@@ -56,4 +56,9 @@ export class ThuocService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/preview-print`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  searchPageSell(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/search-page-sell`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }
