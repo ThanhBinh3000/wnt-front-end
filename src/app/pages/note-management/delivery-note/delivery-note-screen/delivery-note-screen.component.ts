@@ -240,10 +240,12 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           createdByUserText: this.dataListShoppingCart.createUserName,
           khachHangMaKhachHang: this.dataListShoppingCart.cusId,
           pickUpOrderId: this.dataListShoppingCart.id,
-        })
-        this.dataListShoppingCart.chiTiets.forEach((item: any) => {
-          this.dataTable.push(item)
-        })
+        });
+        if( this.dataListShoppingCart.chiTiets){
+          this.dataListShoppingCart.chiTiets.forEach((item: any) => {
+            this.dataTable.push(item)
+          })
+        }
         this.dataTable.filter(x => x.id > 0).forEach(x => {
           this.thuocService.getDetail(x.drugId).then((res) => {
             if (res?.status == STATUS_API.SUCCESS) {
@@ -425,6 +427,9 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
           this.dataTable[0].recordStatusId = 0;
           this.dataTable[0].giaBanBuon = item.giaBanBuon;
           this.dataTable[0].giaBanLe = item.giaBanLe;
+          this.dataTable[0].bundleGoods = item.bundleGoods;
+          this.dataTable[0].replaceGoods = item.replaceGoods;
+
           if (this.loaiGiaBan == 1) {
             this.dataTable[0].giaXuat = item.giaBanBuon;
             this.dataTable[0].retailPrice = item.heSo > 1 ? item.giaBanBuon / item.heSo : item.giaBanBuon;
@@ -476,7 +481,6 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       }
       this.dataTable[0] = { isEditingItem: true };
       this.updateTotal();
-      ;
     }
     setTimeout(() => this.focusSearchDrug(), 100);
   }
@@ -835,6 +839,10 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
         this.focusInputTongTien();
         break;
     }
+  }
+
+  getCheckConnect(row: any): boolean {
+    return !!row.connectivityDrugBaId;
   }
 
   print(){

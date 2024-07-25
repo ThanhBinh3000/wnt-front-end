@@ -45,6 +45,7 @@ import {WaitNoteTableComponent} from "./note-list/wait-note-table/wait-note-tabl
 import {
   WarehouseTransferNoteTableComponent
 } from "./note-list/warehouse-transfer-note-table/warehouse-transfer-note-table.component";
+import {TooltipDirective} from "./delivery-note/delivery-note-screen/tooltip/tooltip.directive";
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {
     ReturnToSupplierNoteTableComponent,
     ServiceNoteTableComponent,
     WaitNoteTableComponent,
-    WarehouseTransferNoteTableComponent
+    WarehouseTransferNoteTableComponent,
+    TooltipDirective
   ],
   imports: [
     CommonModule,

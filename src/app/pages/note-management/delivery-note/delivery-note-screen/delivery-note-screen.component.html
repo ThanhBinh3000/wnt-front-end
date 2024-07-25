@@ -1,6 +1,6 @@
 <div class="card-bg">
     <h2 class="card-title text-center mt-0 mb-0">
-        <b class="ng-binding">PHIẾU BÁN HÀNG</b>
+        <b class="ng-binding">PHIẾU BÁN HÀNG 1</b>
         <span ng-if="deviceType==0" style="padding-bottom: 12px; padding-left: 8px"
             class="btn tooltip-content-drug ng-scope">
             <span ng-click="">
@@ -283,7 +283,7 @@
                             </div>
                         </div>
                     </div>
-                    <span *ngIf="!data.isEditingItem">{{data.maThuocText}} - {{data.tenThuocText}}</span>
+                    <span *ngIf="!data.isEditingItem" [appTooltip]="data" class="btn-link" >{{data.maThuocText}} - {{data.tenThuocText}}</span>
                 </td>
             </ng-container>
             <ng-container matColumnDef="donVi">
@@ -351,8 +351,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
-
+            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); index as i;"
+              [ngClass]="i > 0 ? getCheckConnect(row) ? 'connect-row': 'normal-row' : ''"></tr>
         </table>
 
         <form [formGroup]="formData">
