@@ -1,90 +1,106 @@
-<div class="modal fade" id="drug-update-inprice-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng"><span>&times;</span></button>
-                <h4 class="modal-title"> Cập nhật giá nhập/xuất cho thuốc 
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-bordered table-userpicker">
-                            <tbody>
-                                <tr>
-                                    <td><b>Mã thuốc:</b></td>
-                                    <td class="ng-binding"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Tên thuốc:</b></td>
-                                    <td class="ng-binding"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Đơn vị:</b></td>
-                                    <td class="ng-binding"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Giá nhập cũ:</b></td>
-                                    
-                                    <!-- ngIf: permittedFields.Drug_ViewInputPrice --><td ng-if="permittedFields.Drug_ViewInputPrice" class="ng-scope"><input type="text" awnum="app-decimal-number" style="background-color: lightgray" ng-readonly="true" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.oldPrice" disabled="" readonly="readonly"></td>
-                                    <!-- ngIf: !permittedFields.Drug_ViewInputPrice -->
-                                </tr>
-                                <tr>
-                                    <td><b>Giá nhập mới:</b></td>
-                                    
-                                <!-- ngIf: permittedFields.Drug_ViewInputPrice --><td ng-if="permittedFields.Drug_ViewInputPrice" class="ng-scope">
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title"> Cập nhật giá nhập/xuất cho thuốc <b>{{drug.tenThuoc}}</b>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-userpicker">
+                        <tbody>
+                            <tr>
+                                <td><b>Mã thuốc:</b></td>
+                                <td>{{drug.maThuoc}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Tên thuốc:</b></td>
+                                <td>{{drug.tenThuoc}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Đơn vị:</b></td>
+                                <td>{{drug.tenDonViTinh}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá nhập cũ:</b></td>
+                                <td *ngIf="permittedFields.drug_ViewInputPrice"><input type="text" mask="separator"
+                                        style="background-color: lightgray" [readOnly]="true"
+                                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                        [(ngModel)]="drug.giaNhapCu" disabled></td>
+                                <td *ngIf="!permittedFields.drug_ViewInputPrice">***</td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá nhập mới:</b></td>
+
+                                <td *ngIf="permittedFields.drug_ViewInputPrice">
                                     <div class="input-group">
-                                        <input ng-change="onOutpriceChange('inprice')" awnum="app-decimal-number" type="text" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.drugPrice">
-                                            <div class="input-group-btn">
-                                                <span class="btn btn-primary" ng-click="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();" title="Cập nhật giá nhập cho cơ sở khác">
-                                                    <i class="fa-regular fa-arrows-rotate"></i>
-                                                </span>
-                                            </div>
+                                        <input (change)="onOutpriceChange('inprice')" mask="separator" type="text"
+                                            class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                            [(ngModel)]="drug.giaNhap">
+                                        <div *ngIf="enableUpdateDrugPriceForChildStore" class="input-group-btn">
+                                            <span class="btn btn-primary"
+                                                (click)="onUpdatePriceChildStore(0); $event.preventDefault(); $event.stopPropagation();"
+                                                title="Cập nhật giá nhập cho cơ sở khác">
+                                                <i class="fa-regular fa-arrows-rotate"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </td>
-                                    <!-- ngIf: !permittedFields.Drug_ViewInputPrice -->
-                                </tr>
-                                <tr>
-                                    <td><b>Giá bán lẻ cũ:</b></td>
-                                    
-                                    <td><input awnum="app-decimal-number" type="text" style="background-color: lightgray" disabled="" ng-readonly="true" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.oldOutPriceL" readonly="readonly"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Giá bán lẻ mới:</b></td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input type="text" awnum="app-decimal-number" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.newOutPriceL" ng-change="onOutpriceChange('outprice')">
-                                                <div class="input-group-btn">
-                                                    <span class="btn btn-primary" ng-click="onUpdatePriceChildStore(1); $event.preventDefault(); $event.stopPropagation();" title="Cập nhật giá bán cho cơ sở khác">
-                                                        <i class="fa-regular fa-arrows-rotate"></i>
-                                                    </span>
-                                                </div>
+                                <td *ngIf="!permittedFields.drug_ViewInputPrice">***</td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán lẻ cũ:</b></td>
+
+                                <td><input mask="separator" type="text" style="background-color: lightgray" disabled
+                                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                        [(ngModel)]="drug.giaBanLeCu" readonly="readonly"></td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán lẻ mới:</b></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" mask="separator"
+                                            class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                            [(ngModel)]="drug.giaBanLe" (change)="onOutpriceChange('outprice')">
+                                        <div *ngIf="enableUpdateDrugPriceForChildStore" class="input-group-btn">
+                                            <span class="btn btn-primary"
+                                                (click)="onUpdatePriceChildStore(1); $event.preventDefault(); $event.stopPropagation();"
+                                                title="Cập nhật giá bán cho cơ sở khác">
+                                                <i class="fa-regular fa-arrows-rotate"></i>
+                                            </span>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Tỷ suất lợi nhuận(%):</b></td>
-                                    <!-- ngIf: permittedFields.Drug_ViewInputPrice --><td ng-if="permittedFields.Drug_ViewInputPrice" class="ng-scope"><input type="text" awnum="app-decimal-number" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-change="onOutpriceChange('revenue')" ng-model="drug.rateRevenue"></td>
-                                    <!-- ngIf: !permittedFields.Drug_ViewInputPrice -->
-                                </tr>
-                                <tr>
-                                    <td><b>Giá bán buôn cũ:</b></td>
-                                    
-                                    <td><input type="text" awnum="app-decimal-number" style="background-color: lightgray" disabled="" ng-readonly="true" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.oldOutPriceB" readonly="readonly"></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Giá bán buôn mới:</b></td>
-                                    <td><input type="text" awnum="app-decimal-number" class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="drug.newOutPriceB"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Tỷ suất lợi nhuận(%):</b></td>
+                                <td *ngIf="permittedFields.drug_ViewInputPrice"><input type="text" mask="separator"
+                                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                        (change)="onOutpriceChange('revenue')" [(ngModel)]="drug.rateRevenue"></td>
+                                <td *ngIf="!permittedFields.drug_ViewInputPrice">***</td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán buôn cũ:</b></td>
+
+                                <td><input type="text" mask="separator" style="background-color: lightgray" disabled
+                                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                        [(ngModel)]="drug.giaBanBuonCu" readonly="readonly"></td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán buôn mới:</b></td>
+                                <td><input type="text" mask="separator"
+                                        class="form-control mb-0 ng-pristine ng-untouched ng-valid ng-isolate-scope"
+                                        [(ngModel)]="drug.giaBanBuon"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">Cập nhật</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="onUpdateDrugPrice()">Cập nhật</button>
         </div>
     </div>
 </div>

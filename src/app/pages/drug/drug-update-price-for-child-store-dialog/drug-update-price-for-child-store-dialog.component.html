@@ -1,0 +1,20 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"> Cập nhật giá cho thuốc {{data.tenThuoc}}</h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                <label class="control-label col-sm-12">Chọn cơ sở cần cập nhật:</label>
+                <div *ngFor="let x of listChildStores" class="control-label col-sm-12">
+                    <input type="checkbox" [(ngModel)]="x.isCheck"> {{ x.tenNhaThuoc }}
+                  </div>
+            </div>               
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="onUpdate()">Cập nhật</button>
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

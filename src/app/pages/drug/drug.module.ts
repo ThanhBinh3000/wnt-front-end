@@ -20,6 +20,8 @@ import {DrugBarCodePrintingComponent} from "./drug-bar-code-printing/drug-bar-co
 import {
   DrugBarCodePrintingDialogComponent
 } from "./drug-bar-cade-printing-dialog/drug-bar-code-printing-dialog.component";
+import { DrugUpdatePriceForChildStoreDialogComponent } from './drug-update-price-for-child-store-dialog/drug-update-price-for-child-store-dialog.component';
+import { DrugUpdateCommonInfosDialogComponent } from './drug-update-common-infos-dialog/drug-update-common-infos-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import {
     DrugConnectAddEditDialogComponent,
     MultipleWarehouseInventoryDialogComponent,
     DrugBarCodePrintingComponent,
-    DrugBarCodePrintingDialogComponent
+    DrugBarCodePrintingDialogComponent,
+    DrugUpdatePriceForChildStoreDialogComponent,
+    DrugUpdateCommonInfosDialogComponent,
   ],
     imports: [
       CommonModule,
@@ -52,7 +56,9 @@ import {
     DrugUpdateAdditionalInfoDialogComponent,
     DrugSearchPriceInOutDialogComponent,
     DrugMappingCommonDialogComponent,
-    MultipleWarehouseInventoryDialogComponent
+    MultipleWarehouseInventoryDialogComponent,
+    DrugUpdatePriceForChildStoreDialogComponent,
+    DrugUpdateCommonInfosDialogComponent
   ],
 })
 export class DrugModule {
