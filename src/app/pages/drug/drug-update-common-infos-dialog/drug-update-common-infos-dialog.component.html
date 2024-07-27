@@ -1,0 +1,133 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span aria-hidden="true"><i
+                        class="fa-regular fa-xmark"></i></span></button>
+            <h4 class="modal-title"><b>Cập nhật nhanh thông tin cho thuốc</b></h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-userpicker">
+                        <tbody>
+                            <tr>
+                                <td><b>Tên thuốc:</b></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="drug.tenThuoc" /></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nhóm thuốc:</b></td>
+                                <td>
+                                    <ng-select appendTo="body" [(ngModel)]="drug.nhomThuocMaNhomThuoc">
+                                        <ng-option [value]="0">Hãy chọn nhóm thuốc</ng-option>
+                                        <ng-option *ngFor="let item of listNhomThuoc"
+                                            [value]="item.id">{{item.tenNhomThuoc}}</ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Loại hàng</b></td>
+                                <td>
+                                    <ng-select appendTo="body" [(ngModel)]="drug.productTypeId">
+                                        <ng-option *ngFor="let item of listProductTypes"
+                                            [value]="item.id">{{item.displayName}}</ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Mô tả thêm:</b></td>
+                                <td><textarea class="form-control" type="text" [(ngModel)]="drug.thongTin"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Đơn vị xuất lẻ</b></td>
+                                <td>
+                                    <ng-select (ngModelChange)="onRetailUnitChange()" appendTo="body"
+                                        [(ngModel)]="drug.donViXuatLeMaDonViTinh">
+                                        <ng-option *ngFor="let item of listDonViTinh"
+                                            [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá nhập lẻ:</b></td>
+                                <td *ngIf="permittedFields.drug_ViewInputPrice">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mb-0" mask="separator"
+                                            [(ngModel)]="drug.giaNhap">
+                                        <span
+                                            class="input-group-addon flex-grow-width-25">/{{drug.tenDonViTinhXuatLe}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán lẻ:</b></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mb-0" mask="separator"
+                                            [(ngModel)]="drug.giaBanLe">
+                                        <span
+                                            class="input-group-addon flex-grow-width-25">/{{drug.tenDonViTinhXuatLe}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Đơn vị nhập</b></td>
+                                <td>
+                                    <ng-select (ngModelChange)="onUnitChange()" appendTo="body"
+                                        [(ngModel)]="drug.donViThuNguyenMaDonViTinh">
+                                        <ng-option [value]="0">none</ng-option>
+                                        <ng-option *ngFor="let item of listDonViTinh"
+                                            [value]="item.id">{{item.tenDonViTinh}}</ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Quy cách:</b></td>
+                                <td>
+                                    <input type="text" mask="separator" class="form-control mb-0"
+                                        [(ngModel)]="drug.heSo">
+                                    <span *ngIf="drug.tenDonViTinhThuNguyen != ''">{{drug.tenDonViTinhThuNguyen}} =
+                                        {{drug.heSo}} {{drug.tenDonViTinhXuatLe}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Giá bán sỉ:</b></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mb-0" mask="separator"
+                                            [(ngModel)]="drug.giaBanBuon">
+                                        <span
+                                            class="input-group-addon flex-grow-width-25">/{{drug.tenDonViTinhThuNguyen}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Mã vạch</b></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" name="BarCode" id="BarCode" class="form-control mb-0"
+                                            tabindex="5" [(ngModel)]="drug.barCode" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" title="Sinh mã vạch tự động"
+                                                (click)="genBarcode()">
+                                                <i class="fa-regular fa-barcode-read"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="d-flex gap-10 align-items-center justify-content-end">
+                <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+                <button type="button" class="btn btn-primary"
+                    ng-click="onUpdate(); $event.preventDefault(); $event.stopPropagation();">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

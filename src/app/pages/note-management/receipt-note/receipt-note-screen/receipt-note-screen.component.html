@@ -251,7 +251,7 @@
                 [ngClass]="getInputSize()" [style.font-size]="getInputFontSize()">
             </div>
             <div *ngIf="permittedFields.drug_ViewInputPrice">
-              <input type="text" [(ngModel)]="data.giaNhap" mask="separator" (ngModelChange)="getItemAmount(data)"
+              <input type="text" [(ngModel)]="data.giaNhap" mask="separator" (change)="onOutpriceChange(data,'inprice')" (ngModelChange)="getItemAmount(data)"
                 (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap"
                 style="width: 100%; text-align:right;" [ngClass]="getInputSize()"
                 [style.font-size]="getInputFontSize()">
@@ -275,9 +275,9 @@
           <td mat-cell *matCellDef="let data">
             <div class="input-group mb-3" [ngClass]="getInputSize()">
               <input type="text" class="form-control mb-0 mousetrap inline" [(ngModel)]="data.giaBanLe"
-                (ngModelChange)="onOutpriceChange(data,'outprice')" mask="separator">
+                (change)="onOutpriceChange(data,'outprice')" mask="separator">
               <input *ngIf="permittedFields.drug_ViewInputPrice" type="text" class="form-control" style="width: 66%;"
-                mask="separator" [(ngModel)]="data.rateRevenue" (ngModelChange)="onOutpriceChange(data,'raterevenue')">
+                mask="separator" [(ngModel)]="data.rateRevenue" (change)="onOutpriceChange(data,'raterevenue')">
               <input *ngIf="!permittedFields.drug_ViewInputPrice" readonly type="text" class="form-control"
                 style="width: 66%;" value="***">
               <span class="input-group-text btn btn-primary" *ngIf="isDesktop()" (click)="updateInPrice($event, data)"

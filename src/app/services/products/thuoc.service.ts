@@ -61,4 +61,19 @@ export class ThuocService extends BaseService {
     const url = `/api/${this.gateway}/${this.controller}/search-page-sell`;
     return this.httpClient.post<ResponseData>(url, body).toPromise();
   }
+
+  updateDrugPrice(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/update-drug-price`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  updateDrugPriceForChildStore(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/update-drug-price-for-child-store`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
+
+  saveDraftListDrug(body: any) {
+    const url = `/api/${this.gateway}/${this.controller}/save-draft-list-drug`;
+    return this.httpClient.post<ResponseData>(url, body).toPromise();
+  }
 }

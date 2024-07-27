@@ -21,6 +21,7 @@ import { DrugUpdateBatchDialogComponent } from '../../../drug/drug-update-batch-
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
 import { PhieuNhapService } from '../../../../services/inventory/phieu-nhap.service';
 import { MultipleWarehouseInventoryDialogComponent } from '../../../drug/multiple-warehouse-inventory-dialog/multiple-warehouse-inventory-dialog.component';
+import { DrugUpdateInpriceDialogComponent } from '../../../drug/drug-update-inprice-dialog/drug-update-inprice-dialog.component';
 
 @Component({
   selector: 'receipt-note-screen',
@@ -53,8 +54,8 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   //Permit
   permittedFields = {
-    drug_ViewInputPrice: true,
-    drug_ViewInventory: true,
+    drug_ViewInputPrice: this.havePermissions(['THUOC_XEMGN']),
+    drug_ViewInventory: this.havePermissions(['THUOC_XEMTK']),
   }
 
   constructor(
@@ -305,16 +306,13 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
 
   onOutpriceChange(item: any, type: any) {
     if (type == 'outprice' || type == 'inprice') {
-      item.rateRevenue = item.giaNhap > 0 ? ((item.giaBanLe - item.giaNhap) / item.giaNhap) * 100 : 0;
-      //item.RateRevenue = $scope.formatMoney(item.RateRevenue, 2);
+      item.rateRevenue = item.giaNhap > 0 ? parseFloat((((item.giaBanLe - item.giaNhap) / item.giaNhap) * 100).toFixed(2)) : 0;
       if (type == 'inprice') {
         this.onPriceChanged(item);
       }
     }
     else {
       item.giaBanLe = item.rateRevenue > 0 ? (item.giaNhap * ((item.rateRevenue / 100) + 1)) : 0;
-      //item.OutPrice = $scope.formatMoney(item.OutPrice, 0);
-      //item.OutPrice = item.OutPrice.replace(',', '');
     }
   }
 
@@ -664,7 +662,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
   }
 
   async updateInPrice($event: any, data: any) {
-    if (data == null || data.thuocThuocId <= 0) {
+    if (data == null || data.thuocThuocId == null || data.thuocThuocId <= 0) {
       this.notification.error(MESSAGE.ERROR, 'Hãy chọn thuốc muốn cập nhật giá.');
       return;
     }
@@ -672,19 +670,28 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
       && (this.refStoreForProducts.value == '0012' || this.refStoreForProducts.value == 'DQG' || this.refStoreForProducts.value == 'DQGB')) {
 
     }
-    else{
-
+    else {
+      const dialogRef = this.dialog.open(DrugUpdateInpriceDialogComponent, {
+        data: data,
+        width: '600px',
+      });
+      dialogRef.afterClosed().subscribe(async result => {
+        if (result) {
+          console.log(result);
+          data.giaBanLe = result.giaBanLe;
+        }
+      });
     }
   }
 
   async onGetDataDetailLastValueWarehouse(data: any) {
     this.dialog.open(MultipleWarehouseInventoryDialogComponent, {
-      data: {thuocId: data.thuocThuocId, tenThuoc: data.tenThuoc},
+      data: { thuocId: data.thuocThuocId, tenThuoc: data.tenThuoc },
       width: '600px',
     });
   }
 
-  checkNhaThuoc() : boolean {
+  checkNhaThuoc(): boolean {
     const allowedNhaThuoc = ['0010', '3214', '3220', '3780', '13202'];
     return allowedNhaThuoc.includes(this.authService.getNhaThuoc().maNhaThuoc);
   }
