@@ -21,19 +21,19 @@
                     <a class="btn btn-primary" *ngIf="formData.value?.id > 0" href="/management/medical-note/add">Tiếp
                         tục</a>
                     <button class="btn btn-primary"
-                        [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock"
-                        ng-click="onSpecifyService(noteModel.Id)"
+                        disabled="{{formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock}}"
+                        (click)="onSpecifyService(formData.value?.id)"
                         ng-show="permittedFields.NoteService_Create_And_Write">Chỉ định dịch vụ</button>
-                    <button class="btn btn-primary" ng-click="onListServiced(noteModel.Id)"
+                    <button [disabled]="formData.value?.id <= 0" class="btn btn-primary" (click)="onListServiced(formData.value?.id)"
                         ng-show="permittedFields.NoteService_Read">Dịch vụ đã kê</button>
-                    <button class="btn btn-primary" ng-click="onSampleNote(noteModel.Id)">Đơn thuốc</button>
+                    <button class="btn btn-primary" [disabled]="formData.value?.id <= 0" (click)="onSampleNote(formData.value?.id)">Đơn thuốc</button>
                     <a class="btn btn-primary"
                         href="/management/medical-note/history-list?customerId={{formData.value?.idPatient}}"
                         target="_blank">LS khám
                         chữa bệnh</a>
                     <button class="btn btn-primary" (click)="onHistorySampleNote(formData.value?.idPatient)">LS kê
                         đơn</button>
-                    <button *ngIf="havePermissions(['PK_THEM', 'PK_SUA'])" class="btn btn-danger"
+                    <button class="btn btn-danger"
                         [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock"
                         (click)="changeStatus(TRANG_THAI_PHIEU_KHAM.DA_KHAM)">Kết thúc khám</button>
                     <button class="btn btn-default"
@@ -44,7 +44,7 @@
                         (click)="createUpdate()">Ghi phiếu</button>
                     <button class="btn btn-primary" (click)="openFormEdit()"
                         [disabled]="formData.value?.statusNote == TRANG_THAI_PHIEU_KHAM.DA_KHAM || formData.value?.isLock || action != 'view' || havePermissions(['PK_SUA'])">Sửa</button>
-                    <button *ngIf="havePermissions(['PK_IN '])" class="btn btn-default" (click)="printPreview('1')">In</button>
+                    <button *ngIf="havePermissions(['PK_IN'])" class="btn btn-default" (click)="printPreview('1')">In</button>
                     <button class="btn btn-primary" [disabled]="action != 'view' || !formData.value?.isDeb"
                         (click)="openPaymentMedicalNoteDialog()">Thanh toán</button>
                     <a *ngIf="formData.value?.id > 0" (click)="onLockNote()" title="Mở/Khóa phiếu"

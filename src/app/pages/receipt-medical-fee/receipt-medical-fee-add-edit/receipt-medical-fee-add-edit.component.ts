@@ -78,6 +78,16 @@ export class ReceiptMedicalFeeAddEditComponent extends BaseComponent implements 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getDataFilter();
+    this.route.queryParams.subscribe(params => {
+      this.selectedCustomerId = Number(params['idCus']);
+    });
+    if(this.selectedCustomerId > 0){
+      await this.getDetailCustomer(this.selectedCustomerId);
+      this.listKhachHang$ = of([this.customer]);
+      this.customer = {};
+    }
+    // Lấy danh sách bệnh nhân chờ thanh toán
+    this.getlistCustomerDebt();
     this.getId();
     if (this.idUrl) {
       let data = await this.detail(this.idUrl)
@@ -118,8 +128,6 @@ export class ReceiptMedicalFeeAddEditComponent extends BaseComponent implements 
       }),
       catchError(() => of([]))
     );
-    // Lấy danh sách bệnh nhân chờ thanh toán
-    this.getlistCustomerDebt();
     //payment type
     this.paymentTypeService.searchList({}).then((res) => {
       this.listPaymentType = res?.data;

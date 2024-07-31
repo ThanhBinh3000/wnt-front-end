@@ -76,7 +76,7 @@ export class ServiceAddEditDialogComponent extends BaseComponent implements OnIn
 
   getDataFilter() {
     // Nhóm thuốc
-    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.DICH_VU}).then((res) => {
+    this.nhomThuocService.searchList({typeGroupProduct: LOAI_SAN_PHAM.DICH_VU, maNhaThuoc: this.getMaNhaThuocCha()}).then((res) => {
       if (res?.status == STATUS_API.SUCCESS) {
         this.listNhomDichVu = res.data
       }

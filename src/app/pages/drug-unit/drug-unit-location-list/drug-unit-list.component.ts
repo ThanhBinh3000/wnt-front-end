@@ -24,6 +24,7 @@ export class DrugUnitListComponent extends BaseComponent implements OnInit, Afte
     super(injector,_service);
     this.formData = this.fb.group({
         tenDonViTinh : [],
+        maNhaThuoc: [this.getMaNhaThuocCha()]
     });
   }
 
@@ -36,6 +37,14 @@ export class DrugUnitListComponent extends BaseComponent implements OnInit, Afte
 
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
   }
 
   async openAddEditDialog(drugUnitID: any) {

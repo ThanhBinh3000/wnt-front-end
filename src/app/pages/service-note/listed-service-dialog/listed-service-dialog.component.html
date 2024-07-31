@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                <label class="form-check-label">
+                    <input class="form-check-input" ng-model="statusActive" ng-change="onStatusActiveChange()"
+                        type="checkbox"> Đã chọn
+                </label> &nbsp
+                <label class="form-check-label">
+                    <input class="form-check-input" ng-model="statusCancel" ng-change="onStatusCancelChange()"
+                        type="checkbox"> Đã hủy
+                </label>
+                <br />
+                <label class="control-label">Danh sách dịch vụ</label>
+            </h5>
+        </div>
+        <div>
+            <table mat-table class="table table-striped table-bordered table-hover tr-ng-grid"
+                [dataSource]="getDataSource()" matSort>
+
+                <ng-container matColumnDef="tenDichVu">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên dịch vụ</th>
+                    <td mat-cell *matCellDef="let data"> {{ data.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="nhomDichVu">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nhóm dịch vụ</th>
+                    <td mat-cell *matCellDef="let data"> {{ data.noteName }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="trangThai">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái</th>
+                    <td mat-cell *matCellDef="let data">
+                        {{data.noteDate | appDateTime}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="thanhTien">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Thành tiền</th>
+                    <td mat-cell *matCellDef="let data">
+                        {{data.noteDate | appDateTime}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> #</th>
+                    <td mat-cell *matCellDef="let data">
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-show="id > 0" ng-click="onPrint()">In</button>
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>

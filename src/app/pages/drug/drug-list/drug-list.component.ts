@@ -80,6 +80,7 @@ export class DrugListComponent extends BaseComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log(this.authService.getNhaThuoc());
     this.titleService.setTitle(this.title);
     this.getDataFilter();
     await this.searchPage();

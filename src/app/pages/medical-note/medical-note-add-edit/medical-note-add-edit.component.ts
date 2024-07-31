@@ -18,6 +18,7 @@ import { EsDiagnoseService } from '../../../services/categories/esdiagnose.servi
 import { SampleNoteHistoryDialogComponent } from '../../sample-note/sample-note-history-dialog/sample-note-history-dialog.component';
 import { calculateAge, calculateAgeInMonthsOrYears, calculateDayFromDateRange, convertDateFormat, convertDateObject, getAgeUnit } from '../../../utils/date.utils';
 import { PaymentMediCalNoteDialogComponent } from '../payment-medical-note-dialog/payment-medical-note-dialog.component';
+import { ListedServiceDialogComponent } from '../../service-note/listed-service-dialog/listed-service-dialog.component';
 
 @Component({
   selector: 'app-medical-note',
@@ -38,6 +39,12 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
   searchDiagnoseTerm$ = new Subject<string>();
 
   action: string = 'create';
+
+  //Permits
+  permittedFields = {
+    noteService_Create_And_Write: this.havePermissions(['DV_THEM', 'DV_SUA']),
+
+  };
 
   // Settings
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
@@ -315,6 +322,29 @@ export class MedicalNoteAddEditComponent extends BaseComponent implements OnInit
         this.goToUrl('/management/medical-note/detail', res.id);
       }
     });
+  }
+
+  onSpecifyService(noteId: any){
+
+  }
+
+  //xem ds dịch vụ đã kê
+  onListServiced(noteId: any){
+    if(noteId <= 0){
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa tạo phiếu khám');
+    }
+    const dialogRef = this.dialog.open(ListedServiceDialogComponent, {
+      data: {id: noteId},
+      width: '600px',
+    });
+  }
+
+  onSampleNote(noteId: any){
+    if(noteId <= 0){
+      this.notification.error(MESSAGE.ERROR, 'Bạn chưa tạo phiếu khám');
+    }
+    const url = this.router.serializeUrl(this.router.createUrlTree(['/target-route']));
+    window.open(url, '_blank');
   }
 
   openFormEdit(){
