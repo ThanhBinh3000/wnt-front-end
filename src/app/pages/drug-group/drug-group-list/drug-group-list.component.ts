@@ -24,7 +24,8 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
     super(injector, _service);
     this.formData = this.fb.group({
       tenNhomThuoc: [],
-      typeGroupProduct: [LOAI_SAN_PHAM.THUOC]
+      typeGroupProduct: [LOAI_SAN_PHAM.THUOC],
+      maNhaThuoc: [this.getMaNhaThuocCha()]
     });
   }
 
@@ -34,6 +35,13 @@ export class DrugGroupListComponent extends BaseComponent implements OnInit {
   }
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
   }
   @ViewChild(MatSort) sort?: MatSort;
   async openAddEditDialog(drugGroupID: any) {

@@ -35,11 +35,11 @@ export class ServiceListComponent extends BaseComponent implements OnInit {
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
+      tenThuoc: [],
       nhaThuocMaNhaThuoc: [],
       nhomThuocMaNhomThuoc: [],
       typeId : [],
       donViXuatLeMaDonViTinh: [],
-      idWarehouseLocation : [],
       dataDelete : [false],
       typeService: [LOAI_SAN_PHAM.DICH_VU]
     });

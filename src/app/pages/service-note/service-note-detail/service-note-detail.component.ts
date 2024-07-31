@@ -14,11 +14,6 @@ export class ServiceNoteDetailComponent extends BaseComponent implements OnInit 
   displayedColumns = ['#', 'ma', 'ten', 'soLuong', 'donGia', 'thanhTien', 'ketQua'];
   data: any = {};
 
-  // Authorities
-  noteServiceCreateAndWrite = true;
-  noteServicePrint = true;
-  noteServiceDelete = true
-
   constructor(
     injector: Injector,
     private titleService: Title,
@@ -30,12 +25,17 @@ export class ServiceNoteDetailComponent extends BaseComponent implements OnInit 
   async ngOnInit() {
     this.titleService.setTitle(this.title);
     this.getId();
-    if(this.idUrl){
+    if (this.idUrl) {
       let data = await this.detail(this.idUrl);
       console.log(data);
       this.data = data;
       this.dataTable = data.chiTiets;
     }
+  }
+
+  async onPayment() {
+    const idCus = this.data.idCus;
+    this.router.navigate(['/management/receipt-medical-fee/add'], { queryParams: { idCus: idCus } });
   }
 
   async onLockNote() {

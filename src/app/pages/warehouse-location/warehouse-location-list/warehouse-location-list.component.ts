@@ -24,6 +24,7 @@ export class WarehouseLocationListComponent extends BaseComponent implements OnI
     super(injector,_service);
     this.formData = this.fb.group({
       nameWarehouse : [],
+      storeCode: [this.getMaNhaThuocCha()],
     });
   }
 
@@ -36,6 +37,14 @@ export class WarehouseLocationListComponent extends BaseComponent implements OnI
 
   async ngAfterViewInit() {
     this.dataSource.sort = this.sort!;
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
   }
 
   async openAddEditDialog(warehouseLocationID: any) {

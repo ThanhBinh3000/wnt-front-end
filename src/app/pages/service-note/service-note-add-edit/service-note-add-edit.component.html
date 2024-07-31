@@ -268,7 +268,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ten">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên dịch vu</th>
+                            <th mat-header-cell *matHeaderCellDef> Tên dịch vu</th>
                             <td mat-cell *matCellDef="let data">
                                 {{ data.tenThuoc }}
                             </td>
@@ -383,7 +383,7 @@
                 </div>
 
                 <div class="mt-3 text-right">
-                    <label>Tổng tiền : <span class="text-right"><strong>{{totalMoney | number}}</strong></span></label>
+                    <label>Tổng tiền : <span class="text-right"><strong>{{formData.value?.totalMoney | number}}</strong></span></label>
                 </div>
                 <div class="mt-3">
                     <form [formGroup]="formData">
@@ -396,9 +396,9 @@
                 <hr />
                 <div class="d-flex justify-content-center align-items-center gap-10">
                     <a href="/management/service-note/list" class="btn btn-default">Quay lại</a>
-                    <div *ngIf="havePermissions(['DV_IN'])" class="btn-group" ng-show="permittedFields.NoteService_Print">
+                    <div *ngIf="havePermissions(['DV_IN'])" class="btn-group">
                         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" ng-disabled="noteModel.NoteId <= 0">
+                            aria-haspopup="true" aria-expanded="false" disabled="{{formData.value?.id <= 0}}">
                             In <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
@@ -409,7 +409,7 @@
                     <span *ngIf="havePermissions(['DV_XOA'])" ng-show="permittedFields.NoteService_Delete"><button class="btn btn-danger"
                             [disabled]="formData.value?.id <= 0 || formData.value?.id.isLock"
                             (click)="delete('Bạn có chắc chắn muốn xóa phiếu dịch vụ có số phiếu \'' + formData.value?.noteNumber + '\' ?', formData.value?.id)">Xóa</button></span>
-                    <a class="btn btn-primary" href="" title="{{onTitleSave()}}"
+                    <a class="btn btn-primary" href="/management/receipt-medical-fee/add?idCus={{formData.value?.idCus}}" title="{{onTitleSave()}}"
                         [attr.disabled]="formData.value?.id <= 0 || formData.value?.isDeb == false">Thanh toán</a>
                     <button *ngIf="havePermissions(['DV_THEM', 'DV_SUA'])" class="btn btn-primary" [disabled]="formData.value?.id.isLock" title="{{onTitleSave()}}"
                         (click)="createUpdate()">Ghi

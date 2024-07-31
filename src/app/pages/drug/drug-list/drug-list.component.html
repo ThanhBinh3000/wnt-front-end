@@ -258,7 +258,7 @@
                 </div>
               </div>
             </div>
-            <div *ngif="ownerPrices && isSlaveDrugStore()">
+            <div *ngIf="ownerPrices && isSlaveDrugStore()">
               <div *ngIf="data.recordStatusId == 0" class="baocao-actions">
                 <a title="sửa" class="btn btn-primary btn-sm" href="#"
                   ng-click="onQuickUpdateDrugInfos(gridItem); $event.preventDefault(); $event.stopPropagation();"><i
@@ -269,7 +269,7 @@
                 </a>
               </div>
               <div *ngIf="data.recordStatusId == 2" class="baocao-actions">
-                <span *ngif="isChildDrugStore()">
+                <span *ngIf="isChildDrugStore()">
                   <a title="xem" (click)="openAddEditDialog(data.id)" class="btn btn-primary btn-sm">
                     <i class="fa-regular fa-eye"></i>
                   </a>
@@ -290,8 +290,8 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="getDisplayColumn(); sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: getDisplayColumn();"></tr>
         <tr mat-footer-row *matFooterRowDef="['footer']"></tr>
 
       </table>

@@ -39,8 +39,8 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
   searchDichVuTerm$ = new Subject<string>();
   nhomDichVuId: any = -1;
   dichVuId: any;
-  totalMoney: any = 0;
   displayedColumns: string[] = this.getDisplayedColumns();
+  override pageSize: number = 9000;
 
   // Settings
   useDoctorCommon = this.authService.getSettingByKey(SETTING.USE_CUSTOMER_COMMON);
@@ -63,6 +63,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
       id: [0],
       noteDate: [this.datePipe.transform(moment().utc().startOf('day').toDate(), 'dd/MM/yyyy HH:mm:ss')],
       date: [],
+      storeCode: [this.getMaNhaThuoc()],
       idCus: ['', Validators.required],
       customer: this.fb.group({
         id: [],
@@ -78,10 +79,11 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
       noteNumber: [],
       idDoctor: [0, [Validators.required, Validators.min(1)]],
       performerId: [0],
-      isDeb: [],
-      isLock: [],
+      isDeb: [true],
+      isLock: [false],
       description: [''],
       recordStatusId: [0],
+      totalMoney: [0]
     })
   }
 
@@ -119,7 +121,6 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
         }
       });
     }
-    this.pageSize = 9000;
     this.titleService.setTitle(this.title);
     this.getDataFilter();
     await this.getListService();
@@ -134,7 +135,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
     body.chiTiets = this.dataTable;
     this.save(body).then(res => {
       if (res) {
-        this.router.navigate(['/management/service-note/list']);
+        this.goToUrl('management/service-note/detail',res.id);
       }
     });
   }
@@ -320,10 +321,27 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
   }
 
   getDetailCustomer($event: any) {
-    $event.age = calculateAgeInMonthsOrYears($event.birthDate);
-    $event.ageUnit = getAgeUnit($event.birthDate);
-    $event.birthDate = moment($event.birthDate, 'DD/MM/YYYY hh:mm:ss').format('DD/MM/YYYY');
-    this.formData.patchValue({ customer: $event });
+    if ($event) {
+      if ($event.birthDate) {
+        $event.age = calculateAgeInMonthsOrYears($event.birthDate);
+        $event.ageUnit = getAgeUnit($event.birthDate);
+        $event.birthDate = moment($event.birthDate, 'DD/MM/YYYY hh:mm:ss').format('DD/MM/YYYY');
+      }
+      this.formData.patchValue({ customer: $event });
+    }
+    else {
+      var customer = {
+        id: 0,
+        tenKhachHang: '',
+        diaChi: '',
+        birthDate: '',
+        age: '',
+        ageUnit: '',
+        sexId: '',
+        soDienThoai: ''
+      };
+      this.formData.patchValue({ customer: customer });
+    }
   }
 
   generateBarcode() {
@@ -358,7 +376,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
     for (var i = 0; i < this.dataTable.length; i++) {
       total += this.dataTable[i].retailOutPrice * this.dataTable[i].amount;
     }
-    this.totalMoney = total;
+    this.formData.patchValue({ totalMoney: total });
   }
 
   //Thêm dịch vụ vừa chọn vào list dịch vụ
@@ -390,7 +408,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
       for (var i = 0; i < this.dataTable.length; i++) {
         total += this.dataTable[i].retailOutPrice * this.dataTable[i].amount;
       }
-      this.totalMoney = total;
+      this.formData.patchValue({ totalMoney: total });
     } else {
       // drugItem.checked = true;
       // this.notification.error(MESSAGE.ERROR, 'Dịch vụ này đã được chọn.');
@@ -417,7 +435,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
         }
       });
     }
-    this.totalMoney = total;
+    this.formData.patchValue({totalMoney: total});
     this.getListService();
   };
 
@@ -427,7 +445,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
     for (var i = 0; i < this.dataTable.length; i++) {
       total += this.dataTable[i].retailOutPrice * parseInt(this.dataTable[i].amount);
     }
-    this.totalMoney = total;
+    this.formData.patchValue({totalMoney: total});
   }
 
   onCountChange(item: any) {
@@ -437,7 +455,7 @@ export class ServiceNoteAddEditComponent extends BaseComponent implements OnInit
       for (var i = 0; i < this.dataTable.length; i++) {
         total += this.dataTable[i].retailOutPrice * this.dataTable[i].amount;
       }
-      this.totalMoney = total;
+      this.formData.patchValue({totalMoney: total});
     }
   }
 

@@ -21,6 +21,7 @@ import {
 } from "@angular/material/table";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {ServiceNoteWaitListComponent} from "./service-note-wait-list/service-note-wait-list.component";
+import { ListedServiceDialogComponent } from './listed-service-dialog/listed-service-dialog.component';
 
 
 @NgModule({
@@ -30,9 +31,10 @@ import {ServiceNoteWaitListComponent} from "./service-note-wait-list/service-not
     ServiceNoteWaitListComponent,
     ServiceNoteAddEditComponent,
     ServiceNoteDetailComponent,
+    ListedServiceDialogComponent,
   ],
     imports: [CommonModule, RouterOutlet, ServiceNoteRoutingModule, ComponentsModule, FormsModule, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatSort, MatSortHeader, MatTable],
-  exports: [],
+  exports: [ListedServiceDialogComponent],
 })
 export class ServiceNoteModule {
 }
