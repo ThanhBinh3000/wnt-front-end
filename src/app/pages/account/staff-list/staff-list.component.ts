@@ -31,7 +31,7 @@ export class StaffListComponent extends BaseComponent implements OnInit, AfterVi
   ) {
     super(injector, _service);
     this.formData = this.fb.group({
-      tenDayDu: [''],
+      textSearch: [''],
       isNotActive: [false]
     });
   }
