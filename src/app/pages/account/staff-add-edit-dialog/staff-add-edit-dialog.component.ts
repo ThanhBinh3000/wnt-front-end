@@ -29,14 +29,14 @@ export class StaffAddEditDialogComponent extends BaseComponent implements OnInit
       email: ['', Validators.email],
       soDienThoai: ['', Validators.required, phoneNumberValidator],
       soCMT: [''],
-      hoatDong: [false],
+      hoatDong: [true],
       addresses: [''],
       archivedId: [0],
       storeId: [0],
       regionId: [0],
       cityId: [0],
       wardId: [0],
-      isVerificationAccount: [false]
+      isVerificationAccount: [false],
     }, { validators: userProfile ? null : this.passwordMatchValidator });
   }
 

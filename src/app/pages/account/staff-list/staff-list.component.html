@@ -5,12 +5,12 @@
         <fieldset>
           <label>Nhân viên</label>
           <div class="control-group">
-            <input formControlName="tenDayDu" type="text" class="form-control" placeholder="Tìm nhân viên theo tên..."
+            <input formControlName="textSearch" type="text" class="form-control" placeholder="Tìm nhân viên theo tên..."
                    (keyup.enter)="searchPage()"/>
           </div>
           <div class="mb-3">
             <div class="form-check">
-              <input formControlName="isNotActive" type="checkbox" class="form-control form-check-input">
+              <input formControlName="isNotActive" type="checkbox" class="form-control form-check-input" (change)="searchPage()">
               <label class="form-check-label">Nhân viên không hoạt động</label>
             </div>
           </div>
