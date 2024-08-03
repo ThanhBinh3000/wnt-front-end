@@ -668,7 +668,7 @@ export class ReceiptNoteScreenComponent extends BaseComponent implements OnInit 
     }
     if (data.isProdRef && this.refStoreForProducts.activated && this.refStoreForProducts.value != '' && this.refStoreForProducts.value != null
       && (this.refStoreForProducts.value == '0012' || this.refStoreForProducts.value == 'DQG' || this.refStoreForProducts.value == 'DQGB')) {
-
+        
     }
     else {
       const dialogRef = this.dialog.open(DrugUpdateInpriceDialogComponent, {
