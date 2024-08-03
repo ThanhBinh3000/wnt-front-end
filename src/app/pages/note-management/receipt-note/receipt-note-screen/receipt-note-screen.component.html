@@ -251,8 +251,8 @@
                 [ngClass]="getInputSize()" [style.font-size]="getInputFontSize()">
             </div>
             <div *ngIf="permittedFields.drug_ViewInputPrice">
-              <input type="text" [(ngModel)]="data.giaNhap" mask="separator" (change)="onOutpriceChange(data,'inprice')" (ngModelChange)="getItemAmount(data)"
-                (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap"
+              <input type="text" [(ngModel)]="data.giaNhap" mask="separator" (change)="onOutpriceChange(data,'inprice')"
+                (ngModelChange)="getItemAmount(data)" (keyup.enter)="onAddNew(data)" class="form-control mb-0 mousetrap"
                 style="width: 100%; text-align:right;" [ngClass]="getInputSize()"
                 [style.font-size]="getInputFontSize()">
             </div>
@@ -326,7 +326,7 @@
             </div>
             <div (click)="onGetDataDetailLastValueWarehouse(data)" *ngIf="enableDeliveryPickUp" class="number-value">
               <span style="cursor:pointer" class="btn-link">{{data.tonKho | number}}</span>
-          </div>
+            </div>
           </td>
         </ng-container>
 
@@ -476,8 +476,8 @@
             <td colspan="3">
               <div class="d-flex align-items-center justify-content-center gap-10">
                 <input type="button" value="Quay lại" class="btn btn-default" (click)="goBack()">
-                <input *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" type="submit" value="Ghi Phiếu" id="save-note-btn-id" title="F9-Ghi phiếu"
-                  class="btn btn-primary" (click)="createUpdate()">
+                <input *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" type="submit" value="Ghi Phiếu"
+                  id="save-note-btn-id" title="F9-Ghi phiếu" class="btn btn-primary" (click)="createUpdate()">
                 <div class="btn-group" *ngIf="formData.value?.id > 0 && isDesktop() && havePermissions(['PN_IN'])">
                   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -494,7 +494,8 @@
                       <a (click)="printPreview('bbkn')">In biên bản</a>
                     </li>
                     <li>
-                      <a [routerLink]="['/management/drug/DrugBarCode']" [queryParams]="{id: idUrl, loaiPhieu: LOAI_PHIEU.PHIEU_NHAP}">
+                      <a [routerLink]="['/management/drug/DrugBarCode']"
+                        [queryParams]="{id: idUrl, loaiPhieu: LOAI_PHIEU.PHIEU_NHAP}">
                         In mã vạch thuốc
                       </a>
                     </li>
@@ -502,12 +503,14 @@
                 </div>
                 <span *ngIf="formData.value?.id > 0">
                   <span>
-                    <button *ngIf="havePermissions(['PN_XOA'])" class="btn btn-danger" disabled="{{formData.value?.locked ? 'disabled' : ''}}"
+                    <button *ngIf="havePermissions(['PN_XOA'])" class="btn btn-danger"
+                      disabled="{{formData.value?.locked ? 'disabled' : ''}}"
                       (click)="delete('Bạn có chắc chắn muốn xóa phiếu nhập của nhà cung cấp \'' +
                     (enableCustomerToSupplier ? nhaCungCap.tenKhachHang : nhaCungCap.tenNhaCungCap) + '\' có số phiếu \'' + formData.value?.soPhieuNhap + '\' ?', formData.value?.id)">
                       Xóa phiếu</button>
                   </span>
-                  <a *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" (click)="onLockNote()" title="Mở/Khóa phiếu" class="btn btn-default"><i
+                  <a *ngIf="havePermissions(['PN_THEM', 'PN_SUA'])" (click)="onLockNote()" title="Mở/Khóa phiếu"
+                    class="btn btn-default"><i
                       class="fa {{formData.value?.locked ? 'fa-lock' : 'fa-unlock'}} fa-lg"></i></a>
                 </span>
                 <span *ngIf="enableElectronicInvoice">

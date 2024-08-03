@@ -22,7 +22,7 @@ export class WarehouseLocationAddEditDialogComponent extends BaseComponent imple
       id: [''],
       code: [''],
       nameWarehouse: ['', Validators.required],
-      maNhaThuoc: ['0010'],
+      storeCode: [this.getMaNhaThuocCha()],
       recordStatusId: [0],
       descriptions: ['']
     });
@@ -44,6 +44,14 @@ export class WarehouseLocationAddEditDialogComponent extends BaseComponent imple
     if (data) {
       this.dialogRef.close(data);
     }
+  }
+
+  getMaNhaThuoc() {
+    return this.authService.getNhaThuoc().maNhaThuoc;
+  }
+
+  getMaNhaThuocCha() {
+    return this.authService.getNhaThuoc().maNhaThuocCha;
   }
 
   closeModal() {
