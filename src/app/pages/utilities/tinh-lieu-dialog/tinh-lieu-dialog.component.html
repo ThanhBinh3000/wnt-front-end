@@ -1,0 +1,102 @@
+<div class="card">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" (click)="closeModal()" aria-label="Đóng"><span>&times;</span></button>
+            <h4 class="modal-title font-weight-bold">Tính liều theo cân nặng</h4>
+        </div>
+        <div class="modal-body" *ngIf="items$ | async as items">
+            <div class="row">
+                <div class="col-lg-4">
+                    <fieldset>
+                        <label>Hoạt chất</label>
+                        <div class="control-group">
+                            <ng-select [(ngModel)]="selectedItem" (change)="onItemChanged($event)" [items]="items"
+                                bindLabel="name" placeholder="Chọn hoặt chất">
+                            </ng-select>
+                            <p>{{ selectedItem?.doseByWeight }}</p>
+                            <p *ngFor="let bonus of selectedItem?.bonus">*{{ bonus }}</p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset>
+                        <label>Hàm lượng trong chế phẩm:</label>
+                        <div class="control-group">
+                            <select class="form-control mb-0" [(ngModel)]="selectedItem.selectedContent" (change)="contentChanged()">
+                                <option *ngFor="let content of selectedItem?.contents" [value]="content.name">{{ content.name }}</option>
+                            </select>
+                            <p *ngIf="selectedItem?.unit">Liều sẽ được tính theo đơn vị: {{selectedItem.unit}}</p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-lg-4">
+                    <fieldset>
+                        <label>Chế độ liều (lần/ngày):</label>
+                        <div class="control-group">
+                            <select class="form-control mb-0" [(ngModel)]="selectedItem.selectedDoseOfTimeADay">
+                                <option *ngFor="let dose of selectedItem?.doseOfTimeADay" [value]="dose">{{ dose }}</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Cân nặng:</label>
+                        <div class="d-flex gap-10 align-items-center">
+                            <input class="form-control mb-0" maxlength="100" type="text" [(ngModel)]="selectedItem.weight" />
+                            <span>kg</span>
+                            <button type="button" (click)="addNewItem(selectedItem.weight)" class="btn btn-primary">Tính liều</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table-condensed display dataTable no-footer table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Hoạt chất</th>
+                            <th>Hàm lượng</th>
+                            <th>Đơn vị</th>
+                            <th style="width: 8%;">Chế độ liều</th>
+                            <th>Cân nặng (kg)</th>
+                            <th>Liều theo cân nặng</th>
+                            <th>Liều tối thiểu</th>
+                            <th>Liều tối đa</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of (viewModel$ | async)?.items; let i = index">
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td>{{ item.order }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.selectedContent }}</td>
+                            <td>{{ item.unit }}</td>
+                            <td>
+                                <select class="form-control" [(ngModel)]="item.selectedDoseOfTimeADay" (change)="onChanged(item)">
+                                    <option *ngFor="let option of item.doseOfTimeADay" [value]="option">{{ option }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="form-control" style="text-align: right;" [(ngModel)]="item.weight" (change)="onChanged(item)"/>
+                            </td>
+                            <td>{{ item.doseByWeight }}</td>
+                            <td>{{ item.lieuToiThieu }}</td>
+                            <td>{{ item.lieuToiDa }}</td>
+                            <td>
+                                <button class="btn btn-danger" title="Xóa" (click)="deleteItem(item)">
+                                    <i class="fa-regular fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>
