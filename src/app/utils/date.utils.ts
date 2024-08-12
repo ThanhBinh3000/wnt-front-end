@@ -51,7 +51,7 @@ export function calculateAge(dateString: string): number {
 export function calculateAgeInMonthsOrYears(dateString: string): number {
   const ageInYears = calculateAge(dateString);
 
-  if (ageInYears <= 3) {
+  if (ageInYears <= 6) {
     const birthDate = new Date(convertDateFormat(dateString));
     const today = new Date();
 
@@ -67,7 +67,7 @@ export function calculateAgeInMonthsOrYears(dateString: string): number {
 
 export function getAgeUnit(dateString: string): string {
   const ageInYears = calculateAge(dateString);
-  return ageInYears <= 3 ? 'tháng' : 'tuổi';
+  return ageInYears <= 6 ? 'tháng' : 'tuổi';
 }
 
 export function calculateDayFromDateRange(fromDate: any, toDate: any): number {

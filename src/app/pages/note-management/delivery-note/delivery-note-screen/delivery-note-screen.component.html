@@ -1,6 +1,6 @@
 <div class="card-bg">
     <h2 class="card-title text-center mt-0 mb-0">
-        <b class="ng-binding">PHIẾU BÁN HÀNG 1</b>
+        <b class="ng-binding">PHIẾU BÁN HÀNG</b>
         <span ng-if="deviceType==0" style="padding-bottom: 12px; padding-left: 8px"
             class="btn tooltip-content-drug ng-scope">
             <span ng-click="">
@@ -129,8 +129,8 @@
                                             ng-model="viewModel.Factors" min="1" max="30" step="0.5"
                                             awnum="app-decimal-number">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary"
-                                                ng-click="onDoseCalculation($event)"><i
+                                            <button type="button" class="btn btn-primary" title="Tính liều"
+                                                (click)="openTinhLieuDialog()"><i
                                                     class="fa-regular fa-calculator"></i></button>
                                         </span>
                                     </div>

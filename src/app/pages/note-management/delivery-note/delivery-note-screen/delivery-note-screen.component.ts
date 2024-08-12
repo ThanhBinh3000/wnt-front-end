@@ -34,6 +34,7 @@ import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, fo
 import { DrugAddEditDialogComponent } from '../../../drug/drug-add-edit-dialog/drug-add-edit-dialog.component';
 import { TransactionDetailByObjectDialogComponent } from '../../../transaction/transaction-detail-by-object-dialog/transaction-detail-by-object-dialog.component';
 import { PickUpOrderService } from "../../../../services/order/pick-up-order.service";
+import { TinhLieuDialogComponent } from '../../../utilities/tinh-lieu-dialog/tinh-lieu-dialog.component';
 
 @Component({
   selector: 'delivery-note-screen',
@@ -797,6 +798,17 @@ export class DeliveryNoteScreenComponent extends BaseComponent implements OnInit
       this.notification.error(MESSAGE.ERROR, 'Bạn chưa chọn khách hàng');
     }
 
+  }
+
+  async openTinhLieuDialog() {
+    const dialogRef = this.dialog.open(TinhLieuDialogComponent, {
+      data: 0,
+      width: '80%',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+      }
+    });
   }
 
   async getDataUpdate(data: any, chiTiets: any[]) {
